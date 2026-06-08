@@ -43,6 +43,16 @@ function getParam(key) {
 }
 
 function navigate(params) {
+  // concept이 있으면 concept.html로 이동
+  if (params.concept) {
+    const p = new URLSearchParams();
+    if (params.subject) p.set('subject', params.subject);
+    if (params.chapter) p.set('chapter', params.chapter);
+    p.set('concept', params.concept);
+    location.href = 'concept.html?' + p.toString();
+    return;
+  }
+  // subject만 있으면 같은 페이지 내 이동
   const url = new URL(location.href);
   Object.keys(params).forEach(k => {
     if (params[k] == null) url.searchParams.delete(k);
