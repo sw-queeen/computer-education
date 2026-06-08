@@ -1,0 +1,164 @@
+:root {
+  --font-main: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --bg-page:    #F7F5F2;
+  --bg-white:   #FFFFFF;
+  --bg-surface: #F0EDE8;
+
+  --text-primary:   #2C2825;
+  --text-secondary: #6B6560;
+  --text-tertiary:  #A09890;
+
+  --border-light: rgba(0,0,0,0.08);
+  --border-mid:   rgba(0,0,0,0.14);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  --sidebar-width: 220px;
+  --topbar-height: 56px;
+
+  /* ── 교육학 과목 컬러 ── */
+  /* 교육과정론 - 핑크 */
+  --c-edu-curriculum-bg:     #F5E6EC;
+  --c-edu-curriculum-mid:    #E8AECA;
+  --c-edu-curriculum-accent: #C4688E;
+  --c-edu-curriculum-text:   #7A2E50;
+
+  /* 교육심리학 - 그린 */
+  --c-edu-psych-bg:     #E6F2EC;
+  --c-edu-psych-mid:    #A8D8BC;
+  --c-edu-psych-accent: #4EA87A;
+  --c-edu-psych-text:   #1E5A3C;
+
+  /* 교수학습이론 - 오렌지 */
+  --c-edu-teach-bg:     #FBF0E6;
+  --c-edu-teach-mid:    #F0C89A;
+  --c-edu-teach-accent: #D4874A;
+  --c-edu-teach-text:   #7A4018;
+
+  /* 교육평가론 - 옐로우 */
+  --c-edu-eval-bg:     #FAF6E0;
+  --c-edu-eval-mid:    #EDE09A;
+  --c-edu-eval-accent: #C8A830;
+  --c-edu-eval-text:   #6A5210;
+
+  /* 교육행정 - 네이비 */
+  --c-edu-admin-bg:     #E6EAF5;
+  --c-edu-admin-mid:    #A0B0D8;
+  --c-edu-admin-accent: #3A5AA0;
+  --c-edu-admin-text:   #1A2E60;
+
+  /* 생활지도·상담 - 보라 */
+  --c-edu-counsel-bg:     #EEE8F5;
+  --c-edu-counsel-mid:    #C4A8E0;
+  --c-edu-counsel-accent: #8050B8;
+  --c-edu-counsel-text:   #3E1E6A;
+
+  /* ── CS 전공 과목 컬러 ── */
+  /* 자료구조 - 스틸블루 */
+  --c-cs-ds-bg:     #E6EFF8;
+  --c-cs-ds-mid:    #90BAE0;
+  --c-cs-ds-accent: #3878B8;
+  --c-cs-ds-text:   #1A3C68;
+
+  /* 알고리즘 - 티얼 */
+  --c-cs-algo-bg:     #E0F5F2;
+  --c-cs-algo-mid:    #80CEC5;
+  --c-cs-algo-accent: #2A9E94;
+  --c-cs-algo-text:   #0E4E48;
+
+  /* 운영체제 - 코랄 */
+  --c-cs-os-bg:     #FAE8E4;
+  --c-cs-os-mid:    #ECA898;
+  --c-cs-os-accent: #D05840;
+  --c-cs-os-text:   #6E2010;
+
+  /* 컴퓨터구조 - 인디고 */
+  --c-cs-arch-bg:     #EAE8F8;
+  --c-cs-arch-mid:    #B0A8E8;
+  --c-cs-arch-accent: #6058C0;
+  --c-cs-arch-text:   #2A2068;
+
+  /* 데이터베이스 - 세이지 */
+  --c-cs-db-bg:     #E8F4EC;
+  --c-cs-db-mid:    #98C8A8;
+  --c-cs-db-accent: #3A8858;
+  --c-cs-db-text:   #164028;
+
+  /* 네트워크 - 스카이블루 */
+  --c-cs-net-bg:     #E4F2FA;
+  --c-cs-net-mid:    #88C4E8;
+  --c-cs-net-accent: #2888C8;
+  --c-cs-net-text:   #0C3E68;
+
+  /* 프로그래밍언어론 - 로즈 */
+  --c-cs-pl-bg:     #FAE8F0;
+  --c-cs-pl-mid:    #E8A0C0;
+  --c-cs-pl-accent: #C84880;
+  --c-cs-pl-text:   #681840;
+
+  /* 소프트웨어공학 - 앰버 */
+  --c-cs-se-bg:     #FBF2E0;
+  --c-cs-se-mid:    #F0CC88;
+  --c-cs-se-accent: #C89020;
+  --c-cs-se-text:   #604800;
+
+  /* 이산수학 - 라벤더 */
+  --c-cs-discrete-bg:     #EEE8F8;
+  --c-cs-discrete-mid:    #C0A8E8;
+  --c-cs-discrete-accent: #7848C8;
+  --c-cs-discrete-text:   #341860;
+
+  /* 컴파일러 - 슬레이트 */
+  --c-cs-compiler-bg:     #EAF0F0;
+  --c-cs-compiler-mid:    #98B8B8;
+  --c-cs-compiler-accent: #3A7878;
+  --c-cs-compiler-text:   #103838;
+
+  /* 인공지능 - 에메랄드 */
+  --c-cs-ai-bg:     #E0F8F0;
+  --c-cs-ai-mid:    #78D8B0;
+  --c-cs-ai-accent: #18A870;
+  --c-cs-ai-text:   #065035;
+
+  /* 정보보안 - 다크레드 */
+  --c-cs-sec-bg:     #FAE6E6;
+  --c-cs-sec-mid:    #E89898;
+  --c-cs-sec-accent: #C03838;
+  --c-cs-sec-text:   #601010;
+
+  /* ── 정보교육 과목 컬러 ── */
+  /* CT - 민트 */
+  --c-info-ct-bg:     #E0F8F4;
+  --c-info-ct-mid:    #78D8C8;
+  --c-info-ct-accent: #18A898;
+  --c-info-ct-text:   #065048;
+
+  /* 정보과 교육과정 - 라임 */
+  --c-info-curriculum-bg:     #EEF8E0;
+  --c-info-curriculum-mid:    #B8E080;
+  --c-info-curriculum-accent: #70B020;
+  --c-info-curriculum-text:   #305000;
+
+  /* 교수학습방법 - 피치 */
+  --c-info-teach-bg:     #FAF0E8;
+  --c-info-teach-mid:    #F0C8A0;
+  --c-info-teach-accent: #D07840;
+  --c-info-teach-text:   #703010;
+
+  /* SW·AI교육론 - 사이언 */
+  --c-info-swai-bg:     #E0F0F8;
+  --c-info-swai-mid:    #88C8E8;
+  --c-info-swai-accent: #1888C8;
+  --c-info-swai-text:   #083860;
+
+  /* 평가론 - 모브 */
+  --c-info-eval-bg:     #F0E8F8;
+  --c-info-eval-mid:    #C898E8;
+  --c-info-eval-accent: #9840C8;
+  --c-info-eval-text:   #480868;
+}

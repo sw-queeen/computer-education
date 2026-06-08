@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>임용 CS — 정보컴퓨터 임용 시험 학습 사이트</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div class="layout">
+
+  <header class="topbar">
+    <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
+    <div class="topbar-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="globalSearch" placeholder="개념 검색...">
+    </div>
+  </header>
+
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <main class="main" id="main"></main>
+
+</div>
+
+<script src="js/data.js"></script>
+<script>
+// ── 유틸 ──────────────────────────────────────────────
+function setSubjectVars(subjectName, el) {
+  const s = SUBJECTS[subjectName];
+  if (!s) return;
+  el.style.setProperty('--subject-bg',     s.color.bg);
+  el.style.setProperty('--subject-mid',    s.color.mid);
+  el.style.setProperty('--subject-accent', s.color.accent);
+  el.style.setProperty('--subject-text',   s.color.text);
+}
+
+function getParam(key) {
+  return new URLSearchParams(location.search).get(key);
+}
+
+function navigate(params) {
+  const url = new URL(location.href);
+  Object.keys(params).forEach(k => {
+    if (params[k] == null) url.searchParams.delete(k);
+    else url.searchParams.set(k, params[k]);
+  });
+  history.pushState({}, '', url);
+  render();
+}
+
+// ── 사이드바 ──────────────────────────────────────────
+function renderSidebar() {
+  const currentSubject = getParam('subject');
+  const areas = {};
+  Object.entries(SUBJECTS).forEach(([name, meta]) => {
+    if (!areas[meta.area]) areas[meta.area] = [];
+    areas[meta.area].push(name);
+  });
+
+  let html = '';
+  Object.entries(areas).forEach(([area, subjects]) => {
+    html += `<div class="sidebar-section">
+      <div class="sidebar-section-title">${area}</div>`;
+    subjects.forEach(name => {
+      const s = SUBJECTS[name];
+      const active = currentSubject === name ? 'active' : '';
+      const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
+      html += `<div class="sidebar-item ${active}" style="${style}"
+        onclick="navigate({subject:'${name}',chapter:null,concept:null})">
+        <span class="sidebar-dot" style="background:${s.color.mid}"></span>
+        ${name}
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  document.getElementById('sidebar').innerHTML = html;
+}
+
+// ── 홈 렌더 ───────────────────────────────────────────
+function renderHome() {
+  const total = CONCEPTS.length;
+  const highCount = CONCEPTS.filter(c => c.freq === '높음').length;
+  const vizCount  = CONCEPTS.filter(c => c.viz).length;
+
+  const areas = {};
+  Object.entries(SUBJECTS).forEach(([name, meta]) => {
+    if (!areas[meta.area]) areas[meta.area] = [];
+    const count = CONCEPTS.filter(c => c.subject === name).length;
+    areas[meta.area].push({ name, meta, count });
+  });
+
+  let html = `
+    <div class="home-hero">
+      <h1>정보컴퓨터 임용 학습</h1>
+      <p>1차 교육학 논술부터 전공 CS·정보교육학까지 — 시각화와 퀴즈로 확실하게.</p>
+      <div class="stats-row">
+        <div class="stat-pill"><strong>${total}</strong>개 개념 카드</div>
+        <div class="stat-pill">빈출 <strong>${highCount}</strong>개</div>
+        <div class="stat-pill">시각화 <strong>${vizCount}</strong>개</div>
+      </div>
+    </div>`;
+
+  Object.entries(areas).forEach(([area, subjects]) => {
+    html += `<div class="area-section">
+      <div class="area-title">${area}</div>
+      <div class="subject-grid">`;
+
+    subjects.forEach(({ name, meta, count }) => {
+      const style = `--subject-accent:${meta.color.accent};--subject-mid:${meta.color.mid};--subject-bg:${meta.color.bg};--subject-text:${meta.color.text}`;
+      html += `
+        <div class="subject-card" style="${style}"
+          onclick="navigate({subject:'${name}',chapter:null,concept:null})">
+          <div class="subject-card-name">${name}</div>
+          <div class="subject-card-area">${area}</div>
+          <div class="subject-card-count">개념 ${count}개 →</div>
+        </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  document.getElementById('main').innerHTML = html;
+}
+
+// ── 챕터(과목) 렌더 ───────────────────────────────────
+function renderSubject(subjectName) {
+  const s = SUBJECTS[subjectName];
+  if (!s) return renderHome();
+
+  const concepts = CONCEPTS.filter(c => c.subject === subjectName);
+  const chapters = [...new Set(concepts.map(c => c.chapter))];
+
+  // 상단 topbar에 스타일 적용
+  const topbar = document.querySelector('.topbar');
+  setSubjectVars(subjectName, document.getElementById('main'));
+
+  const highC  = concepts.filter(c => c.freq === '높음').length;
+  const vizC   = concepts.filter(c => c.viz).length;
+
+  let html = `
+    <div class="page-header">
+      <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:6px;">
+        <span onclick="navigate({subject:null,chapter:null,concept:null})" style="cursor:pointer;">홈</span>
+        <span style="margin:0 6px;">›</span>${subjectName}
+      </div>
+      <div class="page-title">${subjectName}</div>
+      <div class="page-meta">
+        <span>${s.area}</span>
+        <span class="count">${concepts.length}개 개념</span>
+        <span>빈출 ${highC}개</span>
+        <span>시각화 ${vizC}개</span>
+      </div>
+    </div>
+
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-filter="all" onclick="applyFilter('all')">전체</button>
+      <button class="filter-btn" data-filter="high" onclick="applyFilter('high')">빈출만</button>
+      <button class="filter-btn" data-filter="viz" onclick="applyFilter('viz')">시각화 있음</button>
+      <button class="filter-btn" data-filter="quiz" onclick="applyFilter('quiz')">퀴즈 있음</button>
+    </div>
+
+    <div id="chaptersContainer">`;
+
+  chapters.forEach(chapter => {
+    const cc = concepts.filter(c => c.chapter === chapter);
+    html += `
+      <div class="chapter-section" data-chapter="${chapter}">
+        <div class="chapter-title" style="background:${s.color.bg};color:${s.color.text};">
+          ${chapter} <span style="font-weight:400;opacity:.7;">${cc.length}</span>
+        </div>
+        <div class="card-grid">`;
+
+    cc.forEach(concept => {
+      const idxStr = encodeURIComponent(concept.name);
+      html += `
+        <div class="concept-card"
+          style="border-left-color:${s.color.mid};"
+          data-freq="${concept.freq}" data-viz="${concept.viz}" data-quiz="${concept.quiz}"
+          onclick="navigate({subject:'${subjectName}',chapter:'${encodeURIComponent(chapter)}',concept:'${idxStr}'})">
+          <div class="concept-card-name">${concept.name}</div>
+          <div class="concept-card-keywords">${concept.keywords}</div>
+          <div class="concept-card-footer">
+            <span class="badge ${concept.freq==='높음'?'badge-high':concept.freq==='중간'?'badge-mid':'badge-low'}">
+              ${concept.freq==='높음'?'빈출':concept.freq==='중간'?'중간':'낮음'}
+            </span>
+            ${concept.viz  ? `<span class="badge" style="background:${s.color.bg};color:${s.color.text};">시각화</span>` : ''}
+            ${concept.quiz ? `<span class="badge badge-quiz">퀴즈</span>` : ''}
+          </div>
+        </div>`;
+    });
+
+    html += `</div></div>`;
+  });
+
+  html += `</div>`;
+  document.getElementById('main').innerHTML = html;
+  setSubjectVars(subjectName, document.getElementById('main'));
+}
+
+function applyFilter(filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
+  document.querySelectorAll('.concept-card').forEach(card => {
+    let show = true;
+    if (filter === 'high')  show = card.dataset.freq === '높음';
+    if (filter === 'viz')   show = card.dataset.viz === 'true';
+    if (filter === 'quiz')  show = card.dataset.quiz === 'true';
+    card.style.display = show ? '' : 'none';
+  });
+  // 빈 챕터 숨기기
+  document.querySelectorAll('.chapter-section').forEach(sec => {
+    const visible = [...sec.querySelectorAll('.concept-card')].some(c => c.style.display !== 'none');
+    sec.style.display = visible ? '' : 'none';
+  });
+}
+
+// ── 개념 상세 렌더 ────────────────────────────────────
+function renderConcept(subjectName, conceptName) {
+  const s = SUBJECTS[subjectName];
+  const concept = CONCEPTS.find(c => c.subject === subjectName && c.name === conceptName);
+  if (!s || !concept) return renderSubject(subjectName);
+
+  const sameChapter = CONCEPTS.filter(c => c.subject === subjectName && c.chapter === concept.chapter && c.name !== concept.name);
+
+  let html = `
+    <div class="concept-detail">
+      <div class="detail-header" style="background:${s.color.bg};">
+        <div class="detail-subject-path">${subjectName} › ${concept.chapter}</div>
+        <div class="detail-title" style="color:${s.color.text};">${concept.name}</div>
+        <div class="detail-keywords" style="color:${s.color.text};">${concept.keywords}</div>
+        <div class="detail-badges">
+          <span class="badge ${concept.freq==='높음'?'badge-high':concept.freq==='중간'?'badge-mid':'badge-low'}">
+            ${concept.freq==='높음'?'빈출':concept.freq==='중간'?'중간':'낮음'}
+          </span>
+          ${concept.viz  ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">시각화 있음</span>` : ''}
+          ${concept.quiz ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">퀴즈 있음</span>` : ''}
+        </div>
+      </div>
+
+      <div class="detail-tabs">
+        <div class="detail-tab active" onclick="switchTab(this,'tab-summary')" style="color:${s.color.accent};border-bottom-color:${s.color.accent};">핵심 정리</div>
+        ${concept.viz  ? `<div class="detail-tab" onclick="switchTab(this,'tab-viz')">시각화</div>` : ''}
+        <div class="detail-tab" onclick="switchTab(this,'tab-exam')">기출 포인트</div>
+        ${concept.quiz ? `<div class="detail-tab" onclick="switchTab(this,'tab-quiz')">셀프 퀴즈</div>` : ''}
+      </div>
+
+      <div id="tab-summary">
+        <div class="detail-section">
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">핵심 개념</div>
+          <div class="content-placeholder">
+            이 개념의 핵심 정리 내용을 여기에 작성하세요.<br>
+            <small style="margin-top:8px;display:block;">키워드: ${concept.keywords}</small>
+          </div>
+        </div>
+        <div class="detail-section">
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">주요 이론가 / 모델</div>
+          <div class="content-placeholder">이론가, 모델 구조, 핵심 주장을 작성하세요.</div>
+        </div>
+      </div>
+
+      <div id="tab-viz" style="display:none;">
+        <div class="detail-section">
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">인터랙티브 시각화</div>
+          <div class="content-placeholder">이 개념의 시각화 컴포넌트가 들어갑니다.</div>
+        </div>
+      </div>
+
+      <div id="tab-exam" style="display:none;">
+        <div class="detail-section">
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">기출 출제 포인트</div>
+          <div class="content-placeholder">연도별 출제 키워드와 논술 답안 구조를 작성하세요.</div>
+        </div>
+      </div>
+
+      <div id="tab-quiz" style="display:none;">
+        <div class="detail-section">
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">셀프 퀴즈</div>
+          <div class="content-placeholder">O/X 문제, 빈칸 채우기 등 퀴즈를 작성하세요.</div>
+        </div>
+      </div>
+
+      ${sameChapter.length > 0 ? `
+      <div class="detail-section" style="margin-top:24px;">
+        <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${concept.chapter}의 다른 개념</div>
+        <div class="card-grid">
+          ${sameChapter.map(c => `
+            <div class="concept-card" style="border-left-color:${s.color.mid};"
+              onclick="navigate({subject:'${subjectName}',chapter:'${encodeURIComponent(concept.chapter)}',concept:'${encodeURIComponent(c.name)}'})">
+              <div class="concept-card-name">${c.name}</div>
+              <div class="concept-card-keywords">${c.keywords}</div>
+            </div>`).join('')}
+        </div>
+      </div>` : ''}
+    </div>`;
+
+  document.getElementById('main').innerHTML = html;
+  setSubjectVars(subjectName, document.getElementById('main'));
+}
+
+function switchTab(btn, targetId) {
+  document.querySelectorAll('.detail-tab').forEach(t => {
+    t.classList.remove('active');
+    t.style.color = '';
+    t.style.borderBottomColor = '';
+  });
+  const subjectName = getParam('subject');
+  const s = SUBJECTS[subjectName];
+  if (s) {
+    btn.style.color = s.color.accent;
+    btn.style.borderBottomColor = s.color.accent;
+  }
+  btn.classList.add('active');
+  ['tab-summary','tab-viz','tab-exam','tab-quiz'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = id === targetId ? '' : 'none';
+  });
+}
+
+// ── 검색 ─────────────────────────────────────────────
+document.getElementById('globalSearch').addEventListener('input', function() {
+  const q = this.value.trim().toLowerCase();
+  if (!q) { render(); return; }
+
+  const results = CONCEPTS.filter(c =>
+    c.name.toLowerCase().includes(q) ||
+    c.keywords.toLowerCase().includes(q) ||
+    c.subject.toLowerCase().includes(q)
+  );
+
+  let html = `
+    <div class="page-header">
+      <div class="page-title">"${this.value}" 검색 결과</div>
+      <div class="page-meta"><span class="count">${results.length}개</span></div>
+    </div>
+    <div class="card-grid">`;
+
+  results.forEach(concept => {
+    const s = SUBJECTS[concept.subject];
+    if (!s) return;
+    html += `
+      <div class="concept-card" style="border-left-color:${s.color.mid};"
+        onclick="navigate({subject:'${concept.subject}',chapter:'${encodeURIComponent(concept.chapter)}',concept:'${encodeURIComponent(concept.name)}'}); document.getElementById('globalSearch').value='';">
+        <div style="font-size:10px;color:${s.color.accent};margin-bottom:4px;font-weight:600;">${concept.subject} › ${concept.chapter}</div>
+        <div class="concept-card-name">${concept.name}</div>
+        <div class="concept-card-keywords">${concept.keywords}</div>
+      </div>`;
+  });
+
+  html += `</div>`;
+  document.getElementById('main').innerHTML = html;
+});
+
+// ── 라우터 ───────────────────────────────────────────
+function render() {
+  const subject = getParam('subject');
+  const concept = getParam('concept') ? decodeURIComponent(getParam('concept')) : null;
+
+  renderSidebar();
+
+  if (!subject) {
+    renderHome();
+  } else if (concept) {
+    renderConcept(subject, concept);
+  } else {
+    renderSubject(subject);
+  }
+}
+
+window.addEventListener('popstate', render);
+render();
+</script>
+</body>
+</html>
