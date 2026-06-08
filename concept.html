@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>개념 상세 — 임용 CS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div class="layout">
+
+  <header class="topbar">
+    <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
+    <div class="topbar-breadcrumb" id="breadcrumb"></div>
+    <div class="topbar-search" style="margin-left:0;">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="개념 검색..." onclick="location.href='index.html'">
+    </div>
+  </header>
+
+  <nav class="sidebar" id="sidebar"></nav>
+
+  <main class="main" id="main"></main>
+
+</div>
+
+<script src="js/data.js"></script>
+<script>
+/* ── URL 파라미터 ─────────────────────────────── */
+function getParam(key) {
+  return new URLSearchParams(location.search).get(key);
+}
+
+const subjectName  = getParam('subject')  || '';
+const conceptName  = getParam('concept')  ? decodeURIComponent(getParam('concept'))  : '';
+const chapterName  = getParam('chapter')  ? decodeURIComponent(getParam('chapter'))  : '';
+
+/* ── 시각화 파일 매핑 ────────────────────────── */
+// 새 시각화 파일을 만들면 여기에 추가만 하면 돼
+const VIZ_MAP = {
+  '피아제 인지발달 4단계': 'visualizations/piaget.js',
+  // '비고츠키 ZPD·비계설정': 'visualizations/vygotsky.js',
+  // 'CPU 스케줄링':           'visualizations/cpu-scheduling.js',
+  // '이진트리 순회':          'visualizations/tree-traversal.js',
+};
+
+/* ── 사이드바 렌더 ───────────────────────────── */
+function renderSidebar() {
+  const areas = {};
+  Object.entries(SUBJECTS).forEach(([name, meta]) => {
+    if (!areas[meta.area]) areas[meta.area] = [];
+    areas[meta.area].push(name);
+  });
+
+  let html = '';
+  Object.entries(areas).forEach(([area, subjects]) => {
+    html += `<div class="sidebar-section">
+      <div class="sidebar-section-title">${area}</div>`;
+    subjects.forEach(name => {
+      const s = SUBJECTS[name];
+      const active = subjectName === name ? 'active' : '';
+      const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
+      html += `<div class="sidebar-item ${active}" style="${style}"
+        onclick="location.href='index.html?subject=${encodeURIComponent(name)}'">
+        <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}
+      </div>`;
+    });
+    html += `</div>`;
+  });
+  document.getElementById('sidebar').innerHTML = html;
+}
+
+/* ── 브레드크럼 ──────────────────────────────── */
+function renderBreadcrumb() {
+  const s = SUBJECTS[subjectName];
+  document.getElementById('breadcrumb').innerHTML = `
+    <a href="index.html">홈</a>
+    <span class="sep">›</span>
+    <a href="index.html?subject=${encodeURIComponent(subjectName)}">${subjectName}</a>
+    <span class="sep">›</span>
+    <span style="color:var(--text-primary);">${conceptName}</span>
+  `;
+  if (s) document.title = `${conceptName} — 임용 CS`;
+}
+
+/* ── 탭 전환 ─────────────────────────────────── */
+function switchTab(btn, targetId) {
+  document.querySelectorAll('.detail-tab').forEach(t => {
+    t.classList.remove('active');
+    t.style.color = '';
+    t.style.borderBottomColor = '';
+  });
+  const s = SUBJECTS[subjectName];
+  if (s) {
+    btn.style.color = s.color.accent;
+    btn.style.borderBottomColor = s.color.accent;
+  }
+  btn.classList.add('active');
+  ['tab-summary', 'tab-viz', 'tab-exam', 'tab-quiz'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = id === targetId ? '' : 'none';
+  });
+}
+
+/* ── 시각화 로드 ─────────────────────────────── */
+function loadViz(conceptName) {
+  const vizFile = VIZ_MAP[conceptName];
+  const container = document.getElementById('viz-container');
+  if (!container) return;
+
+  if (vizFile) {
+    const script = document.createElement('script');
+    script.src = vizFile;
+    script.onerror = () => {
+      container.innerHTML = `<div class="content-placeholder">시각화 파일을 불러올 수 없어요: ${vizFile}</div>`;
+    };
+    document.body.appendChild(script);
+  } else {
+    container.innerHTML = `
+      <div class="content-placeholder">
+        아직 시각화가 준비되지 않았어요.<br>
+        <small style="margin-top:8px;display:block;">
+          <code>visualizations/</code> 폴더에 파일을 추가하고 <code>VIZ_MAP</code>에 등록하면 돼요.
+        </small>
+      </div>`;
+  }
+}
+
+/* ── 메인 렌더 ───────────────────────────────── */
+function renderConcept() {
+  const s = SUBJECTS[subjectName];
+  const concept = CONCEPTS.find(c => c.subject === subjectName && c.name === conceptName);
+
+  if (!s || !concept) {
+    document.getElementById('main').innerHTML = `
+      <div style="padding:40px;text-align:center;color:var(--text-tertiary);">
+        개념을 찾을 수 없어요. <a href="index.html" style="color:var(--text-secondary);">홈으로 돌아가기</a>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('main').style.setProperty('--subject-bg',     s.color.bg);
+  document.getElementById('main').style.setProperty('--subject-mid',    s.color.mid);
+  document.getElementById('main').style.setProperty('--subject-accent', s.color.accent);
+  document.getElementById('main').style.setProperty('--subject-text',   s.color.text);
+
+  const sameChapter = CONCEPTS.filter(c =>
+    c.subject === subjectName && c.chapter === concept.chapter && c.name !== concept.name
+  );
+
+  const hasViz  = !!VIZ_MAP[conceptName];
+  const hasQuiz = concept.quiz;
+
+  const vizTabBtn  = hasViz  ? `<div class="detail-tab" onclick="switchTab(this,'tab-viz')">시각화</div>` : '';
+  const quizTabBtn = hasQuiz ? `<div class="detail-tab" onclick="switchTab(this,'tab-quiz')">셀프 퀴즈</div>` : '';
+
+  document.getElementById('main').innerHTML = `
+    <div class="concept-detail">
+
+      <div class="detail-header" style="background:${s.color.bg};">
+        <div class="detail-subject-path">${subjectName} › ${concept.chapter}</div>
+        <div class="detail-title" style="color:${s.color.text};">${concept.name}</div>
+        <div class="detail-keywords" style="color:${s.color.text};">${concept.keywords}</div>
+        <div class="detail-badges">
+          <span class="badge ${concept.freq==='높음'?'badge-high':concept.freq==='중간'?'badge-mid':'badge-low'}">
+            ${concept.freq==='높음'?'빈출':concept.freq==='중간'?'중간':'낮음'}
+          </span>
+          ${hasViz  ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">시각화 있음</span>` : ''}
+          ${hasQuiz ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">퀴즈 있음</span>` : ''}
+        </div>
+      </div>
+
+      <div class="detail-tabs">
+        <div class="detail-tab active"
+          style="color:${s.color.accent};border-bottom-color:${s.color.accent};"
+          onclick="switchTab(this,'tab-summary')">핵심 정리</div>
+        ${vizTabBtn}
+        <div class="detail-tab" onclick="switchTab(this,'tab-exam')">기출 포인트</div>
+        ${quizTabBtn}
+      </div>
+
+      <div id="tab-summary">
+        <div class="detail-section">
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">핵심 개념</div>
+          <div class="content-placeholder">
+            이 개념의 핵심 정리 내용을 여기에 작성하세요.<br>
+            <small style="margin-top:8px;display:block;">키워드: ${concept.keywords}</small>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-viz" style="display:none;">
+        <div class="detail-section">
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">인터랙티브 시각화</div>
+          <div id="viz-container"></div>
+        </div>
+      </div>
+
+      <div id="tab-exam" style="display:none;">
+        <div class="detail-section">
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">기출 포인트</div>
+          <div class="content-placeholder">연도별 출제 키워드와 논술 답안 구조를 작성하세요.</div>
+        </div>
+      </div>
+
+      <div id="tab-quiz" style="display:none;">
+        <div class="detail-section">
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">셀프 퀴즈</div>
+          <div class="content-placeholder">O/X 문제, 빈칸 채우기 퀴즈를 작성하세요.</div>
+        </div>
+      </div>
+
+      ${sameChapter.length > 0 ? `
+      <div class="detail-section" style="margin-top:24px;">
+        <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${concept.chapter}의 다른 개념</div>
+        <div class="card-grid">
+          ${sameChapter.map(c => `
+            <div class="concept-card" style="border-left-color:${s.color.mid};"
+              onclick="location.href='concept.html?subject=${encodeURIComponent(subjectName)}&chapter=${encodeURIComponent(c.chapter)}&concept=${encodeURIComponent(c.name)}'">
+              <div class="concept-card-name">${c.name}</div>
+              <div class="concept-card-keywords">${c.keywords}</div>
+            </div>`).join('')}
+        </div>
+      </div>` : ''}
+
+    </div>`;
+
+  loadViz(conceptName);
+}
+
+/* ── 초기화 ──────────────────────────────────── */
+renderSidebar();
+renderBreadcrumb();
+renderConcept();
+</script>
+</body>
+</html>
