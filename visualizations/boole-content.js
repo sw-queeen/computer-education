@@ -256,9 +256,9 @@
     { type:'ox', q:"부울 대수에서 흡수 법칙은 x + xy = x 이다.", answer:'O', explain:'흡수 법칙: x+xy=x (OR), x(x+y)=x (AND). 식을 간소화할 때 자주 사용.' },
     { type:'ox', q:'카르노맵에서 don\'t care(x)는 반드시 0으로 처리해야 한다.', answer:'X', explain:"Don't care는 간소화에 유리하면 1로, 불리하면 0으로 자유롭게 사용 가능." },
     { type:'fill', q:'두 입력이 서로 다를 때만 1을 출력하는 게이트는 (   ) 이다.', answer:'XOR (배타적 OR)', explain:'XOR: A⊕B. 0⊕0=0, 0⊕1=1, 1⊕0=1, 1⊕1=0. 패리티 비트 생성에 활용.' },
-    { type:'fill', q:'카르노맵에서 그룹 크기는 반드시 (   )의 거듭제곱이어야 한다.', answer:'2 (1, 2, 4, 8, …)', explain:'1·2·4·8·16… 크기로만 묶어야 변수가 소거됨. 크게 묶을수록 간소화 효과 큼.' },
+    { type:'fill', q:'카르노맵에서 그룹 크기는 반드시 (   )의 거듭제곱이어야 한다.', answer:'2 (1, 2, 4, 8, …)', explain:"2의 거듭제곱(2⁰=1, 2¹=2, 2²=4, 2³=8 …) 크기로만 묶어야 변수가 소거됨. 3개나 5개처럼 2의 거듭제곱이 아닌 수는 불가. 크게 묶을수록 간소화 효과 큼." },
     { type:'fill', q:'NAND와 NOR을 (   ) 게이트라고 한다.', answer:'범용 게이트 (Universal Gate)', explain:'NAND나 NOR 하나만으로 AND·OR·NOT을 모두 구현할 수 있어서 범용 게이트라 부름.' },
-    { type:'mc', q:'다음 중 부울 대수의 드모르간 법칙으로 올바른 것은?', options:["(A+B)' = A'+B'", "(A·B)' = A'·B'", "(A+B)' = A'·B'", "(A·B)' = A'+B'", 'A와 C 모두'], answer:2, explain:"드모르간 법칙: (A+B)'=A'B' / (AB)'=A'+B'. OR의 부정은 AND로, AND의 부정은 OR로 바뀌고 각 변수는 보수를 취함." },
+    { type:'mc', q:"다음 중 드모르간 법칙이 아닌 것은?", options:["(A+B)' = A'·B'", "(A·B)' = A'+B'", "(A+B)' = A'+B'", "(A·B)·(A+B) = A"], answer:2, explain:"드모르간 법칙은 ① (A+B)'=A'B', ② (AB)'=A'+B' 두 가지. ③은 'OR의 부정=OR의 부정'으로 틀림. ④는 흡수 법칙과 관계된 식으로 드모르간과 무관." },
     { type:'mc', q:'반가산기(Half Adder)의 합(Sum) 출력을 나타내는 부울 식은?', options:['S = A + B', "S = A · B", "S = A ⊕ B", "S = (A+B)'", "S = A' + B'"], answer:2, explain:'반가산기: S = A⊕B (XOR), C = A·B (AND). 전가산기는 반가산기 2개 + OR 1개로 구성.' },
   ];
 
