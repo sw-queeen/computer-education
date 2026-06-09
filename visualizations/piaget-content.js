@@ -232,14 +232,20 @@
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:13px;">
         ${[
-          '학습과정 2가지: ① 인지적 구성주의 ② 동화·조절을 통한 평형화',
-          '교사역할 3가지: ① 발견학습 제공 ② 인지적 불균형 유발 ③ 인지발달 수준 고려',
-          '피아제 비판: 외적 행동 변화만 강조 → 내면적 변화 확인 어려움',
-          '비고츠키 연결: 피아제 불평형(개인 내적) ↔ 비고츠키 비계(사회적 상호작용)',
-        ].map((item, i) => `
-          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;line-height:1.7;">
-            <span style="background:#A09890;color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${i+1}</span>
-            <div style="color:var(--text-primary,#2C2825);">${item}</div>
+          { label: '학습과정 2가지', items: ['인지적 구성주의', '동화·조절을 통한 평형화'] },
+          { label: '교사역할 3가지', items: ['발견학습 제공', '인지적 불균형 유발', '인지발달 수준 고려'] },
+          { label: '피아제 비판', items: ['외적 행동 변화만 강조 → 내면적 변화 확인 어려움'] },
+          { label: '비고츠키 연결', items: ['피아제 불평형(개인 내적) ↔ 비고츠키 비계(사회적 상호작용)'] },
+        ].map(({ label, items }) => `
+          <div style="padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;line-height:1.8;">
+            <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.04em;margin-bottom:6px;">${label}</div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              ${items.map((item, i) => `
+                <div style="display:flex;gap:7px;align-items:flex-start;">
+                  <span style="background:#A09890;color:white;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span>
+                  <span style="color:var(--text-primary,#2C2825);">${item}</span>
+                </div>`).join('')}
+            </div>
           </div>`).join('')}
       </div>
     </div>
