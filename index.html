@@ -8,12 +8,10 @@
   <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
-<div class="layout" id="layout">
+<div class="layout">
 
   <header class="topbar">
-    <button class="topbar-menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="메뉴">
-      <span id="menuIcon">☰</span>
-    </button>
+    <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="메뉴">☰</button>
     <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
     <div class="topbar-search">
       <span class="search-icon">🔍</span>
@@ -21,9 +19,11 @@
     </div>
   </header>
 
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-  <nav class="sidebar" id="sidebar"></nav>
-  <main class="main" id="main"></main>
+  <div class="body-row">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <nav class="sidebar" id="sidebar"></nav>
+    <main class="main" id="main"></main>
+  </div>
 
 </div>
 
@@ -66,26 +66,23 @@ function isMobile() { return window.innerWidth <= 768; }
 function toggleSidebar() {
   if (isMobile()) {
     const isOpen = document.getElementById('sidebar').classList.contains('mobile-open');
-    isOpen ? closeSidebar() : openMobileSidebar();
+    isOpen ? closeSidebar() : openSidebar();
   } else {
-    const collapsed = document.getElementById('layout').classList.toggle('sidebar-collapsed');
-    document.getElementById('menuIcon').textContent = collapsed ? '☰' : '☰';
-    try { localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0'); } catch(e) {}
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('collapsed');
+    try { localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0'); } catch(e) {}
   }
 }
-
-function openMobileSidebar() {
+function openSidebar() {
   document.getElementById('sidebar').classList.add('mobile-open');
   document.getElementById('sidebarOverlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
 }
-
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('mobile-open');
   document.getElementById('sidebarOverlay').classList.remove('visible');
   document.body.style.overflow = '';
 }
-
 window.addEventListener('resize', () => {
   if (!isMobile()) {
     document.getElementById('sidebar').classList.remove('mobile-open');
@@ -93,15 +90,12 @@ window.addEventListener('resize', () => {
     document.body.style.overflow = '';
   }
 });
-
-// 저장 상태 복원 (데스크탑만)
-(function() {
-  try {
-    if (!isMobile() && localStorage.getItem('sidebar-collapsed') === '1') {
-      document.getElementById('layout').classList.add('sidebar-collapsed');
-    }
-  } catch(e) {}
-})();
+// 저장 상태 복원
+try {
+  if (!isMobile() && localStorage.getItem('sidebar-collapsed') === '1') {
+    document.getElementById('sidebar').classList.add('collapsed');
+  }
+} catch(e) {}
 
 /* ── 사이드바 렌더 ─────────────────────────────────── */
 function renderSidebar() {
@@ -111,19 +105,16 @@ function renderSidebar() {
     if (!areas[meta.area]) areas[meta.area] = [];
     areas[meta.area].push(name);
   });
-
   let html = '';
   Object.entries(areas).forEach(([area, subjects]) => {
-    html += `<div class="sidebar-section">
-      <div class="sidebar-section-title">${area}</div>`;
+    html += `<div class="sidebar-section"><div class="sidebar-section-title">${area}</div>`;
     subjects.forEach(name => {
       const s = SUBJECTS[name];
       const active = currentSubject === name ? 'active' : '';
       const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
       html += `<div class="sidebar-item ${active}" style="${style}"
         onclick="navigate({subject:'${name}',chapter:null,concept:null}); if(isMobile()) closeSidebar();">
-        <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}
-      </div>`;
+        <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}</div>`;
     });
     html += `</div>`;
   });
@@ -133,17 +124,15 @@ function renderSidebar() {
 /* ── 홈 렌더 ───────────────────────────────────────── */
 function renderHome() {
   const C = SITE_CONFIG;
-  const total    = CONCEPTS.length;
+  const total     = CONCEPTS.length;
   const highCount = CONCEPTS.filter(c => c.freq === '높음').length;
   const vizCount  = CONCEPTS.filter(c => c.viz).length;
-
   const areas = {};
   Object.entries(SUBJECTS).forEach(([name, meta]) => {
     if (!areas[meta.area]) areas[meta.area] = [];
     const count = CONCEPTS.filter(c => c.subject === name).length;
     areas[meta.area].push({ name, meta, count });
   });
-
   let html = `
     <div class="home-hero">
       <h1>${C.siteName}</h1>
@@ -154,43 +143,32 @@ function renderHome() {
         <div class="stat-pill">${C.badges.viz} <strong>${vizCount}</strong>개</div>
       </div>
     </div>`;
-
   Object.entries(areas).forEach(([area, subjects]) => {
-    html += `<div class="area-section">
-      <div class="area-title">${area}</div>
-      <div class="subject-grid">`;
+    html += `<div class="area-section"><div class="area-title">${area}</div><div class="subject-grid">`;
     subjects.forEach(({ name, meta, count }) => {
       const style = `--subject-accent:${meta.color.accent};--subject-mid:${meta.color.mid};--subject-bg:${meta.color.bg};--subject-text:${meta.color.text}`;
-      html += `
-        <div class="subject-card" style="${style}"
-          onclick="navigate({subject:'${name}',chapter:null,concept:null})">
-          <div class="subject-card-name">${name}</div>
-          <div class="subject-card-area">${area}</div>
-          <div class="subject-card-count">개념 ${count}개 →</div>
-        </div>`;
+      html += `<div class="subject-card" style="${style}" onclick="navigate({subject:'${name}',chapter:null,concept:null})">
+        <div class="subject-card-name">${name}</div>
+        <div class="subject-card-area">${area}</div>
+        <div class="subject-card-count">개념 ${count}개 →</div></div>`;
     });
     html += `</div></div>`;
   });
-
   document.getElementById('main').innerHTML = html;
 }
 
-/* ── 과목(챕터) 렌더 ───────────────────────────────── */
+/* ── 과목 렌더 ─────────────────────────────────────── */
 function renderSubject(subjectName) {
   const C = SITE_CONFIG;
   const s = SUBJECTS[subjectName];
   if (!s) return renderHome();
-
   const concepts = CONCEPTS.filter(c => c.subject === subjectName);
   const chapters = [...new Set(concepts.map(c => c.chapter))];
   setSubjectVars(subjectName, document.getElementById('main'));
-
   const highC = concepts.filter(c => c.freq === '높음').length;
   const vizC  = concepts.filter(c => c.viz).length;
-
   const freqLabel = f => f==='높음'?C.freq.high : f==='중간'?C.freq.mid : C.freq.low;
   const freqClass = f => f==='높음'?'badge-high' : f==='중간'?'badge-mid' : 'badge-low';
-
   let html = `
     <div class="page-header">
       <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:6px;">
@@ -212,32 +190,27 @@ function renderSubject(subjectName) {
       <button class="filter-btn"        data-filter="quiz" onclick="applyFilter('quiz')">${C.filters.quiz}</button>
     </div>
     <div id="chaptersContainer">`;
-
   chapters.forEach(chapter => {
     const cc = concepts.filter(c => c.chapter === chapter);
-    html += `
-      <div class="chapter-section" data-chapter="${chapter}">
-        <div class="chapter-title" style="background:${s.color.bg};color:${s.color.text};">
-          ${chapter} <span style="font-weight:400;opacity:.7;">${cc.length}</span>
-        </div>
-        <div class="card-grid">`;
+    html += `<div class="chapter-section" data-chapter="${chapter}">
+      <div class="chapter-title" style="background:${s.color.bg};color:${s.color.text};">
+        ${chapter} <span style="font-weight:400;opacity:.7;">${cc.length}</span>
+      </div>
+      <div class="card-grid">`;
     cc.forEach(concept => {
-      html += `
-        <div class="concept-card" style="border-left-color:${s.color.mid};"
-          data-freq="${concept.freq}" data-viz="${concept.viz}" data-quiz="${concept.quiz}"
-          onclick="navigate({subject:'${subjectName}',chapter:'${encodeURIComponent(chapter)}',concept:'${encodeURIComponent(concept.name)}'})">
-          <div class="concept-card-name">${concept.name}</div>
-          <div class="concept-card-keywords">${concept.keywords}</div>
-          <div class="concept-card-footer">
-            <span class="badge ${freqClass(concept.freq)}">${freqLabel(concept.freq)}</span>
-            ${concept.viz  ? `<span class="badge" style="background:${s.color.bg};color:${s.color.text};">${C.badges.viz}</span>` : ''}
-            ${concept.quiz ? `<span class="badge" style="background:${s.color.bg};color:${s.color.text};">${C.badges.quiz}</span>` : ''}
-          </div>
-        </div>`;
+      html += `<div class="concept-card" style="border-left-color:${s.color.mid};"
+        data-freq="${concept.freq}" data-viz="${concept.viz}" data-quiz="${concept.quiz}"
+        onclick="navigate({subject:'${subjectName}',chapter:'${encodeURIComponent(chapter)}',concept:'${encodeURIComponent(concept.name)}'})">
+        <div class="concept-card-name">${concept.name}</div>
+        <div class="concept-card-keywords">${concept.keywords}</div>
+        <div class="concept-card-footer">
+          <span class="badge ${freqClass(concept.freq)}">${freqLabel(concept.freq)}</span>
+          ${concept.viz  ? `<span class="badge" style="background:${s.color.bg};color:${s.color.text};">${C.badges.viz}</span>` : ''}
+          ${concept.quiz ? `<span class="badge" style="background:${s.color.bg};color:${s.color.text};">${C.badges.quiz}</span>` : ''}
+        </div></div>`;
     });
     html += `</div></div>`;
   });
-
   html += `</div>`;
   document.getElementById('main').innerHTML = html;
   setSubjectVars(subjectName, document.getElementById('main'));
@@ -247,9 +220,9 @@ function applyFilter(filter) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
   document.querySelectorAll('.concept-card').forEach(card => {
     let show = true;
-    if (filter === 'high')  show = card.dataset.freq === '높음';
-    if (filter === 'viz')   show = card.dataset.viz  === 'true';
-    if (filter === 'quiz')  show = card.dataset.quiz === 'true';
+    if (filter === 'high') show = card.dataset.freq === '높음';
+    if (filter === 'viz')  show = card.dataset.viz  === 'true';
+    if (filter === 'quiz') show = card.dataset.quiz === 'true';
     card.style.display = show ? '' : 'none';
   });
   document.querySelectorAll('.chapter-section').forEach(sec => {
@@ -262,32 +235,22 @@ function applyFilter(filter) {
 document.getElementById('globalSearch').addEventListener('input', function() {
   const q = this.value.trim().toLowerCase();
   if (!q) { render(); return; }
-
   const results = CONCEPTS.filter(c =>
-    c.name.toLowerCase().includes(q) ||
-    c.keywords.toLowerCase().includes(q) ||
-    c.subject.toLowerCase().includes(q)
+    c.name.toLowerCase().includes(q) || c.keywords.toLowerCase().includes(q) || c.subject.toLowerCase().includes(q)
   );
-
-  let html = `
-    <div class="page-header">
-      <div class="page-title">"${this.value}" 검색 결과</div>
-      <div class="page-meta"><span class="count">${results.length}개</span></div>
-    </div>
-    <div class="card-grid">`;
-
+  let html = `<div class="page-header">
+    <div class="page-title">"${this.value}" 검색 결과</div>
+    <div class="page-meta"><span class="count">${results.length}개</span></div>
+  </div><div class="card-grid">`;
   results.forEach(concept => {
     const s = SUBJECTS[concept.subject];
     if (!s) return;
-    html += `
-      <div class="concept-card" style="border-left-color:${s.color.mid};"
-        onclick="navigate({subject:'${concept.subject}',chapter:'${encodeURIComponent(concept.chapter)}',concept:'${encodeURIComponent(concept.name)}'}); document.getElementById('globalSearch').value='';">
-        <div style="font-size:10px;color:${s.color.accent};margin-bottom:4px;font-weight:600;">${concept.subject} › ${concept.chapter}</div>
-        <div class="concept-card-name">${concept.name}</div>
-        <div class="concept-card-keywords">${concept.keywords}</div>
-      </div>`;
+    html += `<div class="concept-card" style="border-left-color:${s.color.mid};"
+      onclick="navigate({subject:'${concept.subject}',chapter:'${encodeURIComponent(concept.chapter)}',concept:'${encodeURIComponent(concept.name)}'}); this.closest('#main').querySelector('#globalSearch') && (document.getElementById('globalSearch').value='');">
+      <div style="font-size:10px;color:${s.color.accent};margin-bottom:4px;font-weight:600;">${concept.subject} › ${concept.chapter}</div>
+      <div class="concept-card-name">${concept.name}</div>
+      <div class="concept-card-keywords">${concept.keywords}</div></div>`;
   });
-
   html += `</div>`;
   document.getElementById('main').innerHTML = html;
 });
@@ -296,11 +259,8 @@ document.getElementById('globalSearch').addEventListener('input', function() {
 function render() {
   const subject = getParam('subject');
   renderSidebar();
-  if (!subject) {
-    renderHome();
-  } else {
-    renderSubject(subject);
-  }
+  if (!subject) renderHome();
+  else renderSubject(subject);
 }
 
 window.addEventListener('popstate', render);

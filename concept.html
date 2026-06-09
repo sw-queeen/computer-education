@@ -8,12 +8,10 @@
   <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
-<div class="layout" id="layout">
+<div class="layout">
 
   <header class="topbar">
-    <button class="topbar-menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="메뉴">
-      <span id="menuIcon">☰</span>
-    </button>
+    <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="메뉴">☰</button>
     <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
     <div class="topbar-breadcrumb" id="breadcrumb"></div>
     <div class="topbar-search" style="margin-left:0;">
@@ -22,9 +20,11 @@
     </div>
   </header>
 
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-  <nav class="sidebar" id="sidebar"></nav>
-  <main class="main" id="main"></main>
+  <div class="body-row">
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    <nav class="sidebar" id="sidebar"></nav>
+    <main class="main" id="main"></main>
+  </div>
 
 </div>
 
@@ -32,19 +32,14 @@
 <script src="js/config.js"></script>
 <script>
 /* ── URL 파라미터 ─────────────────────────────────── */
-function getParam(key) {
-  return new URLSearchParams(location.search).get(key);
-}
+function getParam(key) { return new URLSearchParams(location.search).get(key); }
 const subjectName = getParam('subject') || '';
 const conceptName = getParam('concept') ? decodeURIComponent(getParam('concept')) : '';
-const chapterName = getParam('chapter') ? decodeURIComponent(getParam('chapter')) : '';
 
-/* ── 시각화 파일 매핑 ──────────────────────────────── */
+/* ── 시각화 / 콘텐츠 매핑 ──────────────────────────── */
 const VIZ_MAP = {
   '피아제 인지발달 4단계': 'visualizations/piaget.js',
 };
-
-/* ── 콘텐츠 파일 매핑 ──────────────────────────────── */
 const CONTENT_MAP = {
   '피아제 인지발달 4단계': 'visualizations/piaget-content.js',
 };
@@ -55,28 +50,23 @@ function isMobile() { return window.innerWidth <= 768; }
 function toggleSidebar() {
   if (isMobile()) {
     const isOpen = document.getElementById('sidebar').classList.contains('mobile-open');
-    isOpen ? closeSidebar() : openMobileSidebar();
+    isOpen ? closeSidebar() : openSidebar();
   } else {
-    document.getElementById('layout').classList.toggle('sidebar-collapsed');
-    try {
-      const c = document.getElementById('layout').classList.contains('sidebar-collapsed');
-      localStorage.setItem('sidebar-collapsed', c ? '1' : '0');
-    } catch(e) {}
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('collapsed');
+    try { localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0'); } catch(e) {}
   }
 }
-
-function openMobileSidebar() {
+function openSidebar() {
   document.getElementById('sidebar').classList.add('mobile-open');
   document.getElementById('sidebarOverlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
 }
-
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('mobile-open');
   document.getElementById('sidebarOverlay').classList.remove('visible');
   document.body.style.overflow = '';
 }
-
 window.addEventListener('resize', () => {
   if (!isMobile()) {
     document.getElementById('sidebar').classList.remove('mobile-open');
@@ -84,14 +74,11 @@ window.addEventListener('resize', () => {
     document.body.style.overflow = '';
   }
 });
-
-(function() {
-  try {
-    if (!isMobile() && localStorage.getItem('sidebar-collapsed') === '1') {
-      document.getElementById('layout').classList.add('sidebar-collapsed');
-    }
-  } catch(e) {}
-})();
+try {
+  if (!isMobile() && localStorage.getItem('sidebar-collapsed') === '1') {
+    document.getElementById('sidebar').classList.add('collapsed');
+  }
+} catch(e) {}
 
 /* ── 사이드바 렌더 ─────────────────────────────────── */
 function renderSidebar() {
@@ -100,19 +87,16 @@ function renderSidebar() {
     if (!areas[meta.area]) areas[meta.area] = [];
     areas[meta.area].push(name);
   });
-
   let html = '';
   Object.entries(areas).forEach(([area, subjects]) => {
-    html += `<div class="sidebar-section">
-      <div class="sidebar-section-title">${area}</div>`;
+    html += `<div class="sidebar-section"><div class="sidebar-section-title">${area}</div>`;
     subjects.forEach(name => {
       const s = SUBJECTS[name];
       const active = subjectName === name ? 'active' : '';
       const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
       html += `<div class="sidebar-item ${active}" style="${style}"
         onclick="location.href='index.html?subject=${encodeURIComponent(name)}'">
-        <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}
-      </div>`;
+        <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}</div>`;
     });
     html += `</div>`;
   });
@@ -127,7 +111,7 @@ function renderBreadcrumb() {
     <a href="index.html?subject=${encodeURIComponent(subjectName)}">${subjectName}</a>
     <span class="sep">›</span>
     <span style="color:var(--text-primary);">${conceptName}</span>`;
-  if (subjectName) document.title = `${conceptName} — 임용 CS`;
+  if (conceptName) document.title = `${conceptName} — 임용 CS`;
 }
 
 /* ── 탭 전환 ───────────────────────────────────────── */
@@ -138,10 +122,7 @@ function switchTab(btn, targetId) {
     t.style.borderBottomColor = '';
   });
   const s = SUBJECTS[subjectName];
-  if (s) {
-    btn.style.color = s.color.accent;
-    btn.style.borderBottomColor = s.color.accent;
-  }
+  if (s) { btn.style.color = s.color.accent; btn.style.borderBottomColor = s.color.accent; }
   btn.classList.add('active');
   ['tab-summary','tab-viz','tab-exam','tab-quiz'].forEach(id => {
     const el = document.getElementById(id);
@@ -149,33 +130,28 @@ function switchTab(btn, targetId) {
   });
 }
 
-/* ── 시각화·콘텐츠 로드 ────────────────────────────── */
+/* ── 파일 로드 ─────────────────────────────────────── */
 function loadViz(name) {
   const vizFile = VIZ_MAP[name];
   const container = document.getElementById('viz-container');
   if (!container) return;
   if (vizFile) {
-    const script = document.createElement('script');
-    script.src = vizFile;
-    script.onerror = () => {
-      container.innerHTML = `<div class="content-placeholder">${SITE_CONFIG.ui.noViz}</div>`;
-    };
-    document.body.appendChild(script);
+    const s = document.createElement('script');
+    s.src = vizFile;
+    s.onerror = () => { container.innerHTML = `<div class="content-placeholder">시각화를 불러올 수 없어요.</div>`; };
+    document.body.appendChild(s);
   } else {
-    container.innerHTML = `<div class="content-placeholder">${SITE_CONFIG.ui.noViz}<br>
-      <small style="margin-top:8px;display:block;">${SITE_CONFIG.ui.noVizHint}</small></div>`;
+    container.innerHTML = `<div class="content-placeholder">아직 시각화가 준비되지 않았어요.</div>`;
   }
 }
-
 function loadContent(name) {
-  const contentFile = CONTENT_MAP[name];
-  if (!contentFile) return;
-  const existingId = 'content-script-' + name.replace(/\s/g,'_');
-  if (document.getElementById(existingId)) return;
-  const script = document.createElement('script');
-  script.id = existingId;
-  script.src = contentFile;
-  document.body.appendChild(script);
+  const f = CONTENT_MAP[name];
+  if (!f) return;
+  const id = 'cs-' + name.replace(/\s/g,'_');
+  if (document.getElementById(id)) return;
+  const s = document.createElement('script');
+  s.id = id; s.src = f;
+  document.body.appendChild(s);
 }
 
 /* ── 메인 렌더 ─────────────────────────────────────── */
@@ -183,7 +159,6 @@ function renderConcept() {
   const C = SITE_CONFIG;
   const s = SUBJECTS[subjectName];
   const concept = CONCEPTS.find(c => c.subject === subjectName && c.name === conceptName);
-
   if (!s || !concept) {
     document.getElementById('main').innerHTML = `
       <div style="padding:40px;text-align:center;color:var(--text-tertiary);">
@@ -191,24 +166,21 @@ function renderConcept() {
       </div>`;
     return;
   }
-
-  document.getElementById('main').style.setProperty('--subject-bg',     s.color.bg);
-  document.getElementById('main').style.setProperty('--subject-mid',    s.color.mid);
-  document.getElementById('main').style.setProperty('--subject-accent', s.color.accent);
-  document.getElementById('main').style.setProperty('--subject-text',   s.color.text);
+  const main = document.getElementById('main');
+  main.style.setProperty('--subject-bg',     s.color.bg);
+  main.style.setProperty('--subject-mid',    s.color.mid);
+  main.style.setProperty('--subject-accent', s.color.accent);
+  main.style.setProperty('--subject-text',   s.color.text);
 
   const hasViz  = !!VIZ_MAP[conceptName];
   const hasQuiz = concept.quiz;
-
   const freqLabel = f => f==='높음'?C.freq.high : f==='중간'?C.freq.mid : C.freq.low;
   const freqClass = f => f==='높음'?'badge-high' : f==='중간'?'badge-mid' : 'badge-low';
+  const vizTab  = hasViz  ? `<div class="detail-tab" onclick="switchTab(this,'tab-viz')">${C.tabs.viz}</div>` : '';
+  const quizTab = hasQuiz ? `<div class="detail-tab" onclick="switchTab(this,'tab-quiz')">${C.tabs.quiz}</div>` : '';
 
-  const vizTabBtn  = hasViz  ? `<div class="detail-tab" onclick="switchTab(this,'tab-viz')">${C.tabs.viz}</div>` : '';
-  const quizTabBtn = hasQuiz ? `<div class="detail-tab" onclick="switchTab(this,'tab-quiz')">${C.tabs.quiz}</div>` : '';
-
-  document.getElementById('main').innerHTML = `
+  main.innerHTML = `
     <div class="concept-detail">
-
       <div class="detail-header" style="background:${s.color.bg};">
         <div class="detail-subject-path">${subjectName} › ${concept.chapter}</div>
         <div class="detail-title" style="color:${s.color.text};">${concept.name}</div>
@@ -219,16 +191,14 @@ function renderConcept() {
           ${hasQuiz ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">${C.badges.quiz}</span>` : ''}
         </div>
       </div>
-
       <div class="detail-tabs">
         <div class="detail-tab active"
           style="color:${s.color.accent};border-bottom-color:${s.color.accent};"
           onclick="switchTab(this,'tab-summary')">${C.tabs.summary}</div>
-        ${vizTabBtn}
+        ${vizTab}
         <div class="detail-tab" onclick="switchTab(this,'tab-exam')">${C.tabs.exam}</div>
-        ${quizTabBtn}
+        ${quizTab}
       </div>
-
       <div id="tab-summary">
         <div class="detail-section">
           <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${C.summary.intro}</div>
@@ -238,28 +208,24 @@ function renderConcept() {
           </div>
         </div>
       </div>
-
       <div id="tab-viz" style="display:none;">
         <div class="detail-section">
           <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${conceptName}</div>
           <div id="viz-container"></div>
         </div>
       </div>
-
       <div id="tab-exam" style="display:none;">
         <div class="detail-section">
           <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${C.tabs.exam}</div>
           <div class="content-placeholder">연도별 출제 키워드와 ${C.exam.essay}를 작성하세요.</div>
         </div>
       </div>
-
       <div id="tab-quiz" style="display:none;">
         <div class="detail-section">
           <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${C.tabs.quiz}</div>
           <div class="content-placeholder">O/X 문제, 빈칸 채우기 퀴즈를 작성하세요.</div>
         </div>
       </div>
-
     </div>`;
 
   loadViz(conceptName);
