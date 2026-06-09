@@ -39,10 +39,13 @@ const conceptName = getParam('concept') ? decodeURIComponent(getParam('concept')
 
 /* ── 시각화 / 콘텐츠 매핑 ──────────────────────────── */
 const VIZ_MAP = {
-  '피아제 인지발달 4단계': 'visualizations/piaget.js',
+  '피아제 인지발달 4단계':    'visualizations/piaget.js',
+  '부울 대수·게이트·카르노맵': 'visualizations/boole.js',
+  // 새 시각화 추가 시 여기에 등록
 };
 const CONTENT_MAP = {
-  '피아제 인지발달 4단계': 'visualizations/piaget-content.js',
+  '피아제 인지발달 4단계':    'visualizations/piaget-content.js',
+  '부울 대수·게이트·카르노맵': 'visualizations/boole-content.js',
 };
 
 /* ── 사이드바 토글 ─────────────────────────────────── */
