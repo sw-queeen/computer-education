@@ -11,7 +11,9 @@
 <div class="layout" id="layout">
 
   <header class="topbar">
-    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileSidebar()" aria-label="메뉴 열기" style="display:none;">☰</button>
+    <button class="topbar-menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="메뉴">
+      <span id="menuIcon">☰</span>
+    </button>
     <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
     <div class="topbar-breadcrumb" id="breadcrumb"></div>
     <div class="topbar-search" style="margin-left:0;">
@@ -20,12 +22,8 @@
     </div>
   </header>
 
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
   <nav class="sidebar" id="sidebar"></nav>
-
-  <!-- 데스크탑 사이드바 토글 버튼 -->
-  <button class="sidebar-toggle-btn" id="sidebarToggle" title="사이드바 접기/펼치기" onclick="toggleSidebar()">◀</button>
-
   <main class="main" id="main"></main>
 
 </div>
@@ -33,30 +31,69 @@
 <script src="js/data.js"></script>
 <script src="js/config.js"></script>
 <script>
-/* ── URL 파라미터 ─────────────────────────────── */
+/* ── URL 파라미터 ─────────────────────────────────── */
 function getParam(key) {
   return new URLSearchParams(location.search).get(key);
 }
+const subjectName = getParam('subject') || '';
+const conceptName = getParam('concept') ? decodeURIComponent(getParam('concept')) : '';
+const chapterName = getParam('chapter') ? decodeURIComponent(getParam('chapter')) : '';
 
-const subjectName  = getParam('subject')  || '';
-const conceptName  = getParam('concept')  ? decodeURIComponent(getParam('concept'))  : '';
-const chapterName  = getParam('chapter')  ? decodeURIComponent(getParam('chapter'))  : '';
-
-/* ── 시각화 파일 매핑 ────────────────────────── */
-// 새 시각화 파일을 만들면 여기에 추가만 하면 돼
+/* ── 시각화 파일 매핑 ──────────────────────────────── */
 const VIZ_MAP = {
   '피아제 인지발달 4단계': 'visualizations/piaget.js',
-  // '비고츠키 ZPD·비계설정': 'visualizations/vygotsky.js',
-  // 'CPU 스케줄링':           'visualizations/cpu-scheduling.js',
-  // '이진트리 순회':          'visualizations/tree-traversal.js',
 };
 
-/* ── 탭 콘텐츠 파일 매핑 (핵심정리·기출·퀴즈 탭용) ── */
+/* ── 콘텐츠 파일 매핑 ──────────────────────────────── */
 const CONTENT_MAP = {
   '피아제 인지발달 4단계': 'visualizations/piaget-content.js',
 };
 
-/* ── 사이드바 렌더 ───────────────────────────── */
+/* ── 사이드바 토글 ─────────────────────────────────── */
+function isMobile() { return window.innerWidth <= 768; }
+
+function toggleSidebar() {
+  if (isMobile()) {
+    const isOpen = document.getElementById('sidebar').classList.contains('mobile-open');
+    isOpen ? closeSidebar() : openMobileSidebar();
+  } else {
+    document.getElementById('layout').classList.toggle('sidebar-collapsed');
+    try {
+      const c = document.getElementById('layout').classList.contains('sidebar-collapsed');
+      localStorage.setItem('sidebar-collapsed', c ? '1' : '0');
+    } catch(e) {}
+  }
+}
+
+function openMobileSidebar() {
+  document.getElementById('sidebar').classList.add('mobile-open');
+  document.getElementById('sidebarOverlay').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebarOverlay').classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+});
+
+(function() {
+  try {
+    if (!isMobile() && localStorage.getItem('sidebar-collapsed') === '1') {
+      document.getElementById('layout').classList.add('sidebar-collapsed');
+    }
+  } catch(e) {}
+})();
+
+/* ── 사이드바 렌더 ─────────────────────────────────── */
 function renderSidebar() {
   const areas = {};
   Object.entries(SUBJECTS).forEach(([name, meta]) => {
@@ -82,20 +119,18 @@ function renderSidebar() {
   document.getElementById('sidebar').innerHTML = html;
 }
 
-/* ── 브레드크럼 ──────────────────────────────── */
+/* ── 브레드크럼 ────────────────────────────────────── */
 function renderBreadcrumb() {
-  const s = SUBJECTS[subjectName];
   document.getElementById('breadcrumb').innerHTML = `
     <a href="index.html">홈</a>
     <span class="sep">›</span>
     <a href="index.html?subject=${encodeURIComponent(subjectName)}">${subjectName}</a>
     <span class="sep">›</span>
-    <span style="color:var(--text-primary);">${conceptName}</span>
-  `;
-  if (s) document.title = `${conceptName} — 임용 CS`;
+    <span style="color:var(--text-primary);">${conceptName}</span>`;
+  if (subjectName) document.title = `${conceptName} — 임용 CS`;
 }
 
-/* ── 탭 전환 ─────────────────────────────────── */
+/* ── 탭 전환 ───────────────────────────────────────── */
 function switchTab(btn, targetId) {
   document.querySelectorAll('.detail-tab').forEach(t => {
     t.classList.remove('active');
@@ -108,42 +143,34 @@ function switchTab(btn, targetId) {
     btn.style.borderBottomColor = s.color.accent;
   }
   btn.classList.add('active');
-  ['tab-summary', 'tab-viz', 'tab-exam', 'tab-quiz'].forEach(id => {
+  ['tab-summary','tab-viz','tab-exam','tab-quiz'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.style.display = id === targetId ? '' : 'none';
   });
 }
 
-/* ── 시각화 로드 ─────────────────────────────── */
-function loadViz(conceptName) {
-  const vizFile = VIZ_MAP[conceptName];
+/* ── 시각화·콘텐츠 로드 ────────────────────────────── */
+function loadViz(name) {
+  const vizFile = VIZ_MAP[name];
   const container = document.getElementById('viz-container');
   if (!container) return;
-
   if (vizFile) {
     const script = document.createElement('script');
     script.src = vizFile;
     script.onerror = () => {
-      container.innerHTML = `<div class="content-placeholder">시각화 파일을 불러올 수 없어요: ${vizFile}</div>`;
+      container.innerHTML = `<div class="content-placeholder">${SITE_CONFIG.ui.noViz}</div>`;
     };
     document.body.appendChild(script);
   } else {
-    container.innerHTML = `
-      <div class="content-placeholder">
-        아직 시각화가 준비되지 않았어요.<br>
-        <small style="margin-top:8px;display:block;">
-          <code>visualizations/</code> 폴더에 파일을 추가하고 <code>VIZ_MAP</code>에 등록하면 돼요.
-        </small>
-      </div>`;
+    container.innerHTML = `<div class="content-placeholder">${SITE_CONFIG.ui.noViz}<br>
+      <small style="margin-top:8px;display:block;">${SITE_CONFIG.ui.noVizHint}</small></div>`;
   }
 }
 
-/* ── 탭 콘텐츠 로드 ──────────────────────────── */
-function loadContent(conceptName) {
-  const contentFile = CONTENT_MAP[conceptName];
+function loadContent(name) {
+  const contentFile = CONTENT_MAP[name];
   if (!contentFile) return;
-  // 이미 로드됐으면 중복 로드 방지
-  const existingId = 'content-script-' + conceptName.replace(/\s/g, '_');
+  const existingId = 'content-script-' + name.replace(/\s/g,'_');
   if (document.getElementById(existingId)) return;
   const script = document.createElement('script');
   script.id = existingId;
@@ -151,7 +178,7 @@ function loadContent(conceptName) {
   document.body.appendChild(script);
 }
 
-/* ── 메인 렌더 ───────────────────────────────── */
+/* ── 메인 렌더 ─────────────────────────────────────── */
 function renderConcept() {
   const C = SITE_CONFIG;
   const s = SUBJECTS[subjectName];
@@ -239,56 +266,10 @@ function renderConcept() {
   loadContent(conceptName);
 }
 
-/* ── 초기화 ──────────────────────────────────── */
+/* ── 초기화 ────────────────────────────────────────── */
 renderSidebar();
 renderBreadcrumb();
 renderConcept();
-
-// ── 데스크탑 사이드바 토글 ─────────────────────────────
-function toggleSidebar() {
-  const layout = document.getElementById('layout');
-  const btn = document.getElementById('sidebarToggle');
-  const collapsed = layout.classList.toggle('sidebar-collapsed');
-  btn.textContent = collapsed ? '▶' : '◀';
-  btn.title = collapsed ? '사이드바 펼치기' : '사이드바 접기';
-  try { localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0'); } catch(e) {}
-}
-
-// ── 모바일 사이드바 토글 ──────────────────────────────
-function toggleMobileSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-  const isOpen = sidebar.classList.toggle('mobile-open');
-  overlay.classList.toggle('visible', isOpen);
-  document.body.style.overflow = isOpen ? 'hidden' : '';
-}
-
-document.getElementById('sidebar').addEventListener('click', function() {
-  if (window.innerWidth <= 768 && document.getElementById('sidebar').classList.contains('mobile-open')) {
-    toggleMobileSidebar();
-  }
-});
-
-window.addEventListener('resize', function() {
-  if (window.innerWidth > 768) {
-    document.getElementById('sidebar').classList.remove('mobile-open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
-    document.body.style.overflow = '';
-  }
-});
-
-// 저장된 데스크탑 상태 복원
-(function() {
-  try {
-    if (localStorage.getItem('sidebar-collapsed') === '1') {
-      const layout = document.getElementById('layout');
-      const toggle = document.getElementById('sidebarToggle');
-      layout.classList.add('sidebar-collapsed');
-      toggle.textContent = '▶';
-      toggle.title = '사이드바 펼치기';
-    }
-  } catch(e) {}
-})();
 </script>
 </body>
 </html>

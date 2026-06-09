@@ -11,7 +11,9 @@
 <div class="layout" id="layout">
 
   <header class="topbar">
-    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileSidebar()" aria-label="메뉴 열기" style="display:none;">☰</button>
+    <button class="topbar-menu-btn" id="menuBtn" onclick="toggleSidebar()" aria-label="메뉴">
+      <span id="menuIcon">☰</span>
+    </button>
     <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
     <div class="topbar-search">
       <span class="search-icon">🔍</span>
@@ -19,12 +21,8 @@
     </div>
   </header>
 
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
   <nav class="sidebar" id="sidebar"></nav>
-
-  <!-- 데스크탑 사이드바 토글 버튼 -->
-  <button class="sidebar-toggle-btn" id="sidebarToggle" title="사이드바 접기/펼치기" onclick="toggleSidebar()">◀</button>
-
   <main class="main" id="main"></main>
 
 </div>
@@ -32,7 +30,7 @@
 <script src="js/data.js"></script>
 <script src="js/config.js"></script>
 <script>
-// ── 유틸 ──────────────────────────────────────────────
+/* ── 유틸 ─────────────────────────────────────────── */
 function setSubjectVars(subjectName, el) {
   const s = SUBJECTS[subjectName];
   if (!s) return;
@@ -41,13 +39,10 @@ function setSubjectVars(subjectName, el) {
   el.style.setProperty('--subject-accent', s.color.accent);
   el.style.setProperty('--subject-text',   s.color.text);
 }
-
 function getParam(key) {
   return new URLSearchParams(location.search).get(key);
 }
-
 function navigate(params) {
-  // concept이 있으면 concept.html로 이동
   if (params.concept) {
     const p = new URLSearchParams();
     if (params.subject) p.set('subject', params.subject);
@@ -56,7 +51,6 @@ function navigate(params) {
     location.href = 'concept.html?' + p.toString();
     return;
   }
-  // subject만 있으면 같은 페이지 내 이동
   const url = new URL(location.href);
   Object.keys(params).forEach(k => {
     if (params[k] == null) url.searchParams.delete(k);
@@ -66,7 +60,50 @@ function navigate(params) {
   render();
 }
 
-// ── 사이드바 ──────────────────────────────────────────
+/* ── 사이드바 토글 ─────────────────────────────────── */
+function isMobile() { return window.innerWidth <= 768; }
+
+function toggleSidebar() {
+  if (isMobile()) {
+    const isOpen = document.getElementById('sidebar').classList.contains('mobile-open');
+    isOpen ? closeSidebar() : openMobileSidebar();
+  } else {
+    const collapsed = document.getElementById('layout').classList.toggle('sidebar-collapsed');
+    document.getElementById('menuIcon').textContent = collapsed ? '☰' : '☰';
+    try { localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0'); } catch(e) {}
+  }
+}
+
+function openMobileSidebar() {
+  document.getElementById('sidebar').classList.add('mobile-open');
+  document.getElementById('sidebarOverlay').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebarOverlay').classList.remove('visible');
+  document.body.style.overflow = '';
+}
+
+window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+});
+
+// 저장 상태 복원 (데스크탑만)
+(function() {
+  try {
+    if (!isMobile() && localStorage.getItem('sidebar-collapsed') === '1') {
+      document.getElementById('layout').classList.add('sidebar-collapsed');
+    }
+  } catch(e) {}
+})();
+
+/* ── 사이드바 렌더 ─────────────────────────────────── */
 function renderSidebar() {
   const currentSubject = getParam('subject');
   const areas = {};
@@ -84,9 +121,8 @@ function renderSidebar() {
       const active = currentSubject === name ? 'active' : '';
       const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
       html += `<div class="sidebar-item ${active}" style="${style}"
-        onclick="navigate({subject:'${name}',chapter:null,concept:null})">
-        <span class="sidebar-dot" style="background:${s.color.mid}"></span>
-        ${name}
+        onclick="navigate({subject:'${name}',chapter:null,concept:null}); if(isMobile()) closeSidebar();">
+        <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}
       </div>`;
     });
     html += `</div>`;
@@ -94,10 +130,10 @@ function renderSidebar() {
   document.getElementById('sidebar').innerHTML = html;
 }
 
-// ── 홈 렌더 ───────────────────────────────────────────
+/* ── 홈 렌더 ───────────────────────────────────────── */
 function renderHome() {
   const C = SITE_CONFIG;
-  const total = CONCEPTS.length;
+  const total    = CONCEPTS.length;
   const highCount = CONCEPTS.filter(c => c.freq === '높음').length;
   const vizCount  = CONCEPTS.filter(c => c.viz).length;
 
@@ -123,7 +159,6 @@ function renderHome() {
     html += `<div class="area-section">
       <div class="area-title">${area}</div>
       <div class="subject-grid">`;
-
     subjects.forEach(({ name, meta, count }) => {
       const style = `--subject-accent:${meta.color.accent};--subject-mid:${meta.color.mid};--subject-bg:${meta.color.bg};--subject-text:${meta.color.text}`;
       html += `
@@ -134,14 +169,13 @@ function renderHome() {
           <div class="subject-card-count">개념 ${count}개 →</div>
         </div>`;
     });
-
     html += `</div></div>`;
   });
 
   document.getElementById('main').innerHTML = html;
 }
 
-// ── 챕터(과목) 렌더 ───────────────────────────────────
+/* ── 과목(챕터) 렌더 ───────────────────────────────── */
 function renderSubject(subjectName) {
   const C = SITE_CONFIG;
   const s = SUBJECTS[subjectName];
@@ -149,7 +183,6 @@ function renderSubject(subjectName) {
 
   const concepts = CONCEPTS.filter(c => c.subject === subjectName);
   const chapters = [...new Set(concepts.map(c => c.chapter))];
-
   setSubjectVars(subjectName, document.getElementById('main'));
 
   const highC = concepts.filter(c => c.freq === '높음').length;
@@ -172,14 +205,12 @@ function renderSubject(subjectName) {
         <span>${C.badges.viz} ${vizC}개</span>
       </div>
     </div>
-
     <div class="filter-bar" id="filterBar">
       <button class="filter-btn active" data-filter="all"  onclick="applyFilter('all')">${C.filters.all}</button>
       <button class="filter-btn"        data-filter="high" onclick="applyFilter('high')">${C.filters.high}</button>
       <button class="filter-btn"        data-filter="viz"  onclick="applyFilter('viz')">${C.filters.viz}</button>
       <button class="filter-btn"        data-filter="quiz" onclick="applyFilter('quiz')">${C.filters.quiz}</button>
     </div>
-
     <div id="chaptersContainer">`;
 
   chapters.forEach(chapter => {
@@ -190,14 +221,11 @@ function renderSubject(subjectName) {
           ${chapter} <span style="font-weight:400;opacity:.7;">${cc.length}</span>
         </div>
         <div class="card-grid">`;
-
     cc.forEach(concept => {
-      const idxStr = encodeURIComponent(concept.name);
       html += `
-        <div class="concept-card"
-          style="border-left-color:${s.color.mid};"
+        <div class="concept-card" style="border-left-color:${s.color.mid};"
           data-freq="${concept.freq}" data-viz="${concept.viz}" data-quiz="${concept.quiz}"
-          onclick="navigate({subject:'${subjectName}',chapter:'${encodeURIComponent(chapter)}',concept:'${idxStr}'})">
+          onclick="navigate({subject:'${subjectName}',chapter:'${encodeURIComponent(chapter)}',concept:'${encodeURIComponent(concept.name)}'})">
           <div class="concept-card-name">${concept.name}</div>
           <div class="concept-card-keywords">${concept.keywords}</div>
           <div class="concept-card-footer">
@@ -207,7 +235,6 @@ function renderSubject(subjectName) {
           </div>
         </div>`;
     });
-
     html += `</div></div>`;
   });
 
@@ -221,120 +248,17 @@ function applyFilter(filter) {
   document.querySelectorAll('.concept-card').forEach(card => {
     let show = true;
     if (filter === 'high')  show = card.dataset.freq === '높음';
-    if (filter === 'viz')   show = card.dataset.viz === 'true';
+    if (filter === 'viz')   show = card.dataset.viz  === 'true';
     if (filter === 'quiz')  show = card.dataset.quiz === 'true';
     card.style.display = show ? '' : 'none';
   });
-  // 빈 챕터 숨기기
   document.querySelectorAll('.chapter-section').forEach(sec => {
     const visible = [...sec.querySelectorAll('.concept-card')].some(c => c.style.display !== 'none');
     sec.style.display = visible ? '' : 'none';
   });
 }
 
-// ── 개념 상세 렌더 ────────────────────────────────────
-function renderConcept(subjectName, conceptName) {
-  const s = SUBJECTS[subjectName];
-  const concept = CONCEPTS.find(c => c.subject === subjectName && c.name === conceptName);
-  if (!s || !concept) return renderSubject(subjectName);
-
-  const sameChapter = CONCEPTS.filter(c => c.subject === subjectName && c.chapter === concept.chapter && c.name !== concept.name);
-
-  let html = `
-    <div class="concept-detail">
-      <div class="detail-header" style="background:${s.color.bg};">
-        <div class="detail-subject-path">${subjectName} › ${concept.chapter}</div>
-        <div class="detail-title" style="color:${s.color.text};">${concept.name}</div>
-        <div class="detail-keywords" style="color:${s.color.text};">${concept.keywords}</div>
-        <div class="detail-badges">
-          <span class="badge ${concept.freq==='높음'?'badge-high':concept.freq==='중간'?'badge-mid':'badge-low'}">
-            ${concept.freq==='높음'?'빈출':concept.freq==='중간'?'중간':'낮음'}
-          </span>
-          ${concept.viz  ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">시각화 있음</span>` : ''}
-          ${concept.quiz ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">퀴즈 있음</span>` : ''}
-        </div>
-      </div>
-
-      <div class="detail-tabs">
-        <div class="detail-tab active" onclick="switchTab(this,'tab-summary')" style="color:${s.color.accent};border-bottom-color:${s.color.accent};">핵심 정리</div>
-        ${concept.viz  ? `<div class="detail-tab" onclick="switchTab(this,'tab-viz')">시각화</div>` : ''}
-        <div class="detail-tab" onclick="switchTab(this,'tab-exam')">기출 포인트</div>
-        ${concept.quiz ? `<div class="detail-tab" onclick="switchTab(this,'tab-quiz')">셀프 퀴즈</div>` : ''}
-      </div>
-
-      <div id="tab-summary">
-        <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">핵심 개념</div>
-          <div class="content-placeholder">
-            이 개념의 핵심 정리 내용을 여기에 작성하세요.<br>
-            <small style="margin-top:8px;display:block;">키워드: ${concept.keywords}</small>
-          </div>
-        </div>
-        <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">주요 이론가 / 모델</div>
-          <div class="content-placeholder">이론가, 모델 구조, 핵심 주장을 작성하세요.</div>
-        </div>
-      </div>
-
-      <div id="tab-viz" style="display:none;">
-        <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">인터랙티브 시각화</div>
-          <div class="content-placeholder">이 개념의 시각화 컴포넌트가 들어갑니다.</div>
-        </div>
-      </div>
-
-      <div id="tab-exam" style="display:none;">
-        <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">기출 출제 포인트</div>
-          <div class="content-placeholder">연도별 출제 키워드와 논술 답안 구조를 작성하세요.</div>
-        </div>
-      </div>
-
-      <div id="tab-quiz" style="display:none;">
-        <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">셀프 퀴즈</div>
-          <div class="content-placeholder">O/X 문제, 빈칸 채우기 등 퀴즈를 작성하세요.</div>
-        </div>
-      </div>
-
-      ${sameChapter.length > 0 ? `
-      <div class="detail-section" style="margin-top:24px;">
-        <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${concept.chapter}의 다른 개념</div>
-        <div class="card-grid">
-          ${sameChapter.map(c => `
-            <div class="concept-card" style="border-left-color:${s.color.mid};"
-              onclick="navigate({subject:'${subjectName}',chapter:'${encodeURIComponent(concept.chapter)}',concept:'${encodeURIComponent(c.name)}'})">
-              <div class="concept-card-name">${c.name}</div>
-              <div class="concept-card-keywords">${c.keywords}</div>
-            </div>`).join('')}
-        </div>
-      </div>` : ''}
-    </div>`;
-
-  document.getElementById('main').innerHTML = html;
-  setSubjectVars(subjectName, document.getElementById('main'));
-}
-
-function switchTab(btn, targetId) {
-  document.querySelectorAll('.detail-tab').forEach(t => {
-    t.classList.remove('active');
-    t.style.color = '';
-    t.style.borderBottomColor = '';
-  });
-  const subjectName = getParam('subject');
-  const s = SUBJECTS[subjectName];
-  if (s) {
-    btn.style.color = s.color.accent;
-    btn.style.borderBottomColor = s.color.accent;
-  }
-  btn.classList.add('active');
-  ['tab-summary','tab-viz','tab-exam','tab-quiz'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = id === targetId ? '' : 'none';
-  });
-}
-
-// ── 검색 ─────────────────────────────────────────────
+/* ── 검색 ──────────────────────────────────────────── */
 document.getElementById('globalSearch').addEventListener('input', function() {
   const q = this.value.trim().toLowerCase();
   if (!q) { render(); return; }
@@ -368,17 +292,12 @@ document.getElementById('globalSearch').addEventListener('input', function() {
   document.getElementById('main').innerHTML = html;
 });
 
-// ── 라우터 ───────────────────────────────────────────
+/* ── 라우터 ────────────────────────────────────────── */
 function render() {
   const subject = getParam('subject');
-  const concept = getParam('concept') ? decodeURIComponent(getParam('concept')) : null;
-
   renderSidebar();
-
   if (!subject) {
     renderHome();
-  } else if (concept) {
-    renderConcept(subject, concept);
   } else {
     renderSubject(subject);
   }
@@ -386,56 +305,6 @@ function render() {
 
 window.addEventListener('popstate', render);
 render();
-
-// ── 데스크탑 사이드바 토글 ─────────────────────────────
-function toggleSidebar() {
-  const layout = document.getElementById('layout');
-  const btn = document.getElementById('sidebarToggle');
-  const collapsed = layout.classList.toggle('sidebar-collapsed');
-  btn.textContent = collapsed ? '▶' : '◀';
-  btn.title = collapsed ? '사이드바 펼치기' : '사이드바 접기';
-  try { localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0'); } catch(e) {}
-}
-
-// ── 모바일 사이드바 토글 ──────────────────────────────
-function toggleMobileSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-  const isOpen = sidebar.classList.toggle('mobile-open');
-  overlay.classList.toggle('visible', isOpen);
-  document.body.style.overflow = isOpen ? 'hidden' : '';
-}
-
-// 모바일에서 사이드바 항목 클릭 시 자동 닫기
-document.getElementById('sidebar').addEventListener('click', function(e) {
-  if (window.innerWidth <= 768 && document.getElementById('sidebar').classList.contains('mobile-open')) {
-    toggleMobileSidebar();
-  }
-});
-
-// 데스크탑/모바일 전환 시 상태 정리
-window.addEventListener('resize', function() {
-  if (window.innerWidth > 768) {
-    document.getElementById('sidebar').classList.remove('mobile-open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
-    document.body.style.overflow = '';
-  }
-});
-
-// 저장된 데스크탑 상태 복원
-(function() {
-  const btn = document.getElementById('mobileMenuBtn');
-  if (btn) btn.style.display = '';  // CSS가 제어
-  try {
-    if (localStorage.getItem('sidebar-collapsed') === '1') {
-      const layout = document.getElementById('layout');
-      const toggle = document.getElementById('sidebarToggle');
-      layout.classList.add('sidebar-collapsed');
-      toggle.textContent = '▶';
-      toggle.title = '사이드바 펼치기';
-    }
-  } catch(e) {}
-})();
 </script>
 </body>
 </html>
