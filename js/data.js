@@ -282,7 +282,7 @@ const CONCEPTS = [
   {subject:"운영체제",chapter:"파일시스템",name:"파일·디렉터리 구조",keywords:"inode·FAT·디렉터리엔트리",freq:"중간",viz:false,quiz:true},
   {subject:"운영체제",chapter:"파일시스템",name:"디스크 스케줄링",keywords:"FCFS·SSTF·SCAN·C-SCAN·LOOK",freq:"중간",viz:true,quiz:true},
   // ══ 컴퓨터 구조 ══
-  {subject:"컴퓨터 구조",chapter:"디지털 논리",name:"부울대수·논리게이트",keywords:"AND·OR·NOT·NAND·NOR·XOR",freq:"높음",viz:true,quiz:true},
+  {subject:"컴퓨터 구조",chapter:"디지털 논리",name:"부울 대수·게이트·카르노맵",keywords:"AND·OR·NOT·NAND·NOR·XOR",freq:"높음",viz:true,quiz:true},
   {subject:"컴퓨터 구조",chapter:"디지털 논리",name:"조합회로·순서회로",keywords:"가산기·멀티플렉서·플립플롭·레지스터",freq:"중간",viz:true,quiz:true},
   {subject:"컴퓨터 구조",chapter:"데이터 표현",name:"수의 표현·진법변환",keywords:"2진수·8진수·16진수·BCD",freq:"높음",viz:true,quiz:true},
   {subject:"컴퓨터 구조",chapter:"데이터 표현",name:"정수 표현 — 보수",keywords:"1의보수·2의보수·부호절대값",freq:"높음",viz:true,quiz:true},
