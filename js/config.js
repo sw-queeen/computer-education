@@ -54,18 +54,18 @@ const SITE_CONFIG = {
   /* ── 핵심정리 탭 섹션 제목 ────────────────────── */
   summary: {
     intro:       '개요',
-    learning:    '학습 과정',
-    teacherRole: '교사 역할 & 학습 방법',
-    compare:     '비교표',           // "4단계 비교표" 처럼 앞에 이론명 붙여서 쓸 수도 있음
-    vsCompare:   'vs 비교',          // "피아제 vs 비고츠키" 처럼 이론명 조합용
+    learning:    '학습자의 학습 과정',
+    teacherRole: '교사의 역할 & 수업 방법',
+    stageChart:  '단계별 특징 개요',   // 비교표 → 단계별 특징 개요
+    vsCompare:   'vs 비교',
+    essay:       '논술 답안 구조',
+    check:       '체크 포인트',
   },
 
   /* ── 기출 포인트 탭 레이블 ────────────────────── */
   exam: {
-    freq:     '빈출',
-    normal:   '출제',
-    essay:    '논술 답안 구조',
-    check:    '체크 포인트',
+    freq:     '자주 출제',    // 빈출 → 자주 출제
+    normal:   '간헐 출제',   // 출제 → 간헐 출제
     history:  '기출 연도 현황',
   },
 
