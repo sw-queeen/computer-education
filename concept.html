@@ -56,6 +56,9 @@ function toggleSidebar() {
   } else {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('collapsed');
+    // 데스크탑도 ☰↔✕ 토글
+    const menuBtn = document.querySelector('.topbar-menu-btn');
+    if (menuBtn) menuBtn.textContent = sidebar.classList.contains('collapsed') ? '☰' : '✕';
     try { localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0'); } catch(e) {}
   }
 }
@@ -207,8 +210,8 @@ function renderConcept() {
         <div class="detail-keywords" style="color:${s.color.text};">${concept.keywords}</div>
         <div class="detail-badges">
           <span class="badge ${freqClass(concept.freq)}">${freqLabel(concept.freq)}</span>
-          ${hasViz  ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">${C.badges.viz}</span>` : ''}
-          ${hasQuiz ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">${C.badges.quiz}</span>` : ''}
+          ${hasViz  ? `<span class="badge" style="background:var(--bg-surface,#F0EDE8);color:var(--text-tertiary,#A09890);">${C.badges.viz}</span>` : ''}
+          ${hasQuiz ? `<span class="badge" style="background:var(--bg-surface,#F0EDE8);color:var(--text-tertiary,#A09890);">${C.badges.quiz}</span>` : ''}
         </div>
       </div>
       <div class="detail-tabs">

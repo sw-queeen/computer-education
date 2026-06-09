@@ -72,6 +72,9 @@ function toggleSidebar() {
   } else {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('collapsed');
+    // 데스크탑도 ☰↔✕ 토글
+    const menuBtn = document.querySelector('.topbar-menu-btn');
+    if (menuBtn) menuBtn.textContent = sidebar.classList.contains('collapsed') ? '☰' : '✕';
     try { localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0'); } catch(e) {}
   }
 }
