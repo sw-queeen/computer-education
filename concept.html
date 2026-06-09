@@ -46,6 +46,11 @@ const VIZ_MAP = {
   // '이진트리 순회':          'visualizations/tree-traversal.js',
 };
 
+/* ── 탭 콘텐츠 파일 매핑 (핵심정리·기출·퀴즈 탭용) ── */
+const CONTENT_MAP = {
+  '피아제 인지발달 4단계': 'visualizations/piaget-content.js',
+};
+
 /* ── 사이드바 렌더 ───────────────────────────── */
 function renderSidebar() {
   const areas = {};
@@ -126,6 +131,19 @@ function loadViz(conceptName) {
         </small>
       </div>`;
   }
+}
+
+/* ── 탭 콘텐츠 로드 ──────────────────────────── */
+function loadContent(conceptName) {
+  const contentFile = CONTENT_MAP[conceptName];
+  if (!contentFile) return;
+  // 이미 로드됐으면 중복 로드 방지
+  const existingId = 'content-script-' + conceptName.replace(/\s/g, '_');
+  if (document.getElementById(existingId)) return;
+  const script = document.createElement('script');
+  script.id = existingId;
+  script.src = contentFile;
+  document.body.appendChild(script);
 }
 
 /* ── 메인 렌더 ───────────────────────────────── */
@@ -228,6 +246,7 @@ function renderConcept() {
     </div>`;
 
   loadViz(conceptName);
+  loadContent(conceptName);
 }
 
 /* ── 초기화 ──────────────────────────────────── */
