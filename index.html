@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
-<div class="layout">
+<div class="layout" id="layout">
 
   <header class="topbar">
     <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
@@ -20,6 +20,9 @@
   </header>
 
   <nav class="sidebar" id="sidebar"></nav>
+
+  <!-- 사이드바 토글 버튼 -->
+  <button class="sidebar-toggle-btn" id="sidebarToggle" title="사이드바 접기/펼치기" onclick="toggleSidebar()">◀</button>
 
   <main class="main" id="main"></main>
 
@@ -380,6 +383,29 @@ function render() {
 
 window.addEventListener('popstate', render);
 render();
+
+// ── 사이드바 토글 ─────────────────────────────────────
+function toggleSidebar() {
+  const layout = document.getElementById('layout');
+  const btn = document.getElementById('sidebarToggle');
+  const collapsed = layout.classList.toggle('sidebar-collapsed');
+  btn.textContent = collapsed ? '▶' : '◀';
+  btn.title = collapsed ? '사이드바 펼치기' : '사이드바 접기';
+  try { localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0'); } catch(e) {}
+}
+
+// 저장된 상태 복원
+(function() {
+  try {
+    if (localStorage.getItem('sidebar-collapsed') === '1') {
+      const layout = document.getElementById('layout');
+      const btn = document.getElementById('sidebarToggle');
+      layout.classList.add('sidebar-collapsed');
+      btn.textContent = '▶';
+      btn.title = '사이드바 펼치기';
+    }
+  } catch(e) {}
+})();
 </script>
 </body>
 </html>
