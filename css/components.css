@@ -184,10 +184,19 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+  flex-shrink: 1;
 }
 .topbar-breadcrumb a { color: var(--text-tertiary); }
 .topbar-breadcrumb a:hover { color: var(--text-secondary); }
 .topbar-breadcrumb .sep { font-size: 10px; }
+
+/* 900px 이하: 브레드크럼 완전 숨김 */
+@media (max-width: 900px) {
+  .topbar-breadcrumb { display: none; }
+}
 
 /* ── 탑바 메뉴 버튼 (☰) ── */
 .topbar-menu-btn {
