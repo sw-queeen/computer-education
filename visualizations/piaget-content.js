@@ -59,19 +59,18 @@
     if (!el) return;
 
     const stageRows = [
-      ['감각운동기', '0~2세', '대상영속성 획득', '사고능력 없음, 언어 이전, 순환반응'],
-      ['전조작기', '2~7세', '상징적 사고 시작', '자기중심성, 물활론, 보존개념 없음'],
-      ['구체적조작기', '7~11세', '보존 개념 획득', '탈중심화, 가역성, 보상성, 분류·서열화'],
-      ['형식적조작기', '12세~', '가설연역적 사고', '추상적사고, 명제적사고, 조합적사고'],
+      ['감각운동기', '~2세', '대상영속성 개념 발달', '사고능력 없음'],
+      ['전조작기', '2~7세', '정신적 능력 발달', '상징적 사고 / 물활론적 사고 / 자기중심적 사고 / 전개념 발달'],
+      ['구체적조작기', '7~11세', '경험할 수 있는 것만 논리적 사고', '보존개념 / 탈중심화 / 가역성 / 분류(서열)능력 / 보상성'],
+      ['형식적조작기', '12세~', '가설적·추상적 개념을 논리적 사고', '추상적(반성적추상화) / 자기중심적(엘킨드) / 명제적 / 가설연역적 / 조합적 사고'],
     ];
 
     const compareRows = [
-      ['공통점', '구성주의, 능동적 학습자, 환경과 상호작용', '↑ 동일'],
-      ['지식관', '인지적 구성주의', '사회적 구성주의'],
+      ['지식', '인지적 구성주의', '사회적 구성주의'],
       ['학습자', '개별적 주체', '사회적 존재'],
-      ['발달·학습', '발달 → 학습 선행', '학습 → 발달 선행'],
-      ['평가', '정적평가 (현재 발달)', '역동적평가 (잠재적 발달)'],
-      ['교사 도움', '불필요 (자기조절)', '중요 (비계설정)'],
+      ['발달', '발달이 학습에 선행', '학습이 발달에 선행'],
+      ['평가', '현재 발달 평가 (정적평가)', '잠재적 발달 평가 (역동적 평가)'],
+      ['교사 도움', '교사 도움 no', '교사 도움 ok'],
     ];
 
     el.innerHTML = `
@@ -79,32 +78,32 @@
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">개요</div>
       <div style="background:${BG};border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.85;color:#2C2825;">
         <strong>피아제(J. Piaget, 1896~1980)</strong> — 스위스 아동심리학자.<br>
-        학습자는 능동적으로 물리적 환경과 상호작용해 지식을 스스로 구성한다. → <strong>인지적 구성주의</strong>
+        학습자는 기본적으로 인지구조를 가지고 있으며 능동적이다.<br>
+        타고난 인지 기능으로 물리적 환경과 상호작용하여 지식을 구성한다. → <strong>인지적 구성주의</strong>
       </div>
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">학습과정 (★★★)</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">학습과정 (x2) ★★★</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
         <div style="background:#F0EDE8;border-radius:10px;padding:13px 16px;font-size:13px;line-height:1.8;">
-          <span style="color:${ACCENT};font-weight:700;">① 인지적 구성</span><br>
-          학습자는 타고난 인지 기능으로 환경과 상호작용해 지식을 구성함
+          <span style="color:${ACCENT};font-weight:700;">①</span>
+          학습자는 기본적으로 인지구조를 가지고 있으며 능동적이다. 그래서 타고난 인지 기능으로 물리적 환경과 상호작용하여 지식을 구성한다. <strong>(=인지적 구성주의)</strong>
         </div>
         <div style="background:#F0EDE8;border-radius:10px;padding:13px 16px;font-size:13px;line-height:1.8;">
-          <span style="color:${ACCENT};font-weight:700;">② 평형화 과정</span><br>
-          기존 도식 + 새 지식 → 같으면 <strong>평형(동화)</strong>, 다르면 <strong>불평형</strong><br>
-          불평형 → 평형 욕구 → <strong>동화</strong> 또는 <strong>조절</strong> → <strong>인지발달(평형화)</strong>
+          <span style="color:${ACCENT};font-weight:700;">②</span>
+          자신의 기존 도식에 새로운 지식이나 개념이 들어올 때 기존과 같으면 평형화 상태를 유지하고 그렇지 않으면 <strong>불평형★</strong> 상태가 된다. 이때 불평형 상태를 해소하기 위해 <strong>평형★ 욕구</strong>가 생긴다. 그리고 자신의 기존 인지구조에 새로운 개념을 포함하는 <strong>동화★</strong> 과정과 자신의 인지구조를 변화하는 <strong>조절★</strong> 과정을 통해 인지발달<strong>(인지적 평형화)</strong>이 일어난다.
         </div>
       </div>
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">교사 역할 & 학습방법 (★★★)</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">교사 역할 & 학습방법 (x3) ★★★</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
         ${[
-          ['발견학습 제공', '학습자는 능동적이므로 스스로 관찰·탐구하는 수업 제공. 설명식 수업 지양.'],
-          ['인지적 불균형 유발', '도전감 있는 과제로 불평형 유도. 단, 너무 어렵지 않게.'],
-          ['인지발달 수준 기반 교육', '인지구조가 준비 안 된 상태의 수업은 무의미. 선행학습 가능한 피할 것.'],
+          ['발견학습 제공', '학습자는 능동적으로 학습할 수 있으므로 스스로 관찰하고 탐구할 수 있는 수업을 제공하면 집중력이 향상된다. 그래서 단순한 설명식 수업은 피해야 한다.'],
+          ['인지적 불균형을 유발하는 교육', '학습자의 인지적 불균형(=불평형)을 유도하기 위해 쉽게 해결할 수 없는 도전감 있는 과제를 제공한다. 단, 너무 어려운 과제는 안 된다.'],
+          ['인지발달 수준에 기초한 교육', '학습자가 수업내용을 이해하는 데 필요한 인지구조를 가지고 있지 못하면 수업은 무의미해지므로 선행학습은 가능한 피해야 한다.'],
         ].map((item, i) => `
           <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:#F0EDE8;border-radius:8px;">
             <span style="background:${ACCENT};color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${i+1}</span>
@@ -151,6 +150,11 @@
 
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">피아제 vs 비고츠키</div>
+      <!-- 공통점 -->
+      <div style="background:${BG};border-radius:8px;padding:10px 14px;font-size:12px;margin-bottom:10px;line-height:1.7;">
+        <strong style="color:${ACCENT};">공통점</strong> — ① 지식: 구성주의관 &nbsp;② 학습자: 능동적인 주체로 파악 &nbsp;③ 발달: 환경과의 상호작용으로 지식 습득
+      </div>
+      <!-- 차이점 테이블 -->
       <div class="pc-table-wrap">
         <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:400px;">
           <thead>
