@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>개념 상세 — 임용 CS</title>
+  <title>CS.im — 정보컴퓨터 임용</title>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
 </head>
@@ -12,7 +12,7 @@
 
   <header class="topbar">
     <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="메뉴">☰</button>
-    <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
+    <div class="topbar-logo">CS.im</div>
     <div class="topbar-breadcrumb" id="breadcrumb"></div>
     <div style="flex:1;"></div>
     <div class="topbar-search" style="margin-left:0;">
@@ -124,7 +124,7 @@ function renderBreadcrumb() {
     <a href="index.html?subject=${encodeURIComponent(subjectName)}">${subjectName}</a>
     <span class="sep">›</span>
     <span style="color:var(--text-primary);">${conceptName}</span>`;
-  if (conceptName) document.title = `${conceptName} — 임용 CS`;
+  if (conceptName) document.title = `${conceptName} — CS.im`;
 }
 
 /* ── 탭 전환 ───────────────────────────────────────── */
