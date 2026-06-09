@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CS.im — 정보컴퓨터 임용</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
 </head>
@@ -76,40 +77,30 @@ function toggleSidebar() {
 }
 
 function openSidebar() {
-  // ✕ 닫기 버튼 — body에 fixed로 붙임 (sidebar position 건드리지 않음)
-  if (!document.getElementById('sidebarCloseBtn')) {
-    const btn = document.createElement('button');
-    btn.id = 'sidebarCloseBtn';
-    btn.innerHTML = '✕';
-    btn.setAttribute('aria-label', '닫기');
-    btn.style.cssText = 'position:fixed;top:calc((var(--topbar-height,56px) - 36px)/2);right:10px;width:36px;height:36px;border:none;background:transparent;border-radius:8px;font-size:20px;cursor:pointer;color:var(--text-secondary);font-family:inherit;display:flex;align-items:center;justify-content:center;z-index:400;';
-    btn.onclick = closeSidebar;
-    document.body.appendChild(btn);
-  } else {
-    document.getElementById('sidebarCloseBtn').style.display = 'flex';
-  }
   document.getElementById('sidebar').classList.add('mobile-open');
   document.getElementById('sidebarOverlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
+  // ☰ 버튼을 ✕로 교체
+  const menuBtn = document.querySelector('.topbar-menu-btn');
+  if (menuBtn) menuBtn.textContent = '✕';
 }
 
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('mobile-open');
   document.getElementById('sidebarOverlay').classList.remove('visible');
   document.body.style.overflow = '';
-  const btn = document.getElementById('sidebarCloseBtn');
-  if (btn) btn.style.display = 'none';
+  // ✕ 버튼을 ☰로 복원
+  const menuBtn = document.querySelector('.topbar-menu-btn');
+  if (menuBtn) menuBtn.textContent = '☰';
 }
 
 window.addEventListener('resize', () => {
   if (!isMobile()) {
-    // 모바일 상태 정리
     document.getElementById('sidebar').classList.remove('mobile-open');
     document.getElementById('sidebarOverlay').classList.remove('visible');
     document.body.style.overflow = '';
-    const btn = document.getElementById('sidebarCloseBtn');
-    if (btn) btn.style.display = 'none';
-    // 데스크탑 collapsed 상태 복원
+    const menuBtn = document.querySelector('.topbar-menu-btn');
+    if (menuBtn) menuBtn.textContent = '☰';
     try {
       const sidebar = document.getElementById('sidebar');
       const saved = localStorage.getItem('sidebar-collapsed');
