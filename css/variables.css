@@ -1,14 +1,9 @@
-@font-face {
-  font-family: 'NostalgicMyoeunHeullim';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-1@1.0/Griun_MyoeunHeullim-Rg.woff2') format('woff2');
-  font-weight: normal;
-  font-display: swap;
-}
+/* Pretendard: HTML <head>에서 CDN link로 로드 */
 
 :root {
-  --font-main:    'NostalgicMyoeunHeullim', 'Apple SD Gothic Neo', sans-serif;
-  --font-heading: 'NostalgicMyoeunHeullim', 'Apple SD Gothic Neo', sans-serif; /* 큰 제목용 — 다른 폰트로 교체 가능 */
-  --font-body:    'NostalgicMyoeunHeullim', 'Apple SD Gothic Neo', sans-serif; /* 본문용 — 다른 폰트로 교체 가능 */
+  --font-main:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  --font-heading: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  --font-body:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
   --bg-page:    #F7F5F2;
