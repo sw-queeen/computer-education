@@ -166,3 +166,135 @@
   --c-info-eval-accent: #9840C8;
   --c-info-eval-text:   #480868;
 }
+
+/* ── 다크모드 ── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-page:    #1C1A18;
+    --bg-white:   #252320;
+    --bg-surface: #2E2B28;
+
+    --text-primary:   #EDE9E4;
+    --text-secondary: #A89E94;
+    --text-tertiary:  #6B6258;
+
+    --border-light: rgba(255,255,255,0.08);
+    --border-mid:   rgba(255,255,255,0.14);
+
+    /* 교육과정론 - 핑크 */
+    --c-edu-curriculum-bg:     #2E2028;
+    --c-edu-curriculum-mid:    #8A5070;
+    --c-edu-curriculum-accent: #D48AAE;
+    --c-edu-curriculum-text:   #EDD4E2;
+    /* 교육심리학 - 그린 */
+    --c-edu-psych-bg:     #1C2820;
+    --c-edu-psych-mid:    #3D7858;
+    --c-edu-psych-accent: #72C498;
+    --c-edu-psych-text:   #C8EDD8;
+    /* 교수학습이론 - 오렌지 */
+    --c-edu-teach-bg:     #2A2018;
+    --c-edu-teach-mid:    #8A5828;
+    --c-edu-teach-accent: #E0A060;
+    --c-edu-teach-text:   #EEDCC4;
+    /* 교육평가론 - 옐로우 */
+    --c-edu-eval-bg:     #28240E;
+    --c-edu-eval-mid:    #887418;
+    --c-edu-eval-accent: #D4B040;
+    --c-edu-eval-text:   #EEE0A0;
+    /* 교육행정 - 네이비 */
+    --c-edu-admin-bg:     #181E30;
+    --c-edu-admin-mid:    #304878;
+    --c-edu-admin-accent: #6888C8;
+    --c-edu-admin-text:   #C0CCEC;
+    /* 생활지도·상담 - 보라 */
+    --c-edu-counsel-bg:     #221830;
+    --c-edu-counsel-mid:    #583888;
+    --c-edu-counsel-accent: #A070D0;
+    --c-edu-counsel-text:   #DCC8F0;
+    /* 자료구조 - 스틸블루 */
+    --c-cs-ds-bg:     #182030;
+    --c-cs-ds-mid:    #305088;
+    --c-cs-ds-accent: #6898D0;
+    --c-cs-ds-text:   #BED0EC;
+    /* 알고리즘 - 티얼 */
+    --c-cs-algo-bg:     #142420;
+    --c-cs-algo-mid:    #206858;
+    --c-cs-algo-accent: #48B098;
+    --c-cs-algo-text:   #AADDD0;
+    /* 운영체제 - 코랄 */
+    --c-cs-os-bg:     #2A1A18;
+    --c-cs-os-mid:    #884038;
+    --c-cs-os-accent: #E07868;
+    --c-cs-os-text:   #EECECC;
+    /* 컴퓨터구조 - 인디고 */
+    --c-cs-arch-bg:     #1E1C30;
+    --c-cs-arch-mid:    #484090;
+    --c-cs-arch-accent: #8880D8;
+    --c-cs-arch-text:   #D0CCEC;
+    /* 데이터베이스 - 세이지 */
+    --c-cs-db-bg:     #182420;
+    --c-cs-db-mid:    #286848;
+    --c-cs-db-accent: #58A878;
+    --c-cs-db-text:   #B4DCCC;
+    /* 네트워크 - 스카이블루 */
+    --c-cs-net-bg:     #141E2C;
+    --c-cs-net-mid:    #265890;
+    --c-cs-net-accent: #5098D8;
+    --c-cs-net-text:   #B4D0EC;
+    /* 프로그래밍언어론 - 로즈 */
+    --c-cs-pl-bg:     #2A1824;
+    --c-cs-pl-mid:    #883060;
+    --c-cs-pl-accent: #D06898;
+    --c-cs-pl-text:   #ECC0D8;
+    /* 소프트웨어공학 - 앰버 */
+    --c-cs-se-bg:     #282010;
+    --c-cs-se-mid:    #907020;
+    --c-cs-se-accent: #D0A030;
+    --c-cs-se-text:   #EEE0A8;
+    /* 이산수학 - 라벤더 */
+    --c-cs-discrete-bg:     #201830;
+    --c-cs-discrete-mid:    #583898;
+    --c-cs-discrete-accent: #9868D8;
+    --c-cs-discrete-text:   #D8C8F0;
+    /* 컴파일러 - 슬레이트 */
+    --c-cs-compiler-bg:     #181E1E;
+    --c-cs-compiler-mid:    #286868;
+    --c-cs-compiler-accent: #48A0A0;
+    --c-cs-compiler-text:   #A8D4D4;
+    /* 인공지능 - 에메랄드 */
+    --c-cs-ai-bg:     #102018;
+    --c-cs-ai-mid:    #187848;
+    --c-cs-ai-accent: #38C880;
+    --c-cs-ai-text:   #A8ECC8;
+    /* 정보보안 - 다크레드 */
+    --c-cs-sec-bg:     #281010;
+    --c-cs-sec-mid:    #882828;
+    --c-cs-sec-accent: #D05858;
+    --c-cs-sec-text:   #ECC0C0;
+    /* 정보교육 CT - 민트 */
+    --c-info-ct-bg:     #102020;
+    --c-info-ct-mid:    #187870;
+    --c-info-ct-accent: #38C8B8;
+    --c-info-ct-text:   #A8ECE8;
+    /* 정보과 교육과정 - 라임 */
+    --c-info-curriculum-bg:     #1C2410;
+    --c-info-curriculum-mid:    #507010;
+    --c-info-curriculum-accent: #90C030;
+    --c-info-curriculum-text:   #D0E8A0;
+    /* 교수학습방법 - 피치 */
+    --c-info-teach-bg:     #281C10;
+    --c-info-teach-mid:    #885020;
+    --c-info-teach-accent: #D09050;
+    --c-info-teach-text:   #EED8C0;
+    /* SW·AI교육론 - 사이언 */
+    --c-info-swai-bg:     #101E28;
+    --c-info-swai-mid:    #185888;
+    --c-info-swai-accent: #38A0D8;
+    --c-info-swai-text:   #A8D8F0;
+    /* 평가론 - 모브 */
+    --c-info-eval-bg:     #201828;
+    --c-info-eval-mid:    #683890;
+    --c-info-eval-accent: #A860D8;
+    --c-info-eval-text:   #DDBCF0;
+  }
+}
