@@ -99,13 +99,13 @@ a { color: inherit; text-decoration: none; }
 }
 
 @media (max-width: 768px) {
-  /* 사이드바: 화면 밖으로 숨기고 슬라이드 인 */
   .sidebar {
     position: fixed;
     top: 0; left: 0;
     height: 100vh;
-    width: 80vw !important;
-    max-width: 300px !important;
+    /* flex 공간 완전 제거 — 본문이 밀리지 않음 */
+    width: 0 !important;
+    /* 실제 패널 너비는 transform 전 translate로 처리 */
     z-index: 300;
     transform: translateX(-100%);
     transition: transform .25s cubic-bezier(.4,0,.2,1);
@@ -113,10 +113,13 @@ a { color: inherit; text-decoration: none; }
     opacity: 1 !important;
     overflow-y: auto !important;
     border-right: 1px solid var(--border-light) !important;
+    overflow: hidden !important;
   }
   .sidebar.mobile-open {
+    width: min(80vw, 300px) !important;
     transform: translateX(0);
     box-shadow: 4px 0 24px rgba(0,0,0,0.15);
+    overflow-y: auto !important;
   }
 
   .main { padding: 20px 16px 48px; }
