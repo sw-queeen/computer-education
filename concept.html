@@ -267,17 +267,14 @@ renderConcept();
   const input = document.getElementById('conceptSearch');
   if (!input) return;
 
-  // 검색 결과 드롭다운 생성
   const dropdown = document.createElement('div');
   dropdown.id = 'searchDropdown';
   dropdown.style.cssText = 'position:absolute;top:calc(100% + 6px);right:0;left:0;background:var(--bg-white);border:1px solid var(--border-light);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:500;max-height:320px;overflow-y:auto;display:none;';
   input.parentElement.style.position = 'relative';
   input.parentElement.appendChild(dropdown);
 
-  input.addEventListener('input', function() {
-    const q = this.value.trim().toLowerCase();
+  function showResults(q) {
     if (!q) { dropdown.style.display = 'none'; return; }
-
     const results = CONCEPTS.filter(c =>
       c.name.toLowerCase().includes(q) ||
       c.keywords.toLowerCase().includes(q) ||
@@ -289,7 +286,7 @@ renderConcept();
     } else {
       dropdown.innerHTML = results.map(c => {
         const s = SUBJECTS[c.subject];
-        return `<div onclick="location.href='concept.html?subject=${encodeURIComponent(c.subject)}&concept=${encodeURIComponent(c.name)}'"
+        return `<div onmousedown="location.href='concept.html?subject=${encodeURIComponent(c.subject)}&concept=${encodeURIComponent(c.name)}'"
           style="padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--border-light);font-size:13px;"
           onmouseover="this.style.background='var(--bg-surface)'" onmouseout="this.style.background=''">
           <div style="font-weight:600;color:var(--text-primary);">${c.name}</div>
@@ -298,10 +295,15 @@ renderConcept();
       }).join('');
     }
     dropdown.style.display = 'block';
+  }
+
+  input.addEventListener('input', function() {
+    showResults(this.value.trim().toLowerCase());
   });
 
-  document.addEventListener('click', e => {
-    if (!input.parentElement.contains(e.target)) dropdown.style.display = 'none';
+  // blur로 닫기 (mousedown으로 결과 클릭 후 blur 발생 전에 이동하므로 안전)
+  input.addEventListener('blur', () => {
+    setTimeout(() => { dropdown.style.display = 'none'; }, 150);
   });
 })();
 </script>
