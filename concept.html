@@ -11,6 +11,7 @@
 <div class="layout" id="layout">
 
   <header class="topbar">
+    <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileSidebar()" aria-label="메뉴 열기" style="display:none;">☰</button>
     <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
     <div class="topbar-breadcrumb" id="breadcrumb"></div>
     <div class="topbar-search" style="margin-left:0;">
@@ -19,9 +20,10 @@
     </div>
   </header>
 
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMobileSidebar()"></div>
   <nav class="sidebar" id="sidebar"></nav>
 
-  <!-- 사이드바 토글 버튼 -->
+  <!-- 데스크탑 사이드바 토글 버튼 -->
   <button class="sidebar-toggle-btn" id="sidebarToggle" title="사이드바 접기/펼치기" onclick="toggleSidebar()">◀</button>
 
   <main class="main" id="main"></main>
@@ -29,6 +31,7 @@
 </div>
 
 <script src="js/data.js"></script>
+<script src="js/config.js"></script>
 <script>
 /* ── URL 파라미터 ─────────────────────────────── */
 function getParam(key) {
@@ -150,13 +153,14 @@ function loadContent(conceptName) {
 
 /* ── 메인 렌더 ───────────────────────────────── */
 function renderConcept() {
+  const C = SITE_CONFIG;
   const s = SUBJECTS[subjectName];
   const concept = CONCEPTS.find(c => c.subject === subjectName && c.name === conceptName);
 
   if (!s || !concept) {
     document.getElementById('main').innerHTML = `
       <div style="padding:40px;text-align:center;color:var(--text-tertiary);">
-        개념을 찾을 수 없어요. <a href="index.html" style="color:var(--text-secondary);">홈으로 돌아가기</a>
+        ${C.ui.notFound} <a href="index.html" style="color:var(--text-secondary);">${C.ui.goHome}</a>
       </div>`;
     return;
   }
@@ -166,15 +170,14 @@ function renderConcept() {
   document.getElementById('main').style.setProperty('--subject-accent', s.color.accent);
   document.getElementById('main').style.setProperty('--subject-text',   s.color.text);
 
-  const sameChapter = CONCEPTS.filter(c =>
-    c.subject === subjectName && c.chapter === concept.chapter && c.name !== concept.name
-  );
-
   const hasViz  = !!VIZ_MAP[conceptName];
   const hasQuiz = concept.quiz;
 
-  const vizTabBtn  = hasViz  ? `<div class="detail-tab" onclick="switchTab(this,'tab-viz')">시각화</div>` : '';
-  const quizTabBtn = hasQuiz ? `<div class="detail-tab" onclick="switchTab(this,'tab-quiz')">셀프 퀴즈</div>` : '';
+  const freqLabel = f => f==='높음'?C.freq.high : f==='중간'?C.freq.mid : C.freq.low;
+  const freqClass = f => f==='높음'?'badge-high' : f==='중간'?'badge-mid' : 'badge-low';
+
+  const vizTabBtn  = hasViz  ? `<div class="detail-tab" onclick="switchTab(this,'tab-viz')">${C.tabs.viz}</div>` : '';
+  const quizTabBtn = hasQuiz ? `<div class="detail-tab" onclick="switchTab(this,'tab-quiz')">${C.tabs.quiz}</div>` : '';
 
   document.getElementById('main').innerHTML = `
     <div class="concept-detail">
@@ -184,26 +187,24 @@ function renderConcept() {
         <div class="detail-title" style="color:${s.color.text};">${concept.name}</div>
         <div class="detail-keywords" style="color:${s.color.text};">${concept.keywords}</div>
         <div class="detail-badges">
-          <span class="badge ${concept.freq==='높음'?'badge-high':concept.freq==='중간'?'badge-mid':'badge-low'}">
-            ${concept.freq==='높음'?'빈출':concept.freq==='중간'?'중간':'낮음'}
-          </span>
-          ${hasViz  ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">시각화 있음</span>` : ''}
-          ${hasQuiz ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">퀴즈 있음</span>` : ''}
+          <span class="badge ${freqClass(concept.freq)}">${freqLabel(concept.freq)}</span>
+          ${hasViz  ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">${C.badges.viz}</span>` : ''}
+          ${hasQuiz ? `<span class="badge" style="background:${s.color.mid};color:${s.color.text};">${C.badges.quiz}</span>` : ''}
         </div>
       </div>
 
       <div class="detail-tabs">
         <div class="detail-tab active"
           style="color:${s.color.accent};border-bottom-color:${s.color.accent};"
-          onclick="switchTab(this,'tab-summary')">핵심 정리</div>
+          onclick="switchTab(this,'tab-summary')">${C.tabs.summary}</div>
         ${vizTabBtn}
-        <div class="detail-tab" onclick="switchTab(this,'tab-exam')">기출 포인트</div>
+        <div class="detail-tab" onclick="switchTab(this,'tab-exam')">${C.tabs.exam}</div>
         ${quizTabBtn}
       </div>
 
       <div id="tab-summary">
         <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">핵심 개념</div>
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${C.summary.intro}</div>
           <div class="content-placeholder">
             이 개념의 핵심 정리 내용을 여기에 작성하세요.<br>
             <small style="margin-top:8px;display:block;">키워드: ${concept.keywords}</small>
@@ -213,37 +214,24 @@ function renderConcept() {
 
       <div id="tab-viz" style="display:none;">
         <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">인터랙티브 시각화</div>
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${conceptName}</div>
           <div id="viz-container"></div>
         </div>
       </div>
 
       <div id="tab-exam" style="display:none;">
         <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">기출 포인트</div>
-          <div class="content-placeholder">연도별 출제 키워드와 논술 답안 구조를 작성하세요.</div>
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${C.tabs.exam}</div>
+          <div class="content-placeholder">연도별 출제 키워드와 ${C.exam.essay}를 작성하세요.</div>
         </div>
       </div>
 
       <div id="tab-quiz" style="display:none;">
         <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">셀프 퀴즈</div>
+          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${C.tabs.quiz}</div>
           <div class="content-placeholder">O/X 문제, 빈칸 채우기 퀴즈를 작성하세요.</div>
         </div>
       </div>
-
-      ${sameChapter.length > 0 ? `
-      <div class="detail-section" style="margin-top:24px;">
-        <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${concept.chapter}의 다른 개념</div>
-        <div class="card-grid">
-          ${sameChapter.map(c => `
-            <div class="concept-card" style="border-left-color:${s.color.mid};"
-              onclick="location.href='concept.html?subject=${encodeURIComponent(subjectName)}&chapter=${encodeURIComponent(c.chapter)}&concept=${encodeURIComponent(c.name)}'">
-              <div class="concept-card-name">${c.name}</div>
-              <div class="concept-card-keywords">${c.keywords}</div>
-            </div>`).join('')}
-        </div>
-      </div>` : ''}
 
     </div>`;
 
@@ -256,7 +244,7 @@ renderSidebar();
 renderBreadcrumb();
 renderConcept();
 
-// ── 사이드바 토글 ─────────────────────────────────────
+// ── 데스크탑 사이드바 토글 ─────────────────────────────
 function toggleSidebar() {
   const layout = document.getElementById('layout');
   const btn = document.getElementById('sidebarToggle');
@@ -266,15 +254,38 @@ function toggleSidebar() {
   try { localStorage.setItem('sidebar-collapsed', collapsed ? '1' : '0'); } catch(e) {}
 }
 
-// 저장된 상태 복원
+// ── 모바일 사이드바 토글 ──────────────────────────────
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const isOpen = sidebar.classList.toggle('mobile-open');
+  overlay.classList.toggle('visible', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+
+document.getElementById('sidebar').addEventListener('click', function() {
+  if (window.innerWidth <= 768 && document.getElementById('sidebar').classList.contains('mobile-open')) {
+    toggleMobileSidebar();
+  }
+});
+
+window.addEventListener('resize', function() {
+  if (window.innerWidth > 768) {
+    document.getElementById('sidebar').classList.remove('mobile-open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+    document.body.style.overflow = '';
+  }
+});
+
+// 저장된 데스크탑 상태 복원
 (function() {
   try {
     if (localStorage.getItem('sidebar-collapsed') === '1') {
       const layout = document.getElementById('layout');
-      const btn = document.getElementById('sidebarToggle');
+      const toggle = document.getElementById('sidebarToggle');
       layout.classList.add('sidebar-collapsed');
-      btn.textContent = '▶';
-      btn.title = '사이드바 펼치기';
+      toggle.textContent = '▶';
+      toggle.title = '사이드바 펼치기';
     }
   } catch(e) {}
 })();
