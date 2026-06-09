@@ -54,15 +54,15 @@
 
   function compareCards(rows, headers) {
     return rows.map(r => `
-      <div style="background:#faf9f7;border-radius:8px;padding:10px 14px;font-size:12px;">
-        <div style="font-weight:700;color:#2C2825;margin-bottom:4px;">${r[0]}</div>
+      <div style="background:var(--bg-page,#FAF9F7);border-radius:8px;padding:10px 14px;font-size:12px;">
+        <div style="font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">${r[0]}</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;">
           <span style="background:${BG};color:${ACCENT};padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">${headers[1]}</span>
-          <span style="color:#6B6560;">${r[1]}</span>
+          <span style="color:var(--text-secondary,#6B6560);">${r[1]}</span>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;">
           <span style="background:#EAE8F8;color:#6058C0;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">${headers[2]}</span>
-          <span style="color:#6B6560;">${r[2]}</span>
+          <span style="color:var(--text-secondary,#6B6560);">${r[2]}</span>
         </div>
       </div>`).join('');
   }
@@ -70,10 +70,21 @@
   // ── 출제연도 태그 파싱 ([2011중] → 앞으로 + 볼드 컬러)
   function parseExamItem(text) {
     const match = text.match(/\[(.+?)\]/);
-    if (!match) return `<span style="color:#2C2825;">${text}</span>`;
+    if (!match) return `<span style="color:var(--text-primary,#2C2825);">${text}</span>`;
     const tag = match[1];
     const body = text.replace(/\s*\[.+?\]/, '').trim();
-    return `<span class="pc-point-tag" style="background:#FBF0E6;color:#7A4018;">${tag}</span><span style="color:#2C2825;">${body}</span>`;
+    return `<span class="pc-point-tag" style="background:var(--bg-surface,#F0EDE8);color:var(--text-secondary,#6B6560);font-weight:700;">${tag}</span><span style="color:var(--text-primary,#2C2825);">${body}</span>`;
+  }
+
+  // 연도 없는 항목을 위로 정렬
+  function sortExamItems(items) {
+    return [...items].sort((a, b) => {
+      const aHasTag = /\[.+?\]/.test(a);
+      const bHasTag = /\[.+?\]/.test(b);
+      if (!aHasTag && bHasTag) return -1;
+      if (aHasTag && !bHasTag) return 1;
+      return 0;
+    });
   }
 
   /* ────────────────────────────
@@ -107,7 +118,7 @@
     el.innerHTML = `
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.intro}</div>
-      <div style="background:${BG};border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.85;color:#2C2825;font-family:${FONT};">
+      <div style="background:${BG};border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.85;color:var(--text-primary,#2C2825);font-family:${FONT};">
         <strong>피아제(J. Piaget, 1896~1980)</strong> — 스위스 아동심리학자.<br>
         학습자는 기본적으로 인지구조를 가지고 있으며 능동적이다.<br>
         타고난 인지 기능으로 물리적 환경과 상호작용하여 지식을 구성한다. → <strong>인지적 구성주의</strong>
@@ -121,7 +132,7 @@
           '학습자는 기본적으로 인지구조를 가지고 있으며 능동적이다. 타고난 인지 기능으로 물리적 환경과 상호작용하여 지식을 구성한다. <strong>(= 인지적 구성주의)</strong>',
           `자신의 기존 도식에 새로운 지식이 들어올 때 같으면 평형화 상태를 유지하고, 다르면 <span style="color:${ACCENT};font-weight:700;">불평형</span> 상태가 된다. 불평형 해소를 위해 <span style="color:${ACCENT};font-weight:700;">평형 욕구</span>가 생기고, <span style="color:${ACCENT};font-weight:700;">동화</span>(기존 도식에 포함) 또는 <span style="color:${ACCENT};font-weight:700;">조절</span>(도식 수정)을 통해 인지발달(인지적 평형화)이 일어난다.`,
         ].map((text, i) => `
-          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:#F0EDE8;border-radius:8px;font-family:${FONT};font-size:13px;line-height:1.8;">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;font-family:${FONT};font-size:13px;line-height:1.8;">
             <span style="background:${ACCENT};color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${i+1}</span>
             <div>${text}</div>
           </div>`).join('')}
@@ -136,7 +147,7 @@
           ['인지적 불균형 유발', '학습자의 인지적 불균형(불평형)을 유도하기 위해 도전감 있는 과제를 제공한다. 단, 너무 어려운 과제는 안 된다.'],
           ['인지발달 수준에 기초한 교육', '학습자가 수업 내용을 이해하는 데 필요한 인지구조가 없으면 수업은 무의미하므로 선행학습은 가능한 피해야 한다.'],
         ].map(([title, desc], i) => `
-          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:#F0EDE8;border-radius:8px;">
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;">
             <span style="background:${ACCENT};color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${i+1}</span>
             <div><strong>${title}</strong> — ${desc}</div>
           </div>`).join('')}
@@ -156,24 +167,24 @@
           </thead>
           <tbody>
             ${stageRows.map((r,i) => `
-              <tr style="border-bottom:1px solid #e8e4de;${i%2?'background:#faf9f7':''}">
-                <td style="padding:8px 10px;font-weight:600;color:#2C2825;">${r[0]}</td>
-                <td style="padding:8px 10px;text-align:center;color:#6B6560;white-space:nowrap;">${r[1]}</td>
+              <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.08));${i%2?'background:var(--bg-page,#FAF9F7)':''}">
+                <td style="padding:8px 10px;font-weight:600;color:var(--text-primary,#2C2825);">${r[0]}</td>
+                <td style="padding:8px 10px;text-align:center;color:var(--text-secondary,#6B6560);white-space:nowrap;">${r[1]}</td>
                 <td style="padding:8px 10px;color:${ACCENT};font-weight:600;">${r[2]}</td>
-                <td style="padding:8px 10px;color:#6B6560;">${r[3]}</td>
+                <td style="padding:8px 10px;color:var(--text-secondary,#6B6560);">${r[3]}</td>
               </tr>`).join('')}
           </tbody>
         </table>
       </div>
       <div class="pc-compare-cards">
         ${stageRows.map((r,i) => `
-          <div style="background:${i%2?'#faf9f7':'#fff'};border-radius:8px;padding:10px 14px;font-size:12px;border:1px solid #e8e4de;">
+          <div style="background:${i%2?'#faf9f7':'#fff'};border-radius:8px;padding:10px 14px;font-size:12px;border:1px solid var(--border-light,rgba(0,0,0,.08));">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="font-weight:700;color:#2C2825;">${r[0]}</span>
-              <span style="color:#A09890;font-size:11px;">${r[1]}</span>
+              <span style="font-weight:700;color:var(--text-primary,#2C2825);">${r[0]}</span>
+              <span style="color:var(--text-tertiary,#A09890);font-size:11px;">${r[1]}</span>
             </div>
             <div style="color:${ACCENT};font-weight:600;margin-bottom:2px;">${r[2]}</div>
-            <div style="color:#6B6560;">${r[3]}</div>
+            <div style="color:var(--text-secondary,#6B6560);">${r[3]}</div>
           </div>`).join('')}
       </div>
     </div>
@@ -187,7 +198,7 @@
           ${commonPoints.map((pt, i) => `
             <div class="pc-common-card">
               <div class="pc-common-num">${i+1}</div>
-              <div style="color:#2C2825;line-height:1.6;">${pt}</div>
+              <div style="color:var(--text-primary,#2C2825);line-height:1.6;">${pt}</div>
             </div>`).join('')}
         </div>
       </div>
@@ -204,10 +215,10 @@
           </thead>
           <tbody>
             ${compareRows.map((r,i) => `
-              <tr style="border-bottom:1px solid #e8e4de;${i%2?'background:#faf9f7':''}">
-                <td style="padding:8px 10px;font-weight:600;color:#2C2825;white-space:nowrap;">${r[0]}</td>
-                <td style="padding:8px 10px;color:#6B6560;">${r[1]}</td>
-                <td style="padding:8px 10px;color:#6B6560;">${r[2]}</td>
+              <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.08));${i%2?'background:var(--bg-page,#FAF9F7)':''}">
+                <td style="padding:8px 10px;font-weight:600;color:var(--text-primary,#2C2825);white-space:nowrap;">${r[0]}</td>
+                <td style="padding:8px 10px;color:var(--text-secondary,#6B6560);">${r[1]}</td>
+                <td style="padding:8px 10px;color:var(--text-secondary,#6B6560);">${r[2]}</td>
               </tr>`).join('')}
           </tbody>
         </table>
@@ -218,29 +229,33 @@
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:#1A3C68;">${C.summary.essay}</div>
-      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:12px;">
+      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:13px;">
         ${[
           '학습과정 2가지: ① 인지적 구성주의 ② 동화·조절을 통한 평형화',
           '교사역할 3가지: ① 발견학습 제공 ② 인지적 불균형 유발 ③ 인지발달 수준 고려',
           '피아제 비판: 외적 행동 변화만 강조 → 내면적 변화 확인 어려움',
           '비고츠키 연결: 피아제 불평형(개인 내적) ↔ 비고츠키 비계(사회적 상호작용)',
-        ].map(item => `
-          <div style="background:#E6EFF8;border-radius:8px;padding:10px 14px;color:#2C2825;line-height:1.7;">${item}</div>`).join('')}
+        ].map((item, i) => `
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;line-height:1.7;">
+            <span style="background:#A09890;color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${i+1}</span>
+            <div style="color:var(--text-primary,#2C2825);">${item}</div>
+          </div>`).join('')}
       </div>
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.check}</div>
+      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};font-size:12px;">
         ${[
-          ['❌', '#FDECEA', '#D05840', '#A83222', '혼동 주의', '"피아제의 불평형 = 사회적 상호작용으로 해소" → X. 개인 내적 과정(동화·조절)으로 해소됨. 사회적 상호작용은 비고츠키.'],
-          ['❌', '#FDECEA', '#D05840', '#A83222', '혼동 주의', '"반성적 추상화 = 메타인지" → X. 반성적 추상화는 형식적조작기의 추상사고 능력.'],
-          ['✅', '#EBF5EA', '#4EA87A', '#1E5A3C', '핵심 암기', '보존개념 순서: <strong>수·양·무게·부피</strong> ("수양무부"로 외우기)'],
-          ['✅', '#EBF5EA', '#4EA87A', '#1E5A3C', '핵심 암기', '형식적조작기 특징 5가지: 추상적·자기중심적(엘킨드)·명제적·가설연역적·조합적 사고'],
-        ].map(([icon, bg, bc, tc, label, text]) => `
-          <div style="background:${bg};border-radius:8px;padding:10px 14px;border-left:3px solid ${bc};">
-            <strong style="color:${tc};">${icon} ${label}</strong> — ${text}
+          ['혼동 주의', '#D05840', '#fff3f1', '피아제의 불평형 = 사회적 상호작용으로 해소" → X. 개인 내적 과정(동화·조절)으로 해소됨. 사회적 상호작용은 비고츠키.'],
+          ['혼동 주의', '#D05840', '#fff3f1', '"반성적 추상화 = 메타인지" → X. 반성적 추상화는 형식적조작기의 추상사고 능력.'],
+          ['핵심 암기', '#2D8A6A', '#f0faf6', '보존개념 순서: <strong>수·양·무게·부피</strong> ("수양무부"로 외우기)'],
+          ['핵심 암기', '#2D8A6A', '#f0faf6', '형식적조작기 특징 5가지: 추상적·자기중심적(엘킨드)·명제적·가설연역적·조합적 사고'],
+        ].map(([label, labelColor, bg, text]) => `
+          <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;border-left:3px solid ${labelColor};">
+            <span style="display:inline-block;background:${labelColor};color:white;font-size:10px;font-weight:700;padding:1px 8px;border-radius:20px;margin-right:8px;letter-spacing:.02em;">${label}</span>
+            <span style="color:var(--text-primary,#2C2825);">${text}</span>
           </div>`).join('')}
       </div>
     </div>`;
@@ -272,17 +287,17 @@
     el.innerHTML = `
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.exam.history}</div>
-      <div style="background:${BG};border-radius:10px;padding:13px 16px;font-size:12px;line-height:2;color:#2C2825;font-family:${FONT};">
+      <div style="background:${BG};border-radius:10px;padding:13px 16px;font-size:12px;line-height:2;color:var(--text-primary,#2C2825);font-family:${FONT};">
         2000중 · 2003중 · 2005중·초 · 2006초 · 2007초 · 2008중 · 2009초 · 2010초·중 · 2011중<br>
-        <span style="font-size:11px;color:#A09890;">거의 매년 출제. 전 단계 특징 + 핵심개념(동화·조절·평형화) 완벽 암기 필수.</span>
+        <span style="font-size:11px;color:var(--text-tertiary,#A09890);">거의 매년 출제. 전 단계 특징 + 핵심개념(동화·조절·평형화) 완벽 암기 필수.</span>
       </div>
     </div>
 
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#A83222;">${C.exam.freq}</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
-        ${freqItems.map(item => `
-          <div style="background:#FDECEA;border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;">
+        ${sortExamItems(freqItems).map(item => `
+          <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;border-left:2px solid #D05840;">
             ${parseExamItem(item)}
           </div>`).join('')}
       </div>
@@ -291,8 +306,8 @@
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#8A6010;">${C.exam.normal}</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
-        ${normalItems.map(item => `
-          <div style="background:#FBF4E0;border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;">
+        ${sortExamItems(normalItems).map(item => `
+          <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;border-left:2px solid #C8A830;">
             ${parseExamItem(item)}
           </div>`).join('')}
       </div>
@@ -324,7 +339,7 @@
       el.innerHTML = `
       <div class="detail-section">
         <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.quiz.title} — 총 ${QUIZ_DATA.length}문항</div>
-        <div style="font-size:12px;color:#A09890;margin-bottom:16px;font-family:${FONT};">답을 생각한 후 버튼을 눌러 확인하세요.</div>
+        <div style="font-size:12px;color:var(--text-tertiary,#A09890);margin-bottom:16px;font-family:${FONT};">답을 생각한 후 버튼을 눌러 확인하세요.</div>
         ${QUIZ_DATA.map((q, i) => {
           const s = state[i];
           let qBody = '';
@@ -356,19 +371,19 @@
             </div>`;
           }
           const explain = s.revealed ? `
-            <div style="margin-top:10px;background:${BG};border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;color:#2C2825;border-left:3px solid ${ACCENT};font-family:${FONT};">
+            <div style="margin-top:10px;background:${BG};border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;color:var(--text-primary,#2C2825);border-left:3px solid ${ACCENT};font-family:${FONT};">
               <strong style="color:${ACCENT};">${C.quiz.explainLabel}</strong> ${q.explain}
             </div>` : '';
           const typeLabel = q.type==='ox'?C.quiz.typeOX : q.type==='fill'?C.quiz.typeFill : C.quiz.typeMC;
           return `
-          <div style="background:#fff;border:1px solid #e8e4de;border-radius:12px;padding:16px;margin-bottom:12px;">
-            <div style="font-size:11px;font-weight:700;color:#A09890;margin-bottom:6px;letter-spacing:.04em;font-family:${FONT};">${typeLabel}</div>
-            <div style="font-size:13px;font-weight:600;color:#2C2825;line-height:1.6;font-family:${FONT};">${i+1}. ${q.q}</div>
+          <div style="background:#fff;border:1px solid var(--border-light,rgba(0,0,0,.08));border-radius:12px;padding:16px;margin-bottom:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);margin-bottom:6px;letter-spacing:.04em;font-family:${FONT};">${typeLabel}</div>
+            <div style="font-size:13px;font-weight:600;color:var(--text-primary,#2C2825);line-height:1.6;font-family:${FONT};">${i+1}. ${q.q}</div>
             ${qBody}${explain}
           </div>`;
         }).join('')}
         <div style="text-align:center;margin-top:8px;">
-          <button onclick="piagetQuizReset()" style="padding:10px 28px;border-radius:20px;border:1.5px solid #e0ddd8;background:#F0EDE8;font-size:13px;cursor:pointer;color:#6B6560;font-family:inherit;">${C.quiz.btnReset}</button>
+          <button onclick="piagetQuizReset()" style="padding:10px 28px;border-radius:20px;border:1.5px solid #e0ddd8;background:var(--bg-surface,#F0EDE8);font-size:13px;cursor:pointer;color:var(--text-secondary,#6B6560);font-family:inherit;">${C.quiz.btnReset}</button>
         </div>
       </div>`;
     }
