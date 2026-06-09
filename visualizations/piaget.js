@@ -201,7 +201,7 @@
       #piaget-wrap .p-exam-title{font-size:11px;font-weight:700;color:var(--s-accent);letter-spacing:.05em;margin-bottom:6px;}
       #piaget-wrap .p-exam-body{font-size:12px;color:#6B6560;line-height:1.75;}
       #piaget-wrap .p-ctabs{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;}
-      #piaget-wrap .p-ctab{padding:5px 12px;border-radius:20px;border:1px solid #e0ddd8;background:#F0EDE8;font-size:12px;font-weight:500;cursor:pointer;color:#6B6560;transition:all .12s;}
+      #piaget-wrap .p-ctab{padding:5px 12px;border-radius:20px;border:1px solid #e0ddd8;background:#F0EDE8;font-size:12px;font-weight:500;cursor:pointer;color:#6B6560;transition:all .12s;font-family:inherit;}
       #piaget-wrap .p-ctab.on{background:var(--s-bg);color:var(--s-accent);border-color:var(--s-border);font-weight:700;}
       #piaget-wrap .p-ccontent{background:#F0EDE8;border-radius:10px;padding:14px 16px;font-size:13px;color:#6B6560;line-height:1.75;min-height:72px;}
       #piaget-wrap .p-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
@@ -292,6 +292,12 @@
 
     document.getElementById('piaget-wrap').innerHTML = `
       <div style="padding:1rem 0 2rem;">
+
+        <div class="p-core" style="margin-bottom:16px;">
+          <div class="p-core-title">핵심 개념 — 도식 · 동화 · 조절 · 평형화</div>
+          <div class="p-core-grid">${coreCards}</div>
+        </div>
+
         <div class="p-timeline">${timeline}</div>
 
         <div class="p-panel">
@@ -333,15 +339,11 @@
         </div>
 
         <div class="p-nav">
-          <button class="p-nbtn" onclick="piagetGo(-1)" ${cur === 0 ? 'disabled' : ''}>← 이전 단계</button>
+          <button class="p-nbtn ${cur > 0 ? 'prim' : ''}" onclick="piagetGo(-1)" ${cur === 0 ? 'disabled' : ''}>← 이전 단계</button>
           <div class="p-dots">${dots}</div>
-          <button class="p-nbtn prim" onclick="piagetGo(1)" ${cur === STAGES.length - 1 ? 'disabled' : ''}>다음 단계 →</button>
+          <button class="p-nbtn ${cur < STAGES.length - 1 ? 'prim' : ''}" onclick="piagetGo(1)" ${cur === STAGES.length - 1 ? 'disabled' : ''}>다음 단계 →</button>
         </div>
 
-        <div class="p-core">
-          <div class="p-core-title">핵심 개념 — 도식 · 동화 · 조절 · 평형화</div>
-          <div class="p-core-grid">${coreCards}</div>
-        </div>
       </div>`;
 
     setVars(s);
