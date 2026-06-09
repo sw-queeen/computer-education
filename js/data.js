@@ -112,7 +112,7 @@ const CONCEPTS = [
   {subject:"교육과정론",chapter:"교육과정 유형",name:"영 교육과정",keywords:"아이즈너·가르치지 않는 것",freq:"중간",viz:false,quiz:true},
   {subject:"교육과정론",chapter:"교육과정 개발",name:"중앙집권형 vs 지방분권형",keywords:"국가주도·교사참여·자율성",freq:"중간",viz:false,quiz:true},
   {subject:"교육과정론",chapter:"교육과정 개발",name:"2022 개정 교육과정 총론",keywords:"역량기반·고교학점제·미래교육",freq:"높음",viz:false,quiz:true},
-  {subject:"교육과정론",chapter:"교육과정 개발",name:"성취기준 분석·재구성",keywords:"교과통합·성취기준 재구성 방법",freq:"높음",viz:false,quiz:true},
+  {subject:"교육과정론",chapter:"교육과정 개발",name:"성취기준 분석·재구성 (교육과정론)",keywords:"교과통합·성취기준 재구성 방법",freq:"높음",viz:false,quiz:true},
   // ══ 교육심리학 ══
   {subject:"교육심리학",chapter:"발달이론",name:"피아제 인지발달 4단계",keywords:"감각운동·전조작·구체적조작·형식적조작",freq:"높음",viz:true,quiz:true},
   {subject:"교육심리학",chapter:"발달이론",name:"피아제 핵심개념",keywords:"도식·동화·조절·평형화",freq:"높음",viz:true,quiz:true},
@@ -388,6 +388,39 @@ const CONCEPTS = [
   {subject:"컴파일러",chapter:"구문분석",name:"CFG·BNF·EBNF",keywords:"문맥자유문법·유도·모호성",freq:"중간",viz:false,quiz:true},
   {subject:"컴파일러",chapter:"의미분석",name:"의미분석·타입검사",keywords:"타입규칙·심볼테이블·스코프분석",freq:"중간",viz:false,quiz:true},
   {subject:"컴파일러",chapter:"코드생성",name:"중간코드·코드최적화",keywords:"3주소코드·루프최적화·상수접기",freq:"낮음",viz:false,quiz:true},
+  // ══ 자료구조 (추가) ══
+  {subject:"자료구조",chapter:"균형 트리",name:"AVL 트리",keywords:"회전(LL/RR/LR/RL)·균형인수·높이균형",freq:"높음",viz:true,quiz:true},
+  {subject:"자료구조",chapter:"균형 트리",name:"Red-Black 트리",keywords:"색규칙·삽입/삭제 재색칠·회전",freq:"높음",viz:false,quiz:true},
+  {subject:"자료구조",chapter:"다방향 탐색트리",name:"B-트리·B+트리",keywords:"차수·분할·합병·순서집합인덱스",freq:"중간",viz:true,quiz:true},
+  // ══ 알고리즘 (추가) ══
+  {subject:"알고리즘",chapter:"정렬",name:"셸 정렬·기수 정렬",keywords:"간격수열·안정성·비교기반 외",freq:"중간",viz:false,quiz:true},
+  {subject:"알고리즘",chapter:"최단경로",name:"다익스트라·벨만포드·플로이드",keywords:"음수간선·음수사이클·경로복원",freq:"높음",viz:true,quiz:true},
+  {subject:"알고리즘",chapter:"최소신장트리",name:"크루스칼·프림 알고리즘",keywords:"Union-Find·우선순위큐·탐욕",freq:"높음",viz:true,quiz:true},
+  {subject:"알고리즘",chapter:"그래프 심화",name:"위상정렬·강연결요소",keywords:"DAG·DFS기반·Kosaraju·Tarjan",freq:"중간",viz:true,quiz:true},
+  // ══ 운영체제 (추가) ══
+  {subject:"운영체제",chapter:"입출력 관리",name:"I/O 인터럽트·DMA",keywords:"폴링vs인터럽트·DMA제어기·채널",freq:"중간",viz:false,quiz:true},
+  // 디스크 스케줄링은 기존 파일시스템 챕터에 이미 있음
+  // ══ 컴퓨터 구조 (추가) ══
+  {subject:"컴퓨터 구조",chapter:"논리회로",name:"부울 대수·게이트·카르노맵",keywords:"AND/OR/NOT/NAND/NOR/XOR·SOP/POS·간소화",freq:"높음",viz:true,quiz:true},
+  {subject:"컴퓨터 구조",chapter:"논리회로",name:"조합논리회로·순서논리회로",keywords:"가산기·MUX/DEMUX·플립플롭·레지스터",freq:"높음",viz:true,quiz:true},
+  {subject:"컴퓨터 구조",chapter:"명령어 구조",name:"RISC vs CISC·주소지정 방식",keywords:"명령어 형식·직접/간접/레지스터/즉시 주소",freq:"높음",viz:true,quiz:true},
+  {subject:"컴퓨터 구조",chapter:"입출력 구조",name:"버스·인터럽트·DMA",keywords:"시스템버스·PCI·버스중재·데이지체인",freq:"중간",viz:false,quiz:true},
+  // ══ 데이터베이스 (추가) ══
+  {subject:"데이터베이스",chapter:"DBMS 개요",name:"DBMS 구조·3단계 스키마",keywords:"외부/개념/내부스키마·데이터독립성",freq:"중간",viz:false,quiz:true},
+  {subject:"데이터베이스",chapter:"관계 대수",name:"관계 대수·관계 해석",keywords:"셀렉트·프로젝트·조인·나누기·투플해석",freq:"높음",viz:true,quiz:true},
+  {subject:"데이터베이스",chapter:"회복 기법",name:"로그 기반 회복·체크포인트",keywords:"REDO·UNDO·즉시갱신·지연갱신·WAL",freq:"높음",viz:false,quiz:true},
+  {subject:"데이터베이스",chapter:"인덱스",name:"인덱스·물리적 설계",keywords:"B+트리인덱스·해시인덱스·클러스터링",freq:"중간",viz:false,quiz:true},
+  // ══ 네트워크 (추가) ══
+  {subject:"네트워크",chapter:"흐름·혼잡제어",name:"슬라이딩 윈도우·Go-Back-N·SR",keywords:"윈도우크기·선택적재전송·혼잡윈도우",freq:"높음",viz:true,quiz:true},
+  {subject:"네트워크",chapter:"MAC·LAN",name:"이더넷·CSMA/CD·CSMA/CA",keywords:"충돌감지·충돌회피·토큰링·FDDI",freq:"중간",viz:true,quiz:true},
+  {subject:"네트워크",chapter:"오류 제어",name:"오류 검출·수정 코드",keywords:"패리티·CRC·해밍코드·FEC vs ARQ",freq:"높음",viz:true,quiz:true},
+  {subject:"네트워크",chapter:"IPv6·NAT",name:"IPv6 주소체계·NAT",keywords:"128비트·헤더구조·사설IP·포트변환",freq:"중간",viz:false,quiz:true},
+  {subject:"네트워크",chapter:"네트워크 보안",name:"암호화·TLS·방화벽",keywords:"대칭/비대칭키·PKI·SSL/TLS·패킷필터링",freq:"중간",viz:false,quiz:true},
+  // ══ 교육심리학 (추가) ══
+  {subject:"교육심리학",chapter:"동기이론",name:"드웩 마인드셋",keywords:"고정·성장 마인드셋·귀인이론",freq:"중간",viz:false,quiz:true},
+  // ══ 교육행정 (추가) ══
+  {subject:"교육행정",chapter:"장학",name:"임상장학·동료장학·자기장학",keywords:"코간·골드해머·장학유형",freq:"중간",viz:false,quiz:true},
+  // ══ 생활지도·상담 - 로저스는 기존 항목 있음(209번줄), 추가 불필요 ══
   // ══ 인공지능 ══
   {subject:"인공지능",chapter:"탐색",name:"맹목적 탐색 — BFS·DFS",keywords:"완전성·최적성·시간/공간복잡도",freq:"중간",viz:true,quiz:true},
   {subject:"인공지능",chapter:"탐색",name:"정보기반 탐색 — A*",keywords:"휴리스틱·허용가능성·일관성",freq:"높음",viz:true,quiz:true},
