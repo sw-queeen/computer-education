@@ -25,7 +25,7 @@ const SITE_CONFIG = {
   /* ── 탭 이름 ──────────────────────────────────── */
   tabs: {
     summary: '핵심 정리',
-    viz:     '시각화',
+    viz:     '둘러보기',
     exam:    '기출 포인트',
     quiz:    '리마인드',
   },
@@ -39,7 +39,7 @@ const SITE_CONFIG = {
 
   /* ── 배지 레이블 (개념 카드 하단, 헤더) ────────── */
   badges: {
-    viz:  '시각화',
+    viz:  '둘러보기',
     quiz: '리마인드',
   },
 
@@ -47,7 +47,7 @@ const SITE_CONFIG = {
   filters: {
     all:  '전체',
     high: '빈출만',
-    viz:  '시각화 있음',
+    viz:  '둘러보기 있음',
     quiz: '리마인드 있음',
   },
 
