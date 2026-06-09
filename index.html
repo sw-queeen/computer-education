@@ -74,37 +74,52 @@ function toggleSidebar() {
     try { localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0'); } catch(e) {}
   }
 }
+
 function openSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  // 닫기 버튼 삽입 (없으면)
+  // ✕ 닫기 버튼 — body에 fixed로 붙임 (sidebar position 건드리지 않음)
   if (!document.getElementById('sidebarCloseBtn')) {
     const btn = document.createElement('button');
     btn.id = 'sidebarCloseBtn';
     btn.innerHTML = '✕';
     btn.setAttribute('aria-label', '닫기');
-    btn.style.cssText = `position:absolute;top:12px;right:12px;width:32px;height:32px;border:none;background:var(--bg-surface);border-radius:8px;font-size:16px;cursor:pointer;color:var(--text-secondary);font-family:inherit;display:flex;align-items:center;justify-content:center;z-index:10;`;
+    btn.style.cssText = 'position:fixed;top:12px;right:12px;width:32px;height:32px;border:none;background:var(--bg-surface);border-radius:8px;font-size:16px;cursor:pointer;color:var(--text-secondary);font-family:inherit;display:flex;align-items:center;justify-content:center;z-index:400;box-shadow:0 2px 8px rgba(0,0,0,.12);';
     btn.onclick = closeSidebar;
-    sidebar.style.position = 'relative'; // 버튼 absolute 기준
-    sidebar.insertBefore(btn, sidebar.firstChild);
+    document.body.appendChild(btn);
+  } else {
+    document.getElementById('sidebarCloseBtn').style.display = 'flex';
   }
-  document.getElementById('sidebarCloseBtn').style.display = 'flex';
-  sidebar.classList.add('mobile-open');
+  document.getElementById('sidebar').classList.add('mobile-open');
   document.getElementById('sidebarOverlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
 }
+
 function closeSidebar() {
   document.getElementById('sidebar').classList.remove('mobile-open');
   document.getElementById('sidebarOverlay').classList.remove('visible');
   document.body.style.overflow = '';
+  const btn = document.getElementById('sidebarCloseBtn');
+  if (btn) btn.style.display = 'none';
 }
+
 window.addEventListener('resize', () => {
   if (!isMobile()) {
+    // 모바일 상태 정리
     document.getElementById('sidebar').classList.remove('mobile-open');
     document.getElementById('sidebarOverlay').classList.remove('visible');
     document.body.style.overflow = '';
+    const btn = document.getElementById('sidebarCloseBtn');
+    if (btn) btn.style.display = 'none';
+    // 데스크탑 collapsed 상태 복원
+    try {
+      const sidebar = document.getElementById('sidebar');
+      const saved = localStorage.getItem('sidebar-collapsed');
+      if (saved === '1') sidebar.classList.add('collapsed');
+      else sidebar.classList.remove('collapsed');
+    } catch(e) {}
   }
 });
-// 저장 상태 복원
+
+// 초기 저장 상태 복원
 try {
   if (!isMobile() && localStorage.getItem('sidebar-collapsed') === '1') {
     document.getElementById('sidebar').classList.add('collapsed');
