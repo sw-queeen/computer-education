@@ -13,6 +13,7 @@
   <header class="topbar">
     <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="메뉴">☰</button>
     <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
+    <div style="flex:1;"></div>
     <div class="topbar-search">
       <span class="search-icon">🔍</span>
       <input type="text" id="globalSearch" placeholder="개념 검색...">
@@ -74,7 +75,20 @@ function toggleSidebar() {
   }
 }
 function openSidebar() {
-  document.getElementById('sidebar').classList.add('mobile-open');
+  const sidebar = document.getElementById('sidebar');
+  // 닫기 버튼 삽입 (없으면)
+  if (!document.getElementById('sidebarCloseBtn')) {
+    const btn = document.createElement('button');
+    btn.id = 'sidebarCloseBtn';
+    btn.innerHTML = '✕';
+    btn.setAttribute('aria-label', '닫기');
+    btn.style.cssText = `position:absolute;top:12px;right:12px;width:32px;height:32px;border:none;background:var(--bg-surface);border-radius:8px;font-size:16px;cursor:pointer;color:var(--text-secondary);font-family:inherit;display:flex;align-items:center;justify-content:center;z-index:10;`;
+    btn.onclick = closeSidebar;
+    sidebar.style.position = 'relative'; // 버튼 absolute 기준
+    sidebar.insertBefore(btn, sidebar.firstChild);
+  }
+  document.getElementById('sidebarCloseBtn').style.display = 'flex';
+  sidebar.classList.add('mobile-open');
   document.getElementById('sidebarOverlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
 }

@@ -14,6 +14,7 @@
     <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="메뉴">☰</button>
     <div class="topbar-logo">임용 CS <span>정보컴퓨터 임용 학습</span></div>
     <div class="topbar-breadcrumb" id="breadcrumb"></div>
+    <div style="flex:1;"></div>
     <div class="topbar-search" style="margin-left:0;">
       <span class="search-icon">🔍</span>
       <input type="text" placeholder="개념 검색..." onclick="location.href='index.html'">
@@ -58,7 +59,19 @@ function toggleSidebar() {
   }
 }
 function openSidebar() {
-  document.getElementById('sidebar').classList.add('mobile-open');
+  const sidebar = document.getElementById('sidebar');
+  if (!document.getElementById('sidebarCloseBtn')) {
+    const btn = document.createElement('button');
+    btn.id = 'sidebarCloseBtn';
+    btn.innerHTML = '✕';
+    btn.setAttribute('aria-label', '닫기');
+    btn.style.cssText = `position:absolute;top:12px;right:12px;width:32px;height:32px;border:none;background:var(--bg-surface);border-radius:8px;font-size:16px;cursor:pointer;color:var(--text-secondary);font-family:inherit;display:flex;align-items:center;justify-content:center;z-index:10;`;
+    btn.onclick = closeSidebar;
+    sidebar.style.position = 'relative';
+    sidebar.insertBefore(btn, sidebar.firstChild);
+  }
+  document.getElementById('sidebarCloseBtn').style.display = 'flex';
+  sidebar.classList.add('mobile-open');
   document.getElementById('sidebarOverlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
 }
@@ -196,8 +209,8 @@ function renderConcept() {
           style="color:${s.color.accent};border-bottom-color:${s.color.accent};"
           onclick="switchTab(this,'tab-summary')">${C.tabs.summary}</div>
         ${vizTab}
-        <div class="detail-tab" onclick="switchTab(this,'tab-exam')">${C.tabs.exam}</div>
         ${quizTab}
+        <div class="detail-tab" onclick="switchTab(this,'tab-exam')">${C.tabs.exam}</div>
       </div>
       <div id="tab-summary">
         <div class="detail-section">
