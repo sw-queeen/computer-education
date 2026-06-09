@@ -1,11 +1,19 @@
 /**
- * 피아제 인지발달이론 — 탭 콘텐츠 (핵심정리 / 기출포인트 / 셀프퀴즈)
+ * 피아제 인지발달이론 — 탭 콘텐츠 (핵심정리 / 기출포인트 / 리마인드)
  * 원페이지 교육학 5판 기반 / 반응형 완전 대응
+ * 공통 용어는 SITE_CONFIG (js/config.js) 참조
  */
 
 (function () {
 
   function $(id) { return document.getElementById(id); }
+
+  // config.js의 SITE_CONFIG를 참조 (없으면 fallback)
+  const C = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG : {
+    summary: { intro:'개요', learning:'학습 과정', teacherRole:'교사 역할 & 학습 방법', compare:'비교표', vsCompare:'vs 비교' },
+    exam:    { freq:'빈출', normal:'출제', essay:'논술 답안 구조', check:'체크 포인트', history:'기출 연도 현황' },
+    quiz:    { title:'리마인드', typeOX:'O / X', typeFill:'빈칸 채우기', typeMC:'객관식', btnReveal:'정답 보기', btnRevealed:'정답 확인됨 ✓', btnReset:'전체 초기화', explainLabel:'해설' },
+  };
 
   const ACCENT = '#4EA87A';
   const BG     = '#E6F2EC';
@@ -75,7 +83,7 @@
 
     el.innerHTML = `
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">개요</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.intro}</div>
       <div style="background:${BG};border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.85;color:#2C2825;">
         <strong>피아제(J. Piaget, 1896~1980)</strong> — 스위스 아동심리학자.<br>
         학습자는 기본적으로 인지구조를 가지고 있으며 능동적이다.<br>
@@ -84,7 +92,7 @@
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">학습과정 (x2) ★★★</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.learning}</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
         <div style="background:#F0EDE8;border-radius:10px;padding:13px 16px;font-size:13px;line-height:1.8;">
           <span style="color:${ACCENT};font-weight:700;">①</span>
@@ -98,7 +106,7 @@
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">교사 역할 & 학습방법 (x3) ★★★</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.teacherRole}</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
         ${[
           ['발견학습 제공', '학습자는 능동적으로 학습할 수 있으므로 스스로 관찰하고 탐구할 수 있는 수업을 제공하면 집중력이 향상된다. 그래서 단순한 설명식 수업은 피해야 한다.'],
@@ -113,7 +121,7 @@
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">4단계 비교표</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.compare}</div>
       <div class="pc-table-wrap">
         <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:480px;">
           <thead>
@@ -189,7 +197,7 @@
 
     const points = [
       {
-        label: '★★★★ 빈출', color: '#A83222', bg: '#FDECEA',
+        label: C.exam.freq, color: '#A83222', bg: '#FDECEA',
         items: [
           '불평형(disequilibrium) — 오류 상황에 직면할 때 일어남. 너무 쉽거나 어렵지 않아야 함 [2011중]',
           '동화(assimilation) — 고양이를 보고 "강아지!"라고 함 [2006초]',
@@ -200,7 +208,7 @@
         ]
       },
       {
-        label: '★★★ 출제', color: '#8A6010', bg: '#FBF4E0',
+        label: C.exam.normal, color: '#8A6010', bg: '#FBF4E0',
         items: [
           '감각운동기 — 사고능력 없음. 대상영속성(8~12개월). 순환반응 1·2·3차 [2010초]',
           '구체적조작기 교수법 — 시청각 자료·실물 활용, 직접 경험 중심 [2003중]',
@@ -210,7 +218,7 @@
         ]
       },
       {
-        label: '논술 답안 뼈대', color: '#1A3C68', bg: '#E6EFF8',
+        label: C.exam.essay, color: '#1A3C68', bg: '#E6EFF8',
         items: [
           '학습과정 2가지: ① 인지적 구성주의 ② 동화·조절을 통한 평형화',
           '교사역할 3가지: ① 발견학습 제공 ② 인지적 불균형 유발 ③ 인지발달 수준 고려',
@@ -222,7 +230,7 @@
 
     el.innerHTML = `
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">기출 연도 현황</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.exam.history}</div>
       <div style="background:${BG};border-radius:10px;padding:13px 16px;font-size:13px;line-height:2;color:#2C2825;">
         <strong style="color:${ACCENT};">★★★★ S급</strong> — 2011중, 2010초·중, 2009초, 2008중, 2007초, 2006초, 2005중·초, 2003중, 2000중<br>
         <span style="font-size:11px;color:#A09890;">거의 매년 출제. 전 단계 특징 + 핵심개념(동화·조절·평형화) 완벽 암기 필수.</span>
@@ -241,7 +249,7 @@
     </div>`).join('')}
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">자주 틀리는 포인트</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.exam.check}</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;">
         ${[
           ['❌', '#FDECEA', '#D05840', '#A83222', '혼동주의', '"피아제의 불평형 = 사회적 상호작용으로 해소" → X. 개인 내적 과정(동화·조절)으로 해소됨. 사회적 상호작용은 비고츠키.'],
@@ -281,7 +289,7 @@
     function renderAll() {
       el.innerHTML = `
       <div class="detail-section">
-        <div class="detail-section-title" style="--subject-accent:${ACCENT};">셀프 퀴즈 — 총 ${QUIZ_DATA.length}문항</div>
+        <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.quiz.title} — 총 ${QUIZ_DATA.length}문항</div>
         <div style="font-size:12px;color:#A09890;margin-bottom:16px;">답을 생각한 후 버튼을 눌러 확인하세요.</div>
 
         ${QUIZ_DATA.map((q, i) => {
@@ -308,7 +316,7 @@
           } else if (q.type === 'fill') {
             qBody = `
               <div style="margin-top:10px;">
-                <button onclick="piagetQuizReveal(${i})" style="width:100%;padding:9px;border-radius:8px;border:1.5px solid ${s.revealed?ACCENT:'#e0ddd8'};background:${s.revealed?BG:'#fff'};font-size:12px;font-weight:600;cursor:pointer;color:${s.revealed?ACCENT:'#6B6560'};font-family:inherit;">${s.revealed?'정답 확인됨 ✓':'정답 보기'}</button>
+                <button onclick="piagetQuizReveal(${i})" style="width:100%;padding:9px;border-radius:8px;border:1.5px solid ${s.revealed?ACCENT:'#e0ddd8'};background:${s.revealed?BG:'#fff'};font-size:12px;font-weight:600;cursor:pointer;color:${s.revealed?ACCENT:'#6B6560'};font-family:inherit;">${s.revealed?C.quiz.btnRevealed:C.quiz.btnReveal}</button>
               </div>`;
           } else if (q.type === 'mc') {
             qBody = `
@@ -328,10 +336,10 @@
 
           const explain = s.revealed ? `
             <div style="margin-top:10px;background:${BG};border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;color:#2C2825;border-left:3px solid ${ACCENT};">
-              <strong style="color:${ACCENT};">해설</strong> ${q.explain}
+              <strong style="color:${ACCENT};">${C.quiz.explainLabel}</strong> ${q.explain}
             </div>` : '';
 
-          const typeLabel = q.type==='ox'?'O/X':q.type==='fill'?'빈칸 채우기':'객관식';
+          const typeLabel = q.type==='ox'?C.quiz.typeOX:q.type==='fill'?C.quiz.typeFill:C.quiz.typeMC;
 
           return `
           <div style="background:#fff;border:1px solid #e8e4de;border-radius:12px;padding:16px 16px;margin-bottom:12px;">
