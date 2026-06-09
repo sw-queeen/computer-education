@@ -25,7 +25,7 @@ a { color: inherit; text-decoration: none; }
   position: fixed;
   top: 0; left: 0; right: 0;
   height: var(--topbar-height);
-  z-index: 200;
+  z-index: 400; /* 사이드바(300)·오버레이(299)보다 위 */
   display: flex;
   align-items: center;
   gap: 16px;
@@ -106,18 +106,19 @@ a { color: inherit; text-decoration: none; }
     top: 0;
     right: 0;
     height: 100vh;
-    width: min(80vw, 300px) !important; /* 처음부터 실제 너비 */
+    width: min(80vw, 300px) !important;
     z-index: 300;
-    transform: translateX(100%); /* 오른쪽 밖으로 숨김 */
+    transform: translateX(100%);
     transition: transform .25s cubic-bezier(.4,0,.2,1);
     padding-top: calc(var(--topbar-height) + 8px) !important;
     opacity: 1 !important;
-    overflow-y: auto !important;
+    overflow-y: scroll !important; /* 항상 스크롤 가능 */
+    overflow-x: hidden !important;
     border-left: 1px solid var(--border-light) !important;
     border-right: none !important;
   }
   .sidebar.mobile-open {
-    transform: translateX(0); /* 슬라이드 인 */
+    transform: translateX(0);
     box-shadow: -4px 0 24px rgba(0,0,0,0.15);
   }
 
