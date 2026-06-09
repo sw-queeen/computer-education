@@ -79,10 +79,14 @@ function toggleSidebar() {
 }
 
 function openSidebar() {
-  document.getElementById('sidebar').classList.add('mobile-open');
+  const sidebar = document.getElementById('sidebar');
+  // 첫 열기 시 트랜지션 활성화
+  if (!sidebar.classList.contains('sidebar-ready')) {
+    sidebar.classList.add('sidebar-ready');
+  }
+  sidebar.classList.add('mobile-open');
   document.getElementById('sidebarOverlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
-  // ☰ 버튼을 ✕로 교체
   const menuBtn = document.querySelector('.topbar-menu-btn');
   if (menuBtn) menuBtn.textContent = '✕';
 }
@@ -91,7 +95,6 @@ function closeSidebar() {
   document.getElementById('sidebar').classList.remove('mobile-open');
   document.getElementById('sidebarOverlay').classList.remove('visible');
   document.body.style.overflow = '';
-  // ✕ 버튼을 ☰로 복원
   const menuBtn = document.querySelector('.topbar-menu-btn');
   if (menuBtn) menuBtn.textContent = '☰';
 }
