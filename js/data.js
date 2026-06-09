@@ -1,97 +1,97 @@
 const SUBJECTS = {
-  // ── 1차 교육학 ──
+  // ── 교육학 ──
   "교육과정론": {
-    area: "1차 교육학", areaKey: "edu",
+    area: "교육학", areaKey: "edu",
     color: { bg:"var(--c-edu-curriculum-bg)", mid:"var(--c-edu-curriculum-mid)", accent:"var(--c-edu-curriculum-accent)", text:"var(--c-edu-curriculum-text)" }
   },
   "교육심리학": {
-    area: "1차 교육학", areaKey: "edu",
+    area: "교육학", areaKey: "edu",
     color: { bg:"var(--c-edu-psych-bg)", mid:"var(--c-edu-psych-mid)", accent:"var(--c-edu-psych-accent)", text:"var(--c-edu-psych-text)" }
   },
   "교수학습이론": {
-    area: "1차 교육학", areaKey: "edu",
+    area: "교육학", areaKey: "edu",
     color: { bg:"var(--c-edu-teach-bg)", mid:"var(--c-edu-teach-mid)", accent:"var(--c-edu-teach-accent)", text:"var(--c-edu-teach-text)" }
   },
   "교육평가론": {
-    area: "1차 교육학", areaKey: "edu",
+    area: "교육학", areaKey: "edu",
     color: { bg:"var(--c-edu-eval-bg)", mid:"var(--c-edu-eval-mid)", accent:"var(--c-edu-eval-accent)", text:"var(--c-edu-eval-text)" }
   },
   "교육행정": {
-    area: "1차 교육학", areaKey: "edu",
+    area: "교육학", areaKey: "edu",
     color: { bg:"var(--c-edu-admin-bg)", mid:"var(--c-edu-admin-mid)", accent:"var(--c-edu-admin-accent)", text:"var(--c-edu-admin-text)" }
   },
   "생활지도·상담": {
-    area: "1차 교육학", areaKey: "edu",
+    area: "교육학", areaKey: "edu",
     color: { bg:"var(--c-edu-counsel-bg)", mid:"var(--c-edu-counsel-mid)", accent:"var(--c-edu-counsel-accent)", text:"var(--c-edu-counsel-text)" }
   },
   // ── 전공 CS ──
   "자료구조": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-ds-bg)", mid:"var(--c-cs-ds-mid)", accent:"var(--c-cs-ds-accent)", text:"var(--c-cs-ds-text)" }
   },
   "알고리즘": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-algo-bg)", mid:"var(--c-cs-algo-mid)", accent:"var(--c-cs-algo-accent)", text:"var(--c-cs-algo-text)" }
   },
   "운영체제": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-os-bg)", mid:"var(--c-cs-os-mid)", accent:"var(--c-cs-os-accent)", text:"var(--c-cs-os-text)" }
   },
   "컴퓨터 구조": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-arch-bg)", mid:"var(--c-cs-arch-mid)", accent:"var(--c-cs-arch-accent)", text:"var(--c-cs-arch-text)" }
   },
   "데이터베이스": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-db-bg)", mid:"var(--c-cs-db-mid)", accent:"var(--c-cs-db-accent)", text:"var(--c-cs-db-text)" }
   },
   "네트워크": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-net-bg)", mid:"var(--c-cs-net-mid)", accent:"var(--c-cs-net-accent)", text:"var(--c-cs-net-text)" }
   },
   "프로그래밍 언어론": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-pl-bg)", mid:"var(--c-cs-pl-mid)", accent:"var(--c-cs-pl-accent)", text:"var(--c-cs-pl-text)" }
   },
   "소프트웨어공학": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-se-bg)", mid:"var(--c-cs-se-mid)", accent:"var(--c-cs-se-accent)", text:"var(--c-cs-se-text)" }
   },
   "이산수학": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-discrete-bg)", mid:"var(--c-cs-discrete-mid)", accent:"var(--c-cs-discrete-accent)", text:"var(--c-cs-discrete-text)" }
   },
   "컴파일러": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-compiler-bg)", mid:"var(--c-cs-compiler-mid)", accent:"var(--c-cs-compiler-accent)", text:"var(--c-cs-compiler-text)" }
   },
   "인공지능": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-ai-bg)", mid:"var(--c-cs-ai-mid)", accent:"var(--c-cs-ai-accent)", text:"var(--c-cs-ai-text)" }
   },
   "정보보안": {
-    area: "전공 CS", areaKey: "cs",
+    area: "전공", areaKey: "cs",
     color: { bg:"var(--c-cs-sec-bg)", mid:"var(--c-cs-sec-mid)", accent:"var(--c-cs-sec-accent)", text:"var(--c-cs-sec-text)" }
   },
   // ── 전공 정보교육 ──
   "컴퓨팅 사고력(CT)": {
-    area: "전공 정보교육", areaKey: "info",
+    area: "교과교육학", areaKey: "info",
     color: { bg:"var(--c-info-ct-bg)", mid:"var(--c-info-ct-mid)", accent:"var(--c-info-ct-accent)", text:"var(--c-info-ct-text)" }
   },
   "정보과 교육과정": {
-    area: "전공 정보교육", areaKey: "info",
+    area: "교과교육학", areaKey: "info",
     color: { bg:"var(--c-info-curriculum-bg)", mid:"var(--c-info-curriculum-mid)", accent:"var(--c-info-curriculum-accent)", text:"var(--c-info-curriculum-text)" }
   },
   "교수학습 방법": {
-    area: "전공 정보교육", areaKey: "info",
+    area: "교과교육학", areaKey: "info",
     color: { bg:"var(--c-info-teach-bg)", mid:"var(--c-info-teach-mid)", accent:"var(--c-info-teach-accent)", text:"var(--c-info-teach-text)" }
   },
   "SW·AI 교육론": {
-    area: "전공 정보교육", areaKey: "info",
+    area: "교과교육학", areaKey: "info",
     color: { bg:"var(--c-info-swai-bg)", mid:"var(--c-info-swai-mid)", accent:"var(--c-info-swai-accent)", text:"var(--c-info-swai-text)" }
   },
   "평가론": {
-    area: "전공 정보교육", areaKey: "info",
+    area: "교과교육학", areaKey: "info",
     color: { bg:"var(--c-info-eval-bg)", mid:"var(--c-info-eval-mid)", accent:"var(--c-info-eval-accent)", text:"var(--c-info-eval-text)" }
   }
 };
