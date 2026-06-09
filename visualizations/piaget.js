@@ -133,9 +133,10 @@
     const style = document.createElement('style');
     style.id = 'piaget-style';
     style.textContent = `
-      #piaget-wrap{--s-bg:#FBF0E6;--s-accent:#C87840;--s-border:#F0C89A;}
+      #piaget-wrap{--s-bg:#FBF0E6;--s-accent:#C87840;--s-border:#F0C89A;max-width:100%;box-sizing:border-box;}
+      #piaget-wrap *{box-sizing:border-box;}
       #piaget-wrap .p-timeline{display:flex;border-radius:12px;overflow:hidden;border:1px solid var(--color-border-tertiary,#e0ddd8);margin-bottom:20px;}
-      #piaget-wrap .p-tl{flex:1;padding:10px 6px 8px;cursor:pointer;text-align:center;border-right:1px solid var(--color-border-tertiary,#e0ddd8);transition:background .15s;}
+      #piaget-wrap .p-tl{flex:1;padding:10px 6px 8px;cursor:pointer;text-align:center;border-right:1px solid var(--color-border-tertiary,#e0ddd8);transition:background .15s;min-width:0;}
       #piaget-wrap .p-tl:last-child{border-right:none;}
       #piaget-wrap .p-tl.on{background:var(--s-bg);}
       #piaget-wrap .p-tl-num{font-size:11px;font-weight:700;margin-bottom:2px;}
@@ -143,7 +144,7 @@
       #piaget-wrap .p-tl-age{font-size:10px;color:#A09890;}
       #piaget-wrap .p-tl-bar{height:3px;border-radius:2px;opacity:0;margin-top:7px;transition:opacity .15s;}
       #piaget-wrap .p-tl.on .p-tl-bar{opacity:1;}
-      #piaget-wrap .p-panel{background:#fff;border:1px solid #e0ddd8;border-radius:14px;padding:22px 24px;margin-bottom:14px;}
+      #piaget-wrap .p-panel{background:#fff;border:1px solid #e0ddd8;border-radius:14px;padding:20px 20px;margin-bottom:14px;}
       #piaget-wrap .p-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:18px;}
       #piaget-wrap .p-badge{width:48px;height:48px;border-radius:12px;background:var(--s-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--s-border);}
       #piaget-wrap .p-badge-num{font-size:18px;font-weight:700;color:var(--s-accent);}
@@ -183,6 +184,18 @@
       #piaget-wrap .p-ccard-name{font-size:12px;font-weight:700;margin-bottom:5px;}
       #piaget-wrap .p-ccard-desc{font-size:11px;line-height:1.6;color:#6B6560;}
       #piaget-wrap .p-ccard-ex{font-size:10px;margin-top:5px;color:#A09890;line-height:1.5;}
+      @media(max-width:600px){
+        #piaget-wrap .p-grid2{grid-template-columns:1fr;}
+        #piaget-wrap .p-panel{padding:16px 14px;}
+        #piaget-wrap .p-core-grid{grid-template-columns:1fr 1fr;}
+        #piaget-wrap .p-tl-name{font-size:10px;}
+        #piaget-wrap .p-tl-age{display:none;}
+        #piaget-wrap .p-viz{flex-wrap:wrap;}
+      }
+      @media(max-width:400px){
+        #piaget-wrap .p-core-grid{grid-template-columns:1fr;}
+        #piaget-wrap .p-nbtn{padding:8px 12px;font-size:12px;}
+      }
     `;
     document.head.appendChild(style);
   }
