@@ -5,11 +5,18 @@
     font-weight: normal;
     font-display: swap;
 }
-/* 오뮤 다예쁨 폰트 */
+/* IM 혜민체 폰트 */
 @font-face {
-    font-family: 'OmuDaye';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+    font-family: 'ImHyeMin';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Regular.woff2') format('woff');
     font-weight: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'ImHyeMin';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Bold.woff2') format('woff');
+    font-weight: 700;
     font-display: swap;
 }
 /* Pretendard 폰트 */
@@ -43,7 +50,7 @@
 :root {
   --font-main:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   --font-heading: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-  --font-body:    'JeonnamEducationYuna', 'Apple SD Gothic Neo', sans-serif;
+  --font-body:    'ImHyeMin', 'Apple SD Gothic Neo', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
     
   --bg-page:    #F7F5F2;
