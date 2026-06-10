@@ -283,7 +283,7 @@ const CONCEPTS = [
   {subject:"운영체제",chapter:"파일시스템",name:"디스크 스케줄링",keywords:"FCFS·SSTF·SCAN·C-SCAN·LOOK",freq:"중간",viz:true,quiz:true},
   // ══ 컴퓨터 구조 ══
   {subject:"컴퓨터 구조",chapter:"논리회로",name:"부울 대수·게이트·카르노맵",keywords:"AND·OR·NOT·NAND·NOR·XOR·카르노맵",freq:"높음",viz:true,quiz:true},
-  {subject:"컴퓨터 구조",chapter:"디지털 논리",name:"조합회로·순서회로",keywords:"가산기·멀티플렉서·플립플롭·레지스터",freq:"중간",viz:true,quiz:true},
+  {subject:"컴퓨터 구조",chapter:"논리회로",name:"조합논리회로·순서논리회로",keywords:"가산기·멀티플렉서·플립플롭·레지스터",freq:"높음",viz:true,quiz:true},
   {subject:"컴퓨터 구조",chapter:"데이터 표현",name:"수의 표현·진법변환",keywords:"2진수·8진수·16진수·BCD",freq:"높음",viz:true,quiz:true},
   {subject:"컴퓨터 구조",chapter:"데이터 표현",name:"정수 표현 — 보수",keywords:"1의보수·2의보수·부호절대값",freq:"높음",viz:true,quiz:true},
   {subject:"컴퓨터 구조",chapter:"데이터 표현",name:"부동소수점 (IEEE 754)",keywords:"단정도·배정도·지수·가수·정밀도",freq:"높음",viz:true,quiz:true},
@@ -401,7 +401,6 @@ const CONCEPTS = [
   {subject:"운영체제",chapter:"입출력 관리",name:"I/O 인터럽트·DMA",keywords:"폴링vs인터럽트·DMA제어기·채널",freq:"중간",viz:false,quiz:true},
   // 디스크 스케줄링은 기존 파일시스템 챕터에 이미 있음
   // ══ 컴퓨터 구조 (추가) ══
-  {subject:"컴퓨터 구조",chapter:"논리회로",name:"조합논리회로·순서논리회로",keywords:"가산기·MUX/DEMUX·플립플롭·레지스터",freq:"높음",viz:true,quiz:true},
   {subject:"컴퓨터 구조",chapter:"명령어 구조",name:"RISC vs CISC·주소지정 방식",keywords:"명령어 형식·직접/간접/레지스터/즉시 주소",freq:"높음",viz:true,quiz:true},
   {subject:"컴퓨터 구조",chapter:"입출력 구조",name:"버스·인터럽트·DMA",keywords:"시스템버스·PCI·버스중재·데이지체인",freq:"중간",viz:false,quiz:true},
   // ══ 데이터베이스 (추가) ══
