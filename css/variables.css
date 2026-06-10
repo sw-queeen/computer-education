@@ -8,11 +8,10 @@
 /* IM 혜민체 폰트 */
 @font-face {
     font-family: 'ImHyeMin';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Regular.woff2') format('woff');
-    font-weight: normal;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Bold.woff2') format('woff');
+    font-weight: 700;
     font-display: swap;
 }
-
 @font-face {
     font-family: 'ImHyeMin';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Bold.woff2') format('woff');
