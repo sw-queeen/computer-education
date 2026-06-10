@@ -169,7 +169,7 @@
             ${stageRows.map((r,i) => `
               <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.08));${i%2?'background:var(--bg-page,#FAF9F7)':''}">
                 <td style="padding:8px 10px;font-weight:600;color:var(--text-primary,#2C2825);">${r[0]}</td>
-                <td style="padding:8px 10px;text-align:center;color:var(--text-secondary,#6B6560);white-space:nowrap;">${r[1]}</td>
+                <td style="padding:8px 10px;text-align:left;color:var(--text-secondary,#6B6560);white-space:nowrap;">${r[1]}</td>
                 <td style="padding:8px 10px;color:${ACCENT};font-weight:600;">${r[2]}</td>
                 <td style="padding:8px 10px;color:var(--text-secondary,#6B6560);">${r[3]}</td>
               </tr>`).join('')}
@@ -203,14 +203,14 @@
         </div>
       </div>
       <!-- 차이점 -->
-      <div style="font-size:11px;font-weight:700;color:#6058C0;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;">차이점</div>
+      <div style="font-size:11px;font-weight:700;color:#C05808;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;">차이점</div>
       <div class="pc-table-wrap">
         <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:400px;font-family:${FONT};">
           <thead>
             <tr style="background:${BG};">
               <th style="padding:8px 10px;border-bottom:2px solid ${ACCENT};color:${ACCENT};font-weight:700;">구분</th>
               <th style="padding:8px 10px;border-bottom:2px solid ${ACCENT};color:${ACCENT};font-weight:700;text-align:center;">피아제</th>
-              <th style="padding:8px 10px;border-bottom:2px solid #6058C0;color:#6058C0;font-weight:700;text-align:center;">비고츠키</th>
+              <th style="padding:8px 10px;border-bottom:2px solid var(--border-mid,rgba(0,0,0,.14));color:var(--text-secondary,#6B6560);font-weight:700;text-align:center;">비고츠키</th>
             </tr>
           </thead>
           <tbody>
@@ -256,7 +256,6 @@
         ${[
           ['혼동 주의', '#D05840', '#fff3f1', '피아제의 불평형 = 사회적 상호작용으로 해소" → X. 개인 내적 과정(동화·조절)으로 해소됨. 사회적 상호작용은 비고츠키.'],
           ['혼동 주의', '#D05840', '#fff3f1', '"반성적 추상화 = 메타인지" → X. 반성적 추상화는 형식적조작기의 추상사고 능력.'],
-          ['핵심 암기', '#2D8A6A', '#f0faf6', '보존개념 순서: <strong>수·양·무게·부피</strong> ("수양무부"로 외우기)'],
           ['핵심 암기', '#2D8A6A', '#f0faf6', '형식적조작기 특징 5가지: 추상적·자기중심적(엘킨드)·명제적·가설연역적·조합적 사고'],
         ].map(([label, labelColor, bg, text]) => `
           <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;border-left:3px solid ${labelColor};">
@@ -329,7 +328,7 @@
     { type:'ox', q:'구체적조작기 아동은 "장미꽃 8송이와 꽃 중 어느 게 더 많아?"에 틀릴 수 있다.', answer:'O', explain:'부분-전체 포함관계 이해는 전조작기에서 어렵고 구체적조작기로 가면서 획득됨.' },
     { type:'ox', q:'피아제의 "불평형"은 사회적 상호작용을 통해 해소된다.', answer:'X', explain:'불평형은 개인 내적 과정(동화·조절)으로 해소. 사회적 상호작용 강조는 비고츠키.' },
     { type:'ox', q:'형식적조작기는 모든 청소년이 반드시 도달하는 단계이다.', answer:'X', explain:'교육·문화 환경에 따라 달라지며 모든 사람이 완전히 도달하지는 않음.' },
-    { type:'fill', q:'보존 개념의 획득 순서는 (   ) → (   ) → (   ) → (   ) 이다.', answer:'수 → 양 → 무게 → 부피', explain:'수(6~7세) → 양(7~8세) → 무게(9~10세) → 부피(11~12세). "수양무부"로 암기!' },
+    { type:'fill', q:'구체적조작기에서 논리적 사고가 가능하려면 반드시 (   )이 필요하다.', answer:'구체적 사물 (직접 경험할 수 있는 것)', explain:'구체적조작기는 눈앞의 구체적 사물·경험에 한해서만 논리적 사고 가능. 추상적 상황은 형식적조작기에 가능.' },
     { type:'fill', q:'전조작기에서 구체적조작기로 넘어갈 때 극복되는 핵심 특징은 (   )이다.', answer:'자기중심성 (탈중심화)', explain:'세 산 과제(Three Mountains Task)로 측정. 자기중심성 극복 → 탈중심화.' },
     { type:'fill', q:'기존 도식으로 설명이 안 될 때 도식 자체를 수정·확장하는 것을 (   )이라고 한다.', answer:'조절 (Accommodation)', explain:'동화(기존 도식에 맞춤)와 달리 조절은 도식 자체가 변함.' },
     { type:'mc', q:'다음 중 구체적조작기의 특징이 아닌 것은?', options:['보존 개념 획득','가역성 이해','탈중심화','가설연역적 추론','분류·서열화'], answer:3, explain:'가설연역적 추론은 형식적조작기의 핵심. 구체적조작기는 구체적 사물에 한해서만 논리적 사고 가능.' },

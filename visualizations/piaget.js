@@ -112,15 +112,15 @@
       viz: [{ icon: "❓", label: "가설 설정" }, { icon: "🔬", label: "체계적 검증" }, { icon: "💡", label: "결론 도출" }],
       concepts: {
         "추상적 사고(반성적 추상화)":
-          "구체적인 경험 없이도 추상적인 개념을 이해할 수 있는 능력. 예: 1/3은 5/15와 같다 / 하루라도 책을 읽지 않으면 입안에 가시가 돋는다.",
+          "구체적인 경험 없이도 추상적인 개념을 이해할 수 있는 능력.\n예) 1/3은 5/15와 같다 / '하루라도 책을 읽지 않으면 입안에 가시가 돋는다'는 비유적 표현 이해",
         "자기중심적 사고 (by Elkind)":
-          "모든 사람들이 자신의 사고와 감정, 행동에 관심이 있다고 생각하는 능력. ① 상상적 청중 — 모두가 나를 쳐다보고 나에게 관심이 있다고 생각. ② 개인우화 — 영화의 주인공처럼 백만장자가 될 수 있다고 생각. ③ 불멸의 환상 — 죽지 않는다고 생각.",
+          "모든 사람이 자신의 사고·감정·행동에 관심이 있다고 생각.\n① 상상적 청중 — 모두가 나를 쳐다본다고 생각\n② 개인우화 — 나는 특별하고 남과 다르다고 생각 (백만장자가 될 것 등)\n③ 불멸의 환상 — 나는 죽지 않는다고 생각",
         "명제적 사고":
-          "명제를 바탕으로 가설을 설정하고 논리적으로 추론하는 능력. 예: A는 B보다 크지만 무게는 가볍다.",
+          "명제를 바탕으로 가설을 설정하고 논리적으로 추론하는 능력.\n예) 'A는 B보다 크고, B는 C보다 크다면 A는 C보다 크다' — 실물 없이 명제만으로 추론",
         "가설연역적 사고":
-          "가설적 상황을 설정하고 그 가설을 검증해 연역적 추론을 할 수 있는 능력. 예: 모든 사람의 키가 같으면 어떻게 될까?",
+          "가설적 상황을 설정하고 검증하여 연역적 추론을 하는 능력.\n예) '모든 사람의 키가 같다면 어떻게 될까?'처럼 현실에 없는 상황도 논리적으로 전개",
         "조합적 사고":
-          "어떤 한 문제에 직면했을 때 해결 가능한 방법을 다방면으로 모색할 수 있는 능력. 예: 빨간·파랑·노랑색으로 몇 가지 색을 만들 수 있을까? — 구체적조작기 아동은 막 섞지만, 형식적조작기 아동은 하나씩 섞어 체계적으로 실험한다."
+          "문제 해결 가능한 방법을 체계적으로 모두 탐색하는 능력.\n예) 빨강·파랑·노랑으로 만들 수 있는 모든 색 조합 — 구체적조작기 아동은 무작위로 섞지만, 형식적조작기 아동은 한 번씩 체계적으로 실험"
       },
       exam: [
         "형식적조작기 5가지 특징 순서 암기: 추상적·자기중심적·명제적·가설연역적·조합적 사고",
@@ -135,23 +135,23 @@
   const CORE = [
     {
       name: "도식 (Schema)", accent: "#C87840", bg: "#FBF0E6",
-      desc: "세상을 이해하는 인지적 틀. 경험이 쌓이면서 점점 정교해진다.",
-      ex: "예: '개' 도식 — 처음엔 털 있고 네 발 → 점점 세분화됨"
+      desc: "세상을 이해하는 인지적 틀. 경험이 쌓이면서 점점 정교해지고 세분화됨.",
+      ex: "예: 처음엔 '네 발 달린 동물 = 강아지' → 경험 후 강아지·고양이·소로 분화"
     },
     {
       name: "동화 (Assimilation)", accent: "#4EA87A", bg: "#E6F2EC",
-      desc: "자신의 기존 인지구조에 새로운 개념을 포함하는 과정. 도식은 변하지 않는다.",
-      ex: "예: 고양이를 처음 보고 '강아지!'라고 함"
+      desc: "새로운 경험을 기존 도식에 끼워 맞추는 과정. 도식 자체는 변하지 않음.",
+      ex: "예: 고양이를 처음 보고 기존 '강아지' 도식에 넣어 '강아지!'라고 함"
     },
     {
       name: "조절 (Accommodation)", accent: "#6058C0", bg: "#EAE8F8",
-      desc: "자신의 인지구조 자체를 변화하는 과정. 기존 도식으로 설명이 안 될 때 도식을 수정·확장한다.",
-      ex: "예: 고양이가 강아지와 다르다는 걸 알고 도식 수정"
+      desc: "기존 도식으로 설명이 안 될 때 도식 자체를 수정·확장하는 과정.",
+      ex: "예: 고양이가 강아지와 다르다는 걸 알고 '고양이' 도식을 새로 형성"
     },
     {
       name: "평형화 (Equilibration)", accent: "#C4688E", bg: "#F5E6EC",
-      desc: "동화·조절을 통해 인지발달(인지적 평형화)이 일어난다. 불평형 → 평형 욕구 발생 → 동화 또는 조절 → 인지발달.",
-      ex: "불평형★ → 평형★ 욕구 → 동화★ 또는 조절★ → 인지발달"
+      desc: "불평형 상태 → 평형 욕구 → 동화 또는 조절 → 새로운 평형(인지발달). 인지 성장의 원동력.",
+      ex: "예: 길쭉한 컵이 납작한 컵보다 물이 많다고 생각(불평형) → 가역성 획득으로 같음을 이해(평형)"
     }
   ];
 
@@ -269,7 +269,19 @@
     const tabs = keys.map(k =>
       `<button class="p-ctab ${k === activeConcept ? 'on' : ''}" onclick="piagetSwitchConcept('${k}')">${k}</button>`
     ).join('');
-    return `<div class="p-ctabs">${tabs}</div><div class="p-ccontent">${s.concepts[activeConcept]}</div>`;
+    const raw = s.concepts[activeConcept];
+    // \n 기준으로 본문 설명과 예시 분리
+    const parts = raw.split('\n');
+    const mainDesc = parts[0];
+    const examples = parts.slice(1).filter(p => p.trim());
+    const exHtml = examples.length
+      ? `<div style="margin-top:10px;padding:8px 12px;background:var(--bg-page,#F7F5F2);border-radius:8px;border-left:2px solid var(--s-accent);">
+          ${examples.map(e => `<div style="font-size:12px;color:var(--s-accent);line-height:1.8;">${e}</div>`).join('')}
+        </div>` : '';
+    return `<div class="p-ctabs">${tabs}</div>
+      <div class="p-ccontent">
+        <div style="line-height:1.75;">${mainDesc}</div>${exHtml}
+      </div>`;
   }
 
   function render() {
@@ -361,11 +373,13 @@
     cur = Math.max(0, Math.min(STAGES.length - 1, cur + d));
     activeConcept = null;
     render();
+    setTimeout(() => { mountEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
   };
   window.piagetJump = function (i) {
     cur = i;
     activeConcept = null;
     render();
+    setTimeout(() => { mountEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
   };
   window.piagetSwitchConcept = function (k) {
     activeConcept = k;

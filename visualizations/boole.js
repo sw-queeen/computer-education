@@ -318,8 +318,7 @@
     </div>`;
   }
 
-  /* ── 간소화 엔진 ──────────────────────────────── */
-  // n: 변수 수, cv: 셀 값 배열
+  /* ── 간소화 엔진 (XOR 기반 올바른 인접 그루핑) ── */
   function simplify(n, cv) {
     const size = 1 << n;
     const ones = [], dc = [];
@@ -331,59 +330,86 @@
     if (ones.length + dc.length === size) return { expr: 'F = 1', grouped: new Set() };
 
     const all = [...ones, ...dc];
-    const grouped = new Set();
-    const terms = [];
 
-    // 그룹 크기 큰 것부터 (2^n, 2^(n-1), ..., 1)
-    for (let gs = 1 << n; gs >= 1; gs >>= 1) {
-      for (let base = 0; base < size; base++) {
-        const group = getGroup(n, base, gs, all);
-        if (!group) continue;
-        const onesInGroup = group.filter(m => ones.includes(m));
-        if (!onesInGroup.length) continue;
-        // 이미 커버된 것만 있으면 스킵 (최소 하나는 새 것 커버해야)
-        if (onesInGroup.every(m => grouped.has(m))) continue;
-        const term = groupToTerm(n, group);
-        if (term !== null) {
-          terms.push(term);
-          onesInGroup.forEach(m => grouped.add(m));
+    // 가능한 모든 prime implicant 생성 (크기 내림차순)
+    const primeImplicants = []; // { ones[], mask, val }
+    for (let gs = size; gs >= 1; gs >>= 1) {
+      for (let mask = 0; mask < size; mask++) {
+        if (popcount(mask) !== Math.log2(gs)) continue; // don't care 비트 수 = log2(gs)
+        // mask 비트가 1인 위치는 don't care, 0인 위치는 고정
+        // val은 고정 비트 패턴
+        for (let val = 0; val < size; val++) {
+          if (val & mask) continue; // don't care 자리에 1이 오면 스킵
+          // 그룹 구성: don't care 비트 자유롭게 채운 모든 조합
+          const grp = [];
+          for (let dc2 = 0; dc2 < (1 << popcount(mask)); dc2++) {
+            // mask의 1인 비트 위치에 dc2의 비트를 채움
+            let m = val;
+            let bit = 0;
+            for (let b = 0; b < n; b++) {
+              if (mask & (1 << b)) { if ((dc2 >> bit) & 1) m |= (1 << b); bit++; }
+            }
+            grp.push(m);
+          }
+          if (!grp.every(m => all.includes(m))) continue;
+          const onesInGrp = grp.filter(m => ones.includes(m));
+          if (!onesInGrp.length) continue;
+          const term = buildTerm(n, val, mask);
+          primeImplicants.push({ ones: onesInGrp, grp, term, size: gs });
         }
       }
-      if (ones.every(m => grouped.has(m))) break;
     }
 
-    // 아직 커버 안 된 minterm 직접 추가
-    ones.filter(m => !grouped.has(m)).forEach(m => {
-      terms.push(mintermToTerm(n, m));
-      grouped.add(m);
+    // 중복 제거
+    const unique = [];
+    const seen = new Set();
+    for (const pi of primeImplicants) {
+      const key = pi.grp.sort((a,b)=>a-b).join(',');
+      if (!seen.has(key)) { seen.add(key); unique.push(pi); }
+    }
+
+    // 필수 PI 선택 (essential prime implicant)
+    const covered = new Set();
+    const selected = [];
+    for (const m of ones) {
+      const coverers = unique.filter(pi => pi.ones.includes(m));
+      if (coverers.length === 1) {
+        if (!selected.includes(coverers[0])) {
+          selected.push(coverers[0]);
+          coverers[0].ones.forEach(x => covered.add(x));
+        }
+      }
+    }
+    // 나머지: 가장 많이 커버하는 PI 선택
+    const sorted = unique
+      .filter(pi => !selected.includes(pi))
+      .sort((a, b) => b.size - a.size);
+    for (const pi of sorted) {
+      if (ones.every(m => covered.has(m))) break;
+      const news = pi.ones.filter(m => !covered.has(m));
+      if (news.length > 0) { selected.push(pi); news.forEach(m => covered.add(m)); }
+    }
+    ones.filter(m => !covered.has(m)).forEach(m => {
+      selected.push({ grp: [m], ones: [m], term: mintermToTerm(n, m) });
+      covered.add(m);
     });
 
-    const unique = [...new Set(terms)].filter(Boolean);
-    return { expr: 'F = ' + (unique.join(' + ') || '0'), grouped };
+    const grouped = new Set(selected.flatMap(p => p.ones));
+    const terms = [...new Set(selected.map(p => p.term))].filter(Boolean);
+    return { expr: 'F = ' + (terms.join(' + ') || '0'), grouped };
   }
 
-  // 주어진 base에서 gs 크기 그룹이 유효한지 반환
-  function getGroup(n, base, gs, all) {
-    // gs가 2의 거듭제곱인지 확인
-    if (gs & (gs - 1)) return null;
-    const size = 1 << n;
-    // 그룹의 모든 셀은 exactly (n - log2(gs))개 변수가 고정
-    const bits_fixed = n - Math.log2(gs);
-    if (bits_fixed < 0 || !Number.isInteger(bits_fixed)) return null;
+  function popcount(x) { let c=0; while(x){c+=x&1;x>>=1;} return c; }
 
-    // base의 하위 log2(gs) 비트를 0으로 만든 시작점
-    const logGs = Math.log2(gs);
-    if (!Number.isInteger(logGs)) return null;
-
-    // 연속 비트 그루핑만 지원 (wrap 포함)
-    const group = [];
-    for (let i = 0; i < gs; i++) {
-      group.push((base + i) & (size - 1));
+  function buildTerm(n, val, mask) {
+    const vars = n===3?['A','B','C']:['A','B','C','D'];
+    let t = '';
+    for (let i = n-1; i >= 0; i--) {
+      if (!(mask & (1<<i))) { // 고정 비트만
+        t += (val & (1<<i)) ? vars[n-1-i] : vars[n-1-i]+"'";
+      }
     }
-    // 모든 셀이 all에 있어야 함
-    if (!group.every(m => all.includes(m))) return null;
-    // XOR로 변하는 비트가 연속이어야 함 (그레이코드 순서 체크 생략, 근사 처리)
-    return group;
+    return t || '1';
   }
 
   function groupToTerm(n, group) {
@@ -456,6 +482,11 @@
     document.querySelectorAll('#boole-wrap .bv-tab').forEach((t,i) => {
       t.classList.toggle('on', ['sim','kmap','laws'][i]===name);
     });
+    // 탭 전환 시 시각화 상단으로 스크롤
+    setTimeout(() => {
+      const wrap = document.getElementById('boole-wrap');
+      if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   };
 
   window.bvSetGate = function(name) {
