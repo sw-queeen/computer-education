@@ -26,7 +26,13 @@
     font-weight: normal;
     font-display: swap;
 }
-
+/* BelovedMyoeunttobak 폰트 */
+@font-face {
+    font-family: 'BelovedMyoeunttobak';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-1@1.0/Griun_Myoeunddobak-Rg.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
 :root {
   --font-main:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   --font-heading: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
