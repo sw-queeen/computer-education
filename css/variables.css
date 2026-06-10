@@ -1,9 +1,15 @@
-/* Pretendard: HTML <head>에서 CDN link로 로드 */
+/* NostalgicGellyRoll 폰트 */
+@font-face {
+  font-family: 'NostalgicGellyRoll';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-1@1.0/Griun_Gellyroll-Rg.woff2') format('woff2');
+  font-weight: normal;
+  font-display: swap;
+}
 
 :root {
-  --font-main:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-  --font-heading: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-  --font-body:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  --font-main:    'NostalgicGellyRoll', 'Apple SD Gothic Neo', sans-serif;
+  --font-heading: 'NostalgicGellyRoll', 'Apple SD Gothic Neo', sans-serif;
+  --font-body:    'NostalgicGellyRoll', 'Apple SD Gothic Neo', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
   --bg-page:    #F7F5F2;
