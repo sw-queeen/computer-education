@@ -3,6 +3,7 @@
 html { font-size: 15px; }
 body {
   font-family: var(--font-body, var(--font-main));
+  font-size: var(--size-body);
   background: var(--bg-page);
   color: var(--text-primary);
   line-height: 1.6;
