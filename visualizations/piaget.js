@@ -275,8 +275,8 @@
     const mainDesc = parts[0];
     const examples = parts.slice(1).filter(p => p.trim());
     const exHtml = examples.length
-      ? `<div style="margin-top:10px;padding:8px 12px;background:var(--bg-page,#F7F5F2);border-radius:8px;border-left:2px solid var(--s-accent);">
-          ${examples.map(e => `<div style="font-size:12px;color:var(--s-accent);line-height:1.8;">${e}</div>`).join('')}
+      ? `<div style="margin-top:8px;font-size:11px;color:var(--text-secondary,#6B6560);line-height:1.7;padding-left:4px;">
+          ${examples.map(e => `<div>${e}</div>`).join('')}
         </div>` : '';
     return `<div class="p-ctabs">${tabs}</div>
       <div class="p-ccontent">
@@ -297,7 +297,15 @@
     ).join('');
 
     const charList = s.chars.map(c => `<li style="margin-bottom:3px;">${c}</li>`).join('');
-    const examList = s.exam.map(e => `<li style="margin-bottom:3px;">${e}</li>`).join('');
+    // 기출 연도 [xxxx] 태그를 문장 앞으로 이동
+    function fmtExam(text) {
+      const m = text.match(/\[([^\]]+)\]/);
+      if (!m) return text;
+      const tag = m[1];
+      const body = text.replace(/\s*\[[^\]]+\]/, '').trim();
+      return `<span style="display:inline-block;background:var(--s-bg);color:var(--s-accent);font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-right:6px;">${tag}</span>${body}`;
+    }
+    const examList = s.exam.map(e => `<li style="margin-bottom:5px;">${fmtExam(e)}</li>`).join('');
 
     const coreCards = CORE.map(c =>
       `<div class="p-ccard" style="background:${c.bg};border:1px solid ${c.accent}22;">
@@ -373,13 +381,20 @@
     cur = Math.max(0, Math.min(STAGES.length - 1, cur + d));
     activeConcept = null;
     render();
-    setTimeout(() => { mountEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+    // CORE 박스 아래, 타임라인 위 (= 타임라인 element 기준)
+    setTimeout(() => {
+      const tl = document.querySelector('#piaget-wrap .p-timeline');
+      if (tl) tl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   };
   window.piagetJump = function (i) {
     cur = i;
     activeConcept = null;
     render();
-    setTimeout(() => { mountEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
+    setTimeout(() => {
+      const tl = document.querySelector('#piaget-wrap .p-timeline');
+      if (tl) tl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   };
   window.piagetSwitchConcept = function (k) {
     activeConcept = k;

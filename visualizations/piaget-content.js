@@ -61,7 +61,7 @@
           <span style="color:var(--text-secondary,#6B6560);">${r[1]}</span>
         </div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;">
-          <span style="background:#EAE8F8;color:#6058C0;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">${headers[2]}</span>
+          <span style="background:#FFF0E8;color:#C05808;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">${headers[2]}</span>
           <span style="color:var(--text-secondary,#6B6560);">${r[2]}</span>
         </div>
       </div>`).join('');
@@ -161,7 +161,7 @@
           <thead>
             <tr style="background:${BG};">
               ${['단계','연령','핵심 성취','주요 특징'].map((h,i) =>
-                `<th style="padding:8px 10px;${i===1?'text-align:center;':'text-align:left;'}font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};">${h}</th>`
+                `<th style="padding:8px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};">${h}</th>`
               ).join('')}
             </tr>
           </thead>
@@ -210,7 +210,7 @@
             <tr style="background:${BG};">
               <th style="padding:8px 10px;border-bottom:2px solid ${ACCENT};color:${ACCENT};font-weight:700;">구분</th>
               <th style="padding:8px 10px;border-bottom:2px solid ${ACCENT};color:${ACCENT};font-weight:700;text-align:center;">피아제</th>
-              <th style="padding:8px 10px;border-bottom:2px solid var(--border-mid,rgba(0,0,0,.14));color:var(--text-secondary,#6B6560);font-weight:700;text-align:center;">비고츠키</th>
+              <th style="padding:8px 10px;border-bottom:2px solid #C05808;color:#C05808;font-weight:700;text-align:center;">비고츠키</th>
             </tr>
           </thead>
           <tbody>
