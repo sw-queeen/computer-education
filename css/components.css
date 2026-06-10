@@ -29,9 +29,11 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 60px 0 20px; /* 오른쪽 60px = 버튼(36) + 여백(24) */
+  padding: 0 52px 0 20px; /* 오른쪽: 버튼(36) + 여백(16) */
   background: var(--bg-white);
   border-bottom: 1px solid var(--border-light);
+  /* 버튼 absolute 기준점 명확화 */
+  contain: layout;
 }
 
 /* 탑바 아래 콘텐츠 행 */
@@ -159,9 +161,9 @@ a { color: inherit; text-decoration: none; }
 }
 .topbar-search {
   flex: 1;
+  min-width: 80px;
   max-width: 320px;
   margin-left: auto;
-  margin-right: 0;   /* 버튼은 absolute라 겹침 방지 필요 없음, padding-right으로 처리 */
   position: relative;
 }
 .topbar-search input {
