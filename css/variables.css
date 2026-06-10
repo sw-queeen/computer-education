@@ -1,3 +1,10 @@
+/* 전남교육유나 폰트 */
+@font-face {
+    font-family: 'JeonnamEducationYuna';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-1@1.0/JNE-Yuna-TTF-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
 /* 오뮤 다예쁨 폰트 */
 @font-face {
     font-family: 'OmuDaye';
@@ -36,7 +43,7 @@
 :root {
   --font-main:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   --font-heading: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-  --font-body:    'BelovedMyoeunttobak', 'Apple SD Gothic Neo', sans-serif;
+  --font-body:    'JeonnamEducationYuna', 'Apple SD Gothic Neo', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
   --bg-page:    #F7F5F2;
