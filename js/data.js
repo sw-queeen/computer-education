@@ -150,7 +150,7 @@ const CONCEPTS = [
   {subject:"교육심리학",chapter:"개인차",name:"창의성",keywords:"수렴적·확산적 사고·길포드·창의성 신장",freq:"중간",viz:false,quiz:true},
   {subject:"교육심리학",chapter:"개인차",name:"학습양식",keywords:"시각형·청각형·운동형·콜브 경험학습",freq:"낮음",viz:false,quiz:true},
   // ══ 교수학습이론 ══
-  {subject:"교수학습이론",chapter:"교수설계",name:"가네 9가지 수업사태",keywords:"주의획득·목표제시·선행학습자극 등",freq:"높음",viz:true,quiz:true},
+  {subject:"교수학습이론",chapter:"교수설계",name:"가네 9가지 수업사태",keywords:"주의획득·목표제시·선수회상·자극제시·학습안내·수행유도·피드백·평가·파지전이",freq:"높음",viz:true,quiz:true},
   {subject:"교수학습이론",chapter:"교수설계",name:"켈러 ARCS 동기설계",keywords:"주의·관련성·자신감·만족감",freq:"높음",viz:true,quiz:true},
   {subject:"교수학습이론",chapter:"교수설계",name:"딕·캐리 체제적 교수설계",keywords:"ISD 10단계·형성평가·수정",freq:"중간",viz:true,quiz:true},
   {subject:"교수학습이론",chapter:"교수설계",name:"메릴 내용요소제시이론",keywords:"내용유형·수행수준·일차/이차제시형",freq:"중간",viz:false,quiz:true},
