@@ -46,6 +46,8 @@
   --font-body:    'JeonnamEducationYuna', 'Apple SD Gothic Neo', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
+  --size-body:    2rem;
+    
   --bg-page:    #F7F5F2;
   --bg-white:   #FFFFFF;
   --bg-surface: #F0EDE8;
