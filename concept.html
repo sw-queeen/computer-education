@@ -155,6 +155,11 @@ function switchTab(btn, targetId) {
     const el = document.getElementById(id);
     if (el) el.style.display = id === targetId ? '' : 'none';
   });
+  // 탭 전환 시 탭 바 위치로 스크롤
+  setTimeout(() => {
+    const tabBar = document.querySelector('.detail-tabs');
+    if (tabBar) tabBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
 }
 
 /* ── 파일 로드 ─────────────────────────────────────── */
