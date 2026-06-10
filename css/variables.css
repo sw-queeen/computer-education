@@ -1,3 +1,10 @@
+/* Pretendard 폰트 */
+@font-face {
+    font-family: 'Pretendard';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-display: swap;
+}
 /* NostalgicGellyRoll 폰트 */
 @font-face {
   font-family: 'NostalgicGellyRoll';
@@ -5,11 +12,18 @@
   font-weight: normal;
   font-display: swap;
 }
+/* NostalgicMyoeunHeullim 폰트 */
+@font-face {
+    font-family: 'NostalgicMyoeunHeullim';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-1@1.0/Griun_MyoeunHeullim-Rg.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
 
 :root {
-  --font-main:    'NostalgicGellyRoll', 'Apple SD Gothic Neo', sans-serif;
-  --font-heading: 'NostalgicGellyRoll', 'Apple SD Gothic Neo', sans-serif;
-  --font-body:    'NostalgicGellyRoll', 'Apple SD Gothic Neo', sans-serif;
+  --font-main:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  --font-heading: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+  --font-body:    'NostalgicMyoeunHeullim', 'Apple SD Gothic Neo', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
 
   --bg-page:    #F7F5F2;
