@@ -87,7 +87,7 @@
             </div>`).join('')}
         </div>
 
-        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:13px 16px;">
+        <div style="background:${BG};border-radius:10px;padding:13px 16px;">
           <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:8px;">내적 조건 — 학습자의 내적 인지과정</div>
           ${[
             ['선행학습', '이전에 학습한 내적 능력이 있어야 한다.'],
@@ -107,24 +107,14 @@
     <!-- 9가지 수업사태 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">9가지 수업사태</div>
-      <div class="gc-table-wrap">
-        <table style="width:100%;border-collapse:collapse;font-size:12px;font-family:${FONT};">
-          <thead>
-            <tr style="background:${BG};">
-              <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};white-space:nowrap;">내적 과정</th>
-              <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};">수업(외적)사태</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${steps.map(([inner,outer,star],i) => `
-              <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.07));${i%2?'background:var(--bg-page,#faf9f7)':''}">
-                <td style="padding:7px 10px;color:var(--text-secondary,#6B6560);white-space:nowrap;">${inner}</td>
-                <td style="padding:7px 10px;font-weight:${star?'700':'500'};color:${star?ACCENT:'var(--text-primary,#2C2825)'};">${outer}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
+      <div style="display:flex;flex-direction:column;gap:4px;font-family:${FONT};">
+        ${steps.map(([inner,outer,star],i) => `
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:var(--bg-surface,#F0EDE8);">
+            <span style="width:20px;height:20px;border-radius:50%;background:${star?ACCENT:'var(--text-tertiary,#A09890)'};color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</span>
+            <span style="font-size:11px;color:var(--text-tertiary,#A09890);white-space:nowrap;min-width:90px;">${inner}</span>
+            <span style="font-size:13px;font-weight:${star?'700':'500'};color:${star?ACCENT:'var(--text-primary,#2C2825)'};">→ ${outer}</span>
+          </div>`).join('')}
       </div>
-      <div style="margin-top:6px;font-size:11px;color:var(--text-tertiary,#A09890);font-family:${FONT};">오렌지 강조(4·5·6단계) — 내적 과정과 짝지어 자주 출제</div>
     </div>
 
     <!-- 5가지 수업목표 : 콤팩트 리스트 + 과제분석 한눈에 -->

@@ -127,11 +127,11 @@
             <span>${step.num}</span>
           </div>
           <div class="gv-step-body">
-            <div>
-              <span class="gv-inner-badge">내적 과정</span>
-              <span class="gv-step-inner-text" style="color:${step.color};">${step.inner}</span>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <span class="gv-step-inner-text" style="color:var(--text-tertiary,#A09890);font-size:11px;">${step.inner}</span>
+              <span style="color:var(--text-tertiary,#C0BBB0);font-size:10px;">→</span>
+              <span class="gv-step-outer" style="margin:0;">${step.outer}</span>
             </div>
-            <div class="gv-step-outer">${step.outer}</div>
             <div class="gv-step-desc">${step.desc}</div>
             <div class="gv-step-example">${step.example}</div>
           </div>
@@ -143,24 +143,43 @@
       <div style="text-align:center;padding:12px 0 4px;font-size:11px;color:var(--text-tertiary,#A09890);">단계를 클릭하면 상세 설명이 펼쳐집니다</div>`;
   }
 
+  let activeGoal = null;
+
   function renderGoal() {
     return `
-      <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:14px;line-height:1.7;">
-        가네는 수업목표(학습결과)를 5가지로 구분하고, 각각 다른 교수방법을 처방해야 한다고 주장했다.<br>
-        <strong style="color:${ACCENT};">각 영역마다 과제분석 방법이 다르다는 점이 시험 핵심.</strong>
+      <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:14px;line-height:1.7;font-family:${FONT};">
+        가네는 학습결과(수업목표)를 5가지로 구분하고, 목표 유형마다 다른 교수방법을 처방해야 한다고 주장했다.
       </div>
-      <div class="gv-goal-grid">
-        ${GOALS.map(g => `
-          <div class="gv-goal-card" style="border-left-color:${g.border};">
-            <div class="gv-goal-name" style="color:${g.color};">${g.name}</div>
-            <div class="gv-goal-desc">${g.desc}</div>
-            <div class="gv-goal-analysis" style="color:${g.border};">▶ ${g.method}</div>
-            <div style="font-size:10px;color:var(--text-secondary,#6B6560);margin-top:2px;">${g.analysis}</div>
-            <div class="gv-goal-method">효과적 학습방법</div>
-            <div style="font-size:11px;color:var(--text-secondary,#6B6560);">${g.effective}</div>
-            <div class="gv-goal-method" style="margin-top:6px;">예시</div>
-            <div style="font-size:11px;color:var(--text-secondary,#6B6560);">${g.example}</div>
-          </div>`).join('')}
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        ${GOALS.map((g,i) => {
+          const isOn = activeGoal === i;
+          return `
+          <div onclick="gagneGoal(${i})"
+            style="border-radius:12px;border:1.5px solid ${isOn?g.border:'var(--border-light,rgba(0,0,0,.08))'};
+              background:${isOn?g.border+'18':'var(--bg-white,#fff)'};cursor:pointer;overflow:hidden;transition:all .15s;">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;">
+              <div style="width:32px;height:32px;border-radius:50%;background:${g.border};color:white;
+                font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</div>
+              <div style="flex:1;">
+                <div style="font-size:14px;font-weight:700;color:${g.color};font-family:${FONT};">${g.name}</div>
+                <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-top:1px;font-family:${FONT};">${g.desc}</div>
+              </div>
+              <div style="font-size:10px;font-weight:700;color:${g.border};background:${g.border}22;
+                padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;font-family:${FONT};">${g.method.replace('과제분석: ','')}</div>
+              <span style="font-size:14px;color:var(--text-tertiary,#A09890);flex-shrink:0;">${isOn?'▲':'▽'}</span>
+            </div>
+            ${isOn ? `
+            <div style="padding:0 16px 14px 60px;font-family:${FONT};">
+              <div style="width:100%;height:1px;background:${g.border}30;margin-bottom:10px;"></div>
+              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:4px;font-weight:700;letter-spacing:.04em;">과제분석 방법</div>
+              <div style="font-size:12px;color:var(--text-primary,#2C2825);margin-bottom:10px;">${g.analysis}</div>
+              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:4px;font-weight:700;letter-spacing:.04em;">효과적 학습방법</div>
+              <div style="font-size:12px;color:var(--text-primary,#2C2825);margin-bottom:10px;">${g.effective}</div>
+              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:4px;font-weight:700;letter-spacing:.04em;">예시</div>
+              <div style="font-size:12px;color:var(--text-primary,#2C2825);">${g.example}</div>
+            </div>` : ''}
+          </div>`;
+        }).join('')}
       </div>`;
   }
 
@@ -176,6 +195,12 @@
   window.gagneStep = function(num) {
     activeStep = activeStep === num ? null : num;
     render();
+  };
+
+  window.gagneGoal = function(i) {
+    activeGoal = activeGoal === i ? null : i;
+    const wrap = document.getElementById('gv-goal');
+    if (wrap) wrap.innerHTML = renderGoal();
   };
 
   function init() {
