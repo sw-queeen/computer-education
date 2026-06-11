@@ -69,44 +69,42 @@
       </div>
     </div>
 
-    <!-- 학습의 조건 : 좌우 2단 카드 -->
+    <!-- 학습의 조건 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">학습의 조건</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:${FONT};">
+      <div style="display:flex;flex-direction:column;gap:10px;font-family:${FONT};">
 
         <div style="background:${BG};border-radius:10px;padding:13px 16px;">
-          <div style="font-size:11px;font-weight:700;color:${ACCENT};letter-spacing:.05em;margin-bottom:10px;">① 외적 조건</div>
-          <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:8px;">학습자 외부의 교수사태</div>
+          <div style="font-size:13px;font-weight:700;color:${ACCENT};margin-bottom:8px;">외적 조건 — 학습자 외부에서 가해지는 교수사태</div>
           ${[
-            ['강화의 원리', '보상이 주어질 때 학습이 잘 일어난다.'],
-            ['접근의 원리', '자극·반응이 시간적으로 근접할 때 학습이 잘 일어난다.'],
-            ['반복의 원리', '반복 연습 시 학습이 증진되고 파지가 잘 일어난다.'],
+            ['강화의 원리', '새로운 행동의 학습은 그 행동에 대해 보상이 주어질 때 잘 일어난다.'],
+            ['접근의 원리', '자극과 반응이 시간적으로 근접할 때 학습이 더 잘 일어난다.'],
+            ['반복의 원리', '반복 연습을 하면 학습이 증진되고 파지가 더 잘 일어난다.'],
           ].map(([t,d]) => `
-            <div style="margin-bottom:7px;">
-              <span style="font-size:12px;font-weight:700;color:${ACCENT};">${t}</span>
-              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-top:1px;line-height:1.5;">${d}</div>
+            <div style="display:flex;gap:8px;align-items:baseline;font-size:12px;margin-bottom:5px;">
+              <span style="font-weight:700;color:${ACCENT};white-space:nowrap;">${t}</span>
+              <span style="color:var(--text-secondary,#6B6560);">${d}</span>
             </div>`).join('')}
         </div>
 
         <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:13px 16px;">
-          <div style="font-size:11px;font-weight:700;color:var(--text-secondary,#6B6560);letter-spacing:.05em;margin-bottom:10px;">② 내적 조건</div>
-          <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:8px;">학습자의 내적 인지과정</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:8px;">내적 조건 — 학습자의 내적 인지과정</div>
           ${[
-            ['선행학습', '이전에 학습한 내적 능력'],
-            ['학습동기', '학습자의 능동적 학습동기'],
-            ['자아개념', '자신감과 긍정적 자아개념'],
-            ['주의력',   '학습에 주의를 집중하는 능력'],
+            ['선행학습', '이전에 학습한 내적 능력이 있어야 한다.'],
+            ['학습동기', '학습자의 능동적인 학습동기가 있어야 한다.'],
+            ['자아개념', '학습에 대한 자신감과 긍정적 자아개념이 있어야 한다.'],
+            ['주의력',   '학습이 성공하기 위해서는 학습에 주의를 집중할 수 있어야 한다.'],
           ].map(([t,d]) => `
-            <div style="margin-bottom:7px;">
-              <span style="font-size:12px;font-weight:700;color:var(--text-primary,#2C2825);">${t}</span>
-              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-top:1px;">${d}</div>
+            <div style="display:flex;gap:8px;align-items:baseline;font-size:12px;margin-bottom:5px;">
+              <span style="font-weight:700;color:var(--text-primary,#2C2825);white-space:nowrap;">${t}</span>
+              <span style="color:var(--text-secondary,#6B6560);">${d}</span>
             </div>`).join('')}
         </div>
 
       </div>
     </div>
 
-    <!-- 9가지 수업사태 : 테이블, 핵심 3개 행 강조 -->
+    <!-- 9가지 수업사태 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">9가지 수업사태</div>
       <div class="gc-table-wrap">
@@ -114,21 +112,19 @@
           <thead>
             <tr style="background:${BG};">
               <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};white-space:nowrap;">내적 과정</th>
-              <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};white-space:nowrap;">수업(외적)사태</th>
+              <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};">수업(외적)사태</th>
             </tr>
           </thead>
           <tbody>
             ${steps.map(([inner,outer,star],i) => `
-              <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.07));${star?`background:${BG};`:(i%2?'background:var(--bg-page,#faf9f7)':'')}">
+              <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.07));${i%2?'background:var(--bg-page,#faf9f7)':''}">
                 <td style="padding:7px 10px;color:var(--text-secondary,#6B6560);white-space:nowrap;">${inner}</td>
-                <td style="padding:7px 10px;font-weight:${star?'800':'600'};color:${star?ACCENT:'var(--text-primary,#2C2825)'};">
-                  ${outer}${star?` <span style="font-size:10px;font-weight:600;color:${ACCENT};opacity:.7;">빈출</span>`:''}
-                </td>
+                <td style="padding:7px 10px;font-weight:${star?'700':'500'};color:${star?ACCENT:'var(--text-primary,#2C2825)'};">${outer}</td>
               </tr>`).join('')}
           </tbody>
         </table>
       </div>
-      <div style="margin-top:6px;font-size:11px;color:var(--text-tertiary,#A09890);font-family:${FONT};">오렌지 강조: 4·5·6단계 — 내적과정과 짝지어 자주 출제</div>
+      <div style="margin-top:6px;font-size:11px;color:var(--text-tertiary,#A09890);font-family:${FONT};">오렌지 강조(4·5·6단계) — 내적 과정과 짝지어 자주 출제</div>
     </div>
 
     <!-- 5가지 수업목표 : 콤팩트 리스트 + 과제분석 한눈에 -->
@@ -178,7 +174,7 @@
               ['6단계', '수행 유도 — 실제 문제 상황 적용'],
             ].map(([stage,text],i) => `
               <div style="display:flex;gap:7px;align-items:flex-start;">
-                <span style="background:${ACCENT};color:white;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span>
+                <span style="background:#A09890;color:white;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span>
                 <span style="color:var(--text-primary,#2C2825);"><strong style="color:${ACCENT};">${stage}</strong> ${text}</span>
               </div>`).join('')}
           </div>
