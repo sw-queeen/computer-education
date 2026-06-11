@@ -136,7 +136,7 @@
             <div class="gv-step-example">${step.example}</div>
           </div>
         </div>
-        ${i < STEPS.length-1 ? '<div class="gv-arrow">↓</div>' : ''}`;
+        ${i < STEPS.length-1 ? '<div style="height:4px;"></div>' : ''}`;
     }).join('');
 
     return `<div class="gv-flow">${items}</div>

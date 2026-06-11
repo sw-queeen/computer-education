@@ -82,7 +82,7 @@
             ['반복의 원리', '반복 연습을 하면 학습이 증진되고 파지가 더 잘 일어난다.'],
           ].map(([t,d]) => `
             <div style="display:flex;gap:8px;align-items:baseline;font-size:12px;margin-bottom:5px;">
-              <span style="font-weight:700;color:${ACCENT};white-space:nowrap;">${t}</span>
+              <span style="font-weight:700;color:var(--text-primary,#2C2825);white-space:nowrap;">${t}</span>
               <span style="color:var(--text-secondary,#6B6560);">${d}</span>
             </div>`).join('')}
         </div>
@@ -112,7 +112,7 @@
           <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:var(--bg-surface,#F0EDE8);">
             <span style="width:20px;height:20px;border-radius:50%;background:${star?ACCENT:'var(--text-tertiary,#A09890)'};color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</span>
             <span style="font-size:11px;color:var(--text-tertiary,#A09890);white-space:nowrap;min-width:90px;">${inner}</span>
-            <span style="font-size:13px;font-weight:${star?'700':'500'};color:${star?ACCENT:'var(--text-primary,#2C2825)'};">→ ${outer}</span>
+            <span style="font-size:13px;font-weight:${star?'700':'500'};color:${star?ACCENT:'var(--text-primary,#2C2825)'};">→ ${outer.replace(/^\d+\.\s*/,'')}</span>
           </div>`).join('')}
       </div>
     </div>
