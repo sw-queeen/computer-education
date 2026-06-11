@@ -67,22 +67,22 @@
       </div>`).join('');
   }
 
-  // ── 출제연도 태그 파싱 ([2011중] → 앞으로 + 볼드 컬러)
+  // ── 출제연도 태그 파싱 ([2011중] → 앞으로 + prim 색상)
   function parseExamItem(text) {
     const match = text.match(/\[(.+?)\]/);
     if (!match) return `<span style="color:var(--text-primary,#2C2825);">${text}</span>`;
     const tag = match[1];
     const body = text.replace(/\s*\[.+?\]/, '').trim();
-    return `<span class="pc-point-tag" style="background:var(--bg-surface,#F0EDE8);color:var(--text-secondary,#6B6560);font-weight:700;">${tag}</span><span style="color:var(--text-primary,#2C2825);">${body}</span>`;
+    return `<span class="pc-point-tag" style="background:${BG};color:${ACCENT};font-weight:700;">${tag}</span><span style="color:var(--text-primary,#2C2825);">${body}</span>`;
   }
 
-  // 연도 없는 항목을 위로 정렬
+  // 연도 있는 항목 위로, 없는 항목 하단으로 정렬
   function sortExamItems(items) {
     return [...items].sort((a, b) => {
       const aHasTag = /\[.+?\]/.test(a);
       const bHasTag = /\[.+?\]/.test(b);
-      if (!aHasTag && bHasTag) return -1;
-      if (aHasTag && !bHasTag) return 1;
+      if (aHasTag && !bHasTag) return -1;
+      if (!aHasTag && bHasTag) return 1;
       return 0;
     });
   }

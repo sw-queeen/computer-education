@@ -47,25 +47,26 @@
     if (!el) return;
 
     const statuses = [
-      { name:'정체감 유실(폐쇄)', en:'Identity Foreclosure', crisis:false, comm:true,
+      { name:'정체감 유실(폐쇄)', crisis:false, comm:true,
         accent:'#C87840', bg:'#FBF0E6',
         desc:'정체성 위기를 경험하지 않았지만 정체성이 확립된 것처럼 행동하는 단계',
-        keyword:'남의 가치관을 그대로 따름', freq:true },
-      { name:'정체감 성취(확립)', en:'Identity Achievement', crisis:true, comm:true,
+        keyword:'남의 가치관을 그대로 따름' },
+      { name:'정체감 성취(확립)', crisis:true, comm:true,
         accent:'#3A8858', bg:'#E6F2EC',
         desc:'스스로 탐색하고 전념하여 목표를 성취해 정체성을 확립한 단계',
-        keyword:'삶의 목표를 능동적으로 선택함', freq:false },
-      { name:'정체감 혼미', en:'Identity Diffusion', crisis:false, comm:false,
+        keyword:'삶의 목표를 능동적으로 선택함' },
+      { name:'정체감 혼미', crisis:false, comm:false,
         accent:'#7848A8', bg:'#F5F0F8',
         desc:'정체성을 찾으려고 노력을 하지 않는 단계',
-        keyword:'가치 있는 활동에 전념하지 않음', freq:false },
-      { name:'정체감 유예(모라토리움)', en:'Identity Moratorium', crisis:true, comm:false,
+        keyword:'가치 있는 활동에 전념하지 않음' },
+      { name:'정체감 유예(모라토리움)', crisis:true, comm:false,
         accent:'#3A5AA0', bg:'#E6EAF5',
         desc:'정체성 위기를 경험하고 정체성 확립을 위해 적극적으로 탐색하는 단계',
-        keyword:'적극적으로 정체성을 탐색함', freq:true },
+        keyword:'적극적으로 정체성을 탐색함' },
     ];
 
     el.innerHTML = `
+    <!-- 개요 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.intro}</div>
       <div style="background:${BG};border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.9;color:var(--text-primary,#2C2825);font-family:${FONT};">
@@ -74,35 +75,35 @@
       </div>
     </div>
 
+    <!-- 두 가지 기준 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">정체감 지위 구분 기준</div>
       <div style="display:flex;flex-direction:column;gap:10px;font-family:${FONT};">
-        <div style="background:${BG};border-radius:10px;padding:13px 16px;border-left:3px solid ${ACCENT};">
-          <div style="font-size:13px;font-weight:800;color:${ACCENT};margin-bottom:4px;">① 위기 (탐색, crisis)</div>
-          <div style="font-size:13px;color:var(--text-primary,#2C2825);">"직업과 가치관 선택에 <strong>고민과 갈등</strong>을 느꼈는가?"</div>
-          <div style="font-size:11px;color:var(--text-tertiary,#A09890);margin-top:4px;">정체성을 탐색하는 과정에서 갈등·고민을 경험했는지 여부</div>
+        <div style="background:${BG};border-radius:10px;padding:13px 16px;">
+          <div style="font-size:11px;color:var(--text-tertiary,#A09890);margin-bottom:3px;">정체성을 탐색하는 과정에서 갈등·고민을 경험했는지 여부</div>
+          <div style="font-size:13px;font-weight:800;color:${ACCENT};">위기 (탐색, crisis)</div>
+          <div style="font-size:13px;color:var(--text-primary,#2C2825);margin-top:3px;">직업과 가치관 선택에 <strong>고민과 갈등</strong>을 느꼈는가?</div>
         </div>
-        <div style="background:${BG};border-radius:10px;padding:13px 16px;border-left:3px solid ${ACCENT};">
-          <div style="font-size:13px;font-weight:800;color:${ACCENT};margin-bottom:4px;">② 전념 (몰입·수행, commitment)</div>
-          <div style="font-size:13px;color:var(--text-primary,#2C2825);">"주어진 역할과 과업에 <strong>몰입</strong>을 했는가?"</div>
-          <div style="font-size:11px;color:var(--text-tertiary,#A09890);margin-top:4px;">특정 가치관·목표에 헌신하고 있는지 여부</div>
+        <div style="background:${BG};border-radius:10px;padding:13px 16px;">
+          <div style="font-size:11px;color:var(--text-tertiary,#A09890);margin-bottom:3px;">특정 가치관·목표에 헌신하고 있는지 여부</div>
+          <div style="font-size:13px;font-weight:800;color:${ACCENT};">전념 (몰입·수행, commitment)</div>
+          <div style="font-size:13px;color:var(--text-primary,#2C2825);margin-top:3px;">주어진 역할과 과업에 <strong>몰입</strong>을 했는가?</div>
         </div>
       </div>
     </div>
 
+    <!-- 4가지 정체감 지위 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">4가지 정체감 지위</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
         ${statuses.map(st => `
-          <div style="border-radius:12px;background:${st.bg};padding:14px 16px;border-left:${st.freq?`4px solid ${st.accent}`:`4px solid ${st.accent}55`};">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+          <div style="border-radius:12px;background:${st.bg};padding:14px 16px;border-left:4px solid ${st.accent};">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
               <span style="font-size:14px;font-weight:800;color:${st.accent};">${st.name}</span>
-              ${st.freq ? `<span style="font-size:10px;font-weight:700;color:${st.accent};background:${st.accent}18;padding:1px 7px;border-radius:4px;">빈출</span>` : ''}
-              <span style="font-size:10px;font-style:italic;color:var(--text-tertiary,#A09890);">${st.en}</span>
             </div>
             <div style="display:flex;gap:6px;margin-bottom:8px;">
-              <span class="mc-status-pill" style="background:${st.crisis?'#3A5AA022':'rgba(0,0,0,.06)'};color:${st.crisis?'#3A5AA0':'var(--text-tertiary,#A09890)'};">위기 ${st.crisis?'○':'✕'}</span>
-              <span class="mc-status-pill" style="background:${st.comm?'#3A885822':'rgba(0,0,0,.06)'};color:${st.comm?'#3A8858':'var(--text-tertiary,#A09890)'};">전념 ${st.comm?'○':'✕'}</span>
+              <span class="mc-status-pill" style="background:${st.crisis?st.accent+'22':'rgba(0,0,0,.06)'};color:${st.crisis?st.accent:'var(--text-tertiary,#A09890)'};">위기 ${st.crisis?'○':'✕'}</span>
+              <span class="mc-status-pill" style="background:${st.comm?st.accent+'22':'rgba(0,0,0,.06)'};color:${st.comm?st.accent:'var(--text-tertiary,#A09890)'};">전념 ${st.comm?'○':'✕'}</span>
             </div>
             <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">${st.desc}</div>
             <div style="font-size:11px;font-weight:700;color:${st.accent};">› ${st.keyword}</div>
@@ -110,8 +111,9 @@
       </div>
     </div>
 
+    <!-- 교육적 시사점 -->
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">자아정체감 높이는 방법 (교육적 시사점)</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">교육적 시사점 (자아정체감 높이는 방법)</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
         ${[
           ['교사 측면',     '교사의 솔선수범',           '청소년기 가장 중요한 관계는 교사. 교사의 언행이 모델링에 영향을 주므로 잘못된 모델링을 하지 않도록 신경써야 한다.', '#C87840'],
@@ -126,40 +128,54 @@
       </div>
     </div>
 
+    <!-- 다른 이론과 비교 -->
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.essay}</div>
-      <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.9;color:var(--text-primary,#2C2825);font-family:${FONT};">
-        <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:6px;">
-          <span style="width:20px;height:20px;border-radius:50%;background:#A09890;color:white;font-size:10px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">①</span>
-          <span><strong>두 가지 기준 제시</strong> — 위기(crisis)와 전념(commitment)</span>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">다른 이론과 비교</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
+        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
+          <div style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-bottom:4px;">에릭슨 — 토대</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">자아정체감 대 역할혼미 (5단계)</div>
+          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">마르시아는 에릭슨의 5단계 위기(자아정체감 대 역할혼미) 이론을 조작적으로 확장한 것. 에릭슨이 제시한 정체성 탐색의 개념을 위기·전념 두 기준으로 구체화했다.</div>
         </div>
-        <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:6px;">
-          <span style="width:20px;height:20px;border-radius:50%;background:#A09890;color:white;font-size:10px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">②</span>
-          <span><strong>해당 지위 명칭 + 정의</strong> — 예: "정체감 유예란 ~ 단계이다."</span>
-        </div>
-        <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:6px;">
-          <span style="width:20px;height:20px;border-radius:50%;background:#A09890;color:white;font-size:10px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">③</span>
-          <span><strong>위기·전념 여부 명시</strong> — "위기 ○ / 전념 ✕"</span>
-        </div>
-        <div style="display:flex;gap:10px;align-items:baseline;">
-          <span style="width:20px;height:20px;border-radius:50%;background:#A09890;color:white;font-size:10px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">④</span>
-          <span><strong>특징 키워드</strong> — "적극적으로 정체성을 탐색함"</span>
+        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
+          <div style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-bottom:4px;">에릭슨 — 심리적 유예기</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">모라토리움(moratorium)</div>
+          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">유예 지위에 있는 청소년의 지배적 심리 상태. 에릭슨은 청소년기에 심리적 유예기를 일정 기간 경험하는 것이 정체성 발달에 바람직하다고 보았다.</div>
         </div>
       </div>
     </div>
 
+    <!-- 논술 답안 구조 -->
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.check}</div>
+      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
+      <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.9;color:var(--text-primary,#2C2825);font-family:${FONT};">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          ${[
+            ['두 가지 기준 제시', '위기(crisis)와 전념(commitment)'],
+            ['해당 지위 명칭 + 정의', '예: "정체감 유예란 ~ 단계이다."'],
+            ['위기·전념 여부 명시', '"위기 ○ / 전념 ✕"'],
+            ['특징 키워드', '"적극적으로 정체성을 탐색함"'],
+          ].map(([title, desc], i) => `
+            <div style="display:flex;gap:8px;align-items:baseline;">
+              <span style="color:#A09890;font-weight:700;font-size:12px;flex-shrink:0;">${i+1}.</span>
+              <span><strong>${title}</strong> — ${desc}</span>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>
+
+    <!-- 체크 포인트 -->
+    <div class="detail-section">
+      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
         ${[
           ['혼동 주의', '#D05840', '정체감 유실 vs 유예 — 둘 다 위기나 전념 중 하나가 ✕이지만, 어떤 것이 ✕인지 정반대'],
           ['핵심 암기', '#2D8A6A', '유·성·혼·예 순서 — 위기: ✕ ○ ✕ ○ / 전념: ○ ○ ✕ ✕'],
-          ['에릭슨 연결', ACCENT, '마르시아는 에릭슨의 5단계(자아정체감 대 역할혼미) 이론을 조작적으로 확장한 것'],
-          ['심리적 유예기', ACCENT, '유예 상태에 있는 청소년의 지배적 심리 상태. 청소년기 일정 기간 경험은 바람직'],
+          ['혼동 주의', '#D05840', '정체감 성취 ≠ 외부에서 목표를 부여받은 것 — 스스로 탐색 후 능동적으로 선택해야 성취'],
         ].map(([label, color, content]) => `
-          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--bg-surface,#F0EDE8);border-radius:8px;border-left:3px solid ${color};">
-            <span style="font-size:10px;font-weight:700;color:${color};white-space:nowrap;padding-top:1px;min-width:64px;">${label}</span>
-            <span style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;">${content}</span>
+          <div style="background:var(--bg-surface,#F0EDE8);border-radius:8px;padding:10px 14px;border-left:3px solid ${color};">
+            <span style="display:inline-block;background:${color};color:white;font-size:10px;font-weight:700;padding:1px 8px;border-radius:20px;margin-right:8px;letter-spacing:.02em;">${label}</span>
+            <span style="color:var(--text-primary,#2C2825);">${content}</span>
           </div>`).join('')}
       </div>
     </div>`;
@@ -183,6 +199,15 @@
       '에릭슨 심리적 유예기와 마르시아 유예 지위의 관계',
     ];
 
+    function sortExamItems(items) {
+      return [...items].sort((a, b) => {
+        const aHas = /\[.+?\]/.test(a), bHas = /\[.+?\]/.test(b);
+        if (aHas && !bHas) return -1;
+        if (!aHas && bHas) return 1;
+        return 0;
+      });
+    }
+
     el.innerHTML = `
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.exam.history}</div>
@@ -196,7 +221,7 @@
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#A83222;">${C.exam.freq}</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
-        ${freqItems.map(item => `
+        ${sortExamItems(freqItems).map(item => `
           <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;border-left:2px solid #D05840;">
             ${parseExamItem(item)}
           </div>`).join('')}
@@ -205,7 +230,7 @@
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#8A6010;">${C.exam.normal}</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
-        ${normalItems.map(item => `
+        ${sortExamItems(normalItems).map(item => `
           <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;border-left:2px solid #C8A830;">
             ${parseExamItem(item)}
           </div>`).join('')}
@@ -325,9 +350,7 @@
   }
 
   /* ── 초기화 ── */
-  function init() {
-    renderSummary(); renderExam(); renderQuiz();
-  }
+  function init() { renderSummary(); renderExam(); renderQuiz(); }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
