@@ -46,115 +46,114 @@
     const el = $('tab-summary');
     if (!el) return;
 
-    // 수업사태 표 데이터 — ★ 있는 항목은 색상 강조 (기호 제거)
     const steps = [
-      ['주의집중',               '1. 주의집중 획득',    false, '수업이 이루어지기 위해 학습자의 주의력을 획득해야 한다.'],
-      ['기대',                   '2. 학습목표 제시',    false, '수업 후 얻게 되는 수업결과를 명확히 알려줌으로써 기대감과 동기를 향상시킨다.'],
-      ['장기→단기 인출',         '3. 선수학습 회상',    false, '새로운 지식은 선행학습을 기반으로 이루어지므로, 이전 학습내용을 먼저 확인한다.'],
-      ['선택적 지각',            '4. 자극자료 제시',    true,  '학습자에게 학습 내용을 제시하는 단계. 독특한 특징을 부각하면 기억하기 쉽다. 선택적 지각 촉진.'],
-      ['의미의 부호화',          '5. 학습안내 제공',    true,  '학습 내용들을 종합하고 상관관계를 제시하여 장기기억을 돕는다. 부호화·정교화·스캐폴딩 활용.'],
-      ['반응',                   '6. 수행 유도',        true,  '학습한 내용을 유사한 실제 문제 상황에 적용해보는 단계.'],
-      ['강화',                   '7. 피드백 제공',      false, '성공 수행에는 즉각 강화(칭찬), 실패 시에는 재학습 기회 제공 후 긍정적 피드백.'],
-      ['인출과 강화',            '8. 형성평가 (수행평가)', false, '수업목표 달성 여부를 평가. 단순암기가 아닌 수행평가로 이해 점검.'],
-      ['일반화',                 '9. 파지와 전이 증진', false, '연습 기회를 계속 제공하여 장기기억 저장(파지)과 다른 상황에의 적용(전이)을 증진한다.'],
-    ];
-
-    // 5가지 수업목표 — ★ 제거
-    const goals = [
-      ['언어정보', '명제적(선언적) 지식. 사실·개념·원리를 기억해 언어로 표현', '군집분석', '#D4874A', BG],
-      ['지적기능', '방법적(절차적) 지식. 상징적 기호를 사용하여 진술하는 능력', '위계분석', '#3A5AA0', '#E6EAF5'],
-      ['인지전략', '기억·사고 전략을 찾아내 활용하는 능력. 메타인지 포함', '위계·절차 분석', '#2A9E94', '#E0F5F2'],
-      ['태도',     '특정 사건·사물·사람에 대한 개인적 성향', '통합분석', '#8050B8', '#EEE8F5'],
-      ['운동기능', '신체 근육을 활용하여 특정 동작을 수행하는 능력', '절차분석', '#D05840', '#FAE8E4'],
+      ['주의집중',            '1. 주의집중 획득',       false],
+      ['기대',                '2. 학습목표 제시',        false],
+      ['장기→단기 인출',      '3. 선수학습 회상',        false],
+      ['선택적 지각',         '4. 자극자료 제시',        true ],
+      ['의미의 부호화',       '5. 학습안내 제공',        true ],
+      ['반응',                '6. 수행 유도',            true ],
+      ['강화',                '7. 피드백 제공',          false],
+      ['인출과 강화',         '8. 형성평가 (수행평가)',  false],
+      ['일반화',              '9. 파지와 전이 증진',     false],
     ];
 
     el.innerHTML = `
+    <!-- 개요 : 배경색 박스 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.intro}</div>
-      <div style="background:${BG};border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.85;color:var(--text-primary,#2C2825);font-family:${FONT};">
+      <div style="background:${BG};border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.9;color:var(--text-primary,#2C2825);font-family:${FONT};">
         <strong>가네(R. Gagné, 1916~2002)</strong> — 미국 교육심리학자.<br>
         학습목표에 따라 적합한 교수방법을 처방해야 한다는 교수설계이론 주창.<br>
         교수활동은 <strong>인간의 내적 학습과정</strong>에 맞추어 이루어져야 한다는 것이 핵심 전제.
       </div>
     </div>
 
+    <!-- 학습의 조건 : 좌우 2단 카드 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">학습의 조건</div>
-      <div style="display:flex;flex-direction:column;gap:10px;font-family:${FONT};">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-family:${FONT};">
 
-        <!-- 외적 조건 -->
-        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 16px;">
-          <div style="font-weight:700;color:${ACCENT};margin-bottom:8px;font-size:13px;">① 학습자의 외적 조건 — 학습자 외부에서 가해지는 다양한 교수사태</div>
-          <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;">
-            ${[
-              ['강화의 원리', '새로운 행동의 학습은 그 행동에 대해 보상이 주어질 때 잘 일어난다.'],
-              ['접근의 원리', '자극과 반응이 시간적으로 근접할 때 학습이 더 잘 일어난다.'],
-              ['반복의 원리', '반복 연습을 하면 학습이 증진되고 파지가 더 잘 일어난다.'],
-            ].map(([t,d]) => `
-              <div style="display:flex;gap:6px;">
-                <span style="font-weight:700;color:${ACCENT};white-space:nowrap;">${t}</span>
-                <span style="color:var(--text-secondary,#6B6560);">– ${d}</span>
-              </div>`).join('')}
-          </div>
+        <div style="background:${BG};border-radius:10px;padding:13px 16px;">
+          <div style="font-size:11px;font-weight:700;color:${ACCENT};letter-spacing:.05em;margin-bottom:10px;">① 외적 조건</div>
+          <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:8px;">학습자 외부의 교수사태</div>
+          ${[
+            ['강화의 원리', '보상이 주어질 때 학습이 잘 일어난다.'],
+            ['접근의 원리', '자극·반응이 시간적으로 근접할 때 학습이 잘 일어난다.'],
+            ['반복의 원리', '반복 연습 시 학습이 증진되고 파지가 잘 일어난다.'],
+          ].map(([t,d]) => `
+            <div style="margin-bottom:7px;">
+              <span style="font-size:12px;font-weight:700;color:${ACCENT};">${t}</span>
+              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-top:1px;line-height:1.5;">${d}</div>
+            </div>`).join('')}
         </div>
 
-        <!-- 내적 조건 -->
-        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 16px;">
-          <div style="font-weight:700;color:${ACCENT};margin-bottom:8px;font-size:13px;">② 학습자의 내적 조건 — 학습자의 내적 인지과정</div>
-          <div style="display:flex;flex-direction:column;gap:5px;font-size:12px;">
-            ${[
-              ['선행학습',  '이전에 학습한 내적 능력이 있어야 한다.'],
-              ['학습동기',  '학습자의 능동적인 학습동기가 있어야 한다.'],
-              ['자아개념',  '학습에 대한 자신감과 긍정적 자아개념이 있어야 한다.'],
-              ['주의력',    '학습이 성공하기 위해서는 학습에 주의를 집중할 수 있어야 한다.'],
-            ].map(([t,d]) => `
-              <div style="display:flex;gap:6px;">
-                <span style="font-weight:700;color:${ACCENT};white-space:nowrap;">${t}</span>
-                <span style="color:var(--text-secondary,#6B6560);">– ${d}</span>
-              </div>`).join('')}
-          </div>
+        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:13px 16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-secondary,#6B6560);letter-spacing:.05em;margin-bottom:10px;">② 내적 조건</div>
+          <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:8px;">학습자의 내적 인지과정</div>
+          ${[
+            ['선행학습', '이전에 학습한 내적 능력'],
+            ['학습동기', '학습자의 능동적 학습동기'],
+            ['자아개념', '자신감과 긍정적 자아개념'],
+            ['주의력',   '학습에 주의를 집중하는 능력'],
+          ].map(([t,d]) => `
+            <div style="margin-bottom:7px;">
+              <span style="font-size:12px;font-weight:700;color:var(--text-primary,#2C2825);">${t}</span>
+              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-top:1px;">${d}</div>
+            </div>`).join('')}
         </div>
 
       </div>
     </div>
 
+    <!-- 9가지 수업사태 : 테이블, 핵심 3개 행 강조 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">9가지 수업사태</div>
       <div class="gc-table-wrap">
         <table style="width:100%;border-collapse:collapse;font-size:12px;font-family:${FONT};">
           <thead>
             <tr style="background:${BG};">
-              <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};">내적 과정</th>
-              <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};">수업(외적)사태</th>
-              <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};">설명</th>
+              <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};white-space:nowrap;">내적 과정</th>
+              <th style="padding:7px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};white-space:nowrap;">수업(외적)사태</th>
             </tr>
           </thead>
           <tbody>
-            ${steps.map(([inner,outer,star,desc],i) => `
-              <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.07));${i%2?'background:var(--bg-page,#faf9f7)':''}">
+            ${steps.map(([inner,outer,star],i) => `
+              <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.07));${star?`background:${BG};`:(i%2?'background:var(--bg-page,#faf9f7)':'')}">
                 <td style="padding:7px 10px;color:var(--text-secondary,#6B6560);white-space:nowrap;">${inner}</td>
-                <td style="padding:7px 10px;font-weight:700;color:${star?ACCENT:'var(--text-primary,#2C2825)'};white-space:nowrap;">${outer}</td>
-                <td style="padding:7px 10px;color:var(--text-secondary,#6B6560);line-height:1.6;">${desc}</td>
+                <td style="padding:7px 10px;font-weight:${star?'800':'600'};color:${star?ACCENT:'var(--text-primary,#2C2825)'};">
+                  ${outer}${star?` <span style="font-size:10px;font-weight:600;color:${ACCENT};opacity:.7;">빈출</span>`:''}
+                </td>
               </tr>`).join('')}
           </tbody>
         </table>
       </div>
+      <div style="margin-top:6px;font-size:11px;color:var(--text-tertiary,#A09890);font-family:${FONT};">오렌지 강조: 4·5·6단계 — 내적과정과 짝지어 자주 출제</div>
     </div>
 
+    <!-- 5가지 수업목표 : 콤팩트 리스트 + 과제분석 한눈에 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">5가지 수업목표</div>
-      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:12px;">
-        ${goals.map(([name, desc, analysis, color, bg]) => `
-          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:${bg};border-radius:8px;border-left:3px solid ${color};">
-            <div>
-              <strong style="color:${color};">${name}</strong>
-              <span style="color:var(--text-secondary,#6B6560);margin-left:6px;">${desc}</span>
-              <div style="margin-top:3px;font-size:10px;color:${color};font-weight:700;">▶ 과제분석: ${analysis}</div>
+      <div style="display:flex;flex-direction:column;gap:0;border-radius:10px;overflow:hidden;border:1px solid var(--border-light,rgba(0,0,0,.08));font-family:${FONT};">
+        ${[
+          ['언어정보', '명제적(선언적) 지식. 언어로 표현하는 능력', '군집분석', '#D4874A'],
+          ['지적기능', '방법적(절차적) 지식. 상징적 기호 활용 능력', '위계분석', '#3A5AA0'],
+          ['인지전략', '기억·사고 학습전략을 찾아 활용하는 능력', '위계·절차 분석', '#2A9E94'],
+          ['태도',     '특정 사건·사물에 대한 개인적 성향', '통합분석', '#8050B8'],
+          ['운동기능', '신체 근육을 활용하여 동작을 수행하는 능력', '절차분석', '#D05840'],
+        ].map(([name,desc,analysis,color],i,arr) => `
+          <div style="display:flex;align-items:center;gap:12px;padding:9px 14px;background:var(--bg-white,#fff);${i<arr.length-1?'border-bottom:1px solid var(--border-light,rgba(0,0,0,.07));':''}">
+            <div style="width:22px;height:22px;border-radius:50%;background:${color};color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</div>
+            <div style="flex:1;min-width:0;">
+              <span style="font-size:13px;font-weight:700;color:${color};">${name}</span>
+              <span style="font-size:11px;color:var(--text-secondary,#6B6560);margin-left:8px;">${desc}</span>
             </div>
+            <div style="font-size:10px;font-weight:700;color:${color};background:${color}18;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;">${analysis}</div>
           </div>`).join('')}
       </div>
     </div>
 
+    <!-- 논술 답안 구조 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:13px;">
@@ -162,7 +161,7 @@
         <div style="padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;line-height:1.8;">
           <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.04em;margin-bottom:6px;">기본 개념</div>
           <div style="display:flex;flex-direction:column;gap:4px;">
-            ${['학습목표에 따라 상이한 교수방법 처방','교수활동은 인간의 내적 학습과정에 맞추어 설계해야 함'].map((item,i) => `
+            ${['학습목표에 따라 상이한 교수방법 처방','교수활동은 인간의 내적 학습과정에 맞추어 설계'].map((item,i) => `
               <div style="display:flex;gap:7px;align-items:flex-start;">
                 <span style="background:#A09890;color:white;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span>
                 <span style="color:var(--text-primary,#2C2825);">${item}</span>
@@ -177,7 +176,7 @@
               ['4단계', '자극자료 제시 — 선택적 지각 촉진'],
               ['5단계', '학습안내 제공 — 부호화·정교화·스캐폴딩'],
               ['6단계', '수행 유도 — 실제 문제 상황 적용'],
-            ].map(([stage, text], i) => `
+            ].map(([stage,text],i) => `
               <div style="display:flex;gap:7px;align-items:flex-start;">
                 <span style="background:${ACCENT};color:white;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span>
                 <span style="color:var(--text-primary,#2C2825);"><strong style="color:${ACCENT};">${stage}</strong> ${text}</span>
@@ -194,10 +193,10 @@
               ['인지전략',                  '위계·절차 분석'],
               ['태도',                      '통합분석'],
               ['운동기능',                  '절차분석'],
-            ].map(([name, analysis], i) => `
+            ].map(([name,analysis],i) => `
               <div style="display:flex;gap:7px;align-items:flex-start;">
                 <span style="background:#A09890;color:white;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span>
-                <span style="color:var(--text-primary,#2C2825);">${name} <span style="color:var(--text-secondary,#6B6560);">— 과제분석: ${analysis}</span></span>
+                <span style="color:var(--text-primary,#2C2825);">${name} <span style="color:var(--text-secondary,#6B6560);">— ${analysis}</span></span>
               </div>`).join('')}
           </div>
         </div>
@@ -205,16 +204,17 @@
       </div>
     </div>
 
+    <!-- 체크포인트 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};font-size:12px;">
         ${[
-          ['혼동 주의', '#D05840', '"자극자료 제시 = 학습안내 제공" → X. 자극자료 제시는 새 정보를 <strong>제시</strong>하는 단계, 학습안내는 내용을 <strong>종합·부호화</strong>하는 단계'],
-          ['혼동 주의', '#D05840', '"8단계 형성평가 = 총괄평가" → X. 이 단계는 수업 중 이해 여부를 점검하는 <strong>형성</strong>평가(수행평가)'],
+          ['혼동 주의', '#D05840', '"자극자료 제시 = 학습안내 제공" → X. 자극자료 제시는 새 정보를 <strong>제시</strong>, 학습안내는 내용을 <strong>종합·부호화</strong>'],
+          ['혼동 주의', '#D05840', '"8단계 형성평가 = 총괄평가" → X. 수업 중 이해 여부를 점검하는 <strong>형성</strong>평가(수행평가)'],
           ['혼동 주의', '#D05840', '"지적기능 과제분석 = 군집분석" → X. 지적기능은 <strong>위계분석</strong>, 언어정보가 군집분석'],
-          ['핵심 암기', '#2D8A6A', '<strong style="color:#D4874A;">4단계</strong> 선택적 지각 / <strong style="color:#D4874A;">5단계</strong> 의미의 부호화 / <strong style="color:#D4874A;">6단계</strong> 반응 — 3개가 빈출 짝꿍'],
+          ['핵심 암기', '#2D8A6A', '<strong style="color:#D4874A;">4단계</strong> 선택적 지각 / <strong style="color:#D4874A;">5단계</strong> 의미의 부호화 / <strong style="color:#D4874A;">6단계</strong> 반응'],
           ['핵심 암기', '#2D8A6A', '수업사태 순서: 주의 → 목표 → 선수 → 자극 → 안내 → 수행 → 피드백 → 평가 → 파지'],
-        ].map(([label, color, text]) => `
+        ].map(([label,color,text]) => `
           <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;border-left:3px solid ${color};">
             <span style="display:inline-block;background:${color};color:white;font-size:10px;font-weight:700;padding:1px 8px;border-radius:20px;margin-right:8px;">${label}</span>
             <span style="color:var(--text-primary,#2C2825);">${text}</span>
