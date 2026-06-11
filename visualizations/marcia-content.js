@@ -50,23 +50,22 @@
       { name:'정체감 유실(폐쇄)', en:'Identity Foreclosure', crisis:false, comm:true,
         accent:'#C87840', bg:'#FBF0E6',
         desc:'정체성 위기를 경험하지 않았지만 정체성이 확립된 것처럼 행동하는 단계',
-        keyword:'남의 가치관을 그대로 따름', star:'★★' },
+        keyword:'남의 가치관을 그대로 따름', freq:true },
       { name:'정체감 성취(확립)', en:'Identity Achievement', crisis:true, comm:true,
         accent:'#3A8858', bg:'#E6F2EC',
         desc:'스스로 탐색하고 전념하여 목표를 성취해 정체성을 확립한 단계',
-        keyword:'삶의 목표를 능동적으로 선택함', star:'' },
+        keyword:'삶의 목표를 능동적으로 선택함', freq:false },
       { name:'정체감 혼미', en:'Identity Diffusion', crisis:false, comm:false,
         accent:'#7848A8', bg:'#F5F0F8',
         desc:'정체성을 찾으려고 노력을 하지 않는 단계',
-        keyword:'가치 있는 활동에 전념하지 않음', star:'' },
+        keyword:'가치 있는 활동에 전념하지 않음', freq:false },
       { name:'정체감 유예(모라토리움)', en:'Identity Moratorium', crisis:true, comm:false,
         accent:'#3A5AA0', bg:'#E6EAF5',
         desc:'정체성 위기를 경험하고 정체성 확립을 위해 적극적으로 탐색하는 단계',
-        keyword:'적극적으로 정체성을 탐색함', star:'★★' },
+        keyword:'적극적으로 정체성을 탐색함', freq:true },
     ];
 
     el.innerHTML = `
-    <!-- 개요 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.intro}</div>
       <div style="background:${BG};border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.9;color:var(--text-primary,#2C2825);font-family:${FONT};">
@@ -75,9 +74,8 @@
       </div>
     </div>
 
-    <!-- 두 가지 기준 -->
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">정체감 지위 구분 기준 ★</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">정체감 지위 구분 기준</div>
       <div style="display:flex;flex-direction:column;gap:10px;font-family:${FONT};">
         <div style="background:${BG};border-radius:10px;padding:13px 16px;border-left:3px solid ${ACCENT};">
           <div style="font-size:13px;font-weight:800;color:${ACCENT};margin-bottom:4px;">① 위기 (탐색, crisis)</div>
@@ -92,15 +90,14 @@
       </div>
     </div>
 
-    <!-- 4가지 정체감 지위 -->
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">4가지 정체감 지위 ★★</div>
+      <div class="detail-section-title" style="--subject-accent:${ACCENT};">4가지 정체감 지위</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
         ${statuses.map(st => `
-          <div style="border-radius:12px;background:${st.bg};padding:14px 16px;border-left:4px solid ${st.accent};">
+          <div style="border-radius:12px;background:${st.bg};padding:14px 16px;border-left:${st.freq?`4px solid ${st.accent}`:`4px solid ${st.accent}55`};">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
               <span style="font-size:14px;font-weight:800;color:${st.accent};">${st.name}</span>
-              ${st.star ? `<span style="font-size:10px;color:gold;font-weight:700;">${st.star}</span>` : ''}
+              ${st.freq ? `<span style="font-size:10px;font-weight:700;color:${st.accent};background:${st.accent}18;padding:1px 7px;border-radius:4px;">빈출</span>` : ''}
               <span style="font-size:10px;font-style:italic;color:var(--text-tertiary,#A09890);">${st.en}</span>
             </div>
             <div style="display:flex;gap:6px;margin-bottom:8px;">
@@ -108,19 +105,18 @@
               <span class="mc-status-pill" style="background:${st.comm?'#3A885822':'rgba(0,0,0,.06)'};color:${st.comm?'#3A8858':'var(--text-tertiary,#A09890)'};">전념 ${st.comm?'○':'✕'}</span>
             </div>
             <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">${st.desc}</div>
-            <div style="font-size:11px;font-weight:700;color:${st.accent};">→ ${st.keyword}</div>
+            <div style="font-size:11px;font-weight:700;color:${st.accent};">› ${st.keyword}</div>
           </div>`).join('')}
       </div>
     </div>
 
-    <!-- 자아정체감 높이는 방법 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">자아정체감 높이는 방법 (교육적 시사점)</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
         ${[
-          ['교사 측면', '교사의 솔선수범', '청소년기 가장 중요한 관계는 교사. 교사의 언행이 모델링에 영향을 주므로 잘못된 모델링을 하지 않도록 신경써야 한다.', '#C87840'],
-          ['학생 측면', '올바른 또래집단 문화 형성', '12~18세의 중요한 관계는 또래. 배려·관심(신뢰감), 선택의 기회(자율성), 다양한 시도(주도성), 도움과 격려(근면성)에 신경쓴다.', '#3A5AA0'],
-          ['교육방법 측면', '실제적·맥락적 교육 제공', '학생들이 직접 자신의 인생에 직면해보는 과정이 필요. 지식교육보다 직업체험·적성검사 같은 창의적 체험활동을 제공한다.', '#3A8858'],
+          ['교사 측면',     '교사의 솔선수범',           '청소년기 가장 중요한 관계는 교사. 교사의 언행이 모델링에 영향을 주므로 잘못된 모델링을 하지 않도록 신경써야 한다.', '#C87840'],
+          ['학생 측면',     '올바른 또래집단 문화 형성', '12~18세의 중요한 관계는 또래. 배려·관심(신뢰감), 선택의 기회(자율성), 다양한 시도(주도성), 도움과 격려(근면성)에 신경쓴다.', '#3A5AA0'],
+          ['교육방법 측면', '실제적·맥락적 교육 제공',   '학생들이 직접 자신의 인생에 직면해보는 과정이 필요. 지식교육보다 직업체험·적성검사 같은 창의적 체험활동을 제공한다.', '#3A8858'],
         ].map(([area, point, detail, color]) => `
           <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
             <div style="font-size:10px;font-weight:700;color:${color};letter-spacing:.06em;margin-bottom:4px;">${area}</div>
@@ -130,31 +126,39 @@
       </div>
     </div>
 
-    <!-- 논술 답안 구조 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.essay}</div>
       <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.9;color:var(--text-primary,#2C2825);font-family:${FONT};">
-        <strong style="color:${ACCENT};">① 두 가지 기준 제시</strong> — 위기(crisis)와 전념(commitment)<br>
-        <strong style="color:${ACCENT};">② 해당 지위 명칭 + 정의</strong> — 예: "정체감 유예란 ~ 단계이다."<br>
-        <strong style="color:${ACCENT};">③ 위기·전념 여부 명시</strong> — "위기 ○ / 전념 ✕"<br>
-        <strong style="color:${ACCENT};">④ 특징 키워드</strong> — "적극적으로 정체성을 탐색함"<br>
-        <br>
-        <span style="font-size:11px;color:var(--text-tertiary,#A09890);">※ 유실·유예가 ★★ 빈출. 두 개념의 위기·전념 조합을 반드시 구분해서 암기할 것.</span>
+        <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:6px;">
+          <span style="width:20px;height:20px;border-radius:50%;background:#A09890;color:white;font-size:10px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">①</span>
+          <span><strong>두 가지 기준 제시</strong> — 위기(crisis)와 전념(commitment)</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:6px;">
+          <span style="width:20px;height:20px;border-radius:50%;background:#A09890;color:white;font-size:10px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">②</span>
+          <span><strong>해당 지위 명칭 + 정의</strong> — 예: "정체감 유예란 ~ 단계이다."</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:baseline;margin-bottom:6px;">
+          <span style="width:20px;height:20px;border-radius:50%;background:#A09890;color:white;font-size:10px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">③</span>
+          <span><strong>위기·전념 여부 명시</strong> — "위기 ○ / 전념 ✕"</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:baseline;">
+          <span style="width:20px;height:20px;border-radius:50%;background:#A09890;color:white;font-size:10px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">④</span>
+          <span><strong>특징 키워드</strong> — "적극적으로 정체성을 탐색함"</span>
+        </div>
       </div>
     </div>
 
-    <!-- 체크 포인트 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.check}</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
         ${[
-          ['혼동 주의', '정체감 유실 vs 유예 — 둘 다 위기나 전념 중 하나가 ✕이지만, 어떤 것이 ✕인지 정반대!'],
-          ['암기 공식', '유·성·혼·예 → 위기: ✕○✕○ / 전념: ○○✕✕'],
-          ['에릭슨 연결', '마르시아는 에릭슨의 5단계(자아정체감 대 역할혼미) 이론을 조작적으로 확장한 것'],
-          ['심리적 유예기', '유예 상태에 있는 청소년의 지배적 심리 상태. 청소년기 일정 기간 경험은 바람직'],
-        ].map(([label, content]) => `
-          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--bg-surface,#F0EDE8);border-radius:8px;">
-            <span style="font-size:10px;font-weight:700;color:${ACCENT};white-space:nowrap;padding-top:1px;min-width:60px;">${label}</span>
+          ['혼동 주의', '#D05840', '정체감 유실 vs 유예 — 둘 다 위기나 전념 중 하나가 ✕이지만, 어떤 것이 ✕인지 정반대'],
+          ['핵심 암기', '#2D8A6A', '유·성·혼·예 순서 — 위기: ✕ ○ ✕ ○ / 전념: ○ ○ ✕ ✕'],
+          ['에릭슨 연결', ACCENT, '마르시아는 에릭슨의 5단계(자아정체감 대 역할혼미) 이론을 조작적으로 확장한 것'],
+          ['심리적 유예기', ACCENT, '유예 상태에 있는 청소년의 지배적 심리 상태. 청소년기 일정 기간 경험은 바람직'],
+        ].map(([label, color, content]) => `
+          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--bg-surface,#F0EDE8);border-radius:8px;border-left:3px solid ${color};">
+            <span style="font-size:10px;font-weight:700;color:${color};white-space:nowrap;padding-top:1px;min-width:64px;">${label}</span>
             <span style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;">${content}</span>
           </div>`).join('')}
       </div>
@@ -211,22 +215,33 @@
 
   /* ── 3. 리마인드 ── */
   const QUIZ_DATA = [
-    { type:'ox',   q:'마르시아(Marcia)가 정체감 지위를 구분하는 두 가지 기준은 위기(crisis)와 전념(commitment)이다.',
+    { type:'ox',
+      q:'마르시아(Marcia)가 정체감 지위를 구분하는 두 가지 기준은 위기(crisis)와 전념(commitment)이다.',
       answer:'O', explain:'마르시아는 "직업·가치관 선택에 고민·갈등을 느꼈는가?(위기)"와 "역할·과업에 몰입했는가?(전념)" 두 기준으로 4가지 지위를 구분한다.' },
-    { type:'ox',   q:'정체감 유실(폐쇄)은 위기를 경험하고 전념을 하는 상태이다.',
+    { type:'ox',
+      q:'정체감 유실(폐쇄)은 위기를 경험하고 전념을 하는 상태이다.',
       answer:'X', explain:'유실은 위기 ✕ + 전념 ○. 위기(탐색)를 경험하지 않고 타인의 가치관을 그대로 따르는 상태다. 위기 ○ + 전념 ○은 정체감 성취이다.' },
-    { type:'ox',   q:'정체감 유예(모라토리움)는 위기를 경험하고 아직 전념하지 않은 상태로, 적극적으로 정체성을 탐색한다.',
-      answer:'O', explain:'유예 = 위기 ○ + 전념 ✕. 탐색이 활발하게 진행 중인 과도기적 상태이다. [2009중 핵심]' },
-    { type:'ox',   q:'정체감 혼미는 위기를 경험하지 못했고 전념도 하지 않으며, 정체감 지위 중 가장 취약한 상태이다.',
+    { type:'ox',
+      q:'정체감 유예(모라토리움)는 위기를 경험하고 아직 전념하지 않은 상태로, 적극적으로 정체성을 탐색한다.',
+      answer:'O', explain:'유예 = 위기 ○ + 전념 ✕. 탐색이 활발하게 진행 중인 과도기적 상태이다.' },
+    { type:'ox',
+      q:'정체감 혼미는 위기를 경험하지 못했고 전념도 하지 않으며, 정체감 지위 중 가장 취약한 상태이다.',
       answer:'O', explain:'혼미 = 위기 ✕ + 전념 ✕. 탐색 시도조차 없는 상태로 정체성 발달이 가장 취약하다.' },
-    { type:'fill', q:'마르시아의 4가지 정체감 지위 중 가장 이상적이고 건강한 상태로, 위기 ○ + 전념 ○에 해당하는 것은 (   )이다.',
-      answer:'정체감 성취 (확립)', explain:'정체감 성취는 스스로 탐색하고 전념하여 목표를 능동적으로 선택한 가장 건강한 발달 상태이다.' },
-    { type:'fill', q:'마르시아 이론에서 교사는 청소년의 정체성 교육을 위해 지식교육보다 직업체험·적성검사 같은 (   ) 교육을 제공해야 한다.',
+    { type:'ox',
+      q:'정체감 지위는 한번 결정되면 변하지 않는 고정된 상태이다.',
+      answer:'X', explain:'정체감 지위는 유동적으로 변화할 수 있다. 일반적으로 혼미 › 유예 › 성취의 경로가 건강한 발달 흐름으로 본다.' },
+    { type:'fill',
+      q:'마르시아의 4가지 정체감 지위 중 가장 이상적이고 건강한 상태로, 위기 ○ + 전념 ○에 해당하는 것은 (   )이다.',
+      answer:'정체감 성취', explain:'정체감 성취는 스스로 탐색하고 전념하여 목표를 능동적으로 선택한 가장 건강한 발달 상태이다.' },
+    { type:'fill',
+      q:'마르시아 이론에서 교사는 청소년의 정체성 교육을 위해 지식교육보다 직업체험·적성검사 같은 (   ) 교육을 제공해야 한다.',
       answer:'실제적·맥락적', explain:'정체성 교육을 위해 학생들이 직접 자신의 인생에 직면해보는 과정이 필요하며, 실제적·맥락적 교육이 요구된다.' },
-    { type:'mc',   q:'다음 설명에 해당하는 마르시아(Marcia)의 정체감 지위는? [2009중 변형]\n"정체감 위기를 경험하지 못하였으며, 삶의 목표와 가치를 탐색하려는 시도조차 하지 않고 삶을 계획하려는 노력도 없는 상태"',
+    { type:'mc',
+      q:'다음 설명에 해당하는 마르시아(Marcia)의 정체감 지위는?\n"정체감 위기를 경험하지 못하였으며, 삶의 목표와 가치를 탐색하려는 시도조차 하지 않는 상태"',
       options:['정체감 유실','정체감 성취','정체감 혼미','정체감 유예'], answer:2,
       explain:'혼미(Diffusion) = 위기 ✕ + 전념 ✕. 탐색 의지와 전념 모두 없는 상태. [2005초, 2009중 기출 유형]' },
-    { type:'mc',   q:'마르시아의 4가지 정체감 지위와 위기·전념 조합이 바르게 짝지어진 것은?',
+    { type:'mc',
+      q:'마르시아의 4가지 정체감 지위와 위기·전념 조합이 바르게 짝지어진 것은?',
       options:[
         '유실 — 위기 ○, 전념 ○',
         '유예 — 위기 ○, 전념 ✕',
@@ -234,7 +249,8 @@
         '혼미 — 위기 ○, 전념 ✕',
       ], answer:1,
       explain:'유예 = 위기 ○ + 전념 ✕ (정답). 유실=위기✕+전념○, 성취=위기○+전념○, 혼미=위기✕+전념✕.' },
-    { type:'mc',   q:'마르시아 이론에서 자아정체감을 높이기 위한 교사의 역할로 적절하지 않은 것은?',
+    { type:'mc',
+      q:'마르시아 이론에서 자아정체감을 높이기 위한 교사의 역할로 적절하지 않은 것은?',
       options:[
         '학생들이 직업체험과 적성검사에 참여할 기회를 제공한다.',
         '교사 스스로 솔선수범하여 올바른 모델링을 보여준다.',
@@ -269,8 +285,9 @@
             </div>`;
           } else if (q.type==='fill') {
             qBody = `<div style="margin-top:10px;">
-              ${s.revealed ? `<div style="padding:9px 14px;border-radius:8px;background:${BG};border:1.5px solid ${ACCENT};font-size:12px;font-weight:700;color:${ACCENT};font-family:${FONT};">정답: ${q.answer}</div>` :
-              `<button onclick="marciaQuizReveal(${i})" style="width:100%;padding:9px;border-radius:8px;border:1.5px solid var(--border-light,#e0ddd8);background:var(--bg-white,#fff);font-size:12px;font-weight:600;cursor:pointer;color:var(--text-secondary,#6B6560);font-family:inherit;">${C.quiz.btnReveal}</button>`}
+              ${s.revealed
+                ? `<div style="padding:9px 14px;border-radius:8px;background:${BG};border:1.5px solid ${ACCENT};font-size:12px;font-weight:700;color:${ACCENT};font-family:${FONT};">정답: ${q.answer}</div>`
+                : `<button onclick="marciaQuizReveal(${i})" style="width:100%;padding:9px;border-radius:8px;border:1.5px solid var(--border-light,#e0ddd8);background:var(--bg-white,#fff);font-size:12px;font-weight:600;cursor:pointer;color:var(--text-secondary,#6B6560);font-family:inherit;">${C.quiz.btnReveal}</button>`}
             </div>`;
           } else {
             qBody = `<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
