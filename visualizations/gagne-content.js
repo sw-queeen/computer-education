@@ -88,7 +88,7 @@
         </div>
 
         <div style="background:${BG};border-radius:10px;padding:13px 16px;">
-          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:8px;">내적 조건 — 학습자의 내적 인지과정</div>
+          <div style="font-size:13px;font-weight:700;color:${ACCENT};margin-bottom:8px;">내적 조건 — 학습자의 내적 인지과정</div>
           ${[
             ['선행학습', '이전에 학습한 내적 능력이 있어야 한다.'],
             ['학습동기', '학습자의 능동적인 학습동기가 있어야 한다.'],
@@ -112,7 +112,7 @@
           <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;background:var(--bg-surface,#F0EDE8);">
             <span style="width:20px;height:20px;border-radius:50%;background:${star?ACCENT:'var(--text-tertiary,#A09890)'};color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</span>
             <span style="font-size:11px;color:var(--text-tertiary,#A09890);white-space:nowrap;min-width:90px;">${inner}</span>
-            <span style="font-size:13px;font-weight:${star?'700':'500'};color:${star?ACCENT:'var(--text-primary,#2C2825)'};">→ ${outer.replace(/^\d+\.\s*/,'')}</span>
+            <span style="font-size:13px;font-weight:${star?'700':'500'};color:${star?ACCENT:'var(--text-primary,#2C2825)'};">› ${outer.replace(/^\d+\.\s*/,'')}</span>
           </div>`).join('')}
       </div>
     </div>

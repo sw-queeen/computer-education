@@ -129,7 +129,7 @@
           <div class="gv-step-body">
             <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
               <span class="gv-step-inner-text" style="color:var(--text-tertiary,#A09890);font-size:11px;">${step.inner}</span>
-              <span style="color:var(--text-tertiary,#C0BBB0);font-size:10px;">→</span>
+              <span style="color:var(--text-tertiary,#C0BBB0);font-size:10px;">›</span>
               <span class="gv-step-outer" style="margin:0;">${step.outer}</span>
             </div>
             <div class="gv-step-desc">${step.desc}</div>
