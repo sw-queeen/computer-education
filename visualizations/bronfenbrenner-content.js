@@ -21,7 +21,7 @@
     s.id = 'bronf-content-style';
     s.textContent = `
       .bc-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
-      .bc-table-wrap table { min-width:480px; width:100%; border-collapse:collapse; font-size:12px; }
+      .bc-table-wrap table { min-width:420px; width:100%; border-collapse:collapse; font-size:12px; }
       .bc-table-wrap th {
         padding:9px 12px; text-align:left; font-size:11px; font-weight:700;
         letter-spacing:.04em; border-bottom:2px solid var(--border-light,rgba(0,0,0,.08));
@@ -36,7 +36,7 @@
         display:inline-block; font-size:10px; font-weight:700;
         padding:1px 7px; border-radius:4px; margin-right:6px;
       }
-      @media(max-width:560px) { .bc-table-wrap table { min-width:360px; } }
+      @media(max-width:560px) { .bc-table-wrap table { min-width:320px; } }
     `;
     document.head.appendChild(s);
   }
@@ -64,23 +64,23 @@
     if (!el) return;
 
     const layers = [
-      { num:1, name:'미시체계', nameEn:'Microsystem', color:'#3A8858', bg:'#E6F2EC',
+      { num:1, name:'미시체계', color:'#3A8858', bg:'#E6F2EC',
         def:'아동의 발달에 직접적으로 영향을 미치는 환경',
         examples:'가족, 학교, 또래, 놀이터, 유치원, 교회',
         key:'직접 경험하는 가장 가까운 환경' },
-      { num:2, name:'중간체계', nameEn:'Mesosystem', color:'#2888C8', bg:'#E4F2FA',
+      { num:2, name:'중간체계', color:'#2888C8', bg:'#E4F2FA',
         def:'미시체계들 간의 상호관계',
         examples:'가정↔학교 관계, 가정↔또래 관계, 부모-교사 협력',
         key:'두 개 이상 미시체계의 연결 고리' },
-      { num:3, name:'외체계', nameEn:'Exosystem', color:'#C87840', bg:'#FBF0E6',
+      { num:3, name:'외체계', color:'#C87840', bg:'#FBF0E6',
         def:'아동이 직접 참여하지는 않지만 간접적으로 영향을 미치는 사회적 환경',
         examples:'부모 직장, 이웃, 교육위원회, 사회복지기관, 대중매체',
         key:'간접적 영향 · 아동 비참여' },
-      { num:4, name:'거시체계', nameEn:'Macrosystem', color:'#8050B8', bg:'#EEE8F5',
+      { num:4, name:'거시체계', color:'#8050B8', bg:'#EEE8F5',
         def:'외체계를 둘러싼 문화적 환경',
         examples:'문화, 관습, 법, 이념, 사회규범',
         key:'사회 전체의 신념·가치 체계' },
-      { num:5, name:'시간체계', nameEn:'Chronosystem', color:'#6B6560', bg:'#F0EDE8',
+      { num:5, name:'시간체계', color:'#6B6560', bg:'#F0EDE8',
         def:'개인의 전 생애에 걸친 변화와 사회·역사적 환경의 변화 (=연대체계)',
         examples:'부모이혼, 가정폭력, 학교폭력, 남녀평등문제, 역사적 사건',
         key:'시간적 차원 · 생애 변화' },
@@ -96,28 +96,25 @@
       </div>
     </div>
 
-    <!-- 기본 특징 -->
+    <!-- 이론의 특징 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">이론의 특징</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
-        <div style="display:flex;align-items:flex-start;gap:12px;background:${BG};border-radius:10px;padding:13px 16px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:${ACCENT};color:white;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:${ACCENT};margin-bottom:2px;">유전 × 환경 상호작용</div>
-            <div style="font-size:12px;color:var(--text-primary,#2C2825);">개인의 발달은 유전과 환경 <strong>모두의 영향</strong>을 받는다. 어느 한쪽만으로 설명 불가능.</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:flex-start;gap:12px;background:${BG};border-radius:10px;padding:13px 16px;">
-          <div style="width:26px;height:26px;border-radius:50%;background:${ACCENT};color:white;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-          <div>
-            <div style="font-size:13px;font-weight:700;color:${ACCENT};margin-bottom:2px;">아동 = 능동적 존재</div>
-            <div style="font-size:12px;color:var(--text-primary,#2C2825);">아동은 환경에 영향을 받기만 하는 수동적 존재가 아니라, <strong>환경에 영향을 주기도</strong> 하는 능동적 존재이다.</div>
-          </div>
-        </div>
+        ${[
+          ['유전 × 환경 상호작용', '개인의 발달은 유전과 환경 <strong>모두의 영향</strong>을 받는다. 어느 한쪽만으로 설명할 수 없다.'],
+          ['아동 = 능동적 존재', '아동은 환경에 영향을 받기만 하는 수동적 존재가 아니라, <strong>환경에 영향을 주기도</strong> 하는 능동적 존재이다.'],
+        ].map(([title, desc], i) => `
+          <div style="display:flex;align-items:flex-start;gap:12px;background:${BG};border-radius:10px;padding:13px 16px;">
+            <div style="width:26px;height:26px;border-radius:50%;background:${ACCENT};color:white;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</div>
+            <div>
+              <div style="font-size:13px;font-weight:700;color:${ACCENT};margin-bottom:2px;">${title}</div>
+              <div style="font-size:12px;color:var(--text-primary,#2C2825);">${desc}</div>
+            </div>
+          </div>`).join('')}
       </div>
     </div>
 
-    <!-- 5가지 환경 체계 -->
+    <!-- 5가지 환경 체계 비교표 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">개인을 둘러싼 5가지 환경 체계</div>
       <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:14px;line-height:1.7;font-family:${FONT};">
@@ -128,7 +125,7 @@
           <thead>
             <tr>
               <th style="min-width:30px;">순</th>
-              <th style="min-width:90px;">체계</th>
+              <th style="min-width:70px;">체계</th>
               <th style="min-width:160px;">정의</th>
               <th style="min-width:180px;">예시</th>
             </tr>
@@ -137,7 +134,7 @@
             ${layers.map(l => `
               <tr>
                 <td><div style="width:22px;height:22px;border-radius:50%;background:${l.color};color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;">${l.num}</div></td>
-                <td><span style="font-weight:700;color:${l.color};">${l.name}</span><br><span style="font-size:10px;color:var(--text-tertiary,#A09890);">${l.nameEn}</span></td>
+                <td style="font-weight:700;color:${l.color};">${l.name}</td>
                 <td style="color:var(--text-primary,#2C2825);">${l.def}</td>
                 <td style="color:var(--text-secondary,#6B6560);">${l.examples}</td>
               </tr>`).join('')}
@@ -146,7 +143,7 @@
       </div>
     </div>
 
-    <!-- 각 체계 상세 -->
+    <!-- 체계별 상세 설명 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">체계별 상세 설명</div>
       <div style="display:flex;flex-direction:column;gap:10px;font-family:${FONT};">
@@ -154,7 +151,6 @@
           <div style="border-radius:12px;padding:14px 16px;background:${l.bg};">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
               <span style="font-size:14px;font-weight:800;color:${l.color};">${l.name}</span>
-              <span style="font-size:10px;color:var(--text-tertiary,#A09890);font-weight:600;">${l.nameEn}</span>
               <span style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:white;color:${l.color};">${l.key}</span>
             </div>
             <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.75;margin-bottom:6px;">${l.def}</div>
@@ -166,15 +162,15 @@
     <!-- 교육적 시사점 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">교육적 시사점</div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
-        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:13px 16px;">
-          <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);margin-bottom:3px;">시사점 1</div>
-          <div style="font-size:13px;color:var(--text-primary,#2C2825);line-height:1.75;">아동 발달에 직접 영향을 미치는 미시체계에만 집중하는 관점에서 벗어나, <strong>여러 환경체계들 간의 상호관계</strong>의 중요성을 강조했다.</div>
-        </div>
-        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:13px 16px;">
-          <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);margin-bottom:3px;">시사점 2</div>
-          <div style="font-size:13px;color:var(--text-primary,#2C2825);line-height:1.75;">아동을 둘러싼 가정교육뿐만 아니라 <strong>사회 전체의 노력</strong>이 함께 요구된다.</div>
-        </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
+        ${[
+          '미시체계에만 집중하는 관점에서 벗어나, <strong>여러 환경체계들 간의 상호관계</strong>의 중요성을 강조했다.',
+          '아동을 둘러싼 가정교육뿐만 아니라 <strong>사회 전체의 노력</strong>이 함께 요구된다.',
+        ].map((desc, i) => `
+          <div style="display:flex;gap:8px;align-items:baseline;background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
+            <span style="color:#A09890;font-weight:700;font-size:12px;flex-shrink:0;">${i+1}.</span>
+            <span style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.75;">${desc}</span>
+          </div>`).join('')}
       </div>
     </div>
 
@@ -185,12 +181,12 @@
         <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
           <div style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-bottom:4px;">피아제 — 인지발달이론</div>
           <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">내적 인지 구조의 발달</div>
-          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">피아제는 아동 내부의 <strong>인지 도식(schema)</strong>이 동화·조절·평형화를 거쳐 발달한다고 보았다. 브론펜브레너는 이와 달리 외부 <strong>환경 체계와의 상호작용</strong>에 초점을 둔다. 두 이론 모두 아동을 능동적 존재로 본다는 공통점이 있다.</div>
+          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">피아제는 아동 내부의 <strong>인지 도식</strong>이 동화·조절·평형화를 거쳐 발달한다고 보았다. 브론펜브레너는 이와 달리 외부 <strong>환경 체계와의 상호작용</strong>에 초점을 둔다. 두 이론 모두 아동을 능동적 존재로 본다는 공통점이 있다.</div>
         </div>
         <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
           <div style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-bottom:4px;">비고츠키 — 사회문화이론</div>
           <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">근접발달영역과 비계설정</div>
-          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">비고츠키는 <strong>ZPD·비계</strong>처럼 사회적 상호작용의 구체적 메커니즘을 설명했다. 브론펜브레너는 그보다 한 층 위에서 환경 체계의 <strong>구조와 층위</strong>를 분류하는 데 집중했다. 두 이론 모두 사회적 맥락이 발달에 필수적이라는 관점을 공유한다.</div>
+          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">비고츠키는 <strong>근접발달영역·비계</strong>처럼 사회적 상호작용의 구체적 메커니즘을 설명했다. 브론펜브레너는 그보다 한 층 위에서 환경 체계의 <strong>구조와 층위</strong>를 분류하는 데 집중했다. 두 이론 모두 사회적 맥락이 발달에 필수적이라는 관점을 공유한다.</div>
         </div>
       </div>
     </div>
@@ -198,31 +194,36 @@
     <!-- 논술 답안 구조 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
-      <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:14px 18px;font-size:12px;line-height:2;color:var(--text-primary,#2C2825);font-family:${FONT};">
-        <div style="margin-bottom:6px;">1. 브론펜브레너 생태학적 발달이론의 기본 관점 (유전×환경, 능동적 존재)</div>
-        <div style="margin-bottom:6px;">2. 아동을 둘러싼 5가지 환경 체계 설명 (미시→중간→외→거시→시간)</div>
-        <div style="margin-bottom:6px;">3. 각 체계의 정의 + 구체적 예시 제시</div>
-        <div style="margin-bottom:6px;">4. 교육적 시사점 (다층 환경의 상호관계 강조, 사회 전체 노력 필요)</div>
-        <div>5. 결론: 교사·학교가 미시체계를 넘어 중간체계(가정-학교 연계) 강화를 위해 노력해야 함</div>
+      <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.9;color:var(--text-primary,#2C2825);font-family:${FONT};">
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          ${[
+            ['기본 관점 제시', '유전×환경 상호작용, 아동은 능동적 존재'],
+            ['5가지 환경 체계 열거', '미시 → 중간 → 외 → 거시 → 시간체계 순'],
+            ['각 체계 정의 + 예시', '체계명 — 정의 — 구체적 예시(2개 이상)'],
+            ['교육적 시사점', '다층 환경의 상호관계 강조, 사회 전체 노력 필요'],
+            ['결론', '교사·학교가 미시체계를 넘어 중간체계(가정-학교 연계) 강화를 위해 노력해야 함'],
+          ].map(([title, desc], i) => `
+            <div style="display:flex;gap:8px;align-items:baseline;">
+              <span style="color:#A09890;font-weight:700;font-size:12px;flex-shrink:0;">${i+1}.</span>
+              <span><strong>${title}</strong> — ${desc}</span>
+            </div>`).join('')}
+        </div>
       </div>
     </div>
 
     <!-- 체크 포인트 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
-      <div style="font-size:12px;display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
-        <div style="border-left:3px solid #D05840;border-radius:0 8px 8px 0;padding:10px 14px;background:var(--bg-white,#fff);">
-          <span style="display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:4px;background:#FDECEA;color:#D05840;margin-bottom:5px;">혼동 주의</span>
-          <div style="color:var(--text-primary,#2C2825);line-height:1.75;"><strong>외체계 vs 거시체계</strong> — 외체계는 아동이 직접 참여하지 않는 사회적 환경(부모 직장 등). 거시체계는 더 넓은 문화·법·관습 수준. 외체계 ⊂ 거시체계 구조로 외체계가 안쪽임을 주의.</div>
-        </div>
-        <div style="border-left:3px solid #D05840;border-radius:0 8px 8px 0;padding:10px 14px;background:var(--bg-white,#fff);">
-          <span style="display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:4px;background:#FDECEA;color:#D05840;margin-bottom:5px;">혼동 주의</span>
-          <div style="color:var(--text-primary,#2C2825);line-height:1.75;"><strong>시간체계</strong>는 고리 밖 별도 차원. 공간적 층위가 아닌 <strong>시간적 차원</strong>이며, 다른 네 체계와 달리 '연대체계'라고도 불린다. 나머지 4개와 별도로 외워야 함.</div>
-        </div>
-        <div style="border-left:3px solid #2D8A6A;border-radius:0 8px 8px 0;padding:10px 14px;background:var(--bg-white,#fff);">
-          <span style="display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:4px;background:#E6F2EC;color:#2D8A6A;margin-bottom:5px;">핵심 암기</span>
-          <div style="color:var(--text-primary,#2C2825);line-height:1.75;"><strong>미→중→외→거→시</strong> 순서와 각각의 핵심 예시 세트 암기. 2012초 기출은 4가지 진술 중 해당 이론 고르기 형식. "다차원 환경 체계 상호작용", "미시에서 바깥층으로 이동" 문구 숙지 필수.</div>
-        </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:12px;">
+        ${[
+          ['혼동 주의', '#D05840', '외체계 vs 거시체계 — 외체계는 아동이 직접 참여하지 않는 사회적 환경(부모 직장 등). 거시체계는 더 넓은 문화·법·관습 수준. 외체계 ⊂ 거시체계 구조로 외체계가 안쪽임을 주의.'],
+          ['혼동 주의', '#D05840', '시간체계는 고리 밖 별도 차원. 공간적 층위가 아닌 시간적 차원이며, 다른 네 체계와 달리 \'연대체계\'라고도 불린다.'],
+          ['핵심 암기', '#2D8A6A', '미→중→외→거→시 순서와 각각의 핵심 예시 세트 암기. 2012초 기출은 4가지 진술 중 해당 이론 고르기 형식. "다차원 환경 체계 상호작용", "미시에서 바깥층으로 이동" 문구 숙지 필수.'],
+        ].map(([label, color, content]) => `
+          <div style="background:var(--bg-surface,#F0EDE8);border-radius:8px;padding:10px 14px;border-left:3px solid ${color};">
+            <span style="display:inline-block;background:${color};color:white;font-size:10px;font-weight:700;padding:1px 8px;border-radius:20px;margin-right:8px;letter-spacing:.02em;">${label}</span>
+            <span style="color:var(--text-primary,#2C2825);">${content}</span>
+          </div>`).join('')}
       </div>
     </div>`;
   }
@@ -285,24 +286,24 @@
       q:'중간체계(Mesosystem)란 아동이 직접 참여하지 않지만 간접적으로 영향을 미치는 사회적 환경이다.',
       answer:'X', explain:'그 설명은 외체계(Exosystem)이다. 중간체계는 미시체계들 간의 상호관계(예: 가정↔학교 관계)를 말한다.' },
     { type:'ox',
-      q:'시간체계(Chronosystem)는 다른 4개 체계와 달리 공간적 층위가 아닌 시간적 차원을 나타내며, 연대체계라고도 불린다.',
+      q:'시간체계는 다른 4개 체계와 달리 공간적 층위가 아닌 시간적 차원을 나타내며, 연대체계라고도 불린다.',
       answer:'O', explain:'시간체계는 개인의 전 생애 변화와 사회·역사적 환경 변화를 포함하며, 동심원 구조 밖의 별도 차원이다.' },
     { type:'ox',
       q:'브론펜브레너는 개인의 발달은 유전보다 환경에 더 큰 영향을 받는다고 주장했다.',
       answer:'X', explain:'브론펜브레너는 유전과 환경 모두의 영향을 받는다고 주장했다. 어느 한쪽을 더 강조하지 않는다.' },
     { type:'fill',
       q:'브론펜브레너의 생태학적 이론에서 아동이 직접 참여하지는 않지만 간접적으로 영향을 미치는 환경 — 부모 직장, 교육위원회, 대중매체 등이 해당하는 체계는 (   )이다.',
-      answer:'외체계', explain:'외체계(Exosystem)는 아동이 직접 관여하지 않는 사회적 환경으로, 부모 직장, 이웃, 교육위원회, 사회복지기관, 대중매체 등이 포함된다.' },
+      answer:'외체계', explain:'외체계는 아동이 직접 관여하지 않는 사회적 환경으로, 부모 직장, 이웃, 교육위원회, 사회복지기관, 대중매체 등이 포함된다.' },
     { type:'fill',
       q:'브론펜브레너 이론에서 5개 체계 중 유일하게 공간적 층위가 아닌 (   )적 차원을 나타내는 체계는 시간체계이다.',
-      answer:'시간', explain:'시간체계(Chronosystem)는 개인의 전 생애에 걸친 변화와 사회·역사적 환경 변화를 다루는, 동심원 구조와 구분되는 시간적 차원이다.' },
+      answer:'시간', explain:'시간체계(연대체계)는 개인의 전 생애에 걸친 변화와 사회·역사적 환경 변화를 다루는, 동심원 구조와 구분되는 시간적 차원이다.' },
     { type:'mc',
-      q:'다음 중 브론펜브레너의 거시체계(Macrosystem)에 해당하는 예로 가장 적절한 것은?',
+      q:'다음 중 브론펜브레너의 거시체계에 해당하는 예로 가장 적절한 것은?',
       options:['가정과 학교의 상호관계', '부모의 직장 환경과 근무 시간', '사회 전반의 문화, 관습, 법', '아동이 다니는 학교와 또래 집단'],
       answer:2,
       explain:'거시체계는 외체계를 둘러싼 문화적 환경으로, 문화·관습·법·이념·사회규범 등이 포함된다. ①은 중간체계, ②는 외체계, ④는 미시체계에 해당한다.' },
     { type:'mc',
-      q:'브론펜브레너(U. Bronfenbrenner)의 생태학적 이론에 대한 설명으로 옳지 않은 것은?',
+      q:'브론펜브레너의 생태학적 이론에 대한 설명으로 옳지 않은 것은?',
       options:[
         '개인의 발달은 유전과 환경 모두의 영향을 받는다.',
         '미시체계들 간의 상호관계를 중간체계라 한다.',
@@ -311,7 +312,7 @@
       ], answer:3,
       explain:'브론펜브레너는 아동을 환경에 영향을 주기도 하는 능동적 존재로 보았다. 나머지 보기는 모두 옳은 설명이다. [2012초 유형]' },
     { type:'mc',
-      q:'다음 중 브론펜브레너의 중간체계(Mesosystem)에 해당하는 예로 적절한 것은?',
+      q:'다음 중 브론펜브레너의 중간체계에 해당하는 예로 적절한 것은?',
       options:['아동이 다니는 교회와 또래 집단', '부모와 교사 간의 협력 관계', '남녀평등에 관한 사회적 이념', '아동의 부모이혼 경험'],
       answer:1,
       explain:'중간체계는 미시체계들 간의 상호관계. 부모-교사 협력은 가정(미시)↔학교(미시) 간의 관계로 중간체계에 해당한다. ①은 두 미시체계 나열이지 상호관계 아님, ③은 거시체계, ④는 시간체계.' },
@@ -352,7 +353,7 @@
                 let border = '1.5px solid var(--border-light,#e0ddd8)', bg = 'var(--bg-white,#fff)', color = 'var(--text-primary,#2C2825)';
                 if (s.revealed) { if (oi === q.answer) { border = `1.5px solid ${ACCENT}`; bg = BG; color = ACCENT; } else if (s.selected === oi) { border = '1.5px solid #D05840'; bg = '#FDECEA'; color = '#A83222'; } }
                 else if (s.selected === oi) { border = `1.5px solid ${ACCENT}`; bg = 'var(--bg-surface,#f7f4f0)'; }
-                return `<button onclick="bronfQuizMC(${i},${oi})" style="text-align:left;padding:9px 12px;border-radius:8px;border:${border};background:${bg};color:${color};font-size:12px;cursor:pointer;font-family:inherit;line-height:1.5;white-space:pre-line;"><span style="font-weight:700;margin-right:6px;">${oi+1}.</span>${opt}</button>`;
+                return `<button onclick="bronfQuizMC(${i},${oi})" style="text-align:left;padding:9px 12px;border-radius:8px;border:${border};background:${bg};color:${color};font-size:12px;cursor:pointer;font-family:inherit;line-height:1.5;"><span style="font-weight:700;margin-right:6px;">${oi+1}.</span>${opt}</button>`;
               }).join('')}
             </div>`;
           }
@@ -364,7 +365,7 @@
           return `
           <div style="background:var(--bg-white,#fff);border:1px solid var(--border-light,#e8e4de);border-radius:12px;padding:16px;margin-bottom:12px;">
             <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);margin-bottom:6px;font-family:${FONT};">${typeLabel}</div>
-            <div style="font-size:13px;font-weight:600;color:var(--text-primary,#2C2825);line-height:1.6;font-family:${FONT};white-space:pre-line;">${i+1}. ${q.q}</div>
+            <div style="font-size:13px;font-weight:600;color:var(--text-primary,#2C2825);line-height:1.6;font-family:${FONT};">${i+1}. ${q.q}</div>
             ${qBody}${explain}
           </div>`;
         }).join('')}
