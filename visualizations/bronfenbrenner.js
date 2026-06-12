@@ -70,22 +70,9 @@
         padding:6px 0 2px; font-family:${FONT};
       }
 
-      /* ── 상호작용 다이어그램 ── */
-      #bronf-wrap .bv-interact-grid {
-        display:grid; grid-template-columns:1fr 1fr; gap:10px;
-      }
-      #bronf-wrap .bv-interact-card {
-        border-radius:12px; padding:14px 16px;
-        border:1.5px solid var(--border-light,rgba(0,0,0,.08));
-        background:var(--bg-white,#fff);
-      }
-      #bronf-wrap .bv-interact-title { font-size:13px; font-weight:800; margin-bottom:4px; }
-      #bronf-wrap .bv-interact-desc { font-size:11px; color:var(--text-secondary,#6B6560); line-height:1.7; }
-
       @media(max-width:480px) {
         #bronf-wrap .bv-layer-name { font-size:12px; }
         #bronf-wrap .bv-layer-detail { padding:0 12px 12px 46px; }
-        #bronf-wrap .bv-interact-grid { grid-template-columns:1fr; }
       }
     `;
     document.head.appendChild(s);
@@ -152,6 +139,7 @@
 
   let activeLayer = null;
   let curTab = 'rings';
+  let activeAge = null;
 
   /* ── SVG 동심원 ── */
   function renderRingsSVG() {
@@ -244,7 +232,7 @@
       <div id="bronf-wrap">
         <div class="bv-tabs">
           <div class="bv-tab ${curTab==='rings'?'on':''}" onclick="bronfTab('rings')">동심원 모형</div>
-          <div class="bv-tab ${curTab==='interact'?'on':''}" onclick="bronfTab('interact')">특징 & 시사점</div>
+          <div class="bv-tab ${curTab==='flow'?'on':''}" onclick="bronfTab('flow')">체계 간 흐름</div>
         </div>
         <div id="bv-rings" style="display:${curTab==='rings'?'':'none'};">
           <div class="bv-rings-wrap">
@@ -253,48 +241,122 @@
           </div>
           <div class="bv-hint">원 또는 항목을 클릭하면 상세 내용이 펼쳐집니다</div>
         </div>
-        <div id="bv-interact" style="display:${curTab==='interact'?'':'none'};">${renderInteract()}</div>
+        <div id="bv-flow" style="display:${curTab==='flow'?'':'none'};">${renderFlow()}</div>
       </div>`;
   }
 
-  function renderInteract() {
-    const chars = [
-      { title:'상호작용성', desc:'아동은 환경에 영향을 받기만 하는 수동적 존재가 아니라, 환경에 영향을 주기도 하는 능동적 존재이다.', color:'#3A8858', bg:'#E6F2EC' },
-      { title:'다차원적 환경', desc:'개인의 발달은 미시체계부터 거시체계까지 여러 층위의 환경이 동시에 상호작용하여 형성된다.', color:'#2888C8', bg:'#E4F2FA' },
-      { title:'유전 × 환경', desc:'개인의 발달은 유전과 환경 모두의 영향을 받는다. 어느 한쪽만으로 설명할 수 없다.', color:'#C87840', bg:'#FBF0E6' },
-      { title:'연령에 따른 이동', desc:'발달에 영향을 미치는 지배적 환경은 연령 증가에 따라 미시체계에서 바깥층 체계로 점차 이동한다.', color:'#8050B8', bg:'#EEE8F5' },
+  function renderFlow() {
+    const ACCENT = '#4EA87A';
+    const FONT_V = "var(--font-body,var(--font-main),'Pretendard','Apple SD Gothic Neo',sans-serif)";
+
+    // 연령대별 발달 흐름 데이터
+    const AGES = [
+      {
+        label: '영·유아기', range: '0–5세',
+        color: '#3A8858', bg: '#E6F2EC', mid: '#A8D8BC',
+        active: [1],  // 미시체계 중심
+        desc: '가족·부모와의 애착이 발달의 전부. 미시체계(가족, 양육환경)의 영향이 절대적.',
+        spotlight: '미시체계',
+        examples: '부모의 양육 방식, 형제 관계, 가정 분위기',
+      },
+      {
+        label: '학령 전기', range: '5–7세',
+        color: '#2888C8', bg: '#E4F2FA', mid: '#88C4E8',
+        active: [1, 2],
+        desc: '유치원·어린이집이 새로운 미시체계로 추가되고, 가정↔기관 연계(중간체계)가 처음 형성됨.',
+        spotlight: '미시 + 중간체계',
+        examples: '부모-교사 관계, 또래와의 첫 사회화',
+      },
+      {
+        label: '아동기', range: '7–12세',
+        color: '#C87840', bg: '#FBF0E6', mid: '#F0C89A',
+        active: [1, 2, 3],
+        desc: '학교·또래집단이 핵심 미시체계. 부모 직장환경·교육정책 등 외체계의 간접 영향이 두드러짐.',
+        spotlight: '외체계까지 확장',
+        examples: '부모 직장의 스트레스 → 가정 분위기, 교육 정책의 변화',
+      },
+      {
+        label: '청소년기', range: '12–18세',
+        color: '#8050B8', bg: '#EEE8F5', mid: '#C4A8E0',
+        active: [1, 2, 3, 4],
+        desc: '문화·이념·사회규범(거시체계)을 의식하기 시작. 정체성 형성 과정에서 사회 전체의 가치관이 영향을 미침.',
+        spotlight: '거시체계까지 확장',
+        examples: '사회의 성 역할 규범, 문화적 기대, 미디어',
+      },
+      {
+        label: '성인기~', range: '18세 이상',
+        color: '#6B6560', bg: '#F0EDE8', mid: '#C8C0B8',
+        active: [1, 2, 3, 4, 5],
+        desc: '결혼·취업·이혼 등 생애 사건(시간체계)이 발달에 중요한 변수가 됨. 5가지 체계 모두 영향.',
+        spotlight: '시간체계 포함 전체',
+        examples: '이직, 이사, 가족 변화 등 생애 전환점',
+      },
     ];
-    const implications = [
-      { label:'시사점 1', text:'아동 발달에 직접 영향을 미치는 미시체계에만 집중하는 관점에서 벗어나 <strong>여러 환경체계들 간의 상호관계</strong>의 중요성을 각인시켰다.', color:'#3A8858' },
-      { label:'시사점 2', text:'아동을 둘러싼 가정교육뿐만 아니라 <strong>사회의 노력</strong>이 함께 요구된다.', color:'#2888C8' },
-    ];
+
+    const LAYER_NAMES = ['미시', '중간', '외', '거시', '시간'];
+    const LAYER_COLORS = ['#3A8858','#2888C8','#C87840','#8050B8','#6B6560'];
+    const LAYER_BG = ['#E6F2EC','#E4F2FA','#FBF0E6','#EEE8F5','#F0EDE8'];
 
     return `
-      <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:16px;line-height:1.75;font-family:${FONT};">
-        브론펜브레너는 아동 발달을 단순한 심리 내부 과정이 아닌, <strong>다층적 환경 체계와의 상호작용</strong>으로 설명했다.
-      </div>
-      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text-tertiary,#A09890);margin-bottom:10px;">이론의 특징</div>
-      <div class="bv-interact-grid" style="margin-bottom:20px;">
-        ${chars.map(c=>`
-          <div class="bv-interact-card" style="border-left:3px solid ${c.color};background:${c.bg};">
-            <div class="bv-interact-title" style="color:${c.color};">${c.title}</div>
-            <div class="bv-interact-desc">${c.desc}</div>
-          </div>`).join('')}
-      </div>
-      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--text-tertiary,#A09890);margin-bottom:10px;">교육적 시사점</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        ${implications.map((imp,i)=>`
-          <div style="background:var(--bg-white,#fff);border-radius:12px;padding:14px 16px;
-            border:1.5px solid var(--border-light,rgba(0,0,0,.08));display:flex;align-items:flex-start;gap:12px;">
-            <div style="width:28px;height:28px;border-radius:50%;background:${imp.color};color:white;
-              font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</div>
-            <div style="font-size:12px;line-height:1.75;color:var(--text-primary,#2C2825);font-family:${FONT};">${imp.text}</div>
-          </div>`).join('')}
+      <div style="font-family:${FONT_V};display:flex;flex-direction:column;gap:14px;">
+
+        <!-- 범례 -->
+        <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:10px;">
+          <span style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-right:4px;">체계</span>
+          ${LAYER_NAMES.map((n,i) => `
+            <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:${LAYER_BG[i]};color:${LAYER_COLORS[i]};">${n}체계</span>
+          `).join('')}
+        </div>
+
+        <!-- 연령대 카드 -->
+        ${AGES.map((age, ai) => {
+          const isOn = activeAge === ai;
+          return `
+          <div onclick="bronfAge(${ai})"
+            style="border-radius:12px;border:1.5px solid ${isOn ? age.color : 'var(--border-light,rgba(0,0,0,.08))'};
+              background:${isOn ? age.bg : 'var(--bg-white,#fff)'};cursor:pointer;overflow:hidden;transition:all .15s;">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;">
+              <!-- 연령 뱃지 -->
+              <div style="flex-shrink:0;text-align:center;min-width:52px;">
+                <div style="font-size:13px;font-weight:800;color:${age.color};">${age.label}</div>
+                <div style="font-size:10px;color:var(--text-tertiary,#A09890);font-weight:600;">${age.range}</div>
+              </div>
+              <!-- 활성 체계 바 -->
+              <div style="flex:1;display:flex;gap:4px;align-items:center;">
+                ${LAYER_NAMES.map((n,li) => {
+                  const active = age.active.includes(li+1);
+                  return `<div style="height:6px;flex:1;border-radius:3px;background:${active ? LAYER_COLORS[li] : 'var(--border-light,rgba(0,0,0,.08))'};transition:all .2s;"></div>`;
+                }).join('')}
+              </div>
+              <!-- 스포트라이트 pill -->
+              <div style="flex-shrink:0;font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px;
+                background:${age.color}18;color:${age.color};white-space:nowrap;">${age.spotlight}</div>
+              <span style="font-size:12px;color:var(--text-tertiary,#A09890);flex-shrink:0;">${isOn?'▲':'▽'}</span>
+            </div>
+            ${isOn ? `
+            <div style="padding:0 16px 14px 16px;font-family:${FONT_V};">
+              <div style="width:100%;height:1px;background:${age.color}30;margin-bottom:10px;"></div>
+              <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.8;margin-bottom:8px;">${age.desc}</div>
+              <div style="font-size:11px;color:var(--text-tertiary,#A09890);">예: ${age.examples}</div>
+              <!-- 활성 체계 상세 -->
+              <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;">
+                ${age.active.map(li => `
+                  <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:8px;
+                    background:${LAYER_BG[li-1]};color:${LAYER_COLORS[li-1]};">${LAYER_NAMES[li-1]}체계 활성</span>
+                `).join('')}
+              </div>
+            </div>` : ''}
+          </div>`;
+        }).join('')}
+
+        <div style="text-align:center;font-size:11px;color:var(--text-tertiary,#A09890);padding:4px 0;">
+          연령대를 클릭하면 상세 설명이 펼쳐집니다
+        </div>
       </div>`;
   }
-
   window.bronfTab = function(tab) {
     curTab = tab;
+    activeAge = null;
     render();
     setTimeout(() => {
       const wrap = document.getElementById('bronf-wrap');
@@ -305,6 +367,12 @@
   window.bronfClick = function(num) {
     activeLayer = activeLayer === num ? null : num;
     render();
+  };
+
+  window.bronfAge = function(ai) {
+    activeAge = activeAge === ai ? null : ai;
+    const el = document.getElementById('bv-flow');
+    if (el) el.innerHTML = renderFlow();
   };
 
   function init() {

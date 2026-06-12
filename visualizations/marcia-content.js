@@ -163,19 +163,22 @@
     <!-- 논술 답안 구조 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
-      <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.9;color:var(--text-primary,#2C2825);font-family:${FONT};">
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          ${[
-            ['두 가지 기준 제시', '위기(crisis)와 전념(commitment)'],
-            ['해당 지위 명칭 + 정의', '예: "정체감 유예란 ~ 단계이다."'],
-            ['위기·전념 여부 명시', '"위기 ○ / 전념 ✕"'],
-            ['특징 키워드', '"적극적으로 정체성을 탐색함"'],
-          ].map(([title, desc], i) => `
-            <div style="display:flex;gap:8px;align-items:baseline;">
-              <span style="color:#A09890;font-weight:700;font-size:12px;flex-shrink:0;">${i+1}.</span>
-              <span><strong>${title}</strong> — ${desc}</span>
-            </div>`).join('')}
-        </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:13px;">
+        ${[
+          { label:'두 가지 기준 제시', items:['위기(crisis) — 정체성 탐색 여부', '전념(commitment) — 특정 가치·역할에 대한 헌신 여부'] },
+          { label:'해당 지위 서술', items:['지위명 — 위기·전념 여부 명시 (예: 위기 ○ / 전념 ✕)', '정의 — "정체감 유예란 ~ 단계이다."', '특징 키워드 — "적극적으로 정체성을 탐색함"'] },
+          { label:'교육적 시사점', items:['청소년이 심리적 유예기(모라토리움)를 경험할 수 있도록 다양한 탐색 기회 제공', '교사·부모는 가치관 강요 대신 자율적 탐색을 지지해야 함'] },
+        ].map(({ label, items }) => `
+          <div style="padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;line-height:1.8;">
+            <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.04em;margin-bottom:6px;">${label}</div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              ${items.map((item, i) => `
+                <div style="display:flex;gap:7px;align-items:flex-start;">
+                  <span style="background:#A09890;color:white;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span>
+                  <span style="color:var(--text-primary,#2C2825);">${item}</span>
+                </div>`).join('')}
+            </div>
+          </div>`).join('')}
       </div>
     </div>
 

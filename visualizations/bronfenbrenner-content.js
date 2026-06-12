@@ -167,9 +167,9 @@
           '미시체계에만 집중하는 관점에서 벗어나, <strong>여러 환경체계들 간의 상호관계</strong>의 중요성을 강조했다.',
           '아동을 둘러싼 가정교육뿐만 아니라 <strong>사회 전체의 노력</strong>이 함께 요구된다.',
         ].map((desc, i) => `
-          <div style="display:flex;gap:8px;align-items:baseline;background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
-            <span style="color:#A09890;font-weight:700;font-size:12px;flex-shrink:0;">${i+1}.</span>
-            <span style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.75;">${desc}</span>
+          <div style="display:flex;align-items:flex-start;gap:12px;background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#A09890;color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</div>
+            <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.75;">${desc}</div>
           </div>`).join('')}
       </div>
     </div>
@@ -194,20 +194,23 @@
     <!-- 논술 답안 구조 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
-      <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:14px 16px;font-size:12px;line-height:1.9;color:var(--text-primary,#2C2825);font-family:${FONT};">
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          ${[
-            ['기본 관점 제시', '유전×환경 상호작용, 아동은 능동적 존재'],
-            ['5가지 환경 체계 열거', '미시 → 중간 → 외 → 거시 → 시간체계 순'],
-            ['각 체계 정의 + 예시', '체계명 — 정의 — 구체적 예시(2개 이상)'],
-            ['교육적 시사점', '다층 환경의 상호관계 강조, 사회 전체 노력 필요'],
-            ['결론', '교사·학교가 미시체계를 넘어 중간체계(가정-학교 연계) 강화를 위해 노력해야 함'],
-          ].map(([title, desc], i) => `
-            <div style="display:flex;gap:8px;align-items:baseline;">
-              <span style="color:#A09890;font-weight:700;font-size:12px;flex-shrink:0;">${i+1}.</span>
-              <span><strong>${title}</strong> — ${desc}</span>
-            </div>`).join('')}
-        </div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:13px;">
+        ${[
+          { label:'기본 관점 2가지', items:['유전과 환경의 상호작용', '아동은 능동적 존재'] },
+          { label:'5가지 환경 체계', items:['미시 → 중간 → 외 → 거시 → 시간 순서로 열거', '체계명 — 정의 — 구체적 예시(2개 이상) 세트로 서술'] },
+          { label:'교육적 시사점 2가지', items:['여러 환경체계들 간의 상호관계의 중요성', '가정교육을 넘어 사회 전체의 노력 필요'] },
+          { label:'결론', items:['교사·학교가 미시체계를 넘어 중간체계(가정-학교 연계) 강화를 위해 노력해야 함'] },
+        ].map(({ label, items }) => `
+          <div style="padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;line-height:1.8;">
+            <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.04em;margin-bottom:6px;">${label}</div>
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              ${items.map((item, i) => `
+                <div style="display:flex;gap:7px;align-items:flex-start;">
+                  <span style="background:#A09890;color:white;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span>
+                  <span style="color:var(--text-primary,#2C2825);">${item}</span>
+                </div>`).join('')}
+            </div>
+          </div>`).join('')}
       </div>
     </div>
 
