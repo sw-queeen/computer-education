@@ -79,7 +79,7 @@
       <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;font-family:${FONT};">
 
         <!-- 유실 -->
-        <div style="border-radius:12px;background:#FBF0E6;padding:14px 16px;border-left:4px solid #C87840;">
+        <div style="border-radius:12px;background:#FBF0E6;padding:14px 16px;">
           <div style="font-size:14px;font-weight:800;color:#C87840;margin-bottom:6px;">정체감 유실(폐쇄)</div>
           <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">정체성 위기를 경험하지 않았지만 정체성이 확립된 것처럼 행동하는 단계</div>
           <div style="font-size:11px;font-weight:700;color:#C87840;">› 남의 가치관을 그대로 따름</div>
@@ -89,7 +89,7 @@
         <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary,#6B6560);padding:4px 10px;border-radius:20px;background:var(--bg-surface,#F0EDE8);white-space:nowrap;">전념 ○</div>
 
         <!-- 성취 -->
-        <div style="border-radius:12px;background:#E6F2EC;padding:14px 16px;border-left:4px solid #3A8858;">
+        <div style="border-radius:12px;background:#E6F2EC;padding:14px 16px;">
           <div style="font-size:14px;font-weight:800;color:#3A8858;margin-bottom:6px;">정체감 성취(확립)</div>
           <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">스스로 탐색하고 전념하여 목표를 성취해 정체성을 확립한 단계</div>
           <div style="font-size:11px;font-weight:700;color:#3A8858;">› 삶의 목표를 능동적으로 선택함</div>
@@ -107,7 +107,7 @@
         <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary,#6B6560);padding:4px 10px;border-radius:20px;background:var(--bg-surface,#F0EDE8);white-space:nowrap;">위기 ○</div>
 
         <!-- 혼미 -->
-        <div style="border-radius:12px;background:#F5F0F8;padding:14px 16px;border-left:4px solid #7848A8;">
+        <div style="border-radius:12px;background:#F5F0F8;padding:14px 16px;">
           <div style="font-size:14px;font-weight:800;color:#7848A8;margin-bottom:6px;">정체감 혼미</div>
           <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">정체성을 찾으려고 노력을 하지 않는 단계</div>
           <div style="font-size:11px;font-weight:700;color:#7848A8;">› 가치 있는 활동에 전념하지 않음</div>
@@ -117,7 +117,7 @@
         <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary,#6B6560);padding:4px 10px;border-radius:20px;background:var(--bg-surface,#F0EDE8);white-space:nowrap;">전념 ✕</div>
 
         <!-- 유예 -->
-        <div style="border-radius:12px;background:#E6EAF5;padding:14px 16px;border-left:4px solid #3A5AA0;">
+        <div style="border-radius:12px;background:#E6EAF5;padding:14px 16px;">
           <div style="font-size:14px;font-weight:800;color:#3A5AA0;margin-bottom:6px;">정체감 유예</div>
           <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">정체성 위기를 경험하고 정체성 확립을 위해 적극적으로 탐색하는 단계</div>
           <div style="font-size:11px;font-weight:700;color:#3A5AA0;">› 적극적으로 정체성을 탐색함</div>
@@ -148,14 +148,14 @@
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">다른 이론과 비교</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
         <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
-          <div style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-bottom:4px;">에릭슨 — 토대</div>
-          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">자아정체감 대 역할혼미 (5단계)</div>
-          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">마르시아는 에릭슨의 5단계 위기(자아정체감 대 역할혼미) 이론을 조작적으로 확장한 것. 에릭슨이 제시한 정체성 탐색의 개념을 위기·전념 두 기준으로 구체화했다.</div>
+          <div style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-bottom:4px;">에릭슨 — 이론적 토대</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">자아정체감 대 역할혼미 (심리사회발달 5단계)</div>
+          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">마르시아는 에릭슨이 청소년기 과제로 제시한 '정체성 탐색'을 <strong>위기·전념</strong> 두 기준으로 조작적 정의하여 구체화했다. 에릭슨의 개념을 측정 가능한 4가지 지위로 확장한 것이 핵심 기여이다.</div>
         </div>
         <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
           <div style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-bottom:4px;">에릭슨 — 심리적 유예기</div>
-          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">모라토리움(moratorium)</div>
-          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">유예 지위에 있는 청소년의 지배적 심리 상태. 에릭슨은 청소년기에 심리적 유예기를 일정 기간 경험하는 것이 정체성 발달에 바람직하다고 보았다.</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">모라토리움(Moratorium)</div>
+          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">에릭슨은 청소년이 일정 기간 <strong>심리적 유예기</strong>를 경험하는 것이 건강한 정체성 발달에 필요하다고 보았다. 마르시아의 '정체감 유예' 지위가 이 상태에 대응한다.</div>
         </div>
       </div>
     </div>

@@ -151,7 +151,7 @@
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">체계별 상세 설명</div>
       <div style="display:flex;flex-direction:column;gap:10px;font-family:${FONT};">
         ${layers.map(l => `
-          <div style="border-radius:12px;padding:14px 16px;background:${l.bg};border-left:4px solid ${l.color};">
+          <div style="border-radius:12px;padding:14px 16px;background:${l.bg};">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
               <span style="font-size:14px;font-weight:800;color:${l.color};">${l.name}</span>
               <span style="font-size:10px;color:var(--text-tertiary,#A09890);font-weight:600;">${l.nameEn}</span>
@@ -182,13 +182,15 @@
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">다른 이론과 비교</div>
       <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
-        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:13px 16px;">
-          <div style="font-size:11px;font-weight:700;color:${ACCENT};margin-bottom:3px;">피아제 인지발달이론과의 비교</div>
-          <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.75;">피아제는 아동의 내적 인지 구조 발달에 초점. 브론펜브레너는 외부 환경 체계와의 상호작용을 강조. 두 이론 모두 아동을 능동적 존재로 봄.</div>
+        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
+          <div style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-bottom:4px;">피아제 — 인지발달이론</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">내적 인지 구조의 발달</div>
+          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">피아제는 아동 내부의 <strong>인지 도식(schema)</strong>이 동화·조절·평형화를 거쳐 발달한다고 보았다. 브론펜브레너는 이와 달리 외부 <strong>환경 체계와의 상호작용</strong>에 초점을 둔다. 두 이론 모두 아동을 능동적 존재로 본다는 공통점이 있다.</div>
         </div>
-        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:13px 16px;">
-          <div style="font-size:11px;font-weight:700;color:#C05808;margin-bottom:3px;">비고츠키 사회문화이론과의 비교</div>
-          <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.75;">비고츠키는 근접발달영역·비계 등 사회적 상호작용의 <em>메커니즘</em>에 집중. 브론펜브레너는 환경 체계의 <em>구조와 층위</em>를 체계적으로 분류했다는 점에서 다름.</div>
+        <div style="background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;">
+          <div style="font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.06em;margin-bottom:4px;">비고츠키 — 사회문화이론</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">근접발달영역과 비계설정</div>
+          <div style="font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.7;">비고츠키는 <strong>ZPD·비계</strong>처럼 사회적 상호작용의 구체적 메커니즘을 설명했다. 브론펜브레너는 그보다 한 층 위에서 환경 체계의 <strong>구조와 층위</strong>를 분류하는 데 집중했다. 두 이론 모두 사회적 맥락이 발달에 필수적이라는 관점을 공유한다.</div>
         </div>
       </div>
     </div>
