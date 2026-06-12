@@ -25,27 +25,27 @@
       #marcia-wrap .mv-tab.on { background:${BG}; color:#1E5A3C; border-color:${ACCENT}; }
 
       /* ── 매트릭스 레이아웃 ── */
-      #marcia-wrap .mv-matrix-wrap {
-        display:grid;
-        grid-template-columns: auto 1fr 1fr;
-        grid-template-rows: auto 1fr 1fr;
-        gap:6px;
+      #marcia-wrap .mv-matrix-wrap { display:flex; flex-direction:column; gap:0; }
+      #marcia-wrap .mv-axis-divider {
+        display:flex; align-items:center; gap:6px; padding:4px 0;
       }
-      #marcia-wrap .mv-axis-col-header {
-        display:flex; align-items:center; justify-content:center;
-        font-size:11px; font-weight:700; letter-spacing:.04em;
-        color:var(--text-secondary,#6B6560); padding:4px 6px;
-        background:var(--bg-surface,#F0EDE8); border-radius:8px;
+      #marcia-wrap .mv-axis-pill {
+        flex:1; display:flex; align-items:center; justify-content:center;
+        font-size:11px; font-weight:700; letter-spacing:.03em;
+        padding:4px 8px; border-radius:20px;
       }
-      #marcia-wrap .mv-axis-row-header {
-        display:flex; align-items:center; justify-content:center;
-        font-size:11px; font-weight:700; letter-spacing:.04em;
-        color:var(--text-secondary,#6B6560); padding:6px 8px;
-        background:var(--bg-surface,#F0EDE8); border-radius:8px;
-        writing-mode:vertical-rl; transform:rotate(180deg);
+      #marcia-wrap .mv-axis-corner { width:28px; flex-shrink:0; }
+      #marcia-wrap .mv-cell-row {
+        display:flex; gap:6px; align-items:stretch;
+      }
+      #marcia-wrap .mv-row-label {
+        width:28px; flex-shrink:0; display:flex; align-items:center;
+        justify-content:center; font-size:10px; font-weight:700;
+        letter-spacing:.03em; border-radius:8px; padding:4px 2px;
+        text-align:center; line-height:1.3;
       }
       #marcia-wrap .mv-cell {
-        border-radius:12px; border:2px solid transparent;
+        flex:1; border-radius:12px; border:2px solid transparent;
         padding:14px; cursor:pointer;
         transition:all .18s cubic-bezier(.4,0,.2,1);
       }
@@ -100,11 +100,11 @@
         font-size:11px; font-weight:800; color:white;
       }
 
-      @media(max-width:560px) {
+      @media(max-width:480px) {
         #marcia-wrap .mv-cell { padding:10px; }
         #marcia-wrap .mv-cell-title { font-size:12px; }
         #marcia-wrap .mv-cell-desc { font-size:10px; }
-        #marcia-wrap .mv-axis-row-header { font-size:10px; padding:4px 6px; }
+        #marcia-wrap .mv-row-label { width:22px; font-size:9px; }
       }
     `;
     document.head.appendChild(s);
@@ -145,12 +145,6 @@
     },
   ];
 
-  // 배치: [전념O, 위기X]=유실, [전념O, 위기O]=성취, [전념X, 위기X]=혼미, [전념X, 위기O]=유예
-  const GRID = [
-    [0, 1],  // 전념 ○ 행: 유실(위기X), 성취(위기O)
-    [2, 3],  // 전념 ✕ 행: 혼미(위기X), 유예(위기O)
-  ];
-
   let curTab = 'matrix';
   let activeCell = null;
 
@@ -171,42 +165,62 @@
   }
 
   function renderMatrix() {
-    const crisisColors = ['#C87840', '#3A8858']; // X, O
+    // 셀 렌더 헬퍼
+    function cell(idx) {
+      const st = STATUSES[idx];
+      const isOn = activeCell === st.id;
+      return `
+        <div class="mv-cell ${isOn?'on':''}"
+          style="background:${st.bg};--cell-accent:${st.accent};"
+          onclick="marciaCell('${st.id}')">
+          <div class="mv-cell-badge" style="background:${st.accent}22;color:${st.accent};">
+            위기 ${st.crisis?'○':'✕'} · 전념 ${st.commitment?'○':'✕'}
+          </div>
+          <div class="mv-cell-title" style="color:${st.text};">${st.title}<span style="font-size:10px;font-weight:600;opacity:.65;">${st.titleSub}</span></div>
+          <div class="mv-cell-desc">${st.desc}</div>
+          <div class="mv-cell-keyword" style="color:${st.accent};">› ${st.keyword}</div>
+          <div class="mv-cell-example">${st.example}</div>
+        </div>`;
+    }
 
     return `
       <div class="mv-matrix-wrap">
-        <!-- [0,0] 빈 코너 -->
-        <div></div>
-        <!-- [0,1~2] 위기 열 헤더 -->
-        <div class="mv-axis-col-header" style="color:#C87840;">위기 ✕</div>
-        <div class="mv-axis-col-header" style="color:#3A8858;">위기 ○</div>
 
-        ${GRID.map((row, ri) => {
-          const rowLabel = ri === 0 ? '전념 ○' : '전념 ✕';
-          const rowLabelColor = ri === 0 ? '#3A8858' : '#C87840';
-          return `
-            <!-- 행 헤더 -->
-            <div class="mv-axis-row-header" style="color:${rowLabelColor};">${rowLabel}</div>
-            <!-- 셀 두 개 -->
-            ${row.map(idx => {
-              const st = STATUSES[idx];
-              const isOn = activeCell === st.id;
-              return `
-              <div class="mv-cell ${isOn?'on':''}"
-                style="background:${st.bg};--cell-accent:${st.accent};"
-                onclick="marciaCell('${st.id}')">
-                <div class="mv-cell-badge" style="background:${st.accent}22;color:${st.accent};">
-                  위기 ${st.crisis?'○':'✕'} · 전념 ${st.commitment?'○':'✕'}
-                </div>
-                <div class="mv-cell-title" style="color:${st.text};">${st.title}<span style="font-size:10px;font-weight:600;opacity:.65;">${st.titleSub}</span></div>
-                <div class="mv-cell-desc">${st.desc}</div>
-                <div class="mv-cell-keyword" style="color:${st.accent};">› ${st.keyword}</div>
-                <div class="mv-cell-example">${st.example}</div>
-              </div>`;
-            }).join('')}`;
-        }).join('')}
+        <!-- 위기 ✕ / 위기 ○ 상단 divider -->
+        <div class="mv-axis-divider">
+          <div class="mv-axis-corner"></div>
+          <div class="mv-axis-pill" style="background:#C8784018;color:#C87840;">위기 ✕</div>
+          <div class="mv-axis-pill" style="background:#3A885818;color:#3A8858;">위기 ○</div>
+        </div>
+
+        <!-- 전념 ○ 행 -->
+        <div class="mv-cell-row">
+          <div class="mv-row-label" style="background:#3A885818;color:#3A8858;">전념<br>○</div>
+          ${cell(0)}${cell(1)}
+        </div>
+
+        <!-- 전념 사이 divider (위기 축 재표시) -->
+        <div class="mv-axis-divider" style="padding:3px 0;">
+          <div class="mv-axis-corner"></div>
+          <div style="flex:1;height:1px;background:var(--border-light,rgba(0,0,0,.08));margin:0 2px;"></div>
+          <div style="flex:1;height:1px;background:var(--border-light,rgba(0,0,0,.08));margin:0 2px;"></div>
+        </div>
+
+        <!-- 전념 ✕ 행 -->
+        <div class="mv-cell-row">
+          <div class="mv-row-label" style="background:#C8784018;color:#C87840;">전념<br>✕</div>
+          ${cell(2)}${cell(3)}
+        </div>
+
+        <!-- 하단 위기 축 재표시 -->
+        <div class="mv-axis-divider">
+          <div class="mv-axis-corner"></div>
+          <div class="mv-axis-pill" style="background:#C8784018;color:#C87840;">위기 ✕</div>
+          <div class="mv-axis-pill" style="background:#3A885818;color:#3A8858;">위기 ○</div>
+        </div>
+
       </div>
-      <div style="text-align:center;padding:10px 0 4px;font-size:11px;color:var(--text-tertiary,#A09890);font-family:${FONT};">
+      <div style="text-align:center;padding:8px 0 2px;font-size:11px;color:var(--text-tertiary,#A09890);font-family:${FONT};">
         카드를 클릭하면 상세 내용이 펼쳐집니다
       </div>`;
   }

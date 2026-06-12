@@ -59,7 +59,7 @@
         accent:'#7848A8', bg:'#F5F0F8',
         desc:'정체성을 찾으려고 노력을 하지 않는 단계',
         keyword:'가치 있는 활동에 전념하지 않음' },
-      { name:'정체감 유예(모라토리움)', crisis:true, comm:false,
+      { name:'정체감 유예', crisis:true, comm:false,
         accent:'#3A5AA0', bg:'#E6EAF5',
         desc:'정체성 위기를 경험하고 정체성 확립을 위해 적극적으로 탐색하는 단계',
         keyword:'적극적으로 정체성을 탐색함' },
@@ -81,12 +81,12 @@
       <div style="display:flex;flex-direction:column;gap:10px;font-family:${FONT};">
         <div style="background:${BG};border-radius:10px;padding:13px 16px;">
           <div style="font-size:11px;color:var(--text-tertiary,#A09890);margin-bottom:3px;">정체성을 탐색하는 과정에서 갈등·고민을 경험했는지 여부</div>
-          <div style="font-size:13px;font-weight:800;color:${ACCENT};">위기 (탐색, crisis)</div>
+          <div style="font-size:13px;font-weight:800;color:${ACCENT};">위기 (탐색)</div>
           <div style="font-size:13px;color:var(--text-primary,#2C2825);margin-top:3px;">직업과 가치관 선택에 <strong>고민과 갈등</strong>을 느꼈는가?</div>
         </div>
         <div style="background:${BG};border-radius:10px;padding:13px 16px;">
           <div style="font-size:11px;color:var(--text-tertiary,#A09890);margin-bottom:3px;">특정 가치관·목표에 헌신하고 있는지 여부</div>
-          <div style="font-size:13px;font-weight:800;color:${ACCENT};">전념 (몰입·수행, commitment)</div>
+          <div style="font-size:13px;font-weight:800;color:${ACCENT};">전념 (몰입·수행)</div>
           <div style="font-size:13px;color:var(--text-primary,#2C2825);margin-top:3px;">주어진 역할과 과업에 <strong>몰입</strong>을 했는가?</div>
         </div>
       </div>
@@ -169,8 +169,8 @@
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
       <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
         ${[
-          ['혼동 주의', '#D05840', '정체감 유실 vs 유예 — 둘 다 위기나 전념 중 하나가 ✕이지만, 어떤 것이 ✕인지 정반대'],
           ['핵심 암기', '#2D8A6A', '유·성·혼·예 순서 — 위기: ✕ ○ ✕ ○ / 전념: ○ ○ ✕ ✕'],
+          ['혼동 주의', '#D05840', '정체감 유실 vs 유예 — 둘 다 위기나 전념 중 하나가 ✕이지만, 어떤 것이 ✕인지 정반대'],
           ['혼동 주의', '#D05840', '정체감 성취 ≠ 외부에서 목표를 부여받은 것 — 스스로 탐색 후 능동적으로 선택해야 성취'],
         ].map(([label, color, content]) => `
           <div style="background:var(--bg-surface,#F0EDE8);border-radius:8px;padding:10px 14px;border-left:3px solid ${color};">
