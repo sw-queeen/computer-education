@@ -31,25 +31,14 @@
         grid-template-rows: 1fr auto 1fr;
         gap:8px;
       }
-      /* 중앙 교차점 레이블 */
-      #marcia-wrap .mv-cross {
-        display:flex; flex-direction:column; align-items:center; justify-content:center;
-        gap:0; min-height:40px;
-      }
-      #marcia-wrap .mv-cross-pill {
-        font-size:10px; font-weight:700; letter-spacing:.03em;
-        padding:3px 10px; border-radius:20px; white-space:nowrap;
-      }
-      /* 축 가장자리 레이블 (상/하/좌/우) */
-      #marcia-wrap .mv-edge-h {
+      /* 가운데 레이블 칸 */
+      #marcia-wrap .mv-mid-label {
         display:flex; align-items:center; justify-content:center;
-        font-size:10px; font-weight:700; letter-spacing:.03em;
-        padding:3px 8px; border-radius:20px; white-space:nowrap;
-      }
-      #marcia-wrap .mv-edge-v {
-        display:flex; align-items:center; justify-content:center;
-        font-size:10px; font-weight:700; letter-spacing:.03em;
-        padding:3px 8px; border-radius:20px; white-space:nowrap;
+        font-size:11px; font-weight:700;
+        color:var(--text-secondary,#6B6560);
+        padding:4px 10px; border-radius:20px;
+        background:var(--bg-surface,#F0EDE8);
+        white-space:nowrap;
       }
       #marcia-wrap .mv-cell {
         border-radius:12px; border:2px solid transparent;
@@ -111,9 +100,7 @@
         #marcia-wrap .mv-cell { padding:10px; }
         #marcia-wrap .mv-cell-title { font-size:12px; }
         #marcia-wrap .mv-cell-desc { font-size:10px; }
-        #marcia-wrap .mv-cross-pill,
-        #marcia-wrap .mv-edge-h,
-        #marcia-wrap .mv-edge-v { font-size:9px; padding:2px 6px; }
+        #marcia-wrap .mv-mid-label { font-size:9px; padding:2px 6px; }
       }
     `;
     document.head.appendChild(s);
@@ -188,39 +175,26 @@
         </div>`;
     }
 
-    // 3×3 그리드: 셀(좌상) | 위기레이블(상중) | 셀(우상)
-    //             전념레이블(중좌) | 교차점(중앙) | 전념레이블(중우) — 실제론 교차점만 중앙에
-    //             셀(좌하) | 위기레이블(하중) | 셀(우하)
-    // grid-template: 유실 | 위기X↔위기O | 성취
-    //                전념O↕전념X | (교차) | 전념O↕전념X
-    //                혼미 | 위기X↔위기O | 유예
+    // 정확한 배치:
+    // 유실   (전념○)   성취
+    // (위기✕)  [·]  (위기○)
+    // 혼미   (전념✕)   유예
 
     return `
       <div class="mv-matrix-wrap">
-
-        <!-- row 1: 유실 | (위기X→O 레이블) | 성취 -->
         ${cell(0)}
-        <div class="mv-edge-h" style="background:#C8784018;color:#C87840;">위기 ✕ ↔ 위기 ○</div>
+        <div class="mv-mid-label">전념 ○</div>
         ${cell(1)}
 
-        <!-- row 2: 전념O↕X | 교차점 | 전념O↕X -->
-        <div class="mv-edge-v" style="background:#3A885818;color:#3A8858;">전념 ○ ↕ 전념 ✕</div>
-        <div class="mv-cross">
-          <div style="width:1px;flex:1;background:var(--border-mid,rgba(0,0,0,.14));margin:0 auto;"></div>
-          <div style="display:flex;gap:4px;align-items:center;">
-            <div style="height:1px;flex:1;background:var(--border-mid,rgba(0,0,0,.14));"></div>
-            <div style="width:6px;height:6px;border-radius:50%;background:var(--border-mid,rgba(0,0,0,.2));flex-shrink:0;"></div>
-            <div style="height:1px;flex:1;background:var(--border-mid,rgba(0,0,0,.14));"></div>
-          </div>
-          <div style="width:1px;flex:1;background:var(--border-mid,rgba(0,0,0,.14));margin:0 auto;"></div>
+        <div class="mv-mid-label">위기 ✕</div>
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--border-mid,rgba(0,0,0,.2));"></div>
         </div>
-        <div class="mv-edge-v" style="background:#3A885818;color:#3A8858;">전념 ○ ↕ 전념 ✕</div>
+        <div class="mv-mid-label">위기 ○</div>
 
-        <!-- row 3: 혼미 | (위기X→O 레이블) | 유예 -->
         ${cell(2)}
-        <div class="mv-edge-h" style="background:#C8784018;color:#C87840;">위기 ✕ ↔ 위기 ○</div>
+        <div class="mv-mid-label">전념 ✕</div>
         ${cell(3)}
-
       </div>
       <div style="text-align:center;padding:8px 0 2px;font-size:11px;color:var(--text-tertiary,#A09890);font-family:${FONT};">
         카드를 클릭하면 상세 내용이 펼쳐집니다

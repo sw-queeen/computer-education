@@ -167,11 +167,11 @@
     <!-- 체크 포인트 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
-      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:12px;">
         ${[
-          ['핵심 암기', '#2D8A6A', '유·성·혼·예 순서 — 위기: ✕ ○ ✕ ○ / 전념: ○ ○ ✕ ✕'],
           ['혼동 주의', '#D05840', '정체감 유실 vs 유예 — 둘 다 위기나 전념 중 하나가 ✕이지만, 어떤 것이 ✕인지 정반대'],
           ['혼동 주의', '#D05840', '정체감 성취 ≠ 외부에서 목표를 부여받은 것 — 스스로 탐색 후 능동적으로 선택해야 성취'],
+          ['핵심 암기', '#2D8A6A', '유·성·혼·예 순서 — 위기: ✕ ○ ✕ ○ / 전념: ○ ○ ✕ ✕'],
         ].map(([label, color, content]) => `
           <div style="background:var(--bg-surface,#F0EDE8);border-radius:8px;padding:10px 14px;border-left:3px solid ${color};">
             <span style="display:inline-block;background:${color};color:white;font-size:10px;font-weight:700;padding:1px 8px;border-radius:20px;margin-right:8px;letter-spacing:.02em;">${label}</span>
