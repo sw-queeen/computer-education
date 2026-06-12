@@ -24,28 +24,35 @@
       }
       #marcia-wrap .mv-tab.on { background:${BG}; color:#1E5A3C; border-color:${ACCENT}; }
 
-      /* ── 매트릭스 레이아웃 ── */
-      #marcia-wrap .mv-matrix-wrap { display:flex; flex-direction:column; gap:0; }
-      #marcia-wrap .mv-axis-divider {
-        display:flex; align-items:center; gap:6px; padding:4px 0;
+      /* ── 매트릭스 레이아웃: 3×3 그리드 ── */
+      #marcia-wrap .mv-matrix-wrap {
+        display:grid;
+        grid-template-columns: 1fr auto 1fr;
+        grid-template-rows: 1fr auto 1fr;
+        gap:8px;
       }
-      #marcia-wrap .mv-axis-pill {
-        flex:1; display:flex; align-items:center; justify-content:center;
-        font-size:11px; font-weight:700; letter-spacing:.03em;
-        padding:4px 8px; border-radius:20px;
+      /* 중앙 교차점 레이블 */
+      #marcia-wrap .mv-cross {
+        display:flex; flex-direction:column; align-items:center; justify-content:center;
+        gap:0; min-height:40px;
       }
-      #marcia-wrap .mv-axis-corner { width:28px; flex-shrink:0; }
-      #marcia-wrap .mv-cell-row {
-        display:flex; gap:6px; align-items:stretch;
+      #marcia-wrap .mv-cross-pill {
+        font-size:10px; font-weight:700; letter-spacing:.03em;
+        padding:3px 10px; border-radius:20px; white-space:nowrap;
       }
-      #marcia-wrap .mv-row-label {
-        width:28px; flex-shrink:0; display:flex; align-items:center;
-        justify-content:center; font-size:10px; font-weight:700;
-        letter-spacing:.03em; border-radius:8px; padding:4px 2px;
-        text-align:center; line-height:1.3;
+      /* 축 가장자리 레이블 (상/하/좌/우) */
+      #marcia-wrap .mv-edge-h {
+        display:flex; align-items:center; justify-content:center;
+        font-size:10px; font-weight:700; letter-spacing:.03em;
+        padding:3px 8px; border-radius:20px; white-space:nowrap;
+      }
+      #marcia-wrap .mv-edge-v {
+        display:flex; align-items:center; justify-content:center;
+        font-size:10px; font-weight:700; letter-spacing:.03em;
+        padding:3px 8px; border-radius:20px; white-space:nowrap;
       }
       #marcia-wrap .mv-cell {
-        flex:1; border-radius:12px; border:2px solid transparent;
+        border-radius:12px; border:2px solid transparent;
         padding:14px; cursor:pointer;
         transition:all .18s cubic-bezier(.4,0,.2,1);
       }
@@ -104,7 +111,9 @@
         #marcia-wrap .mv-cell { padding:10px; }
         #marcia-wrap .mv-cell-title { font-size:12px; }
         #marcia-wrap .mv-cell-desc { font-size:10px; }
-        #marcia-wrap .mv-row-label { width:22px; font-size:9px; }
+        #marcia-wrap .mv-cross-pill,
+        #marcia-wrap .mv-edge-h,
+        #marcia-wrap .mv-edge-v { font-size:9px; padding:2px 6px; }
       }
     `;
     document.head.appendChild(s);
@@ -165,7 +174,6 @@
   }
 
   function renderMatrix() {
-    // 셀 렌더 헬퍼
     function cell(idx) {
       const st = STATUSES[idx];
       const isOn = activeCell === st.id;
@@ -173,9 +181,6 @@
         <div class="mv-cell ${isOn?'on':''}"
           style="background:${st.bg};--cell-accent:${st.accent};"
           onclick="marciaCell('${st.id}')">
-          <div class="mv-cell-badge" style="background:${st.accent}22;color:${st.accent};">
-            위기 ${st.crisis?'○':'✕'} · 전념 ${st.commitment?'○':'✕'}
-          </div>
           <div class="mv-cell-title" style="color:${st.text};">${st.title}<span style="font-size:10px;font-weight:600;opacity:.65;">${st.titleSub}</span></div>
           <div class="mv-cell-desc">${st.desc}</div>
           <div class="mv-cell-keyword" style="color:${st.accent};">› ${st.keyword}</div>
@@ -183,41 +188,38 @@
         </div>`;
     }
 
+    // 3×3 그리드: 셀(좌상) | 위기레이블(상중) | 셀(우상)
+    //             전념레이블(중좌) | 교차점(중앙) | 전념레이블(중우) — 실제론 교차점만 중앙에
+    //             셀(좌하) | 위기레이블(하중) | 셀(우하)
+    // grid-template: 유실 | 위기X↔위기O | 성취
+    //                전념O↕전념X | (교차) | 전념O↕전념X
+    //                혼미 | 위기X↔위기O | 유예
+
     return `
       <div class="mv-matrix-wrap">
 
-        <!-- 위기 ✕ / 위기 ○ 상단 divider -->
-        <div class="mv-axis-divider">
-          <div class="mv-axis-corner"></div>
-          <div class="mv-axis-pill" style="background:#C8784018;color:#C87840;">위기 ✕</div>
-          <div class="mv-axis-pill" style="background:#3A885818;color:#3A8858;">위기 ○</div>
-        </div>
+        <!-- row 1: 유실 | (위기X→O 레이블) | 성취 -->
+        ${cell(0)}
+        <div class="mv-edge-h" style="background:#C8784018;color:#C87840;">위기 ✕ ↔ 위기 ○</div>
+        ${cell(1)}
 
-        <!-- 전념 ○ 행 -->
-        <div class="mv-cell-row">
-          <div class="mv-row-label" style="background:#3A885818;color:#3A8858;">전념<br>○</div>
-          ${cell(0)}${cell(1)}
+        <!-- row 2: 전념O↕X | 교차점 | 전념O↕X -->
+        <div class="mv-edge-v" style="background:#3A885818;color:#3A8858;">전념 ○ ↕ 전념 ✕</div>
+        <div class="mv-cross">
+          <div style="width:1px;flex:1;background:var(--border-mid,rgba(0,0,0,.14));margin:0 auto;"></div>
+          <div style="display:flex;gap:4px;align-items:center;">
+            <div style="height:1px;flex:1;background:var(--border-mid,rgba(0,0,0,.14));"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--border-mid,rgba(0,0,0,.2));flex-shrink:0;"></div>
+            <div style="height:1px;flex:1;background:var(--border-mid,rgba(0,0,0,.14));"></div>
+          </div>
+          <div style="width:1px;flex:1;background:var(--border-mid,rgba(0,0,0,.14));margin:0 auto;"></div>
         </div>
+        <div class="mv-edge-v" style="background:#3A885818;color:#3A8858;">전념 ○ ↕ 전념 ✕</div>
 
-        <!-- 전념 사이 divider (위기 축 재표시) -->
-        <div class="mv-axis-divider" style="padding:3px 0;">
-          <div class="mv-axis-corner"></div>
-          <div style="flex:1;height:1px;background:var(--border-light,rgba(0,0,0,.08));margin:0 2px;"></div>
-          <div style="flex:1;height:1px;background:var(--border-light,rgba(0,0,0,.08));margin:0 2px;"></div>
-        </div>
-
-        <!-- 전념 ✕ 행 -->
-        <div class="mv-cell-row">
-          <div class="mv-row-label" style="background:#C8784018;color:#C87840;">전념<br>✕</div>
-          ${cell(2)}${cell(3)}
-        </div>
-
-        <!-- 하단 위기 축 재표시 -->
-        <div class="mv-axis-divider">
-          <div class="mv-axis-corner"></div>
-          <div class="mv-axis-pill" style="background:#C8784018;color:#C87840;">위기 ✕</div>
-          <div class="mv-axis-pill" style="background:#3A885818;color:#3A8858;">위기 ○</div>
-        </div>
+        <!-- row 3: 혼미 | (위기X→O 레이블) | 유예 -->
+        ${cell(2)}
+        <div class="mv-edge-h" style="background:#C8784018;color:#C87840;">위기 ✕ ↔ 위기 ○</div>
+        ${cell(3)}
 
       </div>
       <div style="text-align:center;padding:8px 0 2px;font-size:11px;color:var(--text-tertiary,#A09890);font-family:${FONT};">
