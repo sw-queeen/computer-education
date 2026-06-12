@@ -46,25 +46,6 @@
     const el = $('tab-summary');
     if (!el) return;
 
-    const statuses = [
-      { name:'정체감 유실(폐쇄)', crisis:false, comm:true,
-        accent:'#C87840', bg:'#FBF0E6',
-        desc:'정체성 위기를 경험하지 않았지만 정체성이 확립된 것처럼 행동하는 단계',
-        keyword:'남의 가치관을 그대로 따름' },
-      { name:'정체감 성취(확립)', crisis:true, comm:true,
-        accent:'#3A8858', bg:'#E6F2EC',
-        desc:'스스로 탐색하고 전념하여 목표를 성취해 정체성을 확립한 단계',
-        keyword:'삶의 목표를 능동적으로 선택함' },
-      { name:'정체감 혼미', crisis:false, comm:false,
-        accent:'#7848A8', bg:'#F5F0F8',
-        desc:'정체성을 찾으려고 노력을 하지 않는 단계',
-        keyword:'가치 있는 활동에 전념하지 않음' },
-      { name:'정체감 유예', crisis:true, comm:false,
-        accent:'#3A5AA0', bg:'#E6EAF5',
-        desc:'정체성 위기를 경험하고 정체성 확립을 위해 적극적으로 탐색하는 단계',
-        keyword:'적극적으로 정체성을 탐색함' },
-    ];
-
     el.innerHTML = `
     <!-- 개요 -->
     <div class="detail-section">
@@ -95,19 +76,53 @@
     <!-- 4가지 정체감 지위 -->
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:${ACCENT};">4가지 정체감 지위</div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};">
-        ${statuses.map(st => `
-          <div style="border-radius:12px;background:${st.bg};padding:14px 16px;border-left:4px solid ${st.accent};">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;">
-              <span style="font-size:14px;font-weight:800;color:${st.accent};">${st.name}</span>
-            </div>
-            <div style="display:flex;gap:6px;margin-bottom:8px;">
-              <span class="mc-status-pill" style="background:${st.crisis?st.accent+'22':'rgba(0,0,0,.06)'};color:${st.crisis?st.accent:'var(--text-tertiary,#A09890)'};">위기 ${st.crisis?'○':'✕'}</span>
-              <span class="mc-status-pill" style="background:${st.comm?st.accent+'22':'rgba(0,0,0,.06)'};color:${st.comm?st.accent:'var(--text-tertiary,#A09890)'};">전념 ${st.comm?'○':'✕'}</span>
-            </div>
-            <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">${st.desc}</div>
-            <div style="font-size:11px;font-weight:700;color:${st.accent};">› ${st.keyword}</div>
-          </div>`).join('')}
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;font-family:${FONT};">
+
+        <!-- 유실 -->
+        <div style="border-radius:12px;background:#FBF0E6;padding:14px 16px;border-left:4px solid #C87840;">
+          <div style="font-size:14px;font-weight:800;color:#C87840;margin-bottom:6px;">정체감 유실(폐쇄)</div>
+          <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">정체성 위기를 경험하지 않았지만 정체성이 확립된 것처럼 행동하는 단계</div>
+          <div style="font-size:11px;font-weight:700;color:#C87840;">› 남의 가치관을 그대로 따름</div>
+        </div>
+
+        <!-- 전념 ○ 레이블 -->
+        <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary,#6B6560);padding:4px 10px;border-radius:20px;background:var(--bg-surface,#F0EDE8);white-space:nowrap;">전념 ○</div>
+
+        <!-- 성취 -->
+        <div style="border-radius:12px;background:#E6F2EC;padding:14px 16px;border-left:4px solid #3A8858;">
+          <div style="font-size:14px;font-weight:800;color:#3A8858;margin-bottom:6px;">정체감 성취(확립)</div>
+          <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">스스로 탐색하고 전념하여 목표를 성취해 정체성을 확립한 단계</div>
+          <div style="font-size:11px;font-weight:700;color:#3A8858;">› 삶의 목표를 능동적으로 선택함</div>
+        </div>
+
+        <!-- 위기 ✕ 레이블 -->
+        <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary,#6B6560);padding:4px 10px;border-radius:20px;background:var(--bg-surface,#F0EDE8);white-space:nowrap;">위기 ✕</div>
+
+        <!-- 중앙 dot -->
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <div style="width:6px;height:6px;border-radius:50%;background:var(--border-mid,rgba(0,0,0,.2));"></div>
+        </div>
+
+        <!-- 위기 ○ 레이블 -->
+        <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary,#6B6560);padding:4px 10px;border-radius:20px;background:var(--bg-surface,#F0EDE8);white-space:nowrap;">위기 ○</div>
+
+        <!-- 혼미 -->
+        <div style="border-radius:12px;background:#F5F0F8;padding:14px 16px;border-left:4px solid #7848A8;">
+          <div style="font-size:14px;font-weight:800;color:#7848A8;margin-bottom:6px;">정체감 혼미</div>
+          <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">정체성을 찾으려고 노력을 하지 않는 단계</div>
+          <div style="font-size:11px;font-weight:700;color:#7848A8;">› 가치 있는 활동에 전념하지 않음</div>
+        </div>
+
+        <!-- 전념 ✕ 레이블 -->
+        <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary,#6B6560);padding:4px 10px;border-radius:20px;background:var(--bg-surface,#F0EDE8);white-space:nowrap;">전념 ✕</div>
+
+        <!-- 유예 -->
+        <div style="border-radius:12px;background:#E6EAF5;padding:14px 16px;border-left:4px solid #3A5AA0;">
+          <div style="font-size:14px;font-weight:800;color:#3A5AA0;margin-bottom:6px;">정체감 유예</div>
+          <div style="font-size:12px;color:var(--text-primary,#2C2825);line-height:1.7;margin-bottom:4px;">정체성 위기를 경험하고 정체성 확립을 위해 적극적으로 탐색하는 단계</div>
+          <div style="font-size:11px;font-weight:700;color:#3A5AA0;">› 적극적으로 정체성을 탐색함</div>
+        </div>
+
       </div>
     </div>
 
