@@ -1,124 +1,60 @@
 /**
  * 피아제 인지발달이론 — 탭 콘텐츠
- * 원페이지 교육학 5판 기반 / SITE_CONFIG 참조
+ * 원페이지 교육학 기반 / SITE_CONFIG + CS(ui.js) 참조
  */
 (function () {
   function $(id) { return document.getElementById(id); }
-
-  const C = (typeof SITE_CONFIG !== 'undefined') ? SITE_CONFIG : {
+  const C = window.SITE_CONFIG || {
     summary: { intro:'개요', learning:'학습자의 학습 과정', teacherRole:'교사의 역할 & 수업 방법', stageChart:'단계별 특징 개요', essay:'논술 답안 구조', check:'체크 포인트' },
-    exam:    { freq:'자주 출제', normal:'간헐 출제', history:'기출 연도 현황' },
-    quiz:    { title:'리마인드', typeOX:'O / X', typeFill:'빈칸 채우기', typeMC:'객관식', btnReveal:'정답 보기', btnRevealed:'정답 확인됨 ✓', btnReset:'전체 초기화', explainLabel:'해설' },
   };
 
-  const ACCENT = '#4EA87A';
-  const BG     = '#E6F2EC';
-  const FONT   = 'var(--font-body, var(--font-main))';
+  /* ── 색상 (variables.css 토큰 참조) ── */
+  const ACCENT = 'var(--c-edu-psych-accent, #4EA87A)';
+  const CSS_ACCENT = '#4EA87A';
 
+  /* ── 개념별 최소 CSS (테이블 모바일 전환만) ── */
   if (!document.getElementById('piaget-content-style')) {
     const s = document.createElement('style');
     s.id = 'piaget-content-style';
     s.textContent = `
-      .pc-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .pc-table-wrap table { min-width: 480px; }
-      .pc-compare-cards { display: none; }
-      .pc-common-cards { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-      .pc-common-card {
-        display: flex; align-items: flex-start; gap: 10px;
-        background: #fff; border: 1.5px solid ${ACCENT}44;
-        border-radius: 10px; padding: 10px 14px; font-size: 12px;
-      }
-      .pc-common-num {
-        background: ${ACCENT}; color: white; border-radius: 50%;
-        width: 20px; height: 20px; display: flex; align-items: center;
-        justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0;
-      }
-      .pc-point-tag {
-        display: inline-block; font-size: 10px; font-weight: 700;
-        padding: 1px 7px; border-radius: 4px; margin-right: 6px;
-        vertical-align: middle;
-      }
-      @media (max-width: 560px) {
-        .pc-table-wrap { display: none; }
-        .pc-compare-cards { display: flex; flex-direction: column; gap: 8px; }
+      .pc-table-hide { display:none; }
+      @media(max-width:560px) {
+        .pc-table-show { display:none !important; }
+        .pc-table-hide { display:flex !important; flex-direction:column; gap:8px; }
       }
     `;
     document.head.appendChild(s);
   }
 
-  // ★ → 포인트 색상 치환
-  function hl(text) {
-    return text.replace(/([가-힣a-zA-Z()·\s]+)★/g,
-      '<span style="color:' + ACCENT + ';font-weight:700;">$1</span>');
-  }
+  /* ── 데이터 ── */
+  const stageRows = [
+    ['감각운동기', '~2세', '대상영속성 개념 발달', '사고능력 없음'],
+    ['전조작기', '2~7세', '정신적 능력 발달', '상징적 사고 / 물활론적 사고 / 자기중심적 사고 / 전개념 발달'],
+    ['구체적조작기', '7~11세', '경험할 수 있는 것만 논리적 사고', '보존개념 / 탈중심화 / 가역성 / 분류(서열)능력 / 보상성'],
+    ['형식적조작기', '12세~', '가설적·추상적 개념을 논리적 사고', '추상적(반성적추상화) / 자기중심적(엘킨드) / 명제적 / 가설연역적 / 조합적 사고'],
+  ];
+  const compareRows = [
+    ['지식',     '인지적 구성주의',           '사회적 구성주의'],
+    ['학습자',   '개별적 주체',               '사회적 존재'],
+    ['발달',     '발달이 학습에 선행',         '학습이 발달에 선행'],
+    ['평가',     '현재 발달 평가 (정적평가)',   '잠재적 발달 평가 (역동적 평가)'],
+    ['교사 도움','교사 도움 no',              '교사 도움 ok'],
+  ];
+  const commonPoints = [
+    '지식관: 구성주의 — 지식은 외부에서 주어지는 것이 아니라 학습자가 스스로 구성한다.',
+    '학습자관: 능동적 주체 — 학습자는 수동적 수용자가 아니라 능동적으로 의미를 만든다.',
+    '발달관: 환경과의 상호작용 — 지식은 학습자와 환경 사이의 상호작용을 통해 습득된다.',
+  ];
 
-  function compareCards(rows, headers) {
-    return rows.map(r => `
-      <div style="background:var(--bg-page,#FAF9F7);border-radius:8px;padding:10px 14px;font-size:12px;">
-        <div style="font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:4px;">${r[0]}</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;">
-          <span style="background:${BG};color:${ACCENT};padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">${headers[1]}</span>
-          <span style="color:var(--text-secondary,#6B6560);">${r[1]}</span>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;">
-          <span style="background:#FFF0E8;color:#C05808;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">${headers[2]}</span>
-          <span style="color:var(--text-secondary,#6B6560);">${r[2]}</span>
-        </div>
-      </div>`).join('');
-  }
-
-  // ── 출제연도 태그 파싱 ([2011중] → 앞으로 + prim 색상)
-  function parseExamItem(text) {
-    const match = text.match(/\[(.+?)\]/);
-    if (!match) return `<span style="color:var(--text-primary,#2C2825);">${text}</span>`;
-    const tag = match[1];
-    const body = text.replace(/\s*\[.+?\]/, '').trim();
-    return `<span class="pc-point-tag" style="background:${BG};color:${ACCENT};font-weight:700;">${tag}</span><span style="color:var(--text-primary,#2C2825);">${body}</span>`;
-  }
-
-  // 연도 있는 항목 위로, 없는 항목 하단으로 정렬
-  function sortExamItems(items) {
-    return [...items].sort((a, b) => {
-      const aHasTag = /\[.+?\]/.test(a);
-      const bHasTag = /\[.+?\]/.test(b);
-      if (aHasTag && !bHasTag) return -1;
-      if (!aHasTag && bHasTag) return 1;
-      return 0;
-    });
-  }
-
-  /* ────────────────────────────
-     1. 핵심정리 탭
-  ──────────────────────────── */
+  /* ── 1. 핵심정리 ── */
   function renderSummary() {
     const el = $('tab-summary');
     if (!el) return;
 
-    const stageRows = [
-      ['감각운동기', '~2세', '대상영속성 개념 발달', '사고능력 없음'],
-      ['전조작기', '2~7세', '정신적 능력 발달', '상징적 사고 / 물활론적 사고 / 자기중심적 사고 / 전개념 발달'],
-      ['구체적조작기', '7~11세', '경험할 수 있는 것만 논리적 사고', '보존개념 / 탈중심화 / 가역성 / 분류(서열)능력 / 보상성'],
-      ['형식적조작기', '12세~', '가설적·추상적 개념을 논리적 사고', '추상적(반성적추상화) / 자기중심적(엘킨드) / 명제적 / 가설연역적 / 조합적 사고'],
-    ];
-
-    const compareRows = [
-      ['지식', '인지적 구성주의', '사회적 구성주의'],
-      ['학습자', '개별적 주체', '사회적 존재'],
-      ['발달', '발달이 학습에 선행', '학습이 발달에 선행'],
-      ['평가', '현재 발달 평가 (정적평가)', '잠재적 발달 평가 (역동적 평가)'],
-      ['교사 도움', '교사 도움 no', '교사 도움 ok'],
-    ];
-
-    const commonPoints = [
-      '지식관: 구성주의 — 지식은 외부에서 주어지는 것이 아니라 학습자가 스스로 구성한다.',
-      '학습자관: 능동적 주체 — 학습자는 수동적 수용자가 아니라 능동적으로 의미를 만든다.',
-      '발달관: 환경과의 상호작용 — 지식은 학습자와 환경 사이의 상호작용을 통해 습득된다.',
-    ];
-
     el.innerHTML = `
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.intro}</div>
-      <div style="background:${BG};border-radius:10px;padding:14px 18px;font-size:13px;line-height:1.85;color:var(--text-primary,#2C2825);font-family:${FONT};">
+      <div class="detail-section-title">${C.summary.intro}</div>
+      <div class="cs-intro-box">
         <strong>피아제(J. Piaget, 1896~1980)</strong> — 스위스 아동심리학자.<br>
         학습자는 기본적으로 인지구조를 가지고 있으며 능동적이다.<br>
         타고난 인지 기능으로 물리적 환경과 상호작용하여 지식을 구성한다. → <strong>인지적 구성주의</strong>
@@ -126,202 +62,157 @@
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.learning}</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="detail-section-title">${C.summary.learning}</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
           '학습자는 기본적으로 인지구조를 가지고 있으며 능동적이다. 타고난 인지 기능으로 물리적 환경과 상호작용하여 지식을 구성한다. <strong>(= 인지적 구성주의)</strong>',
-          `자신의 기존 도식에 새로운 지식이 들어올 때 같으면 평형화 상태를 유지하고, 다르면 <span style="color:${ACCENT};font-weight:700;">불평형</span> 상태가 된다. 불평형 해소를 위해 <span style="color:${ACCENT};font-weight:700;">평형 욕구</span>가 생기고, <span style="color:${ACCENT};font-weight:700;">동화</span>(기존 도식에 포함) 또는 <span style="color:${ACCENT};font-weight:700;">조절</span>(도식 수정)을 통해 인지발달(인지적 평형화)이 일어난다.`,
+          `자신의 기존 도식에 새로운 지식이 들어올 때 같으면 평형화 상태를 유지하고, 다르면 <strong style="color:${CSS_ACCENT};">불평형</strong> 상태가 된다. 불평형 해소를 위해 <strong style="color:${CSS_ACCENT};">평형 욕구</strong>가 생기고, <strong style="color:${CSS_ACCENT};">동화</strong>(기존 도식에 포함) 또는 <strong style="color:${CSS_ACCENT};">조절</strong>(도식 수정)을 통해 인지발달(인지적 평형화)이 일어난다.`,
         ].map((text, i) => `
-          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;font-family:${FONT};font-size:13px;line-height:1.8;">
-            <span style="background:${ACCENT};color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${i+1}</span>
+          <div class="cs-num-row">
+            <span class="cs-num cs-num-md cs-num-prim">${i+1}</span>
             <div>${text}</div>
           </div>`).join('')}
       </div>
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.teacherRole}</div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};font-size:13px;">
+      <div class="detail-section-title">${C.summary.teacherRole}</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
           ['발견학습 제공', '학습자는 능동적으로 학습할 수 있으므로 스스로 관찰하고 탐구할 수 있는 수업을 제공한다. 단순한 설명식 수업은 피해야 한다.'],
           ['인지적 불균형 유발', '학습자의 인지적 불균형(불평형)을 유도하기 위해 도전감 있는 과제를 제공한다. 단, 너무 어려운 과제는 안 된다.'],
           ['인지발달 수준에 기초한 교육', '학습자가 수업 내용을 이해하는 데 필요한 인지구조가 없으면 수업은 무의미하므로 선행학습은 가능한 피해야 한다.'],
         ].map(([title, desc], i) => `
-          <div style="display:flex;gap:10px;align-items:flex-start;padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;">
-            <span style="background:${ACCENT};color:white;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">${i+1}</span>
+          <div class="cs-num-row">
+            <span class="cs-num cs-num-md cs-num-prim">${i+1}</span>
             <div><strong>${title}</strong> — ${desc}</div>
           </div>`).join('')}
       </div>
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.summary.stageChart}</div>
-      <div class="pc-table-wrap">
-        <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:480px;font-family:${FONT};">
+      <div class="detail-section-title">${C.summary.stageChart || '단계별 특징 개요'}</div>
+      <!-- 테이블 (≥560px) -->
+      <div class="cs-table-wrap pc-table-show">
+        <table class="cs-table">
           <thead>
-            <tr style="background:${BG};">
-              ${['단계','연령','핵심 성취','주요 특징'].map((h,i) =>
-                `<th style="padding:8px 10px;text-align:left;font-weight:700;color:${ACCENT};border-bottom:2px solid ${ACCENT};">${h}</th>`
-              ).join('')}
-            </tr>
+            <tr>${['단계','연령','핵심 성취','주요 특징'].map(h=>`<th>${h}</th>`).join('')}</tr>
           </thead>
           <tbody>
-            ${stageRows.map((r,i) => `
-              <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.08));${i%2?'background:var(--bg-page,#FAF9F7)':''}">
-                <td style="padding:8px 10px;font-weight:600;color:var(--text-primary,#2C2825);">${r[0]}</td>
-                <td style="padding:8px 10px;text-align:left;color:var(--text-secondary,#6B6560);white-space:nowrap;">${r[1]}</td>
-                <td style="padding:8px 10px;color:${ACCENT};font-weight:600;">${r[2]}</td>
-                <td style="padding:8px 10px;color:var(--text-secondary,#6B6560);">${r[3]}</td>
+            ${stageRows.map((r,i)=>`
+              <tr>
+                <td class="cs-td-key">${r[0]}</td>
+                <td style="white-space:nowrap;color:var(--text-secondary);">${r[1]}</td>
+                <td class="cs-td-accent">${r[2]}</td>
+                <td style="color:var(--text-secondary);">${r[3]}</td>
               </tr>`).join('')}
           </tbody>
         </table>
       </div>
-      <div class="pc-compare-cards">
-        ${stageRows.map((r,i) => `
-          <div style="background:${i%2?'#faf9f7':'#fff'};border-radius:8px;padding:10px 14px;font-size:12px;border:1px solid var(--border-light,rgba(0,0,0,.08));">
+      <!-- 카드 (<560px) -->
+      <div class="pc-table-hide">
+        ${stageRows.map((r,i)=>`
+          <div style="background:var(--bg-surface);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-              <span style="font-weight:700;color:var(--text-primary,#2C2825);">${r[0]}</span>
-              <span style="color:var(--text-tertiary,#A09890);font-size:11px;">${r[1]}</span>
+              <span style="font-weight:700;color:var(--text-primary);">${r[0]}</span>
+              <span style="color:var(--text-tertiary);font-size:11px;">${r[1]}</span>
             </div>
-            <div style="color:${ACCENT};font-weight:600;margin-bottom:2px;">${r[2]}</div>
-            <div style="color:var(--text-secondary,#6B6560);">${r[3]}</div>
+            <div style="color:var(--subject-accent,${CSS_ACCENT});font-weight:600;margin-bottom:2px;">${r[2]}</div>
+            <div style="color:var(--text-secondary);">${r[3]}</div>
           </div>`).join('')}
       </div>
     </div>
 
     <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">피아제 vs 비고츠키</div>
-      <!-- 공통점: 카드 강조 -->
+      <div class="detail-section-title">피아제 vs 비고츠키</div>
       <div style="margin-bottom:14px;">
-        <div style="font-size:11px;font-weight:700;color:${ACCENT};letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;">공통점</div>
-        <div class="pc-common-cards">
-          ${commonPoints.map((pt, i) => `
-            <div class="pc-common-card">
-              <div class="pc-common-num">${i+1}</div>
-              <div style="color:var(--text-primary,#2C2825);line-height:1.6;">${pt}</div>
-            </div>`).join('')}
-        </div>
+        <div style="font-size:11px;font-weight:700;color:${CSS_ACCENT};letter-spacing:.04em;margin-bottom:8px;">공통점</div>
+        ${commonPoints.map((pt, i) => `
+          <div class="cs-num-row" style="background:var(--bg-white);border:1.5px solid ${CSS_ACCENT}44;">
+            <span class="cs-num cs-num-sm cs-num-prim">${i+1}</span>
+            <div style="color:var(--text-primary);line-height:1.6;">${pt}</div>
+          </div>`).join('')}
       </div>
-      <!-- 차이점 -->
-      <div style="font-size:11px;font-weight:700;color:#C05808;letter-spacing:.04em;text-transform:uppercase;margin-bottom:8px;">차이점</div>
-      <div class="pc-table-wrap">
-        <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:400px;font-family:${FONT};">
+      <div style="font-size:11px;font-weight:700;color:#C05808;letter-spacing:.04em;margin-bottom:8px;">차이점</div>
+      <div class="cs-table-wrap pc-table-show">
+        <table class="cs-table">
           <thead>
-            <tr style="background:${BG};">
-              <th style="padding:8px 10px;border-bottom:2px solid ${ACCENT};color:${ACCENT};font-weight:700;">구분</th>
-              <th style="padding:8px 10px;border-bottom:2px solid ${ACCENT};color:${ACCENT};font-weight:700;text-align:center;">피아제</th>
-              <th style="padding:8px 10px;border-bottom:2px solid #C05808;color:#C05808;font-weight:700;text-align:center;">비고츠키</th>
+            <tr>
+              <th>구분</th>
+              <th>피아제</th>
+              <th style="color:#C05808;">비고츠키</th>
             </tr>
           </thead>
           <tbody>
-            ${compareRows.map((r,i) => `
-              <tr style="border-bottom:1px solid var(--border-light,rgba(0,0,0,.08));${i%2?'background:var(--bg-page,#FAF9F7)':''}">
-                <td style="padding:8px 10px;font-weight:600;color:var(--text-primary,#2C2825);white-space:nowrap;">${r[0]}</td>
-                <td style="padding:8px 10px;color:var(--text-secondary,#6B6560);">${r[1]}</td>
-                <td style="padding:8px 10px;color:var(--text-secondary,#6B6560);">${r[2]}</td>
+            ${compareRows.map(r=>`
+              <tr>
+                <td class="cs-td-key">${r[0]}</td>
+                <td style="color:var(--text-secondary);">${r[1]}</td>
+                <td style="color:var(--text-secondary);">${r[2]}</td>
               </tr>`).join('')}
           </tbody>
         </table>
       </div>
-      <div class="pc-compare-cards">
-        ${compareCards(compareRows, ['구분','피아제','비고츠키'])}
+      <div class="pc-table-hide">
+        ${compareRows.map(r=>`
+          <div style="background:var(--bg-surface);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;">
+            <div style="font-weight:700;color:var(--text-primary);margin-bottom:4px;">${r[0]}</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span style="background:var(--subject-bg);color:${CSS_ACCENT};padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">피아제</span>
+              <span style="color:var(--text-secondary);">${r[1]}</span>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;">
+              <span style="background:#FFF0E8;color:#C05808;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">비고츠키</span>
+              <span style="color:var(--text-secondary);">${r[2]}</span>
+            </div>
+          </div>`).join('')}
       </div>
     </div>
 
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
-      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};font-size:13px;">
-        ${[
-          { label: '학습과정 2가지', items: ['인지적 구성주의', '동화·조절을 통한 평형화'] },
-          { label: '교사역할 3가지', items: ['발견학습 제공', '인지적 불균형 유발', '인지발달 수준 고려'] },
-          { label: '피아제 비판', items: ['외적 행동 변화만 강조 → 내면적 변화 확인 어려움'] },
-          { label: '비고츠키 연결', items: ['피아제 불평형(개인 내적) ↔ 비고츠키 비계(사회적 상호작용)'] },
-        ].map(({ label, items }) => `
-          <div style="padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;line-height:1.8;">
-            <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.04em;margin-bottom:6px;">${label}</div>
-            <div style="display:flex;flex-direction:column;gap:4px;">
-              ${items.map((item, i) => `
-                <div style="display:flex;gap:7px;align-items:flex-start;">
-                  <span style="background:#A09890;color:white;border-radius:50%;min-width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;margin-top:2px;">${i+1}</span>
-                  <span style="color:var(--text-primary,#2C2825);">${item}</span>
-                </div>`).join('')}
-            </div>
-          </div>`).join('')}
-      </div>
+      ${CS.renderEssayGroups([
+        { label:'학습과정 2가지',   items:['인지적 구성주의', '동화·조절을 통한 평형화'] },
+        { label:'교사역할 3가지',   items:['발견학습 제공', '인지적 불균형 유발', '인지발달 수준 고려'] },
+        { label:'피아제 비판',      items:['외적 행동 변화만 강조 → 내면적 변화 확인 어려움'] },
+        { label:'비고츠키 연결',    items:['피아제 불평형(개인 내적) ↔ 비고츠키 비계(사회적 상호작용)'] },
+      ])}
     </div>
 
     <div class="detail-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
-      <div style="display:flex;flex-direction:column;gap:8px;font-family:${FONT};font-size:12px;">
-        ${[
-          ['혼동 주의', '#D05840', '#fff3f1', '피아제의 불평형 = 사회적 상호작용으로 해소" → X. 개인 내적 과정(동화·조절)으로 해소됨. 사회적 상호작용은 비고츠키.'],
-          ['혼동 주의', '#D05840', '#fff3f1', '"반성적 추상화 = 메타인지" → X. 반성적 추상화는 형식적조작기의 추상사고 능력.'],
-          ['핵심 암기', '#2D8A6A', '#f0faf6', '형식적조작기 특징 5가지: 추상적·자기중심적(엘킨드)·명제적·가설연역적·조합적 사고'],
-        ].map(([label, labelColor, bg, text]) => `
-          <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;border-left:3px solid ${labelColor};">
-            <span style="display:inline-block;background:${labelColor};color:white;font-size:10px;font-weight:700;padding:1px 8px;border-radius:20px;margin-right:8px;letter-spacing:.02em;">${label}</span>
-            <span style="color:var(--text-primary,#2C2825);">${text}</span>
-          </div>`).join('')}
-      </div>
+      ${CS.renderCheckCards([
+        { type:'danger',  text:'피아제의 불평형 = 사회적 상호작용으로 해소" → X. 개인 내적 과정(동화·조절)으로 해소됨. 사회적 상호작용은 비고츠키.' },
+        { type:'danger',  text:'"반성적 추상화 = 메타인지" → X. 반성적 추상화는 형식적조작기의 추상사고 능력.' },
+        { type:'success', text:'형식적조작기 특징 5가지: 추상적·자기중심적(엘킨드)·명제적·가설연역적·조합적 사고' },
+      ])}
     </div>`;
   }
 
-  /* ────────────────────────────
-     2. 기출 포인트 탭
-  ──────────────────────────── */
+  /* ── 2. 기출 포인트 ── */
   function renderExam() {
-    const el = $('tab-exam');
-    if (!el) return;
-
-    const freqItems = [
-      '불평형(disequilibrium) — 오류 상황에 직면할 때 일어남. 너무 쉽거나 어렵지 않아야 함 [2011중]',
-      '동화(assimilation) — 고양이를 보고 "강아지!"라고 함 [2006초]',
-      '보존 개념 획득 순서: 수(6~7) → 양(7~8) → 무게(9~10) → 부피(11~12)',
-      '전조작기 특징: 자기중심성, 상징적 사고, 물활론 [2007초]',
-      '구체적조작기 특징: 탈자기중심화, 분류·서열화, 구체적 사물에 제한 [2007초]',
-      '반성적 추상화 — 형식적조작기 핵심. 구체물 없이 추상 추론 가능 [2010중]',
-    ];
-    const normalItems = [
-      '감각운동기 — 사고능력 없음. 대상영속성. 순환반응 1·2·3차 [2010초]',
-      '구체적조작기 교수법 — 시청각 자료·실물 활용, 직접 경험 중심 [2003중]',
-      '형식적조작기 — 가설연역적·명제적·반성적 추상화 사고 [2000중, 2010중]',
-      '전조작기 분류 오류 — 장미꽃 vs 꽃 포함관계 이해 못함 [2005초]',
-      '피아제 이론 한계 — 사회적 상호작용 경시. 불평형은 개인 내적 과정 [2008중]',
-    ];
-
-    el.innerHTML = `
-    <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.exam.history}</div>
-      <div style="background:${BG};border-radius:10px;padding:13px 16px;font-size:12px;line-height:2;color:var(--text-primary,#2C2825);font-family:${FONT};">
-        2000중 · 2003중 · 2005중·초 · 2006초 · 2007초 · 2008중 · 2009초 · 2010초·중 · 2011중<br>
-        <span style="font-size:11px;color:var(--text-tertiary,#A09890);">거의 매년 출제. 전 단계 특징 + 핵심개념(동화·조절·평형화) 완벽 암기 필수.</span>
-      </div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:#A83222;">${C.exam.freq}</div>
-      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
-        ${sortExamItems(freqItems).map(item => `
-          <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;border-left:2px solid #D05840;">
-            ${parseExamItem(item)}
-          </div>`).join('')}
-      </div>
-    </div>
-
-    <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:#8A6010;">${C.exam.normal}</div>
-      <div style="display:flex;flex-direction:column;gap:6px;font-family:${FONT};">
-        ${sortExamItems(normalItems).map(item => `
-          <div style="background:var(--bg-surface,#F5F5F5);border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;border-left:2px solid #C8A830;">
-            ${parseExamItem(item)}
-          </div>`).join('')}
-      </div>
-    </div>`;
+    CS.renderExamSection($('tab-exam'), {
+      historyHTML: `2000중 · 2003중 · 2005중·초 · 2006초 · 2007초 · 2008중 · 2009초 · 2010초·중 · 2011중
+        <span class="cs-history-note">거의 매년 출제. 전 단계 특징 + 핵심개념(동화·조절·평형화) 완벽 암기 필수.</span>`,
+      freqItems: [
+        '불평형(disequilibrium) — 오류 상황에 직면할 때 일어남. 너무 쉽거나 어렵지 않아야 함 [2011중]',
+        '동화(assimilation) — 고양이를 보고 "강아지!"라고 함 [2006초]',
+        '보존 개념 획득 순서: 수(6~7) → 양(7~8) → 무게(9~10) → 부피(11~12)',
+        '전조작기 특징: 자기중심성, 상징적 사고, 물활론 [2007초]',
+        '구체적조작기 특징: 탈자기중심화, 분류·서열화, 구체적 사물에 제한 [2007초]',
+        '반성적 추상화 — 형식적조작기 핵심. 구체물 없이 추상 추론 가능 [2010중]',
+      ],
+      normalItems: [
+        '감각운동기 — 사고능력 없음. 대상영속성. 순환반응 1·2·3차 [2010초]',
+        '구체적조작기 교수법 — 시청각 자료·실물 활용, 직접 경험 중심 [2003중]',
+        '형식적조작기 — 가설연역적·명제적·반성적 추상화 사고 [2000중, 2010중]',
+        '전조작기 분류 오류 — 장미꽃 vs 꽃 포함관계 이해 못함 [2005초]',
+        '피아제 이론 한계 — 사회적 상호작용 경시. 불평형은 개인 내적 과정 [2008중]',
+      ],
+    });
   }
 
-  /* ────────────────────────────
-     3. 리마인드 탭
-  ──────────────────────────── */
+  /* ── 3. 리마인드 ── */
   const QUIZ_DATA = [
     { type:'ox', q:'피아제에 따르면, 교사가 학습자보다 앞선 선행학습은 인지발달에 도움이 된다.', answer:'X', explain:'학습자의 인지발달 수준에 기초한 교육 강조. 인지구조가 준비 안 된 수업은 무의미 → 선행학습 피해야 함.' },
     { type:'ox', q:'고양이를 처음 본 아이가 "강아지!"라고 외치는 것은 조절(Accommodation)의 예이다.', answer:'X', explain:'기존 "강아지" 도식에 끼워 맞추므로 동화(Assimilation). 조절은 도식 자체가 수정될 때.' },
@@ -334,91 +225,17 @@
     { type:'mc', q:'다음 중 구체적조작기의 특징이 아닌 것은?', options:['보존 개념 획득','가역성 이해','탈중심화','가설연역적 추론','분류·서열화'], answer:3, explain:'가설연역적 추론은 형식적조작기의 핵심. 구체적조작기는 구체적 사물에 한해서만 논리적 사고 가능.' },
     { type:'mc', q:'"불평형 상태가 인지적 성장을 고무하기에 알맞은 정도로 유지되어야 한다"는 교수원리로 맞는 것은? [2011중 변형]', options:['비계설정으로 학습자를 지원한다','도전감 있되 너무 어렵지 않은 과제를 제공한다','사회적 상호작용을 촉진하는 협동학습을 실시한다','정적평가로 현재 발달을 확인한다'], answer:1, explain:'인지적 불균형을 유발하되 너무 쉬워 지루해서도, 너무 어려워 이해 불가해서도 안 됨.' },
   ];
+  function renderQuiz() { CS.renderQuizSection($('tab-quiz'), QUIZ_DATA, 'piaget'); }
 
-  function renderQuiz() {
-    const el = $('tab-quiz');
-    if (!el) return;
-    let state = QUIZ_DATA.map(() => ({ revealed: false, selected: null }));
-
-    function renderAll() {
-      el.innerHTML = `
-      <div class="detail-section">
-        <div class="detail-section-title" style="--subject-accent:${ACCENT};">${C.quiz.title} — 총 ${QUIZ_DATA.length}문항</div>
-        <div style="font-size:12px;color:var(--text-tertiary,#A09890);margin-bottom:16px;font-family:${FONT};">답을 생각한 후 버튼을 눌러 확인하세요.</div>
-        ${QUIZ_DATA.map((q, i) => {
-          const s = state[i];
-          let qBody = '';
-          if (q.type === 'ox') {
-            qBody = `<div style="display:flex;gap:8px;margin-top:10px;">
-              ${['O','X'].map(ans => {
-                const isSel = s.selected === ans;
-                const isCorr = q.answer === ans;
-                let border='1.5px solid #e0ddd8', bg='#fff', color='#2C2825';
-                if (s.revealed && isSel) { border=`1.5px solid ${isCorr?'#4EA87A':'#D05840'}`; bg=isCorr?'#EBF5EA':'#FDECEA'; color=isCorr?'#1E5A3C':'#A83222'; }
-                else if (isSel) { border=`1.5px solid ${ACCENT}`; bg='#f7f4f0'; }
-                return `<button onclick="piagetQuizOX(${i},'${ans}')" style="flex:1;padding:9px;border-radius:8px;border:${border};background:${bg};color:${color};font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;">${ans}</button>`;
-              }).join('')}
-            </div>`;
-          } else if (q.type === 'fill') {
-            qBody = `<div style="margin-top:10px;">
-              <button onclick="piagetQuizReveal(${i})" style="width:100%;padding:9px;border-radius:8px;border:1.5px solid ${s.revealed?ACCENT:'#e0ddd8'};background:${s.revealed?BG:'#fff'};font-size:12px;font-weight:600;cursor:pointer;color:${s.revealed?ACCENT:'#6B6560'};font-family:inherit;">${s.revealed?C.quiz.btnRevealed:C.quiz.btnReveal}</button>
-            </div>`;
-          } else if (q.type === 'mc') {
-            qBody = `<div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
-              ${q.options.map((opt, oi) => {
-                let border='1.5px solid #e0ddd8', bg='#fff', color='#2C2825';
-                if (s.revealed) {
-                  if (oi===q.answer) { border=`1.5px solid ${ACCENT}`; bg='#EBF5EA'; color=ACCENT; }
-                  else if (s.selected===oi) { border='1.5px solid #D05840'; bg='#FDECEA'; color='#A83222'; }
-                } else if (s.selected===oi) { border=`1.5px solid ${ACCENT}`; bg='#f7f4f0'; }
-                return `<button onclick="piagetQuizMC(${i},${oi})" style="text-align:left;padding:9px 12px;border-radius:8px;border:${border};background:${bg};color:${color};font-size:12px;cursor:pointer;font-family:inherit;line-height:1.5;"><span style="font-weight:700;margin-right:6px;">${oi+1}.</span>${opt}</button>`;
-              }).join('')}
-            </div>`;
-          }
-          const explain = s.revealed ? `
-            <div style="margin-top:10px;background:${BG};border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.7;color:var(--text-primary,#2C2825);border-left:3px solid ${ACCENT};font-family:${FONT};">
-              <strong style="color:${ACCENT};">${C.quiz.explainLabel}</strong> ${q.explain}
-            </div>` : '';
-          const typeLabel = q.type==='ox'?C.quiz.typeOX : q.type==='fill'?C.quiz.typeFill : C.quiz.typeMC;
-          return `
-          <div style="background:#fff;border:1px solid var(--border-light,rgba(0,0,0,.08));border-radius:12px;padding:16px;margin-bottom:12px;">
-            <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);margin-bottom:6px;letter-spacing:.04em;font-family:${FONT};">${typeLabel}</div>
-            <div style="font-size:13px;font-weight:600;color:var(--text-primary,#2C2825);line-height:1.6;font-family:${FONT};">${i+1}. ${q.q}</div>
-            ${qBody}${explain}
-          </div>`;
-        }).join('')}
-        <div style="text-align:center;margin-top:8px;">
-          <button onclick="piagetQuizReset()" style="padding:10px 28px;border-radius:20px;border:1.5px solid #e0ddd8;background:var(--bg-surface,#F0EDE8);font-size:13px;cursor:pointer;color:var(--text-secondary,#6B6560);font-family:inherit;">${C.quiz.btnReset}</button>
-        </div>
-      </div>`;
-    }
-
-    window.piagetQuizOX     = (i, ans) => { state[i].selected=ans; state[i].revealed=true; renderAll(); };
-    window.piagetQuizReveal = i         => { state[i].revealed=true; renderAll(); };
-    window.piagetQuizMC     = (i, oi)  => { state[i].selected=oi; state[i].revealed=true; renderAll(); };
-    window.piagetQuizReset  = ()       => { state=QUIZ_DATA.map(()=>({revealed:false,selected:null})); renderAll(); };
-    renderAll();
-  }
-
-  /* ────────────────────────────
-     초기화
-  ──────────────────────────── */
-  function init() {
-    renderSummary();
-    renderExam();
-    renderQuiz();
-  }
-
+  /* ── 초기화 ── */
+  function init() { renderSummary(); renderExam(); renderQuiz(); }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
-    const observer = new MutationObserver(() => {
-      if ($('tab-summary') && $('tab-exam') && $('tab-quiz')) {
-        observer.disconnect();
-        init();
-      }
+    const obs = new MutationObserver(() => {
+      if ($('tab-summary') && $('tab-exam') && $('tab-quiz')) { obs.disconnect(); init(); }
     });
-    observer.observe(document.getElementById('main') || document.body, { childList:true, subtree:true });
+    obs.observe(document.getElementById('main') || document.body, { childList:true, subtree:true });
     if ($('tab-summary')) init();
   }
 })();
