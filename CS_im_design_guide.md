@@ -45,16 +45,18 @@ visualizations/
 
 | 섹션 | 형식 | 예시 |
 |---|---|---|
-| 개요 | prim 배경색 박스 + 본문 텍스트 | 피아제·가네·마르시아 개요 |
+| 개요 | prim 배경색 박스 + 본문 텍스트 | 피아제·가네·마르시아·브론펜브레너 개요 |
 | 학습자의 학습 과정 | 원형 번호 카드 (bg-surface) | 피아제 평형화 과정 |
 | 교사의 역할 & 수업 방법 | 원형 번호 카드 (bg-surface) | 피아제 교사역할 |
 | 단계별 특징 개요 | 테이블 (모바일: 카드 전환) | 피아제 4단계 |
 | 4분할 지위·유형 분류 | 3×3 그리드 매트릭스 (항상 펼쳐진 상태) | 마르시아 정체감 지위 |
 | A vs B 비교 | 공통점 카드 + 차이점 테이블 | 피아제 vs 비고츠키 |
 | 목록형 내용 | 번호 리스트 (원형 번호 + 텍스트 한 줄) | 가네 수업사태 |
-| 교육적 시사점 | bg-surface 카드 (영역 레이블 + 제목 + 설명) | 마르시아 교육적 시사점 |
-| 다른 이론과 비교 | bg-surface 카드 (이론명 레이블 + 내용) | 마르시아 에릭슨 연결 |
-| 논술 답안 구조 | 무채색 카드 + 회색 숫자 번호 | 공통 |
+| 교육적 시사점 | bg-surface 카드 (회색 원형 번호 + 설명) | 브론펜브레너·마르시아 시사점 |
+| 이론의 특징 | prim 원형 번호 카드 (bg-prim) | 브론펜브레너 특징 |
+| 체계·단계별 상세 설명 | prim bg 카드 (이름 + key pill + 정의 + 예시) | 브론펜브레너 5체계 |
+| 다른 이론과 비교 | bg-surface 카드 (이론명 레이블 + 부제목 + 설명) | 마르시아·브론펜브레너 비교 섹션 |
+| 논술 답안 구조 | 무채색 그룹 카드 (회색 label + 회색 원형 번호 세부항목) | 공통 — 피아제 패턴 |
 | 체크 포인트 | 왼쪽 컬러 border 카드 + 레이블 pill | 공통 |
 
 ### 섹션 순서 규칙
@@ -82,9 +84,11 @@ visualizations/
 - 핵심 정리의 매트릭스에는 위기·전념 여부 pill 레이블 표시 없음
 
 ### 원형 번호 색상 규칙
-- **논술 답안 구조**: `#A09890` 회색 무채색, 원형 아닌 일반 숫자(`1.` `2.`)로 표시
-- **핵심 3단계 등 중요 항목**: `prim(ACCENT)` 색상 원형
-- **일반 나열**: `#A09890` 회색 원형
+- **논술 답안 구조 세부항목**: `#A09890` 회색 원형 번호
+- **논술 답안 구조 그룹 제목**: 원형 번호 없음. 회색 소형 텍스트 레이블(`font-size:11px; color:var(--text-tertiary)`)
+- **이론의 특징 등 핵심 항목**: `prim(ACCENT)` 색상 원형
+- **교육적 시사점·일반 나열**: `#A09890` 회색 원형
+- **논술 답안 구조 외 섹션**에서 텍스트 번호(`1.` `2.`)는 사용하지 않음 — 원형으로 통일
 
 ### 강조 표현 규칙
 - `★` 기호 사용 금지 → **색상** 또는 **볼드**로 대체
@@ -92,17 +96,61 @@ visualizations/
 - 테이블에서 중요 행: 텍스트 색상만으로 구분 (행 배경색 강조 금지)
 - 컬럼명 전부 좌측 정렬
 
-### 비교 섹션 색상 규칙
-- 주 이론(e.g., 피아제): `prim(ACCENT)` 색상
-- 비교군(e.g., 비고츠키): `#C05808` 보색 (오렌지 계열)
-- '차이점' 타이틀: 보색 적용
-- '공통점' 카드: 번호 있는 강조 카드로 충분히 눈에 띄게
+### 카드 왼쪽 선(`border-left`) 사용 원칙
+- **체크 포인트** 카드: `border-left:3px solid [labelColor]` 유지 (레이블 색상과 연결)
+- **체계별·단계별 상세 설명** 카드: 배경색(`bg`)이 이미 구분 역할 → `border-left` 제거
+- **4분할 지위 카드**: 배경색으로 구분 → `border-left` 제거
+- 같은 정보를 배경색과 선 두 가지로 동시에 강조하지 않는다
+
+### 비교 섹션 형식
+```html
+<div style="background:var(--bg-surface);border-radius:10px;padding:12px 14px;">
+  <div style="font-size:10px;font-weight:700;color:var(--text-tertiary);letter-spacing:.06em;margin-bottom:4px;">
+    이론명 — 이론 카테고리      ← 회색 소형 레이블
+  </div>
+  <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">
+    핵심 개념명                ← 볼드 부제목
+  </div>
+  <div style="font-size:12px;color:var(--text-secondary);line-height:1.7;">
+    비교 설명 (중요 키워드는 <strong> 처리)
+  </div>
+</div>
+```
+- 레이블 형식: `피아제 — 인지발달이론`, `에릭슨 — 심리사회발달이론` 등 `학자명 — 이론명`
+- 주 이론 강조 키워드: `prim(ACCENT)` 색상
+- 비교군 강조 키워드: `#C05808` 보색 (오렌지 계열) — 단, 비교 섹션의 레이블에는 색상 적용 안 함
+
+### 논술 답안 구조 — 피아제 패턴 (공통 표준)
+```javascript
+${[
+  { label:'그룹 제목 1', items:['세부항목 A', '세부항목 B'] },
+  { label:'그룹 제목 2', items:['세부항목 C'] },
+].map(({ label, items }) => `
+  <div style="padding:10px 14px;background:var(--bg-surface,#F0EDE8);border-radius:8px;line-height:1.8;">
+    <div style="font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.04em;margin-bottom:6px;">${label}</div>
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      ${items.map((item, i) => `
+        <div style="display:flex;gap:7px;align-items:flex-start;">
+          <span style="background:#A09890;color:white;border-radius:50%;min-width:18px;height:18px;
+            display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;
+            flex-shrink:0;margin-top:2px;">${i+1}</span>
+          <span style="color:var(--text-primary,#2C2825);">${item}</span>
+        </div>`).join('')}
+    </div>
+  </div>`).join('')}
+```
+- 래퍼: `display:flex;flex-direction:column;gap:6px;font-size:13px;`
+- 그룹 제목은 회색 소형 레이블 (`font-size:11px; color:text-tertiary`)
+- 세부항목 번호는 회색 원형 (`#A09890`)
+- 이전 방식(`1. **제목** — 설명` 형식)은 사용하지 않음
 
 ### 체크 포인트 레이블 & 규칙
 - `혼동 주의` → `#D05840` 빨강 (먼저 배치)
 - `핵심 암기` → `#2D8A6A` 초록 (마지막에 배치)
 - 두 레이블만 사용. 에릭슨 연결 등 타 이론 참고 내용은 **다른 이론과 비교** 섹션으로 이동
 - 폰트 크기: `font-size:12px` 래퍼로 감싸기 (다른 섹션과 통일)
+- 카드 배경: `var(--bg-surface)`, 왼쪽 선: `border-left:3px solid [labelColor]`
+- 레이블 pill: `background:[color];color:white;border-radius:20px;padding:1px 8px;`
 
 ---
 
@@ -155,6 +203,13 @@ visualizations/
 - 내적과정 표시: 배지보다 회색 소형 텍스트로 조용하게
 - 아코디언 패턴: 기본 상태에서 핵심 정보 노출, 클릭 시 상세 펼침
 - 탭 전환 후 `scrollIntoView({ behavior:'smooth', block:'start' })`로 시각화 상단 스크롤
+
+### 둘러보기 탭 구성 원칙
+- 탭 2개를 기본으로 구성. 단, 이론 특성에 따라 달라질 수 있음
+- 핵심 정리에 이미 있는 정보(특징·시사점 등)를 둘러보기 탭으로 분리하지 않는다
+- 대신 핵심 정리로 전달하기 어려운 **인터랙티브 체험** 요소를 제공
+  - 예: 브론펜브레너 → 동심원 클릭 탐색 + 연령대별 체계 활성화 흐름
+  - 예: 마르시아 → 매트릭스 클릭 + 비교표 + 발달 경로
 
 ### 4분할 매트릭스 시각화 (마르시아 등)
 ```
@@ -321,8 +376,14 @@ text   — 헤더 위 텍스트 (어두운 버전)
 | `★` 기호 사용 | 색상 또는 볼드로 대체 |
 | 테이블 행 배경색으로 강조 | 텍스트 색상으로만 강조 |
 | 비교 섹션에서 비교군도 prim 색상 | 비교군은 보색(`#C05808`) 사용 |
-| 논술 답안 구조 번호에 원형+prim 색상 | 회색 일반 숫자(`1.` `2.`)로 표시 |
+| 논술 답안 구조 그룹 제목에 원형 번호 사용 | 회색 소형 레이블 텍스트만 (`font-size:11px`) |
+| 논술 답안 구조 세부항목 번호를 `1.` 텍스트로 표시 | 회색 원형 번호(`#A09890`) 사용 |
 | 논술/체크포인트 소제목에 prim 색상 | `--subject-accent:#6B6560` 무채색 고정 |
+| 체계·지위 카드에 `border-left` 추가 | 배경색이 구분 역할 → 선 제거 |
+| 영어 명칭을 카드·테이블에 노출 | 핵심 정리 탭에서는 한국어 명칭만 사용 |
+| 같은 내용을 비교표 + 상세카드로 이중 제공 | 하나만 선택. 상세카드 우선 |
+| 교육적 시사점을 `시사점 1 / 시사점 2` 레이블로 표시 | 회색 원형 번호로 넘버링 |
+| 둘러보기 탭에 핵심 정리와 중복되는 특징·시사점 탭 구성 | 인터랙티브 체험 요소로 대체 |
 | 외적/내적 조건을 대비 구도로 배치 | 대비가 아닌 경우 순서대로 나열 |
 | 강조 설명 문구 별도 추가 | 강조는 디자인이 말하게, 텍스트로 설명 불필요 |
 | 화살표 기호 `→ ↓ ▶` | `›` 텍스트 아이콘으로 통일 |
