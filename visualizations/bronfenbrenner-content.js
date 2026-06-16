@@ -20,23 +20,10 @@
     const s = document.createElement('style');
     s.id = 'bronf-content-style';
     s.textContent = `
-      .bc-table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
-      .bc-table-wrap table { min-width:420px; width:100%; border-collapse:collapse; font-size:12px; }
-      .bc-table-wrap th {
-        padding:9px 12px; text-align:left; font-size:11px; font-weight:700;
-        letter-spacing:.04em; border-bottom:2px solid var(--border-light,rgba(0,0,0,.08));
-        background:var(--bg-surface,#F0EDE8);
-      }
-      .bc-table-wrap td {
-        padding:9px 12px; border-bottom:1px solid var(--border-light,rgba(0,0,0,.07));
-        line-height:1.65; vertical-align:top;
-      }
-      .bc-table-wrap tr:hover td { background:var(--bg-surface,#F5F5F5); }
       .bc-point-tag {
         display:inline-block; font-size:10px; font-weight:700;
         padding:1px 7px; border-radius:4px; margin-right:6px;
       }
-      @media(max-width:560px) { .bc-table-wrap table { min-width:320px; } }
     `;
     document.head.appendChild(s);
   }
@@ -111,35 +98,6 @@
               <div style="font-size:12px;color:var(--text-primary,#2C2825);">${desc}</div>
             </div>
           </div>`).join('')}
-      </div>
-    </div>
-
-    <!-- 5가지 환경 체계 비교표 -->
-    <div class="detail-section">
-      <div class="detail-section-title" style="--subject-accent:${ACCENT};">개인을 둘러싼 5가지 환경 체계</div>
-      <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:14px;line-height:1.7;font-family:${FONT};">
-        연령 증가에 따라 발달에 영향을 미치는 지배적 환경은 미시체계에서 바깥층 체계로 점차 이동한다.
-      </div>
-      <div class="bc-table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="min-width:30px;">순</th>
-              <th style="min-width:70px;">체계</th>
-              <th style="min-width:160px;">정의</th>
-              <th style="min-width:180px;">예시</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${layers.map(l => `
-              <tr>
-                <td><div style="width:22px;height:22px;border-radius:50%;background:${l.color};color:white;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;">${l.num}</div></td>
-                <td style="font-weight:700;color:${l.color};">${l.name}</td>
-                <td style="color:var(--text-primary,#2C2825);">${l.def}</td>
-                <td style="color:var(--text-secondary,#6B6560);">${l.examples}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
       </div>
     </div>
 
