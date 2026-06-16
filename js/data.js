@@ -262,7 +262,7 @@ const CONCEPTS = [
   {subject:"운영체제",chapter:"프로세스",name:"프로세스 개념·상태",keywords:"생성·준비·실행·대기·종료·PCB",freq:"높음",viz:true,quiz:true},
   {subject:"운영체제",chapter:"프로세스",name:"프로세스 vs 스레드",keywords:"PCB·TCB·멀티스레딩·공유자원",freq:"높음",viz:true,quiz:true},
   {subject:"운영체제",chapter:"프로세스",name:"프로세스 생성·종료",keywords:"fork·exec·wait·좀비·고아",freq:"중간",viz:true,quiz:true},
-  {subject:"운영체제",chapter:"프로세스",name:"문맥교환 (Context Switch)",keywords:"PCB저장·복원·오버헤드",freq:"높음",viz:true,quiz:true},
+  {subject:"운영체제",chapter:"프로세스",name:"문맥교환 (Context Switch)",keywords:"PCB저장·복원·디스패처·상태전이·오버헤드·TLB플러시",freq:"높음",viz:true,quiz:true},
   {subject:"운영체제",chapter:"CPU 스케줄링",name:"FCFS·SJF·SRTF",keywords:"비선점·선점·호위효과·기아",freq:"높음",viz:true,quiz:true},
   {subject:"운영체제",chapter:"CPU 스케줄링",name:"라운드로빈·우선순위",keywords:"시간할당량·타임아웃·에이징",freq:"높음",viz:true,quiz:true},
   {subject:"운영체제",chapter:"CPU 스케줄링",name:"다단계큐·다단계피드백큐",keywords:"큐분리·피드백·동적우선순위",freq:"중간",viz:true,quiz:true},
