@@ -124,21 +124,22 @@ try {
 
 /* ── 사이드바 렌더 ─────────────────────────────────── */
 function renderSidebar() {
-  const currentSubject = getParam('subject');
   const areas = {};
   Object.entries(SUBJECTS).forEach(([name, meta]) => {
     if (!areas[meta.area]) areas[meta.area] = [];
     areas[meta.area].push(name);
   });
   let html = '';
-  Object.entries(areas).forEach(([area, subjects]) => {
-    html += `<div class="sidebar-section"><div class="sidebar-section-title">${area}</div>`;
+  Object.entries(SITE_CONFIG.areas).forEach(([key, areaLabel]) => {
+    const subjects = areas[areaLabel];
+    if (!subjects) return;
+    html += `<div class="sidebar-section"><div class="sidebar-section-title">${areaLabel}</div>`;
     subjects.forEach(name => {
       const s = SUBJECTS[name];
-      const active = currentSubject === name ? 'active' : '';
+      const active = openSubject === name ? 'active' : '';
       const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
       html += `<div class="sidebar-item ${active}" style="${style}"
-        onclick="navigate({subject:'${name}',chapter:null,concept:null}); if(isMobile()) closeSidebar();">
+        onclick="goHomeAndOpen('${name}'); if(isMobile()) closeSidebar();">
         <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}</div>`;
     });
     html += `</div>`;
@@ -146,40 +147,86 @@ function renderSidebar() {
   document.getElementById('sidebar').innerHTML = html;
 }
 
-/* ── 홈 렌더 ───────────────────────────────────────── */
+/* ── 홈 렌더 (아코디언 구조) ──────────────────────── */
+let openSubject = null; // 현재 펼쳐진 과목명
+
 function renderHome() {
   const C = SITE_CONFIG;
   const total     = CONCEPTS.length;
   const highCount = CONCEPTS.filter(c => c.freq === '높음').length;
   const vizCount  = CONCEPTS.filter(c => c.viz).length;
+
   const areas = {};
   Object.entries(SUBJECTS).forEach(([name, meta]) => {
     if (!areas[meta.area]) areas[meta.area] = [];
     const count = CONCEPTS.filter(c => c.subject === name).length;
     areas[meta.area].push({ name, meta, count });
   });
+
   let html = `
     <div class="home-hero">
-      <h1>${C.siteName}</h1>
-      <p>${C.heroDesc}</p>
-      <div class="stats-row">
-        <div class="stat-pill"><strong>${total}</strong>개 개념 카드</div>
-        <div class="stat-pill">${C.freq.high} <strong>${highCount}</strong>개</div>
-        <div class="stat-pill">${C.badges.viz} <strong>${vizCount}</strong>개</div>
+      <div class="hero-eyebrow">${C.siteName} — 정보컴퓨터 임용시험</div>
+      <h1 class="hero-big">COMPUTER<br><span class="hero-dim">EDUCATION</span></h1>
+      <p class="hero-desc">${C.heroDesc}</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-num">${total}</div><div class="hero-stat-label">개념 카드</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">${highCount}</div><div class="hero-stat-label">${C.freq.high}</div></div>
+        <div class="hero-stat"><div class="hero-stat-num">${vizCount}</div><div class="hero-stat-label">${C.badges.viz}</div></div>
       </div>
     </div>`;
-  Object.entries(areas).forEach(([area, subjects]) => {
-    html += `<div class="area-section"><div class="area-title">${area}</div><div class="subject-grid">`;
+
+  // areas 순서는 SITE_CONFIG.areas의 키 순서를 따름 (교육학 → 교과교육학 → 전공)
+  Object.entries(C.areas).forEach(([key, areaLabel]) => {
+    const subjects = areas[areaLabel];
+    if (!subjects) return;
+    html += `<div class="area-section"><div class="area-title">${areaLabel}</div><div class="acc-list">`;
     subjects.forEach(({ name, meta, count }) => {
+      const isOpen = openSubject === name;
       const style = `--subject-accent:${meta.color.accent};--subject-mid:${meta.color.mid};--subject-bg:${meta.color.bg};--subject-text:${meta.color.text}`;
-      html += `<div class="subject-card" style="${style}" onclick="navigate({subject:'${name}',chapter:null,concept:null})">
-        <div class="subject-card-name">${name}</div>
-        <div class="subject-card-area">${area}</div>
-        <div class="subject-card-count">개념 ${count}개 →</div></div>`;
+      const concepts = isOpen ? CONCEPTS.filter(c => c.subject === name) : [];
+      html += `
+        <div class="acc-item ${isOpen ? 'open' : ''}" style="${style}">
+          <div class="acc-head" onclick="toggleSubject('${name}')">
+            <div class="acc-left">
+              <span class="acc-dot" style="background:${meta.color.mid};"></span>
+              <span class="acc-name">${name}</span>
+              <span class="acc-count">${count}개 개념</span>
+            </div>
+            <span class="acc-chevron">›</span>
+          </div>
+          <div class="acc-body">
+            <div class="acc-concept-grid">
+              ${concepts.map(c => `
+                <div class="acc-concept-card" onclick="navigate({subject:'${name}',chapter:'${encodeURIComponent(c.chapter)}',concept:'${encodeURIComponent(c.name)}'})">
+                  <div class="acc-concept-name">${c.name}</div>
+                  <div class="acc-concept-meta">${c.freq === '높음' ? C.freq.high : c.freq === '중간' ? C.freq.mid : C.freq.low}${c.viz ? ' · ' + C.badges.viz : ''}</div>
+                </div>`).join('')}
+            </div>
+          </div>
+        </div>`;
     });
     html += `</div></div>`;
   });
+
   document.getElementById('main').innerHTML = html;
+}
+
+function toggleSubject(name) {
+  openSubject = (openSubject === name) ? null : name;
+  renderHome();
+  renderSidebar();
+}
+
+function goHomeAndOpen(name) {
+  if (getParam('subject') !== null) {
+    const url = new URL(location.href);
+    url.searchParams.delete('subject');
+    history.pushState({}, '', url);
+  }
+  openSubject = name;
+  renderHome();
+  renderSidebar();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 /* ── 과목 렌더 ─────────────────────────────────────── */
@@ -283,9 +330,9 @@ document.getElementById('globalSearch').addEventListener('input', function() {
 /* ── 라우터 ────────────────────────────────────────── */
 function render() {
   const subject = getParam('subject');
+  if (subject && SUBJECTS[subject]) openSubject = subject;
   renderSidebar();
-  if (!subject) renderHome();
-  else renderSubject(subject);
+  renderHome();
 }
 
 window.addEventListener('popstate', render);
