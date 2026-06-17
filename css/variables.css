@@ -58,123 +58,50 @@
   --sidebar-width: 232px;
   --topbar-height: 56px;
 
-  /* ── 교육학 과목 컬러 ── */
-  --c-edu-curriculum-bg:     #F5E6EC;
-  --c-edu-curriculum-mid:    #E8AECA;
-  --c-edu-curriculum-accent: #C4688E;
-  --c-edu-curriculum-text:   #7A2E50;
+  /* ══════════════════════════════════════════════
+     6색 팔레트 — 모든 과목이 이 6가지 색 중 하나를 공유
+     bg: 배경 / text: 텍스트 / mid: 서브텍스트(accent로도 사용)
+     ══════════════════════════════════════════════ */
+  --c-pink-bg:    #FFC9E3; --c-pink-text:   #7A1F4D; --c-pink-mid:   #993D6B;
+  --c-coral-bg:   #FFD5B8; --c-coral-text:  #803300; --c-coral-mid:  #803300;
+  --c-yellow-bg:  #FFF3B8; --c-yellow-text: #5C4D00; --c-yellow-mid: #806A00;
+  --c-mint-bg:    #B8FFE0; --c-mint-text:   #0A4D33; --c-mint-mid:   #1F7A52;
+  --c-blue-bg:    #AEE2FF; --c-blue-text:   #0A3C5C; --c-blue-mid:   #1E5A80;
+  --c-lilac-bg:   #E1C5FF; --c-lilac-text:  #3D1F6B; --c-lilac-mid:  #5C3D8C;
 
-  --c-edu-psych-bg:     #E6F2EC;
-  --c-edu-psych-mid:    #A8D8BC;
-  --c-edu-psych-accent: #4EA87A;
-  --c-edu-psych-text:   #1E5A3C;
+  /* ── 교육학 ── */
+  --c-edu-curriculum-bg: var(--c-pink-bg);   --c-edu-curriculum-mid: var(--c-pink-mid);   --c-edu-curriculum-accent: var(--c-pink-mid);   --c-edu-curriculum-text: var(--c-pink-text);
+  --c-edu-teach-bg:      var(--c-coral-bg);  --c-edu-teach-mid:      var(--c-coral-mid);  --c-edu-teach-accent:      var(--c-coral-mid);  --c-edu-teach-text:      var(--c-coral-text);
+  --c-edu-eval-bg:       var(--c-yellow-bg); --c-edu-eval-mid:       var(--c-yellow-mid); --c-edu-eval-accent:       var(--c-yellow-mid); --c-edu-eval-text:       var(--c-yellow-text);
+  --c-edu-psych-bg:      var(--c-mint-bg);   --c-edu-psych-mid:      var(--c-mint-mid);   --c-edu-psych-accent:      var(--c-mint-mid);   --c-edu-psych-text:      var(--c-mint-text);
+  --c-edu-admin-bg:      var(--c-blue-bg);   --c-edu-admin-mid:      var(--c-blue-mid);   --c-edu-admin-accent:      var(--c-blue-mid);   --c-edu-admin-text:      var(--c-blue-text);
+  --c-edu-counsel-bg:    var(--c-lilac-bg);  --c-edu-counsel-mid:    var(--c-lilac-mid);  --c-edu-counsel-accent:    var(--c-lilac-mid);  --c-edu-counsel-text:    var(--c-lilac-text);
 
-  --c-edu-teach-bg:     #FBF0E6;
-  --c-edu-teach-mid:    #F0C89A;
-  --c-edu-teach-accent: #D4874A;
-  --c-edu-teach-text:   #7A4018;
+  /* ── 교과교육학 (라일락 미사용 — 5과목) ── */
+  --c-info-curriculum-bg: var(--c-pink-bg);   --c-info-curriculum-mid: var(--c-pink-mid);   --c-info-curriculum-accent: var(--c-pink-mid);   --c-info-curriculum-text: var(--c-pink-text);
+  --c-info-teach-bg:      var(--c-coral-bg);  --c-info-teach-mid:      var(--c-coral-mid);  --c-info-teach-accent:      var(--c-coral-mid);  --c-info-teach-text:      var(--c-coral-text);
+  --c-info-eval-bg:       var(--c-yellow-bg); --c-info-eval-mid:       var(--c-yellow-mid); --c-info-eval-accent:       var(--c-yellow-mid); --c-info-eval-text:       var(--c-yellow-text);
+  --c-info-ct-bg:         var(--c-mint-bg);   --c-info-ct-mid:         var(--c-mint-mid);   --c-info-ct-accent:         var(--c-mint-mid);   --c-info-ct-text:         var(--c-mint-text);
+  --c-info-swai-bg:       var(--c-blue-bg);   --c-info-swai-mid:       var(--c-blue-mid);   --c-info-swai-accent:       var(--c-blue-mid);   --c-info-swai-text:       var(--c-blue-text);
 
-  --c-edu-eval-bg:     #FAF6E0;
-  --c-edu-eval-mid:    #EDE09A;
-  --c-edu-eval-accent: #C8A830;
-  --c-edu-eval-text:   #6A5210;
+  /* ── 전공(CS) ── */
+  --c-cs-ai-bg:        var(--c-pink-bg);   --c-cs-ai-mid:        var(--c-pink-mid);   --c-cs-ai-accent:        var(--c-pink-mid);   --c-cs-ai-text:        var(--c-pink-text);
+  --c-cs-discrete-bg:  var(--c-pink-bg);   --c-cs-discrete-mid:  var(--c-pink-mid);   --c-cs-discrete-accent:  var(--c-pink-mid);   --c-cs-discrete-text:  var(--c-pink-text);
 
-  --c-edu-admin-bg:     #E6EAF5;
-  --c-edu-admin-mid:    #A0B0D8;
-  --c-edu-admin-accent: #3A5AA0;
-  --c-edu-admin-text:   #1A2E60;
+  --c-cs-os-bg:        var(--c-coral-bg);  --c-cs-os-mid:        var(--c-coral-mid);  --c-cs-os-accent:        var(--c-coral-mid);  --c-cs-os-text:        var(--c-coral-text);
+  --c-cs-pl-bg:        var(--c-coral-bg);  --c-cs-pl-mid:        var(--c-coral-mid);  --c-cs-pl-accent:        var(--c-coral-mid);  --c-cs-pl-text:        var(--c-coral-text);
 
-  --c-edu-counsel-bg:     #EEE8F5;
-  --c-edu-counsel-mid:    #C4A8E0;
-  --c-edu-counsel-accent: #8050B8;
-  --c-edu-counsel-text:   #3E1E6A;
+  --c-cs-ds-bg:        var(--c-yellow-bg); --c-cs-ds-mid:        var(--c-yellow-mid); --c-cs-ds-accent:        var(--c-yellow-mid); --c-cs-ds-text:        var(--c-yellow-text);
+  --c-cs-algo-bg:      var(--c-yellow-bg); --c-cs-algo-mid:      var(--c-yellow-mid); --c-cs-algo-accent:      var(--c-yellow-mid); --c-cs-algo-text:      var(--c-yellow-text);
 
-  /* ── CS 전공 과목 컬러 ── */
-  --c-cs-ds-bg:     #E6EFF8;
-  --c-cs-ds-mid:    #90BAE0;
-  --c-cs-ds-accent: #3878B8;
-  --c-cs-ds-text:   #1A3C68;
+  --c-cs-db-bg:        var(--c-mint-bg);   --c-cs-db-mid:        var(--c-mint-mid);   --c-cs-db-accent:        var(--c-mint-mid);   --c-cs-db-text:        var(--c-mint-text);
+  --c-cs-se-bg:        var(--c-mint-bg);   --c-cs-se-mid:        var(--c-mint-mid);   --c-cs-se-accent:        var(--c-mint-mid);   --c-cs-se-text:        var(--c-mint-text);
 
-  --c-cs-algo-bg:     #E0F5F2;
-  --c-cs-algo-mid:    #80CEC5;
-  --c-cs-algo-accent: #2A9E94;
-  --c-cs-algo-text:   #0E4E48;
+  --c-cs-net-bg:       var(--c-blue-bg);   --c-cs-net-mid:       var(--c-blue-mid);   --c-cs-net-accent:       var(--c-blue-mid);   --c-cs-net-text:       var(--c-blue-text);
+  --c-cs-sec-bg:       var(--c-blue-bg);   --c-cs-sec-mid:       var(--c-blue-mid);   --c-cs-sec-accent:       var(--c-blue-mid);   --c-cs-sec-text:       var(--c-blue-text);
 
-  --c-cs-os-bg:     #FAE8E4;
-  --c-cs-os-mid:    #ECA898;
-  --c-cs-os-accent: #D05840;
-  --c-cs-os-text:   #6E2010;
-
-  --c-cs-arch-bg:     #EAE8F8;
-  --c-cs-arch-mid:    #B0A8E8;
-  --c-cs-arch-accent: #6058C0;
-  --c-cs-arch-text:   #2A2068;
-
-  --c-cs-db-bg:     #E8F4EC;
-  --c-cs-db-mid:    #98C8A8;
-  --c-cs-db-accent: #3A8858;
-  --c-cs-db-text:   #164028;
-
-  --c-cs-net-bg:     #E4F2FA;
-  --c-cs-net-mid:    #88C4E8;
-  --c-cs-net-accent: #2888C8;
-  --c-cs-net-text:   #0C3E68;
-
-  --c-cs-pl-bg:     #FAE8F0;
-  --c-cs-pl-mid:    #E8A0C0;
-  --c-cs-pl-accent: #C84880;
-  --c-cs-pl-text:   #681840;
-
-  --c-cs-se-bg:     #FBF2E0;
-  --c-cs-se-mid:    #F0CC88;
-  --c-cs-se-accent: #C89020;
-  --c-cs-se-text:   #604800;
-
-  --c-cs-discrete-bg:     #EEE8F8;
-  --c-cs-discrete-mid:    #C0A8E8;
-  --c-cs-discrete-accent: #7848C8;
-  --c-cs-discrete-text:   #341860;
-
-  --c-cs-compiler-bg:     #EAF0F0;
-  --c-cs-compiler-mid:    #98B8B8;
-  --c-cs-compiler-accent: #3A7878;
-  --c-cs-compiler-text:   #103838;
-
-  --c-cs-ai-bg:     #E0F8F0;
-  --c-cs-ai-mid:    #78D8B0;
-  --c-cs-ai-accent: #18A870;
-  --c-cs-ai-text:   #065035;
-
-  --c-cs-sec-bg:     #FAE6E6;
-  --c-cs-sec-mid:    #E89898;
-  --c-cs-sec-accent: #C03838;
-  --c-cs-sec-text:   #601010;
-
-  /* ── 정보교육 과목 컬러 ── */
-  --c-info-ct-bg:     #E0F8F4;
-  --c-info-ct-mid:    #78D8C8;
-  --c-info-ct-accent: #18A898;
-  --c-info-ct-text:   #065048;
-
-  --c-info-curriculum-bg:     #EEF8E0;
-  --c-info-curriculum-mid:    #B8E080;
-  --c-info-curriculum-accent: #70B020;
-  --c-info-curriculum-text:   #305000;
-
-  --c-info-teach-bg:     #FAF0E8;
-  --c-info-teach-mid:    #F0C8A0;
-  --c-info-teach-accent: #D07840;
-  --c-info-teach-text:   #703010;
-
-  --c-info-swai-bg:     #E0F0F8;
-  --c-info-swai-mid:    #88C8E8;
-  --c-info-swai-accent: #1888C8;
-  --c-info-swai-text:   #083860;
-
-  --c-info-eval-bg:     #F0E8F8;
-  --c-info-eval-mid:    #C898E8;
-  --c-info-eval-accent: #9840C8;
-  --c-info-eval-text:   #480868;
+  --c-cs-arch-bg:      var(--c-lilac-bg);  --c-cs-arch-mid:      var(--c-lilac-mid);  --c-cs-arch-accent:      var(--c-lilac-mid);  --c-cs-arch-text:      var(--c-lilac-text);
+  --c-cs-compiler-bg:  var(--c-lilac-bg);  --c-cs-compiler-mid:  var(--c-lilac-mid);  --c-cs-compiler-accent:  var(--c-lilac-mid);  --c-cs-compiler-text:  var(--c-lilac-text);
 }
 
 /* ── 다크모드 — bg를 확연히 밝게 (기존 배경과 대비 확보) ── */
@@ -193,30 +120,38 @@
 
     /* bg: 배경(#1C)보다 충분히 밝게 → #3C~#48 수준
        mid: 더 밝은 채도있는 색                        */
-    --c-edu-curriculum-bg:     #4A303C; --c-edu-curriculum-mid: #7A4860; --c-edu-curriculum-accent: #F0A0C8; --c-edu-curriculum-text: #F8E0EE;
-    --c-edu-psych-bg:          #2A4034; --c-edu-psych-mid:      #487858; --c-edu-psych-accent:      #7ED8A8; --c-edu-psych-text:      #D0F0E0;
-    --c-edu-teach-bg:          #4A3820; --c-edu-teach-mid:      #7A5830; --c-edu-teach-accent:      #F0B870; --c-edu-teach-text:      #F8E4C8;
-    --c-edu-eval-bg:           #3E3818; --c-edu-eval-mid:       #706418; --c-edu-eval-accent:       #E8C840; --c-edu-eval-text:       #F4ECA0;
-    --c-edu-admin-bg:          #283048; --c-edu-admin-mid:      #405888; --c-edu-admin-accent:      #88A8E8; --c-edu-admin-text:      #D0DCF8;
-    --c-edu-counsel-bg:        #3C2848; --c-edu-counsel-mid:    #5C4080; --c-edu-counsel-accent:    #B888E8; --c-edu-counsel-text:    #E4D0F8;
+    /* 다크모드용 6색 팔레트 — bg는 어둡게, mid/accent는 밝게 */
+    --c-pink-bg:    #4A303C; --c-pink-text:   #F8E0EE; --c-pink-mid:   #F0A0C8;
+    --c-coral-bg:   #4A3420; --c-coral-text:  #F8E4D0; --c-coral-mid:  #F0B070;
+    --c-yellow-bg:  #423C18; --c-yellow-text: #F6EEA0; --c-yellow-mid: #E8CC50;
+    --c-mint-bg:    #1E3C2E; --c-mint-text:   #C8F4DC; --c-mint-mid:   #58D8A0;
+    --c-blue-bg:    #1C3448; --c-blue-text:   #C8E4F8; --c-blue-mid:   #68B8F0;
+    --c-lilac-bg:   #342050; --c-lilac-text:  #E4D4FC; --c-lilac-mid:  #B888F0;
 
-    --c-cs-ds-bg:              #283848; --c-cs-ds-mid:          #406090; --c-cs-ds-accent:          #88B8F0; --c-cs-ds-text:          #CCDCF8;
-    --c-cs-algo-bg:            #1E3C38; --c-cs-algo-mid:        #307868; --c-cs-algo-accent:        #60D0B8; --c-cs-algo-text:        #B8E8E0;
-    --c-cs-os-bg:              #482820; --c-cs-os-mid:          #805040; --c-cs-os-accent:          #F09080; --c-cs-os-text:          #F8D8D0;
-    --c-cs-arch-bg:            #302848; --c-cs-arch-mid:        #506098; --c-cs-arch-accent:        #A8A0F0; --c-cs-arch-text:        #DCDAF8;
-    --c-cs-db-bg:              #1E3C28; --c-cs-db-mid:          #387050; --c-cs-db-accent:          #70C890; --c-cs-db-text:          #C0E8D0;
-    --c-cs-net-bg:             #203040; --c-cs-net-mid:         #386898; --c-cs-net-accent:         #68B8F0; --c-cs-net-text:         #C0DCFC;
-    --c-cs-pl-bg:              #482038; --c-cs-pl-mid:          #884068; --c-cs-pl-accent:          #F088B8; --c-cs-pl-text:          #F8D0E8;
-    --c-cs-se-bg:              #403018; --c-cs-se-mid:          #887020; --c-cs-se-accent:          #E8B840; --c-cs-se-text:          #F4E4A8;
-    --c-cs-discrete-bg:        #382048; --c-cs-discrete-mid:    #6040A0; --c-cs-discrete-accent:    #B080F0; --c-cs-discrete-text:    #E0D0FC;
-    --c-cs-compiler-bg:        #203838; --c-cs-compiler-mid:    #387878; --c-cs-compiler-accent:    #60B8B8; --c-cs-compiler-text:    #B8E0E0;
-    --c-cs-ai-bg:              #183828; --c-cs-ai-mid:          #208850; --c-cs-ai-accent:          #50E0A0; --c-cs-ai-text:          #B0F4D8;
-    --c-cs-sec-bg:             #482020; --c-cs-sec-mid:         #803838; --c-cs-sec-accent:         #F07878; --c-cs-sec-text:         #F8C8C8;
+    --c-edu-curriculum-bg: var(--c-pink-bg);   --c-edu-curriculum-mid: var(--c-pink-mid);   --c-edu-curriculum-accent: var(--c-pink-mid);   --c-edu-curriculum-text: var(--c-pink-text);
+    --c-edu-teach-bg:      var(--c-coral-bg);  --c-edu-teach-mid:      var(--c-coral-mid);  --c-edu-teach-accent:      var(--c-coral-mid);  --c-edu-teach-text:      var(--c-coral-text);
+    --c-edu-eval-bg:       var(--c-yellow-bg); --c-edu-eval-mid:       var(--c-yellow-mid); --c-edu-eval-accent:       var(--c-yellow-mid); --c-edu-eval-text:       var(--c-yellow-text);
+    --c-edu-psych-bg:      var(--c-mint-bg);   --c-edu-psych-mid:      var(--c-mint-mid);   --c-edu-psych-accent:      var(--c-mint-mid);   --c-edu-psych-text:      var(--c-mint-text);
+    --c-edu-admin-bg:      var(--c-blue-bg);   --c-edu-admin-mid:      var(--c-blue-mid);   --c-edu-admin-accent:      var(--c-blue-mid);   --c-edu-admin-text:      var(--c-blue-text);
+    --c-edu-counsel-bg:    var(--c-lilac-bg);  --c-edu-counsel-mid:    var(--c-lilac-mid);  --c-edu-counsel-accent:    var(--c-lilac-mid);  --c-edu-counsel-text:    var(--c-lilac-text);
 
-    --c-info-ct-bg:            #183838; --c-info-ct-mid:        #208880; --c-info-ct-accent:        #50D8D0; --c-info-ct-text:        #B0F0EC;
-    --c-info-curriculum-bg:    #2A3C18; --c-info-curriculum-mid: #587810; --c-info-curriculum-accent: #A0D840; --c-info-curriculum-text: #DCFCA8;
-    --c-info-teach-bg:         #483018; --c-info-teach-mid:     #806028; --c-info-teach-accent:     #E8A860; --c-info-teach-text:     #F8E4C8;
-    --c-info-swai-bg:          #1C3040; --c-info-swai-mid:      #306090; --c-info-swai-accent:      #58B8F0; --c-info-swai-text:      #C0E0FC;
-    --c-info-eval-bg:          #382048; --c-info-eval-mid:      #6038A0; --c-info-eval-accent:      #C078F0; --c-info-eval-text:      #EAD0FC;
+    --c-info-curriculum-bg: var(--c-pink-bg);   --c-info-curriculum-mid: var(--c-pink-mid);   --c-info-curriculum-accent: var(--c-pink-mid);   --c-info-curriculum-text: var(--c-pink-text);
+    --c-info-teach-bg:      var(--c-coral-bg);  --c-info-teach-mid:      var(--c-coral-mid);  --c-info-teach-accent:      var(--c-coral-mid);  --c-info-teach-text:      var(--c-coral-text);
+    --c-info-eval-bg:       var(--c-yellow-bg); --c-info-eval-mid:       var(--c-yellow-mid); --c-info-eval-accent:       var(--c-yellow-mid); --c-info-eval-text:       var(--c-yellow-text);
+    --c-info-ct-bg:         var(--c-mint-bg);   --c-info-ct-mid:         var(--c-mint-mid);   --c-info-ct-accent:         var(--c-mint-mid);   --c-info-ct-text:         var(--c-mint-text);
+    --c-info-swai-bg:       var(--c-blue-bg);   --c-info-swai-mid:       var(--c-blue-mid);   --c-info-swai-accent:       var(--c-blue-mid);   --c-info-swai-text:       var(--c-blue-text);
+
+    --c-cs-ai-bg:        var(--c-pink-bg);   --c-cs-ai-mid:        var(--c-pink-mid);   --c-cs-ai-accent:        var(--c-pink-mid);   --c-cs-ai-text:        var(--c-pink-text);
+    --c-cs-discrete-bg:  var(--c-pink-bg);   --c-cs-discrete-mid:  var(--c-pink-mid);   --c-cs-discrete-accent:  var(--c-pink-mid);   --c-cs-discrete-text:  var(--c-pink-text);
+    --c-cs-os-bg:        var(--c-coral-bg);  --c-cs-os-mid:        var(--c-coral-mid);  --c-cs-os-accent:        var(--c-coral-mid);  --c-cs-os-text:        var(--c-coral-text);
+    --c-cs-pl-bg:        var(--c-coral-bg);  --c-cs-pl-mid:        var(--c-coral-mid);  --c-cs-pl-accent:        var(--c-coral-mid);  --c-cs-pl-text:        var(--c-coral-text);
+    --c-cs-ds-bg:        var(--c-yellow-bg); --c-cs-ds-mid:        var(--c-yellow-mid); --c-cs-ds-accent:        var(--c-yellow-mid); --c-cs-ds-text:        var(--c-yellow-text);
+    --c-cs-algo-bg:      var(--c-yellow-bg); --c-cs-algo-mid:      var(--c-yellow-mid); --c-cs-algo-accent:      var(--c-yellow-mid); --c-cs-algo-text:      var(--c-yellow-text);
+    --c-cs-db-bg:        var(--c-mint-bg);   --c-cs-db-mid:        var(--c-mint-mid);   --c-cs-db-accent:        var(--c-mint-mid);   --c-cs-db-text:        var(--c-mint-text);
+    --c-cs-se-bg:        var(--c-mint-bg);   --c-cs-se-mid:        var(--c-mint-mid);   --c-cs-se-accent:        var(--c-mint-mid);   --c-cs-se-text:        var(--c-mint-text);
+    --c-cs-net-bg:       var(--c-blue-bg);   --c-cs-net-mid:       var(--c-blue-mid);   --c-cs-net-accent:       var(--c-blue-mid);   --c-cs-net-text:       var(--c-blue-text);
+    --c-cs-sec-bg:       var(--c-blue-bg);   --c-cs-sec-mid:       var(--c-blue-mid);   --c-cs-sec-accent:       var(--c-blue-mid);   --c-cs-sec-text:       var(--c-blue-text);
+    --c-cs-arch-bg:      var(--c-lilac-bg);  --c-cs-arch-mid:      var(--c-lilac-mid);  --c-cs-arch-accent:      var(--c-lilac-mid);  --c-cs-arch-text:      var(--c-lilac-text);
+    --c-cs-compiler-bg:  var(--c-lilac-bg);  --c-cs-compiler-mid:  var(--c-lilac-mid);  --c-cs-compiler-accent:  var(--c-lilac-mid);  --c-cs-compiler-text:  var(--c-lilac-text);
   }
 }
