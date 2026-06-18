@@ -56,7 +56,7 @@
 
   /* ── Concept / Note 토글: 가운데 정렬 + 상단 고정 ── */
   .mode-toggle-sticky {
-    position: sticky; top: 0; z-index: 40;
+    position: sticky; top: 49px; z-index: 40;
     background: var(--td-bg-page);
     padding: 14px 0;
     margin: 0 -24px 44px;
@@ -205,7 +205,7 @@
 
   /* OX: 클릭 가능함이 분명하게 보이도록 배경+테두리 기본 제공, 누른 것만 색칠 */
   /* OX: 박스 없이 큰 타이포. 화면 폭을 활용해 크게, 클릭 안내는 hover 색 변화로만 */
-  .ed-quiz-ox { display: flex; gap: 36px; }
+  .ed-quiz-ox { display: flex; gap: 36px; justify-content: center; }
   .ed-quiz-ox-btn {
     font-size: 34px; font-weight: 800; color: var(--border-mid);
     cursor: pointer; background: none; border: none; padding: 4px 0;
@@ -233,7 +233,9 @@
     text-decoration: underline; text-decoration-color: var(--td-coral-bg); text-underline-offset: 3px;
   }
   .ed-quiz-fill-btn:hover { color: var(--text-primary); }
-  .ed-quiz-fill-answer { font-size: 15px; font-weight: 700; color: var(--td-coral-deep); }
+  .ed-quiz-fill-answer { font-size: 15px; }
+  .ed-quiz-fill-answer .fill-label { font-weight: 600; color: var(--text-primary); }
+  .ed-quiz-fill-answer .fill-value { font-weight: 700; color: var(--td-coral-deep); }
 
   .ed-quiz-explain { font-size: 13.5px; color: var(--text-tertiary); line-height: 1.6; margin-top: 12px; max-width: 540px; }
 
@@ -575,7 +577,7 @@ function buildQuiz() {
       }).join('') + `</div>`;
     } else if (q.type === 'fill') {
       choiceHTML = s.revealed
-        ? `<div class="ed-quiz-fill-answer">정답: ${q.answer}</div>`
+        ? `<div class="ed-quiz-fill-answer"><span class="fill-label">정답:</span> <span class="fill-value">${q.answer}</span></div>`
         : `<button class="ed-quiz-fill-btn" onclick="pickQuiz(${i},'reveal')">정답 보기</button>`;
     } else {
       choiceHTML = `<div class="ed-quiz-mc">` + q.options.map((opt, oi) => {
