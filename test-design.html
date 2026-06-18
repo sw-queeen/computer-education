@@ -54,11 +54,19 @@
   .kw-node-text { font-family: var(--font-body, var(--font-main)); pointer-events: none; }
   .kw-edge { stroke: var(--border-mid); stroke-width: 1.2; }
 
-  /* ── Concept / Note 토글 ── */
+  /* ── Concept / Note 토글: 가운데 정렬 + 상단 고정 ── */
+  .mode-toggle-sticky {
+    position: sticky; top: 0; z-index: 40;
+    background: var(--td-bg-page);
+    padding: 14px 0;
+    margin: 0 -24px 44px;
+    display: flex; justify-content: center;
+  }
+  @media (min-width: 1024px) { .mode-toggle-sticky { margin: 0 -16px 44px; } }
   .mode-toggle {
     display: inline-flex; gap: 4px; background: var(--td-bg-white);
     border-radius: 20px; padding: 4px; border: 1px solid var(--border-light);
-    margin-bottom: 44px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.05);
   }
   .mode-toggle-btn {
     font-size: 13px; font-weight: 700; padding: 8px 22px; border-radius: 16px; cursor: pointer;
@@ -68,6 +76,19 @@
   .mode-toggle-btn.active { background: var(--td-coral-deep); color: white; }
   .mode-panel { display: none; }
   .mode-panel.active { display: block; }
+
+  /* ── 맨 위로 가기 버튼 ── */
+  .scroll-top-btn {
+    position: fixed; bottom: 28px; right: 28px; z-index: 60;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--text-primary); color: var(--td-bg-white);
+    border: none; cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 12px rgba(0,0,0,.18);
+    opacity: 0; pointer-events: none; transition: opacity .2s, transform .15s;
+  }
+  .scroll-top-btn.visible { opacity: 1; pointer-events: auto; }
+  .scroll-top-btn:hover { transform: translateY(-2px); }
 
   .ed-h2 {
     font-size: 13px; font-weight: 700; letter-spacing: .04em;
@@ -156,13 +177,14 @@
   .ed-essay-item { font-size: 14px; color: var(--text-secondary); line-height: 1.7; padding-left: 16px; position: relative; margin-bottom: 5px; }
   .ed-essay-item::before { content:'—'; position:absolute; left:0; color: var(--border-mid); }
 
-  .ed-check { padding: 18px 0; border-bottom: 1px solid var(--border-light); font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+  .ed-check { display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--border-light); font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
   .ed-check:first-child { padding-top: 0; }
   .ed-check:last-child { border-bottom: none; padding-bottom: 0; }
-  .ed-check-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-right: 10px; }
+  .ed-check-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; flex-shrink: 0; width: 76px; padding-top: 2px; }
   .ed-check-label.danger { color: #C03838; }
   .ed-check-label.success { color: #3A8858; }
-  .ed-check strong { color: var(--text-primary); }
+  .ed-check-body { flex: 1; }
+  .ed-check-body strong { color: var(--text-primary); }
 
   /* ── 기출 포인트: 박스 제거, 빈출도를 점 표시로 ── */
   .ed-exam-meta { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 36px; }
@@ -181,39 +203,42 @@
   .ed-quiz-n { font-size: 11.5px; font-weight: 700; color: var(--text-tertiary); margin-bottom: 8px; letter-spacing: .04em; text-transform: uppercase; }
   .ed-quiz-q { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.55; margin-bottom: 16px; max-width: 560px; }
 
-  /* OX: 박스 없이, 반응형 크기, 누른 것만 색칠 */
-  .ed-quiz-ox { display: flex; gap: 28px; }
+  /* OX: 클릭 가능함이 분명하게 보이도록 배경+테두리 기본 제공, 누른 것만 색칠 */
+  .ed-quiz-ox { display: flex; gap: 12px; }
   .ed-quiz-ox-btn {
-    font-size: 28px; font-weight: 800; color: var(--border-mid);
-    cursor: pointer; background: none; border: none; padding: 0;
-    font-family: var(--font-body); transition: color .15s; line-height: 1;
+    font-size: 22px; font-weight: 800; color: var(--text-secondary);
+    cursor: pointer; background: var(--bg-surface); border: 2px solid transparent;
+    border-radius: 12px; padding: 10px 26px; font-family: var(--font-body);
+    transition: all .15s; line-height: 1;
   }
-  .ed-quiz-ox-btn:hover { color: var(--text-tertiary); }
-  .ed-quiz-ox-btn.picked-correct { color: #3A8858; }
-  .ed-quiz-ox-btn.picked-wrong { color: #C03838; }
+  .ed-quiz-ox-btn:hover { background: var(--border-light); transform: translateY(-1px); }
+  .ed-quiz-ox-btn.picked-correct { background: #EAF3DE; color: #3A8858; border-color: #3A8858; }
+  .ed-quiz-ox-btn.picked-wrong { background: #FDECEA; color: #C03838; border-color: #C03838; }
 
-  /* 객관식: 박스 제거, 텍스트 색상으로만 구분 */
-  .ed-quiz-mc { display: flex; flex-direction: column; gap: 11px; max-width: 540px; }
+  /* 객관식: 클릭 가능함이 분명하게 보이도록 hover 시 명확한 변화, 정답/오답 색은 배경으로도 */
+  .ed-quiz-mc { display: flex; flex-direction: column; gap: 8px; max-width: 540px; }
   .ed-quiz-mc-btn {
     text-align: left; font-size: 14.5px; color: var(--text-secondary); cursor: pointer;
-    background: none; border: none; padding: 0; font-family: var(--font-body);
-    line-height: 1.5; transition: color .15s;
+    background: var(--bg-surface); border: 2px solid transparent; border-radius: 10px;
+    padding: 11px 16px; font-family: var(--font-body);
+    line-height: 1.5; transition: all .15s; display: block; width: 100%;
   }
-  .ed-quiz-mc-btn:hover { color: var(--text-primary); }
-  .ed-quiz-mc-btn.correct { color: #3A8858; font-weight: 700; }
-  .ed-quiz-mc-btn.wrong { color: #C03838; }
+  .ed-quiz-mc-btn:hover { background: var(--border-light); }
+  .ed-quiz-mc-btn.correct { background: #EAF3DE; color: #2E5010; border-color: #3A8858; font-weight: 700; }
+  .ed-quiz-mc-btn.wrong { background: #FDECEA; color: #7A2010; border-color: #C03838; }
 
-  /* 빈칸: 포인트색 1곳만, 나머지 무채색 */
+  /* 빈칸: 포인트색 버튼 + 포인트색 정답 강조 */
   .ed-quiz-fill-btn {
-    font-size: 13px; font-weight: 700; color: var(--td-coral-deep); cursor: pointer;
-    background: none; border: none; border-bottom: 1.5px solid var(--td-coral-deep);
-    padding: 0 0 2px; font-family: var(--font-body);
+    font-size: 13.5px; font-weight: 700; color: var(--td-bg-white); cursor: pointer;
+    background: var(--td-coral-deep); border: none; border-radius: 10px;
+    padding: 9px 20px; font-family: var(--font-body); transition: opacity .15s;
   }
-  .ed-quiz-fill-answer { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+  .ed-quiz-fill-btn:hover { opacity: .85; }
+  .ed-quiz-fill-answer { font-size: 15px; font-weight: 700; color: var(--td-coral-deep); }
 
   .ed-quiz-explain { font-size: 13.5px; color: var(--text-tertiary); line-height: 1.6; margin-top: 12px; max-width: 540px; }
 
-  .quiz-footer { display: flex; justify-content: flex-end; margin-top: 24px; }
+  .quiz-footer { display: flex; justify-content: flex-end; margin-top: 36px; padding-bottom: 8px; }
   .ed-reset { font-size: 13px; font-weight: 600; color: var(--text-tertiary); cursor: pointer; background: none; border: none; padding: 0; font-family: var(--font-body); text-decoration: underline; }
   .ed-reset:hover { color: var(--text-secondary); }
 
@@ -246,9 +271,11 @@
     <div class="keyword-graph-wrap" id="kwGraphWrap"></div>
   </div>
 
-  <div class="mode-toggle">
-    <button class="mode-toggle-btn active" id="btn-concept" onclick="setMode('concept')">Concept</button>
-    <button class="mode-toggle-btn" id="btn-tip" onclick="setMode('tip')">Note</button>
+  <div class="mode-toggle-sticky">
+    <div class="mode-toggle">
+      <button class="mode-toggle-btn active" id="btn-concept" onclick="setMode('concept')">Concept</button>
+      <button class="mode-toggle-btn" id="btn-tip" onclick="setMode('tip')">Note</button>
+    </div>
   </div>
 
   <!-- ══════════════════════════ Concept ══════════════════════════ -->
@@ -352,10 +379,10 @@
 
     <div class="ed-section">
       <div class="ed-h2"><span class="num">02</span> 체크 포인트</div>
-      <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><strong>문맥교환 ≠ CPU 스케줄링.</strong> 스케줄링은 "누구를 실행할지 결정"하는 정책, 문맥교환은 그 결정을 "실제로 구현"하는 메커니즘이다.</div>
-      <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><strong>문맥교환 ≠ 인터럽트 처리.</strong> 인터럽트 발생 시 커널 스택 저장은 인터럽트 처리이고, 다른 프로세스로의 전환이 문맥교환이다.</div>
-      <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><strong>PCB 저장 핵심 3요소:</strong> 프로그램 카운터(PC) + 범용 레지스터 + 스택 포인터(SP). 이 세 가지가 없으면 프로세스 재개 불가.</div>
-      <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><strong>스레드 문맥교환 &lt; 프로세스 문맥교환:</strong> 주소 공간을 공유하므로 TLB 플러시 없이 레지스터만 교환 → 경량.</div>
+      <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><div class="ed-check-body"><strong>문맥교환 ≠ CPU 스케줄링.</strong> 스케줄링은 "누구를 실행할지 결정"하는 정책, 문맥교환은 그 결정을 "실제로 구현"하는 메커니즘이다.</div></div>
+      <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><div class="ed-check-body"><strong>문맥교환 ≠ 인터럽트 처리.</strong> 인터럽트 발생 시 커널 스택 저장은 인터럽트 처리이고, 다른 프로세스로의 전환이 문맥교환이다.</div></div>
+      <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><div class="ed-check-body"><strong>PCB 저장 핵심 3요소:</strong> 프로그램 카운터(PC) + 범용 레지스터 + 스택 포인터(SP). 이 세 가지가 없으면 프로세스 재개 불가.</div></div>
+      <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><div class="ed-check-body"><strong>스레드 문맥교환 &lt; 프로세스 문맥교환:</strong> 주소 공간을 공유하므로 TLB 플러시 없이 레지스터만 교환 → 경량.</div></div>
     </div>
 
     <div class="ed-section">
@@ -382,6 +409,8 @@
   </div>
 
 </div>
+
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script src="js/data.js"></script>
 <script src="js/config.js"></script>
@@ -412,27 +441,70 @@ const KW_EDGES = [
 function buildKeywordGraph() {
   const wrap = document.getElementById('kwGraphWrap');
   const W = 640, H = 340;
-  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
-  svg += `<g>`;
-  KW_EDGES.forEach(([a,b]) => {
-    const na = KW_NODES.find(n=>n.id===a), nb = KW_NODES.find(n=>n.id===b);
-    svg += `<line class="kw-edge" x1="${na.x}" y1="${na.y}" x2="${nb.x}" y2="${nb.y}"/>`;
+  // 각 노드에 고유한 흔들림 위상(phase)과 속도 부여 → 자연스러운 둥둥 떠다니는 느낌
+  KW_NODES.forEach((n, idx) => {
+    n.baseX = n.x; n.baseY = n.y;
+    n.phaseX = idx * 0.7;
+    n.phaseY = idx * 1.3 + 1;
+    n.ampX = 4 + (idx % 3) * 2;
+    n.ampY = 5 + (idx % 4) * 2;
+    n.speed = 0.55 + (idx % 5) * 0.08;
   });
-  svg += `</g><g>`;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  svg += `<g id="kwEdgeLayer">`;
+  KW_EDGES.forEach(([a,b], i) => {
+    svg += `<line class="kw-edge" id="kwEdge${i}" x1="0" y1="0" x2="0" y2="0"/>`;
+  });
+  svg += `</g><g id="kwNodeLayer">`;
   KW_NODES.forEach(n => {
     const fill = n.core ? 'var(--td-coral-deep)' : 'var(--td-coral-bg)';
     const textColor = n.core ? '#fff' : 'var(--td-coral-text)';
     const fontSize = n.core ? 13 : n.r >= 18 ? 11.5 : 10;
-    svg += `<circle class="kw-node-circle" cx="${n.x}" cy="${n.y}" r="${n.r}" fill="${fill}"/>`;
-    svg += `<text class="kw-node-text" x="${n.x}" y="${n.y}" text-anchor="middle" dominant-baseline="central" font-size="${fontSize}" font-weight="700" fill="${textColor}">${n.label}</text>`;
+    svg += `<g id="kwNode-${n.id}">
+      <circle class="kw-node-circle" r="${n.r}" fill="${fill}"/>
+      <text class="kw-node-text" text-anchor="middle" dominant-baseline="central" font-size="${fontSize}" font-weight="700" fill="${textColor}">${n.label}</text>
+    </g>`;
   });
   svg += `</g></svg>`;
   wrap.innerHTML = svg;
+
+  let t = 0;
+  function animateGraph() {
+    t += 0.016;
+    KW_NODES.forEach(n => {
+      n.x = n.baseX + Math.sin(t * n.speed + n.phaseX) * n.ampX;
+      n.y = n.baseY + Math.cos(t * n.speed * 0.8 + n.phaseY) * n.ampY;
+      const g = document.getElementById('kwNode-' + n.id);
+      if (g) g.setAttribute('transform', `translate(${n.x},${n.y})`);
+    });
+    KW_EDGES.forEach(([a,b], i) => {
+      const na = KW_NODES.find(n=>n.id===a), nb = KW_NODES.find(n=>n.id===b);
+      const edge = document.getElementById('kwEdge' + i);
+      if (edge) {
+        edge.setAttribute('x1', na.x); edge.setAttribute('y1', na.y);
+        edge.setAttribute('x2', nb.x); edge.setAttribute('y2', nb.y);
+      }
+    });
+    if (document.getElementById('kwPanel').classList.contains('open')) {
+      requestAnimationFrame(animateGraph);
+    } else {
+      kwAnimRunning = false;
+    }
+  }
+  window.kwStartAnim = () => {
+    if (!kwAnimRunning) { kwAnimRunning = true; animateGraph(); }
+  };
 }
+let kwAnimRunning = false;
 buildKeywordGraph();
 
 function toggleKeywords() {
-  document.getElementById('kwPanel').classList.toggle('open');
+  const panel = document.getElementById('kwPanel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open') && window.kwStartAnim) {
+    window.kwStartAnim();
+  }
 }
 
 function setMode(mode) {
@@ -456,9 +528,19 @@ function toggleViz() {
     document.body.appendChild(s);
   }
   if (opening) {
-    setTimeout(() => wrap.scrollIntoView({ behavior:'smooth', block:'center' }), 100);
+    setTimeout(() => {
+      const btnRect = btn.getBoundingClientRect();
+      const targetY = window.scrollY + btnRect.bottom - 80; // 버튼 바로 아래, 고정 토글바 높이만큼 여유
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }, 60);
   }
 }
+
+/* ── 맨 위로 가기 버튼 표시 ── */
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scrollTopBtn');
+  btn.classList.toggle('visible', window.scrollY > 400);
+});
 
 /* ── 리마인드 퀴즈 ── */
 const QUIZ_DATA = [
