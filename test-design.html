@@ -103,7 +103,7 @@
   .mode-toggle-btn {
     font-size: 13px; font-weight: 700; padding: 8px 22px; border-radius: 16px; cursor: pointer;
     border: none; background: none; color: var(--text-secondary);
-    font-family: var(--font-body, var(--font-main)); transition: all .15s;
+    font-family: var(--font-body, var(--font-main)); transition: all .15s; text-transform: uppercase;
   }
   .mode-toggle-btn.active { background: var(--td-primary-deep); color: white; }
   .mode-panel { display: none; }
@@ -136,7 +136,7 @@
     margin-bottom: 0;
     padding-top: 36px;
     padding-bottom: 36px;
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: none;
   }
   .ed-section:first-of-type { padding-top: 0; border-top: none; }
 
@@ -278,6 +278,41 @@
     .ed-title { font-size: 34px; }
     .ed-page { padding: 28px 16px 80px; }
     .ed-pcb-row { flex-direction: column; gap: 6px; }
+
+    .ed-statetable { margin-bottom: 20px; }
+    .ed-statetable tr {
+      display: block;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      background: var(--td-bg-white);
+    }
+    .ed-statetable tr:last-child { border-bottom: 1px solid rgba(0, 0, 0, 0.08); margin-bottom: 0; }
+    .ed-statetable td {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      padding: 6px 0;
+      font-size: 13.5px;
+    }
+    .ed-statetable td::before {
+      content: attr(data-label);
+      min-width: 70px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .03em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+    .ed-statetable td:first-child {
+      width: 100%;
+      font-size: 15px;
+      padding-top: 0;
+      padding-bottom: 8px;
+      margin-bottom: 2px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    }
   }
 </style>
 </head>
@@ -342,11 +377,11 @@
     <div class="ed-section">
       <div class="ed-h2"><span class="num">03</span> 프로세스 상태 전이 — 5가지</div>
       <table class="ed-statetable">
-        <tr><td>New</td><td>생성 중</td><td>문맥 없음 (PCB 초기화 중)</td></tr>
-        <tr class="running"><td>Running</td><td>CPU 점유 중</td><td>문맥교환의 출발점 또는 도착점</td></tr>
-        <tr><td>Ready</td><td>CPU 할당 대기 중</td><td>문맥교환 후 이 상태로 전환되거나, 이 상태에서 선택됨</td></tr>
-        <tr><td>Waiting</td><td>I/O 또는 이벤트 대기 중</td><td>Running → Waiting 전환 시 문맥 저장 발생</td></tr>
-        <tr><td>Terminated</td><td>실행 완료·종료</td><td>PCB 해제. 더 이상 복원 불필요</td></tr>
+        <tr><td data-label="상태">New</td><td data-label="의미">생성 중</td><td data-label="설명">문맥 없음 (PCB 초기화 중)</td></tr>
+        <tr class="running"><td data-label="상태">Running</td><td data-label="의미">CPU 점유 중</td><td data-label="설명">문맥교환의 출발점 또는 도착점</td></tr>
+        <tr><td data-label="상태">Ready</td><td data-label="의미">CPU 할당 대기 중</td><td data-label="설명">문맥교환 후 이 상태로 전환되거나, 이 상태에서 선택됨</td></tr>
+        <tr><td data-label="상태">Waiting</td><td data-label="의미">I/O 또는 이벤트 대기 중</td><td data-label="설명">Running → Waiting 전환 시 문맥 저장 발생</td></tr>
+        <tr><td data-label="상태">Terminated</td><td data-label="의미">실행 완료·종료</td><td data-label="설명">PCB 해제. 더 이상 복원 불필요</td></tr>
       </table>
     </div>
 
