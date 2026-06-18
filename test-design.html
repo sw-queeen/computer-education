@@ -19,6 +19,7 @@
 
   .sticky-header-group {
     position: sticky; top: 0; z-index: 50;
+    background: var(--td-bg-page);
   }
   .test-banner {
     background: var(--td-bg-white);
@@ -39,27 +40,21 @@
   .ed-lede { font-size: 17px; color: var(--text-secondary); line-height: 1.6; max-width: 580px; margin-bottom: 32px; }
   .ed-lede strong { color: var(--text-primary); font-weight: 700; }
 
-  /* ── 탐색 패널: 키워드 그래프 + 인터랙티브 시각화 통합 ── */
-  .explore-panel { margin-bottom: 44px; border-radius: 18px; overflow: hidden; background: var(--td-bg-white); border: 1px solid var(--border-light); }
-  .explore-panel-head {
-    display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer; padding: 16px 20px;
+  /* ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 가벼운 텍스트 토글 ── */
+  .explore-toggles { margin-bottom: 48px; }
+  .explore-toggle-item { border-bottom: 1px solid var(--border-light); }
+  .explore-toggle-item:first-child { border-top: 1px solid var(--border-light); }
+  .explore-toggle-btn {
+    display: flex; align-items: center; gap: 8px;
+    width: 100%; text-align: left; cursor: pointer;
+    background: none; border: none; padding: 16px 0;
+    font-size: 14.5px; font-weight: 700; color: var(--text-primary);
+    font-family: var(--font-body, var(--font-main));
   }
-  .explore-panel-label { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-  .explore-panel-chevron { font-size: 14px; color: var(--text-tertiary); transition: transform .2s; }
-  .explore-panel.open .explore-panel-chevron { transform: rotate(90deg); }
-  .explore-panel-body { display: none; padding: 0 20px 20px; }
-  .explore-panel.open .explore-panel-body { display: block; }
-
-  .explore-subtabs { display: flex; gap: 4px; background: var(--bg-surface); border-radius: 12px; padding: 4px; margin-bottom: 16px; }
-  .explore-subtab {
-    flex: 1; font-size: 12.5px; font-weight: 700; padding: 9px 14px; border-radius: 9px; cursor: pointer;
-    border: none; background: none; color: var(--text-secondary);
-    font-family: var(--font-body, var(--font-main)); transition: all .15s;
-  }
-  .explore-subtab.active { background: var(--td-coral-deep); color: white; }
-  .explore-content { display: none; }
-  .explore-content.active { display: block; }
+  .explore-toggle-chevron { font-size: 13px; color: var(--td-coral-deep); transition: transform .2s; }
+  .explore-toggle-item.open .explore-toggle-chevron { transform: rotate(90deg); }
+  .explore-toggle-body { display: none; padding: 0 0 24px; }
+  .explore-toggle-item.open .explore-toggle-body { display: block; }
   .keyword-graph-wrap svg { width: 100%; height: auto; display: block; }
   .kw-node-circle { transition: r .15s; cursor: pointer; }
   .kw-node-circle:hover { opacity: .8; }
@@ -68,8 +63,7 @@
 
   /* ── Concept / Note 토글: 가운데 정렬 + 상단 고정 ── */
   .mode-toggle-sticky {
-    background: var(--td-bg-white);
-    border-bottom: 1px solid var(--border-light);
+    background: var(--td-bg-page);
     padding: 12px 0;
     display: flex; justify-content: center;
   }
@@ -267,21 +261,21 @@
   <div class="ed-title">문맥교환</div>
   <div class="ed-lede"><strong>문맥교환(Context Switch)</strong>은 CPU가 실행 중인 프로세스를 교체할 때, 현재 프로세스의 상태를 저장하고 새 프로세스의 상태를 복원하는 커널의 작업 전체를 말한다. 이 구간 동안 CPU는 유용한 작업을 하지 못하므로 <strong>순수 오버헤드</strong>로 간주된다.</div>
 
-  <!-- ── 탐색 패널: 키워드 그래프 / 인터랙티브 시각화 통합 ── -->
-  <div class="explore-panel" id="explorePanel">
-    <div class="explore-panel-head" onclick="toggleExplore()">
-      <span class="explore-panel-label">🔎 둘러보기 — 키워드 그래프 · 인터랙티브 시각화</span>
-      <span class="explore-panel-chevron">›</span>
-    </div>
-    <div class="explore-panel-body" id="exploreBody">
-      <div class="explore-subtabs">
-        <button class="explore-subtab active" id="subtab-kw" onclick="setExploreTab('kw')">키워드 그래프</button>
-        <button class="explore-subtab" id="subtab-viz" onclick="setExploreTab('viz')">인터랙티브 시각화</button>
-      </div>
-      <div class="explore-content active" id="explore-kw">
+  <!-- ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 독립 토글 두 개 ── -->
+  <div class="explore-toggles">
+    <div class="explore-toggle-item" id="toggle-kw">
+      <button class="explore-toggle-btn" onclick="toggleExploreItem('kw')">
+        <span class="explore-toggle-chevron">›</span> 키워드 그래프
+      </button>
+      <div class="explore-toggle-body" id="body-kw">
         <div class="keyword-graph-wrap" id="kwGraphWrap"></div>
       </div>
-      <div class="explore-content" id="explore-viz">
+    </div>
+    <div class="explore-toggle-item" id="toggle-viz">
+      <button class="explore-toggle-btn" onclick="toggleExploreItem('viz')">
+        <span class="explore-toggle-chevron">›</span> 인터랙티브 시각화
+      </button>
+      <div class="explore-toggle-body" id="body-viz">
         <div id="viz-container"></div>
       </div>
     </div>
@@ -519,16 +513,10 @@ function buildKeywordGraph() {
 }
 buildKeywordGraph();
 
-function toggleExplore() {
-  document.getElementById('explorePanel').classList.toggle('open');
-}
-
-function setExploreTab(tab) {
-  document.getElementById('subtab-kw').classList.toggle('active', tab === 'kw');
-  document.getElementById('subtab-viz').classList.toggle('active', tab === 'viz');
-  document.getElementById('explore-kw').classList.toggle('active', tab === 'kw');
-  document.getElementById('explore-viz').classList.toggle('active', tab === 'viz');
-  if (tab === 'viz' && !vizLoaded) {
+function toggleExploreItem(which) {
+  const item = document.getElementById('toggle-' + which);
+  item.classList.toggle('open');
+  if (which === 'viz' && item.classList.contains('open') && !vizLoaded) {
     vizLoaded = true;
     const s = document.createElement('script');
     s.src = 'visualizations/context-switch.js';
@@ -558,9 +546,8 @@ function hookCtxTabScroll() {
       if (tabsEl) {
         const rect = tabsEl.getBoundingClientRect();
         const stickyHeight = document.querySelector('.sticky-header-group').offsetHeight;
-        if (rect.top < stickyHeight) {
-          window.scrollTo({ top: window.scrollY + rect.top - stickyHeight - 12, behavior: 'smooth' });
-        }
+        // 탭을 누를 때마다 탭 바가 고정 헤더 바로 아래(여유 12px)에 오도록 항상 보정
+        window.scrollTo({ top: window.scrollY + rect.top - stickyHeight - 12, behavior: 'smooth' });
       }
     }, 30);
   };
