@@ -8,12 +8,52 @@
 <link rel="stylesheet" href="css/components.css">
 <style>
   :root {
-    --td-bg-page:    #FAF7F2;
+    /* 모든 파스텔 색상에 어울리는 따뜻하고 중립적인 배경 */
+    --td-bg-page:    #FDFBF8;
     --td-bg-white:   #FFFFFF;
-    --td-coral-bg:   #FFD5B8;
-    --td-coral-text: #803300;
-    --td-coral-deep: #C8682A;
+    
+    /* 과목별 색상 팔레트 (모든 색상이 조화롭게 들어갈 수 있도록 설정) */
+    
+    /* 1. 베이비 핑크 그룹 */
+    --td-pink-bg:     #FFC9E3;
+    --td-pink-text:   #7A1F4D;
+    --td-pink-sub:    #993D6B;
+    --td-pink-light:  rgba(255, 201, 227, 0.08);
+    
+    /* 2. 피치 코랄 그룹 */
+    --td-coral-bg:    #FFD5B8;
+    --td-coral-text:  #803300;
+    --td-coral-deep:  #C8682A;
+    --td-coral-light: rgba(255, 213, 184, 0.08);
+    
+    /* 3. 베이비 옐로우 그룹 */
+    --td-yellow-bg:   #FFF3B8;
+    --td-yellow-text: #5C4D00;
+    --td-yellow-sub:  #806A00;
+    --td-yellow-light: rgba(255, 243, 184, 0.06);
+    
+    /* 4. 민트 그룹 */
+    --td-mint-bg:     #B8FFE0;
+    --td-mint-text:   #0A4D33;
+    --td-mint-sub:    #1F7A52;
+    --td-mint-light:  rgba(184, 255, 224, 0.08);
+    
+    /* 5. 베이비 블루 그룹 */
+    --td-blue-bg:     #AEE2FF;
+    --td-blue-text:   #0A3C5C;
+    --td-blue-sub:    #1E5A80;
+    --td-blue-light:  rgba(174, 226, 255, 0.08);
+    
+    /* 6. 라일락 그룹 */
+    --td-lilac-bg:    #E1C5FF;
+    --td-lilac-text:  #3D1F6B;
+    --td-lilac-sub:   #5C3D8C;
+    --td-lilac-light: rgba(225, 197, 255, 0.06);
+    
+    /* 구분선 색상 (모든 과목에 어울리는 중립적 톤) */
+    --td-divider-light: rgba(0, 0, 0, 0.06);
   }
+  
   * { box-sizing: border-box; }
   body { background: var(--td-bg-page) !important; }
 
@@ -40,20 +80,37 @@
   .ed-lede { font-size: 17px; color: var(--text-secondary); line-height: 1.6; max-width: 580px; margin-bottom: 32px; }
   .ed-lede strong { color: var(--text-primary); font-weight: 700; }
 
-  /* ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 가벼운 텍스트 토글 ── */
-  .explore-toggles { margin-bottom: 48px; }
-  .explore-toggle-item { border-bottom: 1px solid var(--border-light); }
-  .explore-toggle-item:first-child { border-top: 1px solid var(--border-light); }
+  /* ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 가로 배치 ── */
+  .explore-toggles {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+  .explore-toggle-item {
+    flex: 1;
+    min-width: 280px;
+    border: 1px solid var(--td-divider-light);
+    border-radius: 12px;
+    background: var(--td-bg-white);
+    overflow: hidden;
+    transition: all .2s;
+  }
+  .explore-toggle-item:hover {
+    border-color: var(--td-coral-deep);
+    box-shadow: 0 2px 8px rgba(200, 104, 42, 0.08);
+  }
+  .explore-toggle-item:first-child { border-top: none; }
   .explore-toggle-btn {
     display: flex; align-items: center; gap: 8px;
     width: 100%; text-align: left; cursor: pointer;
-    background: none; border: none; padding: 16px 0;
+    background: none; border: none; padding: 16px;
     font-size: 14.5px; font-weight: 700; color: var(--text-primary);
     font-family: var(--font-body, var(--font-main));
   }
   .explore-toggle-chevron { font-size: 13px; color: var(--td-coral-deep); transition: transform .2s; }
   .explore-toggle-item.open .explore-toggle-chevron { transform: rotate(90deg); }
-  .explore-toggle-body { display: none; padding: 0 0 24px; }
+  .explore-toggle-body { display: none; padding: 0 16px 16px; }
   .explore-toggle-item.open .explore-toggle-body { display: block; }
   .keyword-graph-wrap svg { width: 100%; height: auto; display: block; }
   .kw-node-circle { transition: r .15s; cursor: pointer; }
@@ -98,27 +155,37 @@
     font-size: 13px; font-weight: 700; letter-spacing: .04em;
     color: var(--text-tertiary); margin: 0 0 26px;
     display: flex; align-items: baseline; gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--td-coral-light);
   }
   .ed-h2 .num { font-size: 13px; color: var(--td-coral-deep); font-weight: 800; }
-  .ed-section { margin-bottom: 60px; padding-top: 36px; border-top: 1px solid var(--border-mid); }
+  .ed-section {
+    margin-bottom: 60px;
+    padding-top: 36px;
+    padding-bottom: 36px;
+    background: linear-gradient(135deg, var(--td-pink-light) 0%, var(--td-coral-light) 25%, var(--td-yellow-light) 50%, var(--td-mint-light) 75%, var(--td-blue-light) 100%);
+    border-top: 1px solid var(--td-divider-light);
+    border-bottom: 1px solid var(--td-divider-light);
+    border-radius: 0;
+  }
   .ed-section:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
 
   /* ── 발생 조건: 박스 제거, 큰 숫자 + 텍스트 흐름 ── */
-  .ed-trigger { display: flex; gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--border-light); }
+  .ed-trigger { display: flex; gap: 24px; padding: 20px 0; border-bottom: 1px solid var(--td-divider-light); }
   .ed-trigger:first-child { padding-top: 0; }
   .ed-trigger:last-child { border-bottom: none; padding-bottom: 0; }
-  .ed-trigger-n { font-size: 28px; font-weight: 800; color: var(--border-mid); min-width: 44px; line-height: 1.1; }
+  .ed-trigger-n { font-size: 28px; font-weight: 800; color: rgba(200, 104, 42, 0.2); min-width: 44px; line-height: 1.1; }
   .ed-trigger-name { font-size: 16.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
   .ed-trigger-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; max-width: 500px; }
 
   /* ── 절차: 타임라인 선이 끊기지 않게, 강조는 점 색상으로만 ── */
   .ed-flow { position: relative; padding-left: 32px; }
-  .ed-flow::before { content:''; position:absolute; left:11px; top:8px; bottom:8px; width:2px; background: var(--border-mid); }
+  .ed-flow::before { content:''; position:absolute; left:11px; top:8px; bottom:8px; width:2px; background: var(--td-divider-light); }
   .ed-flowstep { position: relative; padding-bottom: 34px; }
   .ed-flowstep:last-child { padding-bottom: 0; }
   .ed-flowstep::before {
     content:''; position:absolute; left:-26px; top:2px; width:12px; height:12px;
-    border-radius:50%; background: var(--td-bg-page); border:2.5px solid var(--border-mid); z-index: 1;
+    border-radius:50%; background: var(--td-bg-page); border:2.5px solid rgba(200, 104, 42, 0.3); z-index: 1;
   }
   .ed-flowstep.accent::before { border-color: var(--td-coral-deep); background: var(--td-coral-deep); }
   .ed-flowstep-title { font-size: 17px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
@@ -127,7 +194,7 @@
 
   /* ── 상태 전이: 박스 제거, Editorial 표 (가로선만) ── */
   .ed-statetable { width: 100%; font-size: 14px; border-collapse: collapse; }
-  .ed-statetable tr { border-bottom: 1px solid var(--border-light); }
+  .ed-statetable tr { border-bottom: 1px solid var(--td-divider-light); }
   .ed-statetable tr:first-child td { padding-top: 0; }
   .ed-statetable tr:last-child { border-bottom: none; }
   .ed-statetable td { padding: 15px 10px; vertical-align: top; }
@@ -137,7 +204,7 @@
   .ed-statetable td:last-child { color: var(--text-tertiary); font-size: 13px; padding-right: 0; }
 
   /* ── PCB: 박스 제거, Editorial 행 ── */
-  .ed-pcb-row { display: flex; gap: 28px; padding: 20px 0; border-bottom: 1px solid var(--border-light); }
+  .ed-pcb-row { display: flex; gap: 28px; padding: 20px 0; border-bottom: 1px solid var(--td-divider-light); }
   .ed-pcb-row:first-child { padding-top: 0; }
   .ed-pcb-row:last-child { border-bottom: none; padding-bottom: 0; }
   .ed-pcb-label-col { min-width: 170px; font-size: 14.5px; font-weight: 700; color: var(--text-primary); }
@@ -145,7 +212,7 @@
   .ed-pcb-items { flex: 1; font-size: 13.5px; color: var(--text-secondary); line-height: 1.8; }
 
   /* ── 오버헤드: Editorial 리스트 ── */
-  .ed-over-item { padding: 18px 0; border-bottom: 1px solid var(--border-light); }
+  .ed-over-item { padding: 18px 0; border-bottom: 1px solid var(--td-divider-light); }
   .ed-over-item:first-child { padding-top: 0; }
   .ed-over-item:last-child { border-bottom: none; padding-bottom: 0; }
   .ed-over-label { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
@@ -155,7 +222,7 @@
   /* ── 비교표: 선만 ── */
   .ed-vstable { width: 100%; font-size: 14px; border-collapse: collapse; }
   .ed-vstable th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--text-tertiary); padding: 0 10px 10px 0; border-bottom: 2px solid var(--text-primary); }
-  .ed-vstable td { padding: 12px 10px 12px 0; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); }
+  .ed-vstable td { padding: 12px 10px 12px 0; border-bottom: 1px solid var(--td-divider-light); color: var(--text-secondary); }
   .ed-vstable td:first-child { font-weight: 700; color: var(--text-primary); }
   .ed-vstable td:last-child { color: var(--td-coral-deep); font-weight: 600; }
 
@@ -164,9 +231,9 @@
   .ed-essay-group:last-child { margin-bottom: 0; }
   .ed-essay-label { font-size: 13px; font-weight: 700; color: var(--td-coral-deep); margin-bottom: 10px; }
   .ed-essay-item { font-size: 14px; color: var(--text-secondary); line-height: 1.7; padding-left: 16px; position: relative; margin-bottom: 5px; }
-  .ed-essay-item::before { content:'—'; position:absolute; left:0; color: var(--border-mid); }
+  .ed-essay-item::before { content:'—'; position:absolute; left:0; color: var(--td-divider-light); }
 
-  .ed-check { display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--border-light); font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+  .ed-check { display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--td-divider-light); font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
   .ed-check:first-child { padding-top: 0; }
   .ed-check:last-child { border-bottom: none; padding-bottom: 0; }
   .ed-check-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; flex-shrink: 0; width: 76px; padding-top: 2px; }
@@ -178,7 +245,7 @@
   /* ── 기출 포인트: 박스 제거, 빈출도를 점 표시로 ── */
   .ed-exam-meta { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 36px; }
   .ed-exam-meta .years { font-size: 20px; font-weight: 800; color: var(--text-primary); letter-spacing: -.01em; display: block; margin-bottom: 8px; }
-  .ed-exam-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border-light); align-items: baseline; }
+  .ed-exam-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--td-divider-light); align-items: baseline; }
   .ed-exam-item:first-child { padding-top: 0; }
   .ed-exam-item:last-child { border-bottom: none; padding-bottom: 0; }
   .ed-exam-year { font-size: 13px; font-weight: 800; color: var(--td-coral-deep); width: 60px; flex-shrink: 0; text-align: center; }
@@ -187,7 +254,7 @@
   .ed-exam-text { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
 
   /* ── 리마인드 ── */
-  .ed-quiz-item { padding: 26px 0; border-bottom: 1px solid var(--border-light); }
+  .ed-quiz-item { padding: 26px 0; border-bottom: 1px solid var(--td-divider-light); }
   .ed-quiz-item:first-child { padding-top: 0; }
   .ed-quiz-item:last-child { border-bottom: none; padding-bottom: 0; }
   .ed-quiz-n { font-size: 11.5px; font-weight: 700; color: var(--text-tertiary); margin-bottom: 8px; letter-spacing: .04em; text-transform: uppercase; }
@@ -197,7 +264,7 @@
   /* OX: 박스 없이 큰 타이포. 화면 폭을 활용해 크게, 클릭 안내는 hover 색 변화로만 */
   .ed-quiz-ox { display: flex; gap: 36px; justify-content: center; }
   .ed-quiz-ox-btn {
-    font-size: 34px; font-weight: 800; color: var(--border-mid);
+    font-size: 34px; font-weight: 800; color: rgba(200, 104, 42, 0.2);
     cursor: pointer; background: none; border: none; padding: 4px 0;
     font-family: var(--font-body); transition: color .15s; line-height: 1;
   }
@@ -220,7 +287,7 @@
   .ed-quiz-fill-btn {
     font-size: 14px; font-weight: 600; color: var(--td-coral-deep); cursor: pointer;
     background: none; border: none; padding: 0; font-family: var(--font-body);
-    text-decoration: underline; text-decoration-color: var(--td-coral-bg); text-underline-offset: 3px;
+    text-decoration: underline; text-decoration-color: rgba(255, 213, 184, 0.5); text-underline-offset: 3px;
   }
   .ed-quiz-fill-btn:hover { color: var(--text-primary); }
   .ed-quiz-fill-answer { font-size: 15px; }
@@ -230,13 +297,15 @@
   .ed-quiz-explain { font-size: 13.5px; color: var(--text-tertiary); line-height: 1.6; margin-top: 12px; max-width: 540px; }
 
   .quiz-footer { display: flex; justify-content: center; margin-top: 36px; padding-bottom: 8px; }
-  .ed-reset { font-size: 13px; font-weight: 600; color: var(--border-mid); cursor: pointer; background: none; border: none; padding: 8px 18px; font-family: var(--font-body); transition: color .15s; }
+  .ed-reset { font-size: 13px; font-weight: 600; color: rgba(200, 104, 42, 0.3); cursor: pointer; background: none; border: none; padding: 8px 18px; font-family: var(--font-body); transition: color .15s; }
   .ed-reset:hover { color: var(--text-tertiary); }
 
   @media (max-width: 720px) {
     .ed-title { font-size: 34px; }
     .ed-page { padding: 28px 16px 80px; }
     .ed-pcb-row { flex-direction: column; gap: 6px; }
+    .explore-toggles { flex-direction: column; }
+    .explore-toggle-item { min-width: unset; }
   }
 </style>
 </head>
@@ -259,9 +328,9 @@
 
   <div class="ed-eyebrow">운영체제 · 프로세스 관리</div>
   <div class="ed-title">문맥교환</div>
-  <div class="ed-lede"><strong>문맥교환(Context Switch)</strong>은 CPU가 실행 중인 프로세스를 교체할 때, 현재 프로세스의 상태를 저장하고 새 프로세스의 상태를 복원하는 커널의 작업 전체를 말한다. 이 구간 동안 CPU는 유용한 작업을 하지 못하므로 <strong>순수 오버헤드</strong>로 간주된다.</div>
+  <div class="ed-lede"><strong>문맥교환(Context Switch)</strong>은 CPU가 실행 중인 프로세스를 교체할 때, 현재 프로세스의 상태를 저장하고 새 프로세스의 상태를 복원하는 작업입니다. 이는 현대 운영체제의 멀티태스킹을 실현하는 핵심 메커니즘입니다.</div>
 
-  <!-- ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 독립 토글 두 개 ── -->
+  <!-- ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 가로 배치 ── -->
   <div class="explore-toggles">
     <div class="explore-toggle-item" id="toggle-kw">
       <button class="explore-toggle-btn" onclick="toggleExploreItem('kw')">
@@ -286,21 +355,21 @@
 
     <div class="ed-section">
       <div class="ed-h2"><span class="num">01</span> 발생 조건</div>
-      <div class="ed-trigger"><div class="ed-trigger-n">01</div><div><div class="ed-trigger-name">타이머 인터럽트</div><div class="ed-trigger-desc">선점형 스케줄러가 타임 슬라이스 만료를 감지하면 강제로 CPU를 회수한다.</div></div></div>
-      <div class="ed-trigger"><div class="ed-trigger-n">02</div><div><div class="ed-trigger-name">I/O 요청 또는 이벤트 대기</div><div class="ed-trigger-desc">실행 중인 프로세스가 I/O 작업을 요청하면 Waiting 상태로 전환되고, 다른 프로세스가 CPU를 점유한다.</div></div></div>
-      <div class="ed-trigger"><div class="ed-trigger-n">03</div><div><div class="ed-trigger-name">시스템 콜</div><div class="ed-trigger-desc">프로세스가 커널에 서비스를 요청할 때 일부 시스템 콜은 문맥교환을 유발한다.</div></div></div>
-      <div class="ed-trigger"><div class="ed-trigger-n">04</div><div><div class="ed-trigger-name">고우선순위 프로세스 도착</div><div class="ed-trigger-desc">선점형 스케줄러에서 Ready 큐에 더 높은 우선순위 프로세스가 들어오면 현재 프로세스를 선점한다.</div></div></div>
+      <div class="ed-trigger"><div class="ed-trigger-n">01</div><div><div class="ed-trigger-name">타이머 인터럽트</div><div class="ed-trigger-desc">선점형 스케줄러가 타임 슬라이스(Time Slice)를 기준으로 실행 중인 프로세스를 중단하고 다른 프로세스로 교체</div></div></div>
+      <div class="ed-trigger"><div class="ed-trigger-n">02</div><div><div class="ed-trigger-name">I/O 요청 또는 이벤트 대기</div><div class="ed-trigger-desc">실행 중인 프로세스가 키보드·마우스·디스크 I/O 등 외부 리소스를 요청하거나, 이벤트 완료를 기다릴 때</div></div></div>
+      <div class="ed-trigger"><div class="ed-trigger-n">03</div><div><div class="ed-trigger-name">시스템 콜</div><div class="ed-trigger-desc">프로세스가 커널에 서비스를 요청할 때 (예: 파일 오픈, 메모리 할당, 프로세스 생성)</div></div></div>
+      <div class="ed-trigger"><div class="ed-trigger-n">04</div><div><div class="ed-trigger-name">고우선순위 프로세스 도착</div><div class="ed-trigger-desc">선점형 스케줄러에서 더 높은 우선순위의 프로세스가 도착했을 때 현재 프로세스를 즉시 중단</div></div></div>
     </div>
 
     <div class="ed-section">
       <div class="ed-h2"><span class="num">02</span> 문맥교환 절차 — 6단계</div>
       <div class="ed-flow">
-        <div class="ed-flowstep"><div class="ed-flowstep-title">인터럽트 / 시스템 콜 발생</div><div class="ed-flowstep-desc">문맥교환의 트리거. P1 실행이 일시 중단된다.</div></div>
-        <div class="ed-flowstep accent"><div class="ed-flowstep-title">P1 문맥 저장 → PCB₁</div><div class="ed-flowstep-desc">PC·레지스터·SP·플래그 등 CPU 상태 전체를 P1의 PCB에 기록한다.</div></div>
-        <div class="ed-flowstep"><div class="ed-flowstep-title">P1 상태 전환 → Ready / Waiting</div><div class="ed-flowstep-desc">원인에 따라 Ready 큐 또는 Waiting 큐로 이동한다.</div></div>
-        <div class="ed-flowstep"><div class="ed-flowstep-title">스케줄러가 P2 선택</div><div class="ed-flowstep-desc">CPU 스케줄러가 Ready 큐에서 다음 실행할 프로세스 P2를 결정한다.</div></div>
-        <div class="ed-flowstep accent"><div class="ed-flowstep-title">P2 문맥 복원 ← PCB₂</div><div class="ed-flowstep-desc">P2의 PCB에 저장된 상태를 레지스터에 적재한다.</div></div>
-        <div class="ed-flowstep"><div class="ed-flowstep-title">P2 실행 재개</div><div class="ed-flowstep-desc">디스패처가 커널 모드 → 사용자 모드로 전환하고 P2를 실행한다.</div></div>
+        <div class="ed-flowstep"><div class="ed-flowstep-title">인터럽트 / 시스템 콜 발생</div><div class="ed-flowstep-desc">문맥교환의 트리거. P1 실행이 일시 중단된다. 제어권이 CPU에서 커널(운영체제)로 넘어가고, 모드도 사용자 모드 → 커널 모드로 전환된다.</div></div>
+        <div class="ed-flowstep accent"><div class="ed-flowstep-title">P1 문맥 저장 → PCB₁</div><div class="ed-flowstep-desc">PC·레지스터·SP·플래그 등 CPU 상태 전체를 P1의 PCB(Process Control Block)에 저장한다. 이 정보 없이는 나중에 P1을 재개할 수 없다.</div></div>
+        <div class="ed-flowstep"><div class="ed-flowstep-title">P1 상태 전환 → Ready / Waiting</div><div class="ed-flowstep-desc">원인에 따라 Ready 큐 또는 Waiting 큐로 이동한다. 타이머 인터럽트면 Ready, I/O 대기면 Waiting으로.</div></div>
+        <div class="ed-flowstep"><div class="ed-flowstep-title">스케줄러가 P2 선택</div><div class="ed-flowstep-desc">CPU 스케줄러가 Ready 큐에서 다음 실행할 프로세스 P2를 선택한다 (FCFS, RR, Priority 등의 알고리즘 적용).</div></div>
+        <div class="ed-flowstep accent"><div class="ed-flowstep-title">P2 문맥 복원 ← PCB₂</div><div class="ed-flowstep-desc">P2의 PCB에 저장된 상태를 레지스터에 적재한다. 이전에 중단된 그 지점부터 정확히 재개할 수 있다.</div></div>
+        <div class="ed-flowstep"><div class="ed-flowstep-title">P2 실행 재개</div><div class="ed-flowstep-desc">디스패처가 커널 모드 → 사용자 모드로 전환하고 P2를 실행한다. P2의 PC 주소로 점프하여 제어 흐름이 연속된다.</div></div>
       </div>
     </div>
 
@@ -317,18 +386,18 @@
 
     <div class="ed-section">
       <div class="ed-h2"><span class="num">04</span> PCB 구성 요소</div>
-      <div class="ed-pcb-row accent"><div class="ed-pcb-label-col">CPU 상태 정보 — 문맥 핵심</div><div class="ed-pcb-items">프로그램 카운터(PC) · 범용 레지스터 전체 · 스택 포인터(SP) · 상태 레지스터(플래그) · 기본·한계 레지스터</div></div>
+      <div class="ed-pcb-row accent"><div class="ed-pcb-label-col">CPU 상태 정보 — 문맥 핵심</div><div class="ed-pcb-items">프로그램 카운터(PC) · 범용 레지스터 전체 · 스택 포인터(SP) · 프로그램 상태 워드(PSW/플래그)</div></div>
       <div class="ed-pcb-row"><div class="ed-pcb-label-col">프로세스 식별 정보</div><div class="ed-pcb-items">PID(고유 번호) · 부모 PID(PPID) · 사용자 ID(UID)</div></div>
       <div class="ed-pcb-row"><div class="ed-pcb-label-col">프로세스 제어 정보</div><div class="ed-pcb-items">프로세스 상태 · 스케줄링 우선순위 · 대기 이벤트 정보</div></div>
-      <div class="ed-pcb-row"><div class="ed-pcb-label-col">자원 관리 정보</div><div class="ed-pcb-items">메모리 맵(페이지 테이블 포인터) · 열린 파일 목록 · I/O 장치 목록 · CPU 사용 시간</div></div>
+      <div class="ed-pcb-row"><div class="ed-pcb-label-col">자원 관리 정보</div><div class="ed-pcb-items">메모리 맵(페이지 테이블 포인터) · 열린 파일 목록 · I/O 장치 정보</div></div>
     </div>
 
     <div class="ed-section">
       <div class="ed-h2"><span class="num">05</span> 오버헤드 & 성능 고려사항</div>
-      <div class="ed-over-item"><div class="ed-over-label accent">디스패처 지연(Dispatcher Latency)</div><div class="ed-over-desc">문맥교환에 소요되는 순수 시간. 이 시간 동안 CPU는 사용자 프로세스를 실행하지 못한다. 운영체제 설계의 핵심 최적화 대상.</div></div>
-      <div class="ed-over-item"><div class="ed-over-label">캐시 오염(Cache Pollution)</div><div class="ed-over-desc">프로세스 전환 시 이전 프로세스가 캐시에 올려둔 데이터가 무효화된다. 새 프로세스는 콜드 캐시에서 시작하므로 초기 실행 속도가 느려진다.</div></div>
-      <div class="ed-over-item"><div class="ed-over-label">TLB 플러시(TLB Flush)</div><div class="ed-over-desc">TLB는 페이지 테이블 캐시. 주소 공간이 바뀌면 TLB를 플러시해야 한다. ASID 태깅으로 플러시를 줄일 수 있다.</div></div>
-      <div class="ed-over-item"><div class="ed-over-label">성능 개선 — 스레드 전환</div><div class="ed-over-desc">스레드 전환은 주소 공간이 공유되므로 TLB 플러시 없이 레지스터만 교환 → 문맥교환보다 빠름.</div></div>
+      <div class="ed-over-item"><div class="ed-over-label accent">디스패처 지연(Dispatcher Latency)</div><div class="ed-over-desc">문맥교환에 소요되는 순수 시간. 이 시간 동안 CPU는 유용한 작업을 하지 못한다. 마이크로초 단위지만 초당 수천 번 발생하면 무시할 수 없다.</div></div>
+      <div class="ed-over-item"><div class="ed-over-label">캐시 오염(Cache Pollution)</div><div class="ed-over-desc">프로세스 전환 시 이전 프로세스가 캐시에 올려둔 데이터가 새 프로세스에 유용하지 않으면 캐시 미스 증가 → 메모리 접근 지연</div></div>
+      <div class="ed-over-item"><div class="ed-over-label">TLB 플러시(TLB Flush)</div><div class="ed-over-desc">TLB는 페이지 테이블 캐시. 주소 공간이 바뀌면 TLB를 플러시해야 하므로 가상 주소 → 물리 주소 변환 시 TLB 미스 증가</div></div>
+      <div class="ed-over-item"><div class="ed-over-label">성능 개선 — 스레드 전환</div><div class="ed-over-desc">스레드 전환은 주소 공간이 공유되므로 TLB 플러시 없음. 저장할 정보도 적음(PC·레지스터·스택만). 따라서 프로세스 전환보다 빠름</div></div>
     </div>
 
     <div class="ed-section">
@@ -372,24 +441,24 @@
 
     <div class="ed-section">
       <div class="ed-h2"><span class="num">02</span> 체크 포인트</div>
-      <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><div class="ed-check-body"><strong>문맥교환 ≠ CPU 스케줄링.</strong> 스케줄링은 "누구를 실행할지 결정"하는 정책, 문맥교환은 그 결정을 "실제로 구현"하는 메커니즘이다.</div></div>
-      <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><div class="ed-check-body"><strong>문맥교환 ≠ 인터럽트 처리.</strong> 인터럽트 발생 시 커널 스택 저장은 인터럽트 처리이고, 다른 프로세스로의 전환이 문맥교환이다.</div></div>
-      <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><div class="ed-check-body"><strong>PCB 저장 핵심 3요소:</strong> 프로그램 카운터(PC) + 범용 레지스터 + 스택 포인터(SP). 이 세 가지가 없으면 프로세스 재개 불가.</div></div>
-      <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><div class="ed-check-body"><strong>스레드 문맥교환 &lt; 프로세스 문맥교환:</strong> 주소 공간을 공유하므로 TLB 플러시 없이 레지스터만 교환 → 경량.</div></div>
+      <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><div class="ed-check-body"><strong>문맥교환 ≠ CPU 스케줄링.</strong> 스케줄링은 "누구를 실행할지" 결정하는 정책. 문맥교환은 그 결정을 실행하는 메커니즘</div></div>
+      <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><div class="ed-check-body"><strong>문맥교환 ≠ 인터럽트 처리.</strong> 인터럽트 발생 시 커널이 제어권을 가지지만, 같은 프로세스로 돌아가면 문맥교환이 아님</div></div>
+      <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><div class="ed-check-body"><strong>PCB 저장 핵심 3요소:</strong> 프로그램 카운터(PC) + 범용 레지스터 + 프로그램 상태 워드(플래그)</div></div>
+      <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><div class="ed-check-body"><strong>스레드 문맥교환 < 프로세스 문맥교환:</strong> 주소 공간 공유 → TLB 플러시 불필요 → 빠르고 경량</div></div>
     </div>
 
     <div class="ed-section">
       <div class="ed-h2"><span class="num">03</span> 기출 포인트</div>
-      <div class="ed-exam-meta"><span class="years">2016 · 2018 · 2019 · 2020 · 2022</span>PCB 구성 요소, 문맥교환 정의 및 절차, 디스패처 개념, 프로세스 상태 전이가 집중 출제. 스레드와의 비교 문제 비중 증가 추세.</div>
+      <div class="ed-exam-meta"><span class="years">2016 · 2018 · 2019 · 2020 · 2022</span>PCB 구성 요소, 문맥교환 정의 및 절차, 디스패처 개념, 프로세스 상태 전이, 스레드 vs 프로세스 비교</div>
 
-      <div class="ed-exam-item"><div class="ed-exam-year">2020중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>문맥교환 시 저장되는 프로그램 카운터(PC), 레지스터 등 CPU 상태 정보</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">2018중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>PCB 구성 요소(프로세스 상태, PC, 레지스터, 메모리 정보 등) 전반</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">2016중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>문맥교환의 정의와 발생 조건 (인터럽트·시스템 콜·타이머 만료)</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">2022중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>디스패처(Dispatcher)의 역할과 디스패처 지연(Dispatcher Latency) 개념</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">2020중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>문맥교환 시 저장되는 프로그램 카운터(PC), 레지스터, SP 등의 정보</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">2018중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>PCB 구성 요소(프로세스 상태, PC, 레지스터, 메모리 정보)</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">2016중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>문맥교환의 정의와 발생 조건 (인터럽트·시스템 콜·I/O)</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">2022중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>디스패처(Dispatcher)의 역할과 디스패처 지연(Dispatcher Latency)</div></div>
       <div class="ed-exam-item"><div class="ed-exam-year">2019중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>프로세스 상태 전이 5단계와 전이 조건</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>스레드 문맥교환과 프로세스 문맥교환의 차이 (TLB 플러시 여부, 공유 자원 범위)</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>CPU 스케줄링 알고리즘과 문맥교환 빈도의 상관관계</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>선점형 vs 비선점형 스케줄링에서 문맥교환 발생 방식</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>스레드 문맥교환과 프로세스 문맥교환 비교</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>CPU 스케줄링 알고리즘과 문맥교환 빈도 관계</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>선점형 vs 비선점형 스케줄링에서 문맥교환 발생</div></div>
       <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>TLB 플러시와 캐시 오염이 문맥교환 오버헤드에 미치는 영향</div></div>
     </div>
 
@@ -563,17 +632,17 @@ window.addEventListener('scroll', () => {
 
 /* ── 리마인드 퀴즈 ── */
 const QUIZ_DATA = [
-  { type:'ox', q:'문맥교환(Context Switch)이 발생하는 동안 CPU는 사용자 프로세스의 유용한 작업을 수행할 수 없다.', answer:'O', explain:'문맥교환 시간은 레지스터 저장·복원에 사용되므로 순수 오버헤드(Dispatcher Latency)다.' },
-  { type:'ox', q:'문맥교환 시 저장되는 정보에는 프로그램 카운터(PC), 범용 레지스터, 스택 포인터(SP)가 포함된다.', answer:'O', explain:'이 세 가지가 문맥(Context)의 핵심 구성 요소이며 PCB에 저장된다.' },
-  { type:'ox', q:'프로세스 문맥교환과 스레드 문맥교환은 TLB 플러시 필요 여부가 동일하다.', answer:'X', explain:'프로세스 문맥교환은 주소 공간이 바뀌므로 TLB 플러시가 필요하지만, 같은 프로세스 내 스레드 전환은 주소 공간이 공유되어 TLB 플러시가 불필요하다.' },
-  { type:'ox', q:'CPU 스케줄링과 문맥교환은 동일한 개념이다.', answer:'X', explain:'스케줄링은 "어떤 프로세스를 실행할지 결정"하는 정책이고, 문맥교환은 그 결정을 "실제로 구현"하는 메커니즘이다.' },
-  { type:'ox', q:'PCB(Process Control Block)에는 열린 파일 목록(파일 디스크립터)이 포함된다.', answer:'O', explain:'PCB는 CPU 상태 정보 외에도 열린 파일 목록, I/O 장치 정보, 메모리 맵 등 프로세스 관리에 필요한 모든 정보를 담는다.' },
-  { type:'fill', q:'문맥교환 시 현재 실행 중인 프로세스의 CPU 상태 정보를 저장하는 운영체제의 자료구조를 (   )(이)라 한다.', answer:'PCB (Process Control Block)', explain:'PCB는 PID, PC, 레지스터, SP, 프로세스 상태, 메모리 맵 등을 저장하며 문맥교환의 저장·복원 대상이다.' },
-  { type:'fill', q:'스케줄러가 선택한 프로세스에게 실제로 CPU를 넘기고 레지스터 적재·모드 전환을 수행하는 운영체제 컴포넌트를 (   )(이)라 한다.', answer:'디스패처 (Dispatcher)', explain:'디스패처는 문맥교환을 실제로 수행하며, 소요 시간을 디스패처 지연(Dispatcher Latency)이라 한다.' },
-  { type:'fill', q:'프로세스가 CPU 실행을 대기하는 상태를 (   ) 상태, I/O 완료를 기다리는 상태를 (   ) 상태라 한다.', answer:'Ready / Waiting (Blocked)', explain:'Ready: CPU만 할당받으면 실행 가능한 상태. Waiting: I/O 등 특정 이벤트가 완료될 때까지 기다리는 상태.' },
-  { type:'mc', q:'문맥교환에 대한 설명으로 옳지 않은 것은?', options:['문맥교환 중 CPU는 유용한 사용자 작업을 수행하지 못한다.','문맥교환 시 프로그램 카운터(PC)와 범용 레지스터가 PCB에 저장된다.','스레드 문맥교환은 주소 공간을 교체하므로 TLB 플러시가 필요하다.','인터럽트나 시스템 콜이 문맥교환의 트리거가 될 수 있다.'], answer:2, explain:'같은 프로세스 내 스레드 전환은 주소 공간을 공유하므로 TLB 플러시가 필요하지 않다.' },
-  { type:'mc', q:'다음 중 PCB에 저장되는 정보가 아닌 것은?', options:['프로그램 카운터 (PC)','스택 포인터 (SP)','프로세스가 사용 중인 알고리즘 소스 코드','열린 파일 디스크립터 목록'], answer:2, explain:'프로세스의 소스 코드는 PCB에 저장되지 않는다. PCB는 CPU 상태, 식별 정보, 메모리 맵, 열린 파일 목록 등을 저장한다.' },
-  { type:'mc', q:'스케줄러가 선택한 프로세스에게 CPU 제어권을 실제로 넘기는 역할을 하며, 레지스터 적재·사용자 모드 전환·PC 점프를 수행하는 것은?', options:['스케줄러 (Scheduler)','디스패처 (Dispatcher)','인터럽트 핸들러 (Interrupt Handler)','세마포어 (Semaphore)'], answer:1, explain:'디스패처(Dispatcher)다. 스케줄러가 "누구를 실행할지" 결정하면, 디스패처가 "실제로 CPU를 넘기는" 작업을 수행한다.' },
+  { type:'ox', q:'문맥교환(Context Switch)이 발생하는 동안 CPU는 사용자 프로세스의 유용한 작업을 수행할 수 없다.', answer:'O', explain:'문맥교환 시간은 레지스터 저장·복원·메모리 참조만 이루어지므로, 사용자 프로그램 입장에서는 순수 오버헤드다.' },
+  { type:'ox', q:'문맥교환 시 저장되는 정보에는 프로그램 카운터(PC), 범용 레지스터, 스택 포인터(SP)가 포함된다.', answer:'O', explain:'이 세 가지가 문맥교환의 핵심. PC가 없으면 어디서 재개할지 몰라 프로세스가 손상된다.' },
+  { type:'ox', q:'프로세스 문맥교환과 스레드 문맥교환은 TLB 플러시 필요 여부가 동일하다.', answer:'X', explain:'프로세스 문맥교환은 주소 공간이 바뀌어 TLB 플러시 필요. 스레드는 주소 공간 공유해 TLB 플러시 불필요.' },
+  { type:'ox', q:'CPU 스케줄링과 문맥교환은 동일한 개념이다.', answer:'X', explain:'스케줄링은 "어떤 프로세스를 실행할지 결정"하는 정책. 문맥교환은 그 결정을 실행하는 구체적 메커니즘.' },
+  { type:'ox', q:'PCB(Process Control Block)에는 열린 파일 목록(파일 디스크립터)이 포함된다.', answer:'O', explain:'PCB는 CPU 상태 정보 외에도 열린 파일 목록, I/O 장치 정보, 메모리 맵 등을 포함한다.' },
+  { type:'fill', q:'문맥교환 시 현재 실행 중인 프로세스의 CPU 상태 정보를 저장하는 운영체제의 자료구조를 (   )(이)라 한다.', answer:'PCB (Process Control Block) / 프로세스 제어 블록', explain:'PCB는 프로세스 상태 전환의 중심. 여기에 저장되지 ���으면 프로세스 복원이 불가능하다.' },
+  { type:'fill', q:'스케줄러가 선택한 프로세스에게 실제로 CPU를 넘기고 레지스터 적재·모드 전환을 수행하는 운영체제 컴포넌트를 (   )(이)라 한다.', answer:'디스패처 (Dispatcher)', explain:'디스패처는 CPU 스케줄링 결정을 실제 실행으로 옮기는 PCB → 레지스터 복원 → PC 점프 등을 담당.' },
+  { type:'fill', q:'프로세스가 CPU 실행을 대기하는 상태를 (   ) 상태, I/O 완료를 기다리는 상태를 (   ) 상태라 한다.', answer:'Ready / Waiting (Blocked)', explain:'프로세스 상태 5개: New(생성) → Ready(대기) → Running(실행) → Waiting(블로킹) → Terminated(종료)' },
+  { type:'mc', q:'문맥교환에 대한 설명으로 옳지 않은 것은?', options:['문맥교환 중 CPU는 유용한 사용자 작업을 수행하지 못한다.','문맥교환 시 프로그램 카운터(PC)는 필수 저장 항목이다.','문맥교환은 TLB 플러시 없이도 항상 가능하다.','문맥교환 절차에 디스패처가 관여한다.'], answer:2, explain:'문맥교환은 프로세스일 때 TLB 플러시 필요. 이것이 프로세스 전환이 스레드 전환보다 느린 이유다.' },
+  { type:'mc', q:'다음 중 PCB에 저장되는 정보가 아닌 것은?', options:['프로그램 카운터 (PC)','스택 포인터 (SP)','프로세스가 사용 중인 알고리즘 소스 코드','프로세스 우선순위'], answer:2, explain:'PCB는 상태·CPU정보·자원정보·제어정보를 저장. 소스 코드는 별도 메모리(코드 섹션)에 있지 PCB에 저장되지 않음.' },
+  { type:'mc', q:'스케줄러가 선택한 프로세스에게 CPU 제어권을 실제로 넘기는 역할을 하며, 레지스터 적재·사용자 모드 전환·PC 점프를 수행하는 것은?', options:['CPU','디스패처','인터럽트 핸들러','커널'], answer:1, explain:'디스패처는 CPU 스케줄링 알고리즘의 결정을 실제 CPU 실행으로 변환하는 운영체제 모듈.' }
 ];
 
 let quizState = QUIZ_DATA.map(() => ({ revealed: false, selected: null }));
