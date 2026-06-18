@@ -39,17 +39,27 @@
   .ed-lede { font-size: 17px; color: var(--text-secondary); line-height: 1.6; max-width: 580px; margin-bottom: 32px; }
   .ed-lede strong { color: var(--text-primary); font-weight: 700; }
 
-  /* ── 키워드 그래프 뷰 (옵시디언 스타일: 노드 + 선) ── */
-  .keyword-panel { margin-bottom: 44px; }
-  .keyword-panel-head {
+  /* ── 탐색 패널: 키워드 그래프 + 인터랙티브 시각화 통합 ── */
+  .explore-panel { margin-bottom: 44px; border-radius: 18px; overflow: hidden; background: var(--td-bg-white); border: 1px solid var(--border-light); }
+  .explore-panel-head {
     display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer; padding: 12px 0; border-top: 1px solid var(--border-mid); border-bottom: 1px solid var(--border-mid);
+    cursor: pointer; padding: 16px 20px;
   }
-  .keyword-panel-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
-  .keyword-panel-chevron { font-size: 13px; color: var(--text-tertiary); transition: transform .2s; }
-  .keyword-panel.open .keyword-panel-chevron { transform: rotate(90deg); }
-  .keyword-graph-wrap { display: none; padding: 20px 0 4px; }
-  .keyword-panel.open .keyword-graph-wrap { display: block; }
+  .explore-panel-label { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+  .explore-panel-chevron { font-size: 14px; color: var(--text-tertiary); transition: transform .2s; }
+  .explore-panel.open .explore-panel-chevron { transform: rotate(90deg); }
+  .explore-panel-body { display: none; padding: 0 20px 20px; }
+  .explore-panel.open .explore-panel-body { display: block; }
+
+  .explore-subtabs { display: flex; gap: 4px; background: var(--bg-surface); border-radius: 12px; padding: 4px; margin-bottom: 16px; }
+  .explore-subtab {
+    flex: 1; font-size: 12.5px; font-weight: 700; padding: 9px 14px; border-radius: 9px; cursor: pointer;
+    border: none; background: none; color: var(--text-secondary);
+    font-family: var(--font-body, var(--font-main)); transition: all .15s;
+  }
+  .explore-subtab.active { background: var(--td-coral-deep); color: white; }
+  .explore-content { display: none; }
+  .explore-content.active { display: block; }
   .keyword-graph-wrap svg { width: 100%; height: auto; display: block; }
   .kw-node-circle { transition: r .15s; cursor: pointer; }
   .kw-node-circle:hover { opacity: .8; }
@@ -109,32 +119,17 @@
 
   /* ── 절차: 타임라인 선이 끊기지 않게, 강조는 점 색상으로만 ── */
   .ed-flow { position: relative; padding-left: 32px; }
-  .ed-flow::before { content:''; position:absolute; left:9px; top:8px; bottom:8px; width:2px; background: var(--border-mid); }
+  .ed-flow::before { content:''; position:absolute; left:11px; top:8px; bottom:8px; width:2px; background: var(--border-mid); }
   .ed-flowstep { position: relative; padding-bottom: 34px; }
   .ed-flowstep:last-child { padding-bottom: 0; }
   .ed-flowstep::before {
-    content:''; position:absolute; left:-32px; top:2px; width:12px; height:12px;
+    content:''; position:absolute; left:-26px; top:2px; width:12px; height:12px;
     border-radius:50%; background: var(--td-bg-page); border:2.5px solid var(--border-mid); z-index: 1;
   }
   .ed-flowstep.accent::before { border-color: var(--td-coral-deep); background: var(--td-coral-deep); }
   .ed-flowstep-title { font-size: 17px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
   .ed-flowstep.accent .ed-flowstep-title { color: var(--td-coral-deep); }
   .ed-flowstep-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; max-width: 500px; }
-
-  /* ── 인터랙티브 토글 버튼: 또렷한 강조, 코랄과 다른 톤 ── */
-  .viz-toggle-btn {
-    display: flex; align-items: center; gap: 10px;
-    background: var(--text-primary); color: var(--td-bg-white);
-    border: none; border-radius: 14px; padding: 16px 22px;
-    font-size: 14.5px; font-weight: 700; cursor: pointer;
-    font-family: var(--font-body); width: 100%; text-align: left;
-    transition: all .15s; box-shadow: 0 2px 0 0 var(--border-mid);
-  }
-  .viz-toggle-btn:hover { transform: translateY(1px); box-shadow: 0 1px 0 0 var(--border-mid); }
-  .viz-toggle-icon { font-size: 15px; transition: transform .25s; margin-left: auto; }
-  .viz-toggle-btn.open .viz-toggle-icon { transform: rotate(180deg); }
-  .viz-mount-wrap { display: none; margin-top: 16px; padding: 20px; background: var(--td-bg-white); border-radius: 16px; border: 1px solid var(--border-light); }
-  .viz-mount-wrap.open { display: block; }
 
   /* ── 상태 전이: 박스 제거, Editorial 표 (가로선만) ── */
   .ed-statetable { width: 100%; font-size: 14px; border-collapse: collapse; }
@@ -272,13 +267,24 @@
   <div class="ed-title">문맥교환</div>
   <div class="ed-lede"><strong>문맥교환(Context Switch)</strong>은 CPU가 실행 중인 프로세스를 교체할 때, 현재 프로세스의 상태를 저장하고 새 프로세스의 상태를 복원하는 커널의 작업 전체를 말한다. 이 구간 동안 CPU는 유용한 작업을 하지 못하므로 <strong>순수 오버헤드</strong>로 간주된다.</div>
 
-  <!-- ── 키워드 그래프 뷰 ── -->
-  <div class="keyword-panel" id="kwPanel">
-    <div class="keyword-panel-head" onclick="toggleKeywords()">
-      <span class="keyword-panel-label">핵심 키워드 그래프</span>
-      <span class="keyword-panel-chevron">›</span>
+  <!-- ── 탐색 패널: 키워드 그래프 / 인터랙티브 시각화 통합 ── -->
+  <div class="explore-panel" id="explorePanel">
+    <div class="explore-panel-head" onclick="toggleExplore()">
+      <span class="explore-panel-label">🔎 둘러보기 — 키워드 그래프 · 인터랙티브 시각화</span>
+      <span class="explore-panel-chevron">›</span>
     </div>
-    <div class="keyword-graph-wrap" id="kwGraphWrap"></div>
+    <div class="explore-panel-body" id="exploreBody">
+      <div class="explore-subtabs">
+        <button class="explore-subtab active" id="subtab-kw" onclick="setExploreTab('kw')">키워드 그래프</button>
+        <button class="explore-subtab" id="subtab-viz" onclick="setExploreTab('viz')">인터랙티브 시각화</button>
+      </div>
+      <div class="explore-content active" id="explore-kw">
+        <div class="keyword-graph-wrap" id="kwGraphWrap"></div>
+      </div>
+      <div class="explore-content" id="explore-viz">
+        <div id="viz-container"></div>
+      </div>
+    </div>
   </div>
 
   <!-- ══════════════════════════ Concept ══════════════════════════ -->
@@ -301,16 +307,6 @@
         <div class="ed-flowstep"><div class="ed-flowstep-title">스케줄러가 P2 선택</div><div class="ed-flowstep-desc">CPU 스케줄러가 Ready 큐에서 다음 실행할 프로세스 P2를 결정한다.</div></div>
         <div class="ed-flowstep accent"><div class="ed-flowstep-title">P2 문맥 복원 ← PCB₂</div><div class="ed-flowstep-desc">P2의 PCB에 저장된 상태를 레지스터에 적재한다.</div></div>
         <div class="ed-flowstep"><div class="ed-flowstep-title">P2 실행 재개</div><div class="ed-flowstep-desc">디스패처가 커널 모드 → 사용자 모드로 전환하고 P2를 실행한다.</div></div>
-      </div>
-    </div>
-
-    <div class="ed-section">
-      <button class="viz-toggle-btn" id="vizBtn" onclick="toggleViz()">
-        <span>🎞️ 인터랙티브로 살펴보기</span>
-        <span class="viz-toggle-icon">⌄</span>
-      </button>
-      <div class="viz-mount-wrap" id="vizWrap">
-        <div id="viz-container"></div>
       </div>
     </div>
 
@@ -523,8 +519,22 @@ function buildKeywordGraph() {
 }
 buildKeywordGraph();
 
-function toggleKeywords() {
-  document.getElementById('kwPanel').classList.toggle('open');
+function toggleExplore() {
+  document.getElementById('explorePanel').classList.toggle('open');
+}
+
+function setExploreTab(tab) {
+  document.getElementById('subtab-kw').classList.toggle('active', tab === 'kw');
+  document.getElementById('subtab-viz').classList.toggle('active', tab === 'viz');
+  document.getElementById('explore-kw').classList.toggle('active', tab === 'kw');
+  document.getElementById('explore-viz').classList.toggle('active', tab === 'viz');
+  if (tab === 'viz' && !vizLoaded) {
+    vizLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'visualizations/context-switch.js';
+    s.onload = hookCtxTabScroll;
+    document.body.appendChild(s);
+  }
 }
 
 function setMode(mode) {
@@ -532,30 +542,10 @@ function setMode(mode) {
   document.getElementById('mode-tip').classList.toggle('active', mode === 'tip');
   document.getElementById('btn-concept').classList.toggle('active', mode === 'concept');
   document.getElementById('btn-tip').classList.toggle('active', mode === 'tip');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 let vizLoaded = false;
-function toggleViz() {
-  const btn = document.getElementById('vizBtn');
-  const wrap = document.getElementById('vizWrap');
-  const opening = !wrap.classList.contains('open');
-  wrap.classList.toggle('open');
-  btn.classList.toggle('open');
-  if (opening && !vizLoaded) {
-    vizLoaded = true;
-    const s = document.createElement('script');
-    s.src = 'visualizations/context-switch.js';
-    s.onload = hookCtxTabScroll;
-    document.body.appendChild(s);
-  }
-  if (opening) {
-    setTimeout(() => {
-      const btnRect = btn.getBoundingClientRect();
-      const targetY = window.scrollY + btnRect.bottom - 80; // 버튼 바로 아래, 고정 토글바 높이만큼 여유
-      window.scrollTo({ top: targetY, behavior: 'smooth' });
-    }, 60);
-  }
-}
 
 /* ── 인터랙티브 시각화 내부 탭 변경 시, 탭 바가 보이는 위치로 스크롤 ── */
 function hookCtxTabScroll() {
