@@ -89,6 +89,20 @@
   .kw-node-text { font-family: var(--font-body, var(--font-main)); pointer-events: none; }
   .kw-edge { stroke: rgba(0, 0, 0, 0.12); stroke-width: 1.2; }
 
+  /* ── 스크롤 프로그레스 바 ── */
+  .scroll-progress {
+    height: 3px;
+    background: rgba(200, 104, 42, 0.12);
+    overflow: hidden;
+  }
+  .scroll-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--td-primary-deep);
+    transition: width .1s linear;
+    border-radius: 0 2px 2px 0;
+  }
+
   /* ── Concept / Note 토글: 가운데 정렬 + 상단 고정 ── */
   .mode-toggle-sticky {
     background: var(--td-bg-page);
@@ -320,6 +334,7 @@
     <span class="test-back" onclick="location.href='index.html'">‹ 메인으로</span>
     <div class="test-banner-label">디자인 실험 · 문맥교환 · Editorial</div>
   </div>
+  <div class="scroll-progress"><div class="scroll-progress-bar" id="scrollProgressBar"></div></div>
   <div class="mode-toggle-sticky">
     <div class="mode-toggle">
       <button class="mode-toggle-btn active" id="btn-concept" onclick="setMode('concept')">Concept</button>
@@ -631,10 +646,14 @@ function hookCtxTabScroll() {
   window.ctxTab = wrapped;
 }
 
-/* ── 맨 위로 가기 버튼 표시 ── */
+/* ── 맨 위로 가기 버튼 표시 + 스크롤 프로그레스 바 ── */
 window.addEventListener('scroll', () => {
   const btn = document.getElementById('scrollTopBtn');
   btn.classList.toggle('visible', window.scrollY > 400);
+
+  const bar = document.getElementById('scrollProgressBar');
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  bar.style.width = (total > 0 ? (window.scrollY / total) * 100 : 0) + '%';
 });
 
 /* ── 리마인드 퀴즈 ── */
