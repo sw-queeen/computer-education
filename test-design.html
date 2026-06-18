@@ -7,342 +7,244 @@
 <link rel="stylesheet" href="css/variables.css">
 <link rel="stylesheet" href="css/components.css">
 <style>
+  /* ════════════════════════════════════════════
+     이 페이지 전용 색상 — 메인 사이트 variables.css는 건드리지 않음
+     ════════════════════════════════════════════ */
+  :root {
+    --td-bg-page:    #FAF7F2;   /* 밝고 화사한 페이지 배경 (메인 사이트와 분리) */
+    --td-bg-white:   #FFFFFF;
+    --td-coral-bg:   #FFD5B8;   /* 운영체제 파스텔 코랄 — 적극 사용 */
+    --td-coral-text: #803300;
+    --td-coral-mid:  #C8682A;   /* 코랄 배경 위에서도 읽히는 중간 톤 */
+    --td-coral-deep: #B8542A;   /* 강조 텍스트용 (배경 없을 때) */
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--td-bg-page) !important; }
+
   .test-banner {
-    background: var(--bg-surface);
+    background: var(--td-bg-white);
     border-bottom: 1px solid var(--border-light);
-    padding: 12px 24px;
+    padding: 10px 24px;
     display: flex; align-items: center; justify-content: space-between;
     gap: 16px; flex-wrap: wrap;
     position: sticky; top: 0; z-index: 50;
   }
   .test-banner-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; color: var(--text-tertiary); text-transform: uppercase; }
-  .test-toggle { display: flex; gap: 6px; background: var(--bg-white); border-radius: 20px; padding: 4px; border: 1px solid var(--border-light); }
-  .test-toggle-btn {
-    font-size: 12px; font-weight: 600; padding: 7px 16px; border-radius: 16px; cursor: pointer;
+  .test-back { font-size: 12px; color: var(--text-tertiary); cursor: pointer; }
+  .test-back:hover { color: var(--text-secondary); }
+
+  /* ── 메인/Tip 토글 (헤더 아래, 키워드 패널 아래) ── */
+  .mode-toggle {
+    display: inline-flex; gap: 4px; background: var(--td-bg-white);
+    border-radius: 20px; padding: 4px; border: 1px solid var(--border-light);
+    margin-bottom: 40px;
+  }
+  .mode-toggle-btn {
+    font-size: 13px; font-weight: 700; padding: 8px 20px; border-radius: 16px; cursor: pointer;
     border: none; background: none; color: var(--text-secondary);
     font-family: var(--font-body, var(--font-main)); transition: all .15s;
   }
-  .test-toggle-btn.active { background: #D05840; color: white; }
-  .test-back { font-size: 12px; color: var(--text-tertiary); cursor: pointer; }
-  .test-back:hover { color: var(--text-secondary); }
-  .view-panel { display: none; }
-  .view-panel.active { display: block; }
+  .mode-toggle-btn.active { background: var(--td-coral-deep); color: white; }
 
-  /* ═══════════════════════════════════════════════════════
-     EDITORIAL — 박스 최소화. 타이포 크기·여백만으로 위계를 만든다.
-     배경은 거의 항상 투명. 구분은 굵은 룰선과 큰 여백 점프로.
-     ═══════════════════════════════════════════════════════ */
-  .ed-page { max-width: 720px; margin: 0 auto; padding: 56px 28px 120px; }
-  .ed-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #D05840; margin-bottom: 18px; }
-  .ed-title { font-size: 56px; font-weight: 800; letter-spacing: -.04em; line-height: .98; color: var(--text-primary); margin-bottom: 24px; }
-  .ed-lede { font-size: 18px; font-weight: 400; color: var(--text-secondary); line-height: 1.6; max-width: 580px; margin-bottom: 64px; }
+  .mode-panel { display: none; }
+  .mode-panel.active { display: block; }
+
+  /* ════════════════════════════════════════════
+     페이지 레이아웃 — PC 여백 축소
+     ════════════════════════════════════════════ */
+  .ed-page { max-width: 700px; margin: 0 auto; padding: 36px 24px 100px; }
+  @media (min-width: 1024px) {
+    .ed-page { max-width: 760px; padding: 32px 16px 100px; }
+  }
+
+  .ed-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--td-coral-deep); margin-bottom: 16px; }
+  .ed-title { font-size: 52px; font-weight: 800; letter-spacing: -.04em; line-height: .98; color: var(--text-primary); margin-bottom: 20px; }
+  .ed-lede { font-size: 17px; font-weight: 400; color: var(--text-secondary); line-height: 1.6; max-width: 580px; margin-bottom: 32px; }
   .ed-lede strong { color: var(--text-primary); font-weight: 700; }
+
+  /* ── 키워드 패널 (Obsidian 그래프 느낌 — 핵심 키워드를 펼쳐 보여줌) ── */
+  .keyword-panel {
+    background: var(--td-bg-white);
+    border: 1px solid var(--border-light);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    cursor: pointer;
+  }
+  .keyword-panel-head { display: flex; align-items: center; justify-content: space-between; }
+  .keyword-panel-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-tertiary); }
+  .keyword-panel-chevron { font-size: 13px; color: var(--text-tertiary); transition: transform .2s; }
+  .keyword-panel.open .keyword-panel-chevron { transform: rotate(90deg); }
+  .keyword-cloud {
+    display: none;
+    flex-wrap: wrap; gap: 8px;
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--border-light);
+  }
+  .keyword-panel.open .keyword-cloud { display: flex; }
+  .keyword-chip {
+    font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 20px;
+    background: var(--td-coral-bg); color: var(--td-coral-text);
+    cursor: pointer; transition: transform .12s;
+  }
+  .keyword-chip:hover { transform: translateY(-1px); }
+  .keyword-chip.big { font-size: 14px; font-weight: 700; padding: 8px 16px; }
+  .keyword-chip.small { font-size: 11.5px; padding: 5px 11px; background: var(--bg-surface); color: var(--text-secondary); }
 
   .ed-h2 {
     font-size: 13px; font-weight: 700; letter-spacing: .04em;
-    color: var(--text-tertiary); margin: 0 0 28px;
+    color: var(--text-tertiary); margin: 0 0 24px;
     display: flex; align-items: baseline; gap: 12px;
   }
-  .ed-h2 .num { font-size: 13px; color: #D05840; font-weight: 800; }
-  .ed-section { margin-bottom: 72px; padding-top: 8px; border-top: 1px solid var(--border-mid); }
+  .ed-h2 .num { font-size: 13px; color: var(--td-coral-deep); font-weight: 800; }
+  .ed-section { margin-bottom: 56px; padding-top: 4px; border-top: 1px solid var(--border-mid); }
   .ed-section:first-of-type { border-top: none; }
 
-  .ed-trigger { display: flex; gap: 28px; padding: 22px 0; border-bottom: 1px solid var(--border-light); }
-  .ed-trigger:first-child { padding-top: 0; }
-  .ed-trigger:last-child { border-bottom: none; }
-  .ed-trigger-n { font-size: 32px; font-weight: 800; color: var(--border-mid); min-width: 50px; line-height: 1; }
-  .ed-trigger-name { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
-  .ed-trigger-desc { font-size: 14.5px; color: var(--text-secondary); line-height: 1.65; max-width: 480px; }
+  /* ── 트리거: 파스텔 코랄 배경 청크로 ── */
+  .ed-trigger { display: flex; gap: 24px; padding: 18px 20px; border-radius: 16px; margin-bottom: 8px; background: var(--td-bg-white); border: 1px solid var(--border-light); }
+  .ed-trigger:last-child { margin-bottom: 0; }
+  .ed-trigger-n { font-size: 26px; font-weight: 800; color: var(--td-coral-bg); min-width: 42px; line-height: 1; }
+  .ed-trigger-name { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
+  .ed-trigger-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; max-width: 480px; }
 
-  .ed-flow { position: relative; padding-left: 36px; }
-  .ed-flow::before { content:''; position:absolute; left:11px; top:8px; bottom:8px; width:1px; background: var(--border-mid); }
-  .ed-flowstep { position: relative; padding-bottom: 36px; }
+  .ed-flow { position: relative; padding-left: 32px; }
+  .ed-flow::before { content:''; position:absolute; left:10px; top:6px; bottom:6px; width:2px; background: var(--border-mid); }
+  .ed-flowstep { position: relative; padding-bottom: 28px; }
   .ed-flowstep:last-child { padding-bottom: 0; }
   .ed-flowstep::before {
-    content:''; position:absolute; left:-36px; top:4px; width:11px; height:11px;
-    border-radius:50%; background: var(--bg-page); border:2px solid var(--border-mid);
+    content:''; position:absolute; left:-32px; top:3px; width:11px; height:11px;
+    border-radius:50%; background: var(--td-bg-page); border:2.5px solid var(--border-mid);
   }
-  .ed-flowstep.accent::before { border-color:#D05840; background:#D05840; }
-  .ed-flowstep-title { font-size: 19px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
-  .ed-flowstep.accent .ed-flowstep-title { color: #D05840; }
-  .ed-flowstep-desc { font-size: 14.5px; color: var(--text-secondary); line-height: 1.65; max-width: 500px; }
+  .ed-flowstep.accent { background: var(--td-coral-bg); margin: 0 0 8px -32px; padding: 16px 16px 16px 48px; border-radius: 14px; padding-bottom: 16px; }
+  .ed-flowstep.accent::before { left: 6px; top: 19px; border-color: var(--td-coral-deep); background: var(--td-coral-deep); }
+  .ed-flowstep-title { font-size: 17px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+  .ed-flowstep.accent .ed-flowstep-title { color: var(--td-coral-deep); }
+  .ed-flowstep-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; max-width: 500px; }
 
-  .ed-statetable { width: 100%; font-size: 15px; }
+  .ed-statetable { width: 100%; font-size: 14px; border-collapse: collapse; }
   .ed-statetable tr { border-bottom: 1px solid var(--border-light); }
   .ed-statetable tr:last-child { border-bottom: none; }
-  .ed-statetable td { padding: 16px 8px; vertical-align: top; }
-  .ed-statetable td:first-child { font-weight: 800; color: var(--text-primary); width: 130px; font-size: 16px; }
-  .ed-statetable td:nth-child(2) { color: var(--text-secondary); width: 200px; }
-  .ed-statetable td:last-child { color: var(--text-tertiary); font-size: 13.5px; }
+  .ed-statetable tr.running { background: var(--td-coral-bg); }
+  .ed-statetable tr.running td:first-child { border-radius: 10px 0 0 10px; }
+  .ed-statetable tr.running td:last-child { border-radius: 0 10px 10px 0; }
+  .ed-statetable td { padding: 14px 10px; vertical-align: top; }
+  .ed-statetable td:first-child { font-weight: 800; color: var(--text-primary); width: 110px; font-size: 15px; }
+  .ed-statetable tr.running td:first-child { color: var(--td-coral-deep); }
+  .ed-statetable td:nth-child(2) { color: var(--text-secondary); width: 180px; }
+  .ed-statetable td:last-child { color: var(--text-tertiary); font-size: 13px; }
 
-  .ed-pcb-row { display: flex; gap: 36px; padding: 24px 0; border-bottom: 1px solid var(--border-light); }
-  .ed-pcb-row:last-child { border-bottom: none; }
-  .ed-pcb-label-col { min-width: 180px; font-size: 15px; font-weight: 700; color: var(--text-primary); }
-  .ed-pcb-label-col.accent { color: #D05840; }
-  .ed-pcb-items { flex: 1; font-size: 14px; color: var(--text-secondary); line-height: 1.9; }
+  .ed-pcb-row { display: flex; gap: 28px; padding: 18px 20px; border-radius: 14px; margin-bottom: 8px; background: var(--td-bg-white); border: 1px solid var(--border-light); }
+  .ed-pcb-row:last-child { margin-bottom: 0; }
+  .ed-pcb-row.accent { background: var(--td-coral-bg); border-color: transparent; }
+  .ed-pcb-label-col { min-width: 170px; font-size: 14.5px; font-weight: 700; color: var(--text-primary); }
+  .ed-pcb-row.accent .ed-pcb-label-col { color: var(--td-coral-text); }
+  .ed-pcb-items { flex: 1; font-size: 13.5px; color: var(--text-secondary); line-height: 1.8; }
+  .ed-pcb-row.accent .ed-pcb-items { color: var(--td-coral-text); opacity: .85; }
 
-  .ed-over-item { padding: 18px 0; border-bottom: 1px solid var(--border-light); }
+  .ed-over-item { padding: 16px 0; border-bottom: 1px solid var(--border-light); }
   .ed-over-item:last-child { border-bottom: none; }
-  .ed-over-label { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-  .ed-over-label.accent { color: #D05840; }
-  .ed-over-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+  .ed-over-label { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+  .ed-over-label.accent { color: var(--td-coral-deep); }
+  .ed-over-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
 
-  .ed-vstable { width: 100%; font-size: 14.5px; }
-  .ed-vstable th { text-align: left; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: var(--text-tertiary); padding: 0 8px 12px; border-bottom: 2px solid var(--text-primary); }
-  .ed-vstable td { padding: 13px 8px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); }
+  .ed-vstable { width: 100%; font-size: 14px; border-collapse: collapse; }
+  .ed-vstable th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--text-tertiary); padding: 0 10px 10px; border-bottom: 2px solid var(--text-primary); }
+  .ed-vstable td { padding: 12px 10px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); }
   .ed-vstable td:first-child { font-weight: 700; color: var(--text-primary); }
-  .ed-vstable td:last-child { color: #D05840; font-weight: 600; }
+  .ed-vstable td:last-child { color: var(--td-coral-deep); font-weight: 600; }
 
-  .ed-essay-group { margin-bottom: 22px; }
-  .ed-essay-label { font-size: 13px; font-weight: 700; color: #D05840; margin-bottom: 8px; }
-  .ed-essay-item { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; padding-left: 16px; position: relative; margin-bottom: 4px; }
+  /* ── Tip 모드 ── */
+  .ed-essay-group { margin-bottom: 20px; padding: 16px 18px; border-radius: 14px; background: var(--td-bg-white); border: 1px solid var(--border-light); }
+  .ed-essay-label { font-size: 13px; font-weight: 700; color: var(--td-coral-deep); margin-bottom: 8px; }
+  .ed-essay-item { font-size: 14px; color: var(--text-secondary); line-height: 1.7; padding-left: 16px; position: relative; margin-bottom: 4px; }
   .ed-essay-item::before { content:'—'; position:absolute; left:0; color: var(--border-mid); }
 
-  .ed-check { padding: 18px 0; border-bottom: 1px solid var(--border-light); font-size: 14.5px; line-height: 1.7; color: var(--text-secondary); }
-  .ed-check:last-child { border-bottom: none; }
-  .ed-check-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-right: 10px; }
+  .ed-check { padding: 16px 18px; border-radius: 14px; margin-bottom: 8px; font-size: 14px; line-height: 1.65; }
+  .ed-check.danger { background: #FDECEA; color: #7A2010; }
+  .ed-check.success { background: #EAF3DE; color: #2E5010; }
+  .ed-check-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-right: 10px; display:inline-block; margin-bottom: 4px; }
   .ed-check-label.danger { color: #C03838; }
   .ed-check-label.success { color: #3A8858; }
-  .ed-check strong { color: var(--text-primary); }
+  .ed-check strong { color: inherit; }
 
-  .ed-exam-meta { font-size: 14.5px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 40px; max-width: 560px; }
-  .ed-exam-meta .years { font-size: 22px; font-weight: 800; color: var(--text-primary); letter-spacing: -.01em; display: block; margin-bottom: 10px; }
-  .ed-exam-item { display: flex; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--border-light); }
-  .ed-exam-item:last-child { border-bottom: none; }
-  .ed-exam-year { font-size: 13px; font-weight: 800; color: #D05840; min-width: 60px; flex-shrink: 0; }
-  .ed-exam-text { font-size: 14.5px; color: var(--text-secondary); line-height: 1.6; }
+  .ed-exam-meta { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 28px; padding: 18px 20px; background: var(--td-bg-white); border-radius: 14px; border: 1px solid var(--border-light); }
+  .ed-exam-meta .years { font-size: 20px; font-weight: 800; color: var(--text-primary); letter-spacing: -.01em; display: block; margin-bottom: 8px; }
 
-  .ed-quiz-item { padding: 28px 0; border-bottom: 1px solid var(--border-light); }
+  .ed-exam-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .ed-exam-table tr { border-bottom: 1px solid var(--border-light); }
+  .ed-exam-table tr:last-child { border-bottom: none; }
+  .ed-exam-table td { padding: 13px 10px; text-align: center; vertical-align: middle; }
+  .ed-exam-table td.exam-year-col { font-weight: 800; color: var(--td-coral-deep); width: 90px; white-space: nowrap; }
+  .ed-exam-table td.exam-text-col { text-align: left; color: var(--text-secondary); line-height: 1.55; }
+  .ed-exam-subtitle { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin: 28px 0 12px; }
+  .ed-exam-subtitle.freq { color: #A83222; }
+  .ed-exam-subtitle.normal { color: #8A6010; }
+
+  /* ── 리마인드 ── */
+  .ed-quiz-item { padding: 24px 0; border-bottom: 1px solid var(--border-light); }
   .ed-quiz-item:last-child { border-bottom: none; }
-  .ed-quiz-n { font-size: 12px; font-weight: 700; color: var(--text-tertiary); margin-bottom: 8px; }
-  .ed-quiz-q { font-size: 17px; font-weight: 600; color: var(--text-primary); line-height: 1.55; margin-bottom: 14px; max-width: 560px; }
-  .ed-quiz-ox { display: flex; gap: 24px; margin-bottom: 4px; }
-  .ed-quiz-ox-btn { font-size: 22px; font-weight: 800; color: var(--border-mid); cursor: pointer; background: none; border: none; font-family: var(--font-body); padding: 0; transition: color .15s; }
-  .ed-quiz-ox-btn.correct { color: #3A8858; }
-  .ed-quiz-ox-btn.wrong { color: #C03838; }
-  .ed-quiz-mc { display: flex; flex-direction: column; gap: 10px; max-width: 540px; }
-  .ed-quiz-mc-btn { text-align: left; font-size: 14.5px; color: var(--text-secondary); cursor: pointer; background: none; border: none; padding: 6px 0; font-family: var(--font-body); border-bottom: 1px solid transparent; transition: all .15s; }
-  .ed-quiz-mc-btn.correct { color: #3A8858; font-weight: 700; border-bottom-color: #3A8858; }
-  .ed-quiz-mc-btn.wrong { color: #C03838; text-decoration: line-through; }
-  .ed-quiz-fill-btn { font-size: 13px; color: #D05840; cursor: pointer; background: none; border: none; padding: 0; font-family: var(--font-body); font-weight: 600; text-decoration: underline; }
-  .ed-quiz-fill-answer { font-size: 15px; font-weight: 700; color: #3A8858; margin-top: 6px; }
+  .ed-quiz-n { font-size: 11.5px; font-weight: 700; color: var(--text-tertiary); margin-bottom: 8px; letter-spacing: .04em; text-transform: uppercase; }
+  .ed-quiz-q { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.55; margin-bottom: 14px; max-width: 560px; }
+
+  /* OX 버튼: 보편적인 토글 스위치 형태로 변경 */
+  .ed-quiz-ox { display: flex; gap: 10px; }
+  .ed-quiz-ox-btn {
+    font-size: 16px; font-weight: 700; padding: 9px 26px; border-radius: 12px;
+    cursor: pointer; background: var(--bg-surface); border: 2px solid transparent;
+    color: var(--text-secondary); font-family: var(--font-body); transition: all .15s;
+  }
+  .ed-quiz-ox-btn:hover { background: var(--border-light); }
+  .ed-quiz-ox-btn.correct { background: #EAF3DE; color: #2E5010; border-color: #6FA84A; }
+  .ed-quiz-ox-btn.wrong { background: #FDECEA; color: #A83222; border-color: #D86A5A; }
+
+  .ed-quiz-mc { display: flex; flex-direction: column; gap: 8px; max-width: 540px; }
+  .ed-quiz-mc-btn {
+    text-align: left; font-size: 14px; color: var(--text-secondary); cursor: pointer;
+    background: var(--bg-surface); border: 2px solid transparent; border-radius: 10px;
+    padding: 10px 14px; font-family: var(--font-body); transition: all .15s;
+  }
+  .ed-quiz-mc-btn:hover { background: var(--border-light); }
+  /* 밑줄 제거, 배경색 변화로만 정답/오답 표시 */
+  .ed-quiz-mc-btn.correct { background: #EAF3DE; color: #2E5010; border-color: #6FA84A; font-weight: 700; }
+  .ed-quiz-mc-btn.wrong { background: #FDECEA; color: #A83222; opacity: .7; }
+
+  /* 빈칸 채우기: 버튼 디자인 명확화 */
+  .ed-quiz-fill-btn {
+    font-size: 13px; font-weight: 700; color: var(--td-coral-deep); cursor: pointer;
+    background: var(--td-coral-bg); border: none; border-radius: 10px;
+    padding: 9px 20px; font-family: var(--font-body); transition: all .15s;
+  }
+  .ed-quiz-fill-btn:hover { opacity: .85; }
+  .ed-quiz-fill-answer {
+    display: inline-block; font-size: 14px; font-weight: 700; color: #2E5010;
+    background: #EAF3DE; padding: 9px 18px; border-radius: 10px; margin-top: 4px;
+  }
   .ed-quiz-explain { font-size: 13.5px; color: var(--text-tertiary); line-height: 1.6; margin-top: 12px; max-width: 540px; }
-  .ed-reset { margin-top: 20px; font-size: 13px; color: var(--text-tertiary); cursor: pointer; text-decoration: underline; background:none; border:none; font-family:var(--font-body); }
+  .ed-reset { margin-top: 24px; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; background: var(--bg-surface); border: none; padding: 10px 20px; border-radius: 10px; font-family: var(--font-body); }
+  .ed-reset:hover { background: var(--border-light); }
 
-  /* ═══════════════════════════════════════════════════════
-     BENTO — 카드 크기 자체가 정보 위계. 1x1/2x1/2x2 명확히 차등.
-     색 대비 강하게, 다크 카드 적극 사용.
-     ═══════════════════════════════════════════════════════ */
-  .bn-page { max-width: 960px; margin: 0 auto; padding: 28px 20px 100px; }
-  .bn-master {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: minmax(70px, auto);
-    gap: 10px;
+  /* ── 둘러보기 시각화: 토글 버튼 ── */
+  .viz-toggle-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--td-coral-bg); color: var(--td-coral-text);
+    border: none; border-radius: 14px; padding: 14px 20px;
+    font-size: 14px; font-weight: 700; cursor: pointer;
+    font-family: var(--font-body); width: 100%; text-align: left;
+    transition: all .15s; margin-bottom: 0;
   }
-  .bn-tile {
-    border-radius: 18px;
-    padding: 20px;
-    border: 1px solid var(--border-light);
-    background: var(--bg-white);
-    overflow: hidden;
-  }
-  /* 히어로: 4x2 거대 타일 */
-  .bn-tile.hero { grid-column: span 4; grid-row: span 2; background: #2C2825; color: #F0EDE8; display:flex; flex-direction:column; justify-content:flex-end; }
-  .bn-tile.hero .bn-eyebrow { font-size: 11px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin-bottom:12px; }
-  .bn-tile.hero .bn-big { font-size: 38px; font-weight: 800; letter-spacing: -.03em; line-height: 1.05; margin-bottom: 14px; }
-  .bn-tile.hero .bn-lede { font-size: 13.5px; line-height: 1.65; opacity: .82; max-width: 90%; }
-
-  /* 통계: 2x1 작은 타일 */
-  .bn-tile.stat { grid-column: span 2; background: #FAE8E4; border-color: #ECA898; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
-  .bn-tile.stat .num { font-size: 46px; font-weight: 800; color: #D05840; letter-spacing: -.02em; line-height: 1; }
-  .bn-tile.stat .lbl { font-size: 11px; color: #7A2010; margin-top: 6px; font-weight: 600; }
-
-  /* 트리거: 1x1 균등 타일 4개 */
-  .bn-tile.trigger { grid-column: span 3; }
-  .bn-tile.trigger .t-name { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
-  .bn-tile.trigger .t-desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
-
-  /* 절차: 핵심단계는 2x1 강조, 일반단계는 1x1 */
-  .bn-tile.step { grid-column: span 2; }
-  .bn-tile.step.wide { grid-column: span 3; background: #2C2825; color: #F0EDE8; border-color: #2C2825; }
-  .bn-tile.step .s-no { font-size: 12px; font-weight: 800; color: var(--text-tertiary); margin-bottom: 8px; }
-  .bn-tile.step.wide .s-no { color: #ECA898; }
-  .bn-tile.step .s-name { font-size: 14.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; line-height:1.3; }
-  .bn-tile.step.wide .s-name { color: #fff; font-size: 17px; }
-  .bn-tile.step .s-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
-  .bn-tile.step.wide .s-desc { color: #D8D4CE; font-size: 13px; }
-
-  /* 상태 전이: 가로로 긴 5분할 */
-  .bn-tile.state { grid-column: span 6; padding: 0; display: flex; overflow: hidden; }
-  .bn-state-seg { flex: 1; padding: 18px 16px; border-right: 1px solid var(--border-light); }
-  .bn-state-seg:last-child { border-right: none; }
-  .bn-state-seg.running { background: #FAE8E4; }
-  .bn-state-name { font-size: 13px; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; }
-  .bn-state-seg.running .bn-state-name { color: #D05840; }
-  .bn-state-desc { font-size: 10.5px; color: var(--text-secondary); line-height: 1.5; }
-
-  /* PCB: 4개 카드, 핵심은 더 크게(2x2), 나머지 1x1 */
-  .bn-tile.pcb { grid-column: span 3; }
-  .bn-tile.pcb.core { grid-column: span 6; background: #FAE8E4; border-color: #ECA898; }
-  .bn-pcb-title { font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: var(--text-tertiary); margin-bottom: 10px; }
-  .bn-tile.pcb.core .bn-pcb-title { color: #D05840; }
-  .bn-pcb-grid-items { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .bn-pcb-chip { font-size: 12px; font-weight: 600; color: var(--text-primary); background: var(--bg-page); border-radius: 8px; padding: 8px 10px; text-align: center; }
-  .bn-tile.pcb.core .bn-pcb-chip { background: #fff; color: #D05840; }
-  .bn-pcb-item-list { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
-
-  /* 오버헤드: 큰 다크 타일 1개 + 작은 타일들 */
-  .bn-tile.overhead { grid-column: span 3; }
-  .bn-tile.overhead.main { grid-column: span 3; grid-row: span 2; background: #2C2825; color: #F0EDE8; }
-  .bn-overhead-label { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
-  .bn-tile.overhead.main .bn-overhead-label { font-size: 16px; color: #ECA898; }
-  .bn-overhead-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.55; }
-  .bn-tile.overhead.main .bn-overhead-desc { color: #D8D4CE; font-size: 13px; }
-
-  /* 비교표: 가로 풀와이드 */
-  .bn-tile.compare { grid-column: span 6; padding: 0; overflow: hidden; }
-  .bn-compare-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .bn-compare-table th { background: var(--bg-surface); padding: 12px 16px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-tertiary); }
-  .bn-compare-table th:last-child { color: #D05840; }
-  .bn-compare-table td { padding: 12px 16px; border-top: 1px solid var(--border-light); color: var(--text-secondary); }
-  .bn-compare-table td:last-child { color: #D05840; font-weight: 600; }
-
-  /* 체크포인트: 2x1 색깔 타일 */
-  .bn-tile.check { grid-column: span 3; }
-  .bn-tile.check.danger { background: #FDECEA; border-color: #F0B8B0; }
-  .bn-tile.check.success { background: #EAF3DE; border-color: #C0DC98; }
-  .bn-check-tag { font-size: 10px; font-weight: 700; letter-spacing: .04em; margin-bottom: 6px; display:block; }
-  .bn-tile.check.danger .bn-check-tag { color: #A83222; }
-  .bn-tile.check.success .bn-check-tag { color: #3A6818; }
-  .bn-tile.check.danger { color: #7A2010; }
-  .bn-tile.check.success { color: #2E5010; }
-  .bn-tile.check { font-size: 12px; line-height: 1.6; }
-
-  /* 기출: 풀와이드 헤더 + 카드들 */
-  .bn-tile.examhead { grid-column: span 6; background: #2C2825; color: #F0EDE8; }
-  .bn-examhead-years { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
-  .bn-examhead-note { font-size: 12.5px; color: #D8D4CE; line-height: 1.6; max-width: 600px; }
-  .bn-tile.exam { grid-column: span 6; }
-  .bn-tile.exam.freq { grid-column: span 3; background: #FDECEA; border-color: #F0B8B0; }
-  .bn-tile.exam.normal { grid-column: span 3; }
-  .bn-exam-tag { font-size: 10px; font-weight: 700; color: #A83222; margin-bottom: 4px; display:block; }
-  .bn-exam-text { font-size: 12px; color: var(--text-secondary); line-height: 1.55; padding: 8px 0; border-bottom: 1px solid var(--border-light); }
-  .bn-exam-text:last-child { border-bottom: none; }
-
-  /* 퀴즈: 카드형 */
-  .bn-tile.quiz { grid-column: span 3; }
-  .bn-tile.quiz.wide { grid-column: span 6; }
-  .bn-quiz-type { font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; }
-  .bn-quiz-q { font-size: 13.5px; font-weight: 700; color: var(--text-primary); line-height: 1.5; margin-bottom: 12px; }
-  .bn-quiz-ox { display: flex; gap: 6px; }
-  .bn-quiz-btn { padding: 7px 18px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; border: 1px solid var(--border-light); background: var(--bg-page); color: var(--text-secondary); font-family: var(--font-body); }
-  .bn-quiz-btn.correct { background: #3A8858; color: #fff; border-color: #3A8858; }
-  .bn-quiz-btn.wrong { background: #C03838; color: #fff; border-color: #C03838; }
-  .bn-quiz-mc { display: flex; flex-direction: column; gap: 5px; }
-  .bn-quiz-mc .bn-quiz-btn { text-align: left; padding: 7px 10px; font-size: 11.5px; font-weight: 500; }
-  .bn-quiz-fillbtn { font-size: 11px; padding: 6px 14px; border-radius: 8px; background: var(--bg-page); border: 1px solid var(--border-light); cursor: pointer; color: var(--text-secondary); font-family: var(--font-body); }
-  .bn-quiz-explain { font-size: 11px; color: var(--text-tertiary); line-height: 1.5; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-light); }
-  .bn-quiz-fillanswer { font-size: 13px; font-weight: 700; color: #3A8858; margin-top: 6px; }
-  .bn-section-gap { grid-column: span 6; height: 8px; }
-  .bn-reset-tile { grid-column: span 6; text-align:center; padding: 14px; cursor:pointer; color: var(--text-tertiary); font-size: 12px; background:none; border:1px dashed var(--border-mid); border-radius:14px; font-family:var(--font-body); }
-
-  /* ═══════════════════════════════════════════════════════
-     MIX — Editorial의 읽기 흐름이 뼈대. 병렬 데이터만 타일로 삽입.
-     ═══════════════════════════════════════════════════════ */
-  .mx-page { max-width: 760px; margin: 0 auto; padding: 56px 28px 120px; }
-  .mx-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #D05840; margin-bottom: 18px; }
-  .mx-title { font-size: 52px; font-weight: 800; letter-spacing: -.04em; line-height: .98; color: var(--text-primary); margin-bottom: 22px; }
-  .mx-lede { font-size: 17px; color: var(--text-secondary); line-height: 1.65; max-width: 580px; margin-bottom: 56px; }
-  .mx-lede strong { color: var(--text-primary); font-weight: 700; }
-  .mx-section { margin-bottom: 56px; }
-  .mx-h2 { font-size: 13px; font-weight: 700; color: var(--text-tertiary); letter-spacing: .04em; margin-bottom: 20px; padding-top: 24px; border-top: 1px solid var(--border-mid); }
-  .mx-section:first-of-type .mx-h2 { border-top: none; padding-top: 0; }
-
-  /* 트리거: 타일 4개 (bento 요소를 editorial 흐름 안에 삽입) */
-  .mx-tile-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
-  .mx-tile { background: var(--bg-white); border: 1px solid var(--border-light); border-radius: 14px; padding: 16px; }
-  .mx-tile-name { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; line-height:1.3; }
-  .mx-tile-desc { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
-
-  /* 절차: editorial 흐름선 그대로, 핵심만 타일로 떠오름 */
-  .mx-flow { position: relative; padding-left: 32px; }
-  .mx-flow::before { content:''; position:absolute; left:10px; top:6px; bottom:6px; width:1px; background: var(--border-mid); }
-  .mx-flowstep { position: relative; padding-bottom: 28px; }
-  .mx-flowstep:last-child { padding-bottom: 0; }
-  .mx-flowstep::before { content:''; position:absolute; left:-32px; top:3px; width:10px; height:10px; border-radius:50%; background: var(--bg-page); border:2px solid var(--border-mid); }
-  .mx-flowstep-title { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-  .mx-flowstep-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; max-width: 480px; }
-  .mx-flowstep.accent { background: #FAE8E4; margin: 0 -16px 0 -32px; padding: 16px 16px 16px 48px; border-radius: 14px; }
-  .mx-flowstep.accent::before { left: 6px; border-color:#D05840; background:#D05840; }
-  .mx-flowstep.accent .mx-flowstep-title { color: #D05840; }
-
-  /* 상태 전이: 가로 타일 */
-  .mx-state-row { display: flex; gap: 6px; }
-  .mx-state-seg { flex:1; background: var(--bg-white); border:1px solid var(--border-light); border-radius: 12px; padding: 12px 10px; }
-  .mx-state-seg.running { background: #FAE8E4; border-color: #ECA898; }
-  .mx-state-name { font-size: 12px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
-  .mx-state-seg.running .mx-state-name { color: #D05840; }
-  .mx-state-desc { font-size: 10px; color: var(--text-secondary); line-height: 1.45; }
-
-  /* PCB: editorial 행 + 우측 칩 타일 */
-  .mx-pcb-row { display: flex; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--border-light); align-items:flex-start; }
-  .mx-pcb-row:last-child { border-bottom: none; }
-  .mx-pcb-label { min-width: 150px; font-size: 14px; font-weight: 700; color: var(--text-primary); padding-top: 6px; }
-  .mx-pcb-label.accent { color: #D05840; }
-  .mx-pcb-chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
-  .mx-pcb-chip { font-size: 12px; font-weight: 600; color: var(--text-secondary); background: var(--bg-surface); border-radius: 8px; padding: 6px 12px; }
-  .mx-pcb-row.accent .mx-pcb-chip { background: #FAE8E4; color: #D05840; }
-
-  /* 비교표: editorial 그대로 */
-  .mx-vstable { width: 100%; font-size: 14px; }
-  .mx-vstable th { text-align: left; font-size: 11px; font-weight: 700; color: var(--text-tertiary); padding: 0 8px 10px; border-bottom: 2px solid var(--text-primary); }
-  .mx-vstable td { padding: 11px 8px; border-bottom: 1px solid var(--border-light); color: var(--text-secondary); }
-  .mx-vstable td:first-child { font-weight: 700; color: var(--text-primary); }
-  .mx-vstable td:last-child { color: #D05840; font-weight: 600; }
-
-  .mx-check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .mx-check { padding: 14px 16px; border-radius: 12px; font-size: 13px; line-height: 1.6; }
-  .mx-check.danger { background: #FDECEA; color: #7A2010; }
-  .mx-check.success { background: #EAF3DE; color: #2E5010; }
-  .mx-check-tag { font-size: 10px; font-weight: 700; display:block; margin-bottom:5px; opacity:.8; }
-
-  .mx-exam-card { background: var(--bg-white); border: 1px solid var(--border-light); border-radius: 14px; padding: 18px 20px; margin-bottom: 24px; }
-  .mx-exam-years { font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; }
-  .mx-exam-note { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
-  .mx-exam-item { display: flex; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--border-light); }
-  .mx-exam-item:last-child { border-bottom: none; }
-  .mx-exam-tag { font-size: 10.5px; font-weight: 700; color: #D05840; min-width: 50px; flex-shrink:0; padding-top:1px; }
-  .mx-exam-text { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; }
-
-  .mx-quiz-item { padding: 22px 0; border-bottom: 1px solid var(--border-light); }
-  .mx-quiz-item:last-child { border-bottom: none; }
-  .mx-quiz-q { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1.55; margin-bottom: 12px; max-width: 540px; }
-  .mx-quiz-ox { display: flex; gap: 8px; }
-  .mx-quiz-btn { padding: 8px 20px; border-radius: 10px; font-size: 13.5px; font-weight: 700; cursor: pointer; border: 1px solid var(--border-light); background: var(--bg-surface); color: var(--text-secondary); font-family: var(--font-body); }
-  .mx-quiz-btn.correct { background: #EAF3DE; color: #2E5010; border-color: #90C050; }
-  .mx-quiz-btn.wrong { background: #FDECEA; color: #7A2010; border-color: #E08080; }
-  .mx-quiz-mc { display: flex; flex-direction: column; gap: 7px; max-width: 520px; }
-  .mx-quiz-mc .mx-quiz-btn { text-align: left; padding: 8px 12px; font-size: 12.5px; font-weight: 500; }
-  .mx-quiz-fillbtn { font-size: 12px; padding: 7px 16px; border-radius: 10px; background: var(--bg-surface); border: 1px solid var(--border-light); cursor: pointer; color: var(--text-secondary); font-family: var(--font-body); }
-  .mx-quiz-explain { font-size: 12.5px; color: var(--text-tertiary); line-height: 1.6; margin-top: 10px; }
-  .mx-quiz-fillanswer { font-size: 14px; font-weight: 700; color: #2E5010; margin-top: 6px; }
-  .mx-reset { margin-top: 12px; font-size: 12.5px; color: var(--text-tertiary); cursor: pointer; text-decoration: underline; background:none; border:none; font-family:var(--font-body); }
+  .viz-toggle-btn:hover { opacity: .9; }
+  .viz-toggle-icon { font-size: 16px; transition: transform .25s; }
+  .viz-toggle-btn.open .viz-toggle-icon { transform: rotate(180deg); }
+  .viz-mount-wrap { display: none; margin-top: 16px; padding: 20px; background: var(--td-bg-white); border-radius: 16px; border: 1px solid var(--border-light); }
+  .viz-mount-wrap.open { display: block; }
 
   @media (max-width: 720px) {
-    .ed-title, .mx-title { font-size: 34px; }
-    .ed-page, .mx-page { padding: 36px 18px 80px; }
-    .bn-master { grid-template-columns: repeat(2,1fr); }
-    .bn-tile.hero, .bn-tile.step.wide, .bn-tile.pcb.core, .bn-tile.overhead.main,
-    .bn-tile.compare, .bn-tile.examhead, .bn-tile.exam, .bn-tile.exam.freq, .bn-tile.exam.normal,
-    .bn-tile.state, .bn-tile.quiz.wide, .bn-reset-tile, .bn-section-gap { grid-column: span 2; }
-    .bn-tile.stat, .bn-tile.trigger, .bn-tile.step, .bn-tile.pcb, .bn-tile.overhead, .bn-tile.check, .bn-tile.quiz { grid-column: span 2; }
-    .bn-state-row, .bn-tile.state { flex-direction: column; }
-    .bn-state-seg { border-right:none; border-bottom:1px solid var(--border-light); }
-    .mx-tile-grid-4 { grid-template-columns: 1fr 1fr; }
-    .mx-check-grid { grid-template-columns: 1fr; }
-    .mx-pcb-row { flex-direction: column; gap: 8px; }
-    .mx-state-row { flex-direction: column; }
+    .ed-title { font-size: 34px; }
+    .ed-page { padding: 28px 16px 80px; }
+    .ed-trigger { flex-direction: column; gap: 6px; }
+    .ed-pcb-row { flex-direction: column; gap: 8px; }
+    .ed-exam-table td.exam-text-col { text-align: left; }
   }
 </style>
 </head>
@@ -350,330 +252,217 @@
 
 <div class="test-banner">
   <span class="test-back" onclick="location.href='index.html'">‹ 메인으로</span>
-  <div class="test-toggle">
-    <button class="test-toggle-btn active" id="btn-editorial" onclick="setStyle('editorial')">Editorial</button>
-    <button class="test-toggle-btn" id="btn-bento" onclick="setStyle('bento')">Bento Grid</button>
-    <button class="test-toggle-btn" id="btn-mix" onclick="setStyle('mix')">Mix</button>
-  </div>
-  <div class="test-banner-label">디자인 실험 · 문맥교환 · 탭 없는 풀페이지</div>
+  <div class="test-banner-label">디자인 실험 · 문맥교환 · Editorial</div>
 </div>
 
-<!-- ══════════════════════════════════════════ EDITORIAL ══════════════════════════════════════════ -->
-<div class="view-panel active" data-style="editorial">
 <div class="ed-page">
 
   <div class="ed-eyebrow">운영체제 · 프로세스 관리</div>
   <div class="ed-title">문맥교환</div>
   <div class="ed-lede"><strong>문맥교환(Context Switch)</strong>은 CPU가 실행 중인 프로세스를 교체할 때, 현재 프로세스의 상태를 저장하고 새 프로세스의 상태를 복원하는 커널의 작업 전체를 말한다. 이 구간 동안 CPU는 유용한 작업을 하지 못하므로 <strong>순수 오버헤드</strong>로 간주된다.</div>
 
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">01</span> 발생 조건</div>
-    <div class="ed-trigger"><div class="ed-trigger-n">01</div><div><div class="ed-trigger-name">타이머 인터럽트</div><div class="ed-trigger-desc">선점형 스케줄러가 타임 슬라이스 만료를 감지하면 강제로 CPU를 회수한다.</div></div></div>
-    <div class="ed-trigger"><div class="ed-trigger-n">02</div><div><div class="ed-trigger-name">I/O 요청 또는 이벤트 대기</div><div class="ed-trigger-desc">실행 중인 프로세스가 I/O 작업을 요청하면 Waiting 상태로 전환되고, 다른 프로세스가 CPU를 점유한다.</div></div></div>
-    <div class="ed-trigger"><div class="ed-trigger-n">03</div><div><div class="ed-trigger-name">시스템 콜</div><div class="ed-trigger-desc">프로세스가 커널에 서비스를 요청할 때 일부 시스템 콜은 문맥교환을 유발한다.</div></div></div>
-    <div class="ed-trigger"><div class="ed-trigger-n">04</div><div><div class="ed-trigger-name">고우선순위 프로세스 도착</div><div class="ed-trigger-desc">선점형 스케줄러에서 Ready 큐에 더 높은 우선순위 프로세스가 들어오면 현재 프로세스를 선점한다.</div></div></div>
-  </div>
-
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">02</span> 문맥교환 절차 — 6단계</div>
-    <div class="ed-flow">
-      <div class="ed-flowstep"><div class="ed-flowstep-title">인터럽트 / 시스템 콜 발생</div><div class="ed-flowstep-desc">문맥교환의 트리거. P1 실행이 일시 중단된다.</div></div>
-      <div class="ed-flowstep accent"><div class="ed-flowstep-title">P1 문맥 저장 → PCB₁</div><div class="ed-flowstep-desc">PC·레지스터·SP·플래그 등 CPU 상태 전체를 P1의 PCB에 기록한다.</div></div>
-      <div class="ed-flowstep"><div class="ed-flowstep-title">P1 상태 전환 → Ready / Waiting</div><div class="ed-flowstep-desc">원인에 따라 Ready 큐 또는 Waiting 큐로 이동한다.</div></div>
-      <div class="ed-flowstep"><div class="ed-flowstep-title">스케줄러가 P2 선택</div><div class="ed-flowstep-desc">CPU 스케줄러가 Ready 큐에서 다음 실행할 프로세스 P2를 결정한다.</div></div>
-      <div class="ed-flowstep accent"><div class="ed-flowstep-title">P2 문맥 복원 ← PCB₂</div><div class="ed-flowstep-desc">P2의 PCB에 저장된 상태를 레지스터에 적재한다.</div></div>
-      <div class="ed-flowstep"><div class="ed-flowstep-title">P2 실행 재개</div><div class="ed-flowstep-desc">디스패처가 커널 모드 → 사용자 모드로 전환하고 P2를 실행한다.</div></div>
+  <!-- ── 키워드 패널 (옵시디언 느낌) ── -->
+  <div class="keyword-panel" id="kwPanel" onclick="toggleKeywords()">
+    <div class="keyword-panel-head">
+      <span class="keyword-panel-label">핵심 키워드 펼치기</span>
+      <span class="keyword-panel-chevron">›</span>
+    </div>
+    <div class="keyword-cloud">
+      <span class="keyword-chip big">문맥교환</span>
+      <span class="keyword-chip big">PCB</span>
+      <span class="keyword-chip">디스패처</span>
+      <span class="keyword-chip">디스패처 지연</span>
+      <span class="keyword-chip">프로세스 상태</span>
+      <span class="keyword-chip small">타이머 인터럽트</span>
+      <span class="keyword-chip small">시스템 콜</span>
+      <span class="keyword-chip small">TLB 플러시</span>
+      <span class="keyword-chip small">캐시 오염</span>
+      <span class="keyword-chip small">스케줄러</span>
+      <span class="keyword-chip small">선점형 스케줄링</span>
+      <span class="keyword-chip small">스레드 전환</span>
     </div>
   </div>
 
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">03</span> 프로세스 상태 전이 — 5가지</div>
-    <table class="ed-statetable">
-      <tr><td>New</td><td>생성 중</td><td>문맥 없음 (PCB 초기화 중)</td></tr>
-      <tr><td style="color:#D05840;">Running</td><td>CPU 점유 중</td><td>문맥교환의 출발점 또는 도착점</td></tr>
-      <tr><td>Ready</td><td>CPU 할당 대기 중</td><td>문맥교환 후 이 상태로 전환되거나, 이 상태에서 선택됨</td></tr>
-      <tr><td>Waiting</td><td>I/O 또는 이벤트 대기 중</td><td>Running → Waiting 전환 시 문맥 저장 발생</td></tr>
-      <tr><td>Terminated</td><td>실행 완료·종료</td><td>PCB 해제. 더 이상 복원 불필요</td></tr>
-    </table>
+  <!-- ── 메인 / Tip 토글 ── -->
+  <div class="mode-toggle">
+    <button class="mode-toggle-btn active" id="btn-concept" onclick="setMode('concept')">개념</button>
+    <button class="mode-toggle-btn" id="btn-tip" onclick="setMode('tip')">Tip</button>
   </div>
 
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">04</span> PCB 구성 요소</div>
-    <div class="ed-pcb-row"><div class="ed-pcb-label-col">프로세스 식별 정보</div><div class="ed-pcb-items">PID(고유 번호) · 부모 PID(PPID) · 사용자 ID(UID)</div></div>
-    <div class="ed-pcb-row"><div class="ed-pcb-label-col accent">CPU 상태 정보 — 문맥 핵심</div><div class="ed-pcb-items">프로그램 카운터(PC) · 범용 레지스터 전체 · 스택 포인터(SP) · 상태 레지스터(플래그) · 기본·한계 레지스터</div></div>
-    <div class="ed-pcb-row"><div class="ed-pcb-label-col">프로세스 제어 정보</div><div class="ed-pcb-items">프로세스 상태 · 스케줄링 우선순위 · 대기 이벤트 정보</div></div>
-    <div class="ed-pcb-row"><div class="ed-pcb-label-col">자원 관리 정보</div><div class="ed-pcb-items">메모리 맵(페이지 테이블 포인터) · 열린 파일 목록 · I/O 장치 목록 · CPU 사용 시간</div></div>
-  </div>
+  <!-- ══════════════════════════ 개념 (메인) ══════════════════════════ -->
+  <div class="mode-panel active" id="mode-concept">
 
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">05</span> 오버헤드 & 성능 고려사항</div>
-    <div class="ed-over-item"><div class="ed-over-label accent">디스패처 지연(Dispatcher Latency)</div><div class="ed-over-desc">문맥교환에 소요되는 순수 시간. 이 시간 동안 CPU는 사용자 프로세스를 실행하지 못한다. 운영체제 설계의 핵심 최적화 대상.</div></div>
-    <div class="ed-over-item"><div class="ed-over-label">캐시 오염(Cache Pollution)</div><div class="ed-over-desc">프로세스 전환 시 이전 프로세스가 캐시에 올려둔 데이터가 무효화된다. 새 프로세스는 콜드 캐시에서 시작하므로 초기 실행 속도가 느려진다.</div></div>
-    <div class="ed-over-item"><div class="ed-over-label">TLB 플러시(TLB Flush)</div><div class="ed-over-desc">TLB는 페이지 테이블 캐시. 주소 공간이 바뀌면 TLB를 플러시해야 한다. ASID 태깅으로 플러시를 줄일 수 있다.</div></div>
-    <div class="ed-over-item"><div class="ed-over-label">성능 개선 — 스레드 전환</div><div class="ed-over-desc">스레드 전환은 주소 공간이 공유되므로 TLB 플러시 없이 레지스터만 교환 → 문맥교환보다 빠름.</div></div>
-  </div>
-
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">06</span> 프로세스 vs 스레드 문맥교환</div>
-    <table class="ed-vstable">
-      <thead><tr><th>구분</th><th>프로세스</th><th>스레드</th></tr></thead>
-      <tbody>
-        <tr><td>주소 공간</td><td>별도 (가상 주소 공간 교체)</td><td>공유</td></tr>
-        <tr><td>TLB 플러시</td><td>필요</td><td>불필요</td></tr>
-        <tr><td>저장 항목</td><td>PCB 전체</td><td>레지스터·스택·PC 위주</td></tr>
-        <tr><td>비용</td><td>높음 (Heavy)</td><td>낮음 (Light)</td></tr>
-        <tr><td>캐시 오염</td><td>심각</td><td>경미</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">07</span> 논술 답안 구조</div>
-    <div class="ed-essay-group"><div class="ed-essay-label">개념 정의</div>
-      <div class="ed-essay-item">문맥교환 정의: CPU 실행 프로세스 교체 시 현재 상태 저장 + 새 프로세스 상태 복원</div>
-      <div class="ed-essay-item">문맥(Context): PCB에 저장되는 CPU 상태 정보 전체</div>
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">01</span> 발생 조건</div>
+      <div class="ed-trigger"><div class="ed-trigger-n">01</div><div><div class="ed-trigger-name">타이머 인터럽트</div><div class="ed-trigger-desc">선점형 스케줄러가 타임 슬라이스 만료를 감지하면 강제로 CPU를 회수한다.</div></div></div>
+      <div class="ed-trigger"><div class="ed-trigger-n">02</div><div><div class="ed-trigger-name">I/O 요청 또는 이벤트 대기</div><div class="ed-trigger-desc">실행 중인 프로세스가 I/O 작업을 요청하면 Waiting 상태로 전환되고, 다른 프로세스가 CPU를 점유한다.</div></div></div>
+      <div class="ed-trigger"><div class="ed-trigger-n">03</div><div><div class="ed-trigger-name">시스템 콜</div><div class="ed-trigger-desc">프로세스가 커널에 서비스를 요청할 때 일부 시스템 콜은 문맥교환을 유발한다.</div></div></div>
+      <div class="ed-trigger"><div class="ed-trigger-n">04</div><div><div class="ed-trigger-name">고우선순위 프로세스 도착</div><div class="ed-trigger-desc">선점형 스케줄러에서 Ready 큐에 더 높은 우선순위 프로세스가 들어오면 현재 프로세스를 선점한다.</div></div></div>
     </div>
-    <div class="ed-essay-group"><div class="ed-essay-label">발생 조건 및 절차</div>
-      <div class="ed-essay-item">트리거: 타이머 인터럽트 / I/O 요청 / 시스템 콜 / 고우선순위 프로세스 도착</div>
-      <div class="ed-essay-item">절차: P1 저장(PCB₁) → P1 큐 이동 → P2 선택 → P2 복원(PCB₂) → P2 실행</div>
+
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">02</span> 문맥교환 절차 — 6단계</div>
+      <div class="ed-flow">
+        <div class="ed-flowstep"><div class="ed-flowstep-title">인터럽트 / 시스템 콜 발생</div><div class="ed-flowstep-desc">문맥교환의 트리거. P1 실행이 일시 중단된다.</div></div>
+        <div class="ed-flowstep accent"><div class="ed-flowstep-title">P1 문맥 저장 → PCB₁</div><div class="ed-flowstep-desc">PC·레지스터·SP·플래그 등 CPU 상태 전체를 P1의 PCB에 기록한다.</div></div>
+        <div class="ed-flowstep"><div class="ed-flowstep-title">P1 상태 전환 → Ready / Waiting</div><div class="ed-flowstep-desc">원인에 따라 Ready 큐 또는 Waiting 큐로 이동한다.</div></div>
+        <div class="ed-flowstep"><div class="ed-flowstep-title">스케줄러가 P2 선택</div><div class="ed-flowstep-desc">CPU 스케줄러가 Ready 큐에서 다음 실행할 프로세스 P2를 결정한다.</div></div>
+        <div class="ed-flowstep accent"><div class="ed-flowstep-title">P2 문맥 복원 ← PCB₂</div><div class="ed-flowstep-desc">P2의 PCB에 저장된 상태를 레지스터에 적재한다.</div></div>
+        <div class="ed-flowstep"><div class="ed-flowstep-title">P2 실행 재개</div><div class="ed-flowstep-desc">디스패처가 커널 모드 → 사용자 모드로 전환하고 P2를 실행한다.</div></div>
+      </div>
     </div>
-    <div class="ed-essay-group"><div class="ed-essay-label">PCB 구성 & 역할</div>
-      <div class="ed-essay-item">PCB 저장 핵심: PC·레지스터·SP·플래그·메모리 맵·파일 디스크립터 등</div>
-      <div class="ed-essay-item">PCB 없으면 중단된 프로세스 재개 불가</div>
+
+    <!-- ── 둘러보기: 인터랙티브 시각화 토글 ── -->
+    <div class="ed-section">
+      <button class="viz-toggle-btn" id="vizBtn" onclick="toggleViz()">
+        <span>🎞️ 인터랙티브로 살펴보기 — 단계별 클릭, 타임라인, PCB 구조</span>
+        <span class="viz-toggle-icon">⌄</span>
+      </button>
+      <div class="viz-mount-wrap" id="vizWrap">
+        <div id="viz-container"></div>
+      </div>
     </div>
-    <div class="ed-essay-group"><div class="ed-essay-label">오버헤드 & 의의</div>
-      <div class="ed-essay-item">문맥교환 중 CPU는 유용한 작업 수행 불가 → 순수 오버헤드</div>
-      <div class="ed-essay-item">멀티태스킹 구현의 핵심 메커니즘. 스레드 전환은 프로세스 전환보다 경량</div>
+
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">03</span> 프로세스 상태 전이 — 5가지</div>
+      <table class="ed-statetable">
+        <tr><td>New</td><td>생성 중</td><td>문맥 없음 (PCB 초기화 중)</td></tr>
+        <tr class="running"><td>Running</td><td>CPU 점유 중</td><td>문맥교환의 출발점 또는 도착점</td></tr>
+        <tr><td>Ready</td><td>CPU 할당 대기 중</td><td>문맥교환 후 이 상태로 전환되거나, 이 상태에서 선택됨</td></tr>
+        <tr><td>Waiting</td><td>I/O 또는 이벤트 대기 중</td><td>Running → Waiting 전환 시 문맥 저장 발생</td></tr>
+        <tr><td>Terminated</td><td>실행 완료·종료</td><td>PCB 해제. 더 이상 복원 불필요</td></tr>
+      </table>
     </div>
+
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">04</span> PCB 구성 요소</div>
+      <div class="ed-pcb-row accent"><div class="ed-pcb-label-col">CPU 상태 정보 — 문맥 핵심</div><div class="ed-pcb-items">프로그램 카운터(PC) · 범용 레지스터 전체 · 스택 포인터(SP) · 상태 레지스터(플래그) · 기본·한계 레지스터</div></div>
+      <div class="ed-pcb-row"><div class="ed-pcb-label-col">프로세스 식별 정보</div><div class="ed-pcb-items">PID(고유 번호) · 부모 PID(PPID) · 사용자 ID(UID)</div></div>
+      <div class="ed-pcb-row"><div class="ed-pcb-label-col">프로세스 제어 정보</div><div class="ed-pcb-items">프로세스 상태 · 스케줄링 우선순위 · 대기 이벤트 정보</div></div>
+      <div class="ed-pcb-row"><div class="ed-pcb-label-col">자원 관리 정보</div><div class="ed-pcb-items">메모리 맵(페이지 테이블 포인터) · 열린 파일 목록 · I/O 장치 목록 · CPU 사용 시간</div></div>
+    </div>
+
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">05</span> 오버헤드 & 성능 고려사항</div>
+      <div class="ed-over-item"><div class="ed-over-label accent">디스패처 지연(Dispatcher Latency)</div><div class="ed-over-desc">문맥교환에 소요되는 순수 시간. 이 시간 동안 CPU는 사용자 프로세스를 실행하지 못한다. 운영체제 설계의 핵심 최적화 대상.</div></div>
+      <div class="ed-over-item"><div class="ed-over-label">캐시 오염(Cache Pollution)</div><div class="ed-over-desc">프로세스 전환 시 이전 프로세스가 캐시에 올려둔 데이터가 무효화된다. 새 프로세스는 콜드 캐시에서 시작하므로 초기 실행 속도가 느려진다.</div></div>
+      <div class="ed-over-item"><div class="ed-over-label">TLB 플러시(TLB Flush)</div><div class="ed-over-desc">TLB는 페이지 테이블 캐시. 주소 공간이 바뀌면 TLB를 플러시해야 한다. ASID 태깅으로 플러시를 줄일 수 있다.</div></div>
+      <div class="ed-over-item"><div class="ed-over-label">성능 개선 — 스레드 전환</div><div class="ed-over-desc">스레드 전환은 주소 공간이 공유되므로 TLB 플러시 없이 레지스터만 교환 → 문맥교환보다 빠름.</div></div>
+    </div>
+
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">06</span> 프로세스 vs 스레드 문맥교환</div>
+      <table class="ed-vstable">
+        <thead><tr><th>구분</th><th>프로세스</th><th>스레드</th></tr></thead>
+        <tbody>
+          <tr><td>주소 공간</td><td>별도 (가상 주소 공간 교체)</td><td>공유</td></tr>
+          <tr><td>TLB 플러시</td><td>필요</td><td>불필요</td></tr>
+          <tr><td>저장 항목</td><td>PCB 전체</td><td>레지스터·스택·PC 위주</td></tr>
+          <tr><td>비용</td><td>높음 (Heavy)</td><td>낮음 (Light)</td></tr>
+          <tr><td>캐시 오염</td><td>심각</td><td>경미</td></tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">08</span> 체크 포인트</div>
-    <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><strong>문맥교환 ≠ CPU 스케줄링.</strong> 스케줄링은 "누구를 실행할지 결정"하는 정책, 문맥교환은 그 결정을 "실제로 구현"하는 메커니즘이다.</div>
-    <div class="ed-check"><span class="ed-check-label danger">혼동 주의</span><strong>문맥교환 ≠ 인터럽트 처리.</strong> 인터럽트 발생 시 커널 스택 저장은 인터럽트 처리이고, 다른 프로세스로의 전환이 문맥교환이다.</div>
-    <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><strong>PCB 저장 핵심 3요소:</strong> 프로그램 카운터(PC) + 범용 레지스터 + 스택 포인터(SP). 이 세 가지가 없으면 프로세스 재개 불가.</div>
-    <div class="ed-check"><span class="ed-check-label success">핵심 암기</span><strong>스레드 문맥교환 &lt; 프로세스 문맥교환:</strong> 주소 공간을 공유하므로 TLB 플러시 없이 레지스터만 교환 → 경량.</div>
-  </div>
+  <!-- ══════════════════════════ Tip ══════════════════════════ -->
+  <div class="mode-panel" id="mode-tip">
 
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">09</span> 기출 포인트</div>
-    <div class="ed-exam-meta"><span class="years">2016 · 2018 · 2019 · 2020 · 2022</span>PCB 구성 요소, 문맥교환 정의 및 절차, 디스패처 개념, 프로세스 상태 전이가 집중 출제. 스레드와의 비교 문제 비중 증가 추세.</div>
-    <div class="ed-exam-item"><div class="ed-exam-year">2020중</div><div class="ed-exam-text">문맥교환 시 저장되는 프로그램 카운터(PC), 레지스터 등 CPU 상태 정보</div></div>
-    <div class="ed-exam-item"><div class="ed-exam-year">2018중</div><div class="ed-exam-text">PCB 구성 요소(프로세스 상태, PC, 레지스터, 메모리 정보 등) 전반</div></div>
-    <div class="ed-exam-item"><div class="ed-exam-year">2016중</div><div class="ed-exam-text">문맥교환의 정의와 발생 조건 (인터럽트·시스템 콜·타이머 만료)</div></div>
-    <div class="ed-exam-item"><div class="ed-exam-year">2022중</div><div class="ed-exam-text">디스패처(Dispatcher)의 역할과 디스패처 지연(Dispatcher Latency) 개념</div></div>
-    <div class="ed-exam-item"><div class="ed-exam-year">2019중</div><div class="ed-exam-text">프로세스 상태 전이 5단계와 전이 조건</div></div>
-    <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text">스레드 문맥교환과 프로세스 문맥교환의 차이 (TLB 플러시 여부, 공유 자원 범위)</div></div>
-    <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text">CPU 스케줄링 알고리즘과 문맥교환 빈도의 상관관계</div></div>
-    <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text">선점형 vs 비선점형 스케줄링에서 문맥교환 발생 방식</div></div>
-    <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text">TLB 플러시와 캐시 오염이 문맥교환 오버헤드에 미치는 영향</div></div>
-  </div>
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">01</span> 논술 답안 구조</div>
+      <div class="ed-essay-group"><div class="ed-essay-label">개념 정의</div>
+        <div class="ed-essay-item">문맥교환 정의: CPU 실행 프로세스 교체 시 현재 상태 저장 + 새 프로세스 상태 복원</div>
+        <div class="ed-essay-item">문맥(Context): PCB에 저장되는 CPU 상태 정보 전체</div>
+      </div>
+      <div class="ed-essay-group"><div class="ed-essay-label">발생 조건 및 절차</div>
+        <div class="ed-essay-item">트리거: 타이머 인터럽트 / I/O 요청 / 시스템 콜 / 고우선순위 프로세스 도착</div>
+        <div class="ed-essay-item">절차: P1 저장(PCB₁) → P1 큐 이동 → P2 선택 → P2 복원(PCB₂) → P2 실행</div>
+      </div>
+      <div class="ed-essay-group"><div class="ed-essay-label">PCB 구성 & 역할</div>
+        <div class="ed-essay-item">PCB 저장 핵심: PC·레지스터·SP·플래그·메모리 맵·파일 디스크립터 등</div>
+        <div class="ed-essay-item">PCB 없으면 중단된 프로세스 재개 불가</div>
+      </div>
+      <div class="ed-essay-group"><div class="ed-essay-label">오버헤드 & 의의</div>
+        <div class="ed-essay-item">문맥교환 중 CPU는 유용한 작업 수행 불가 → 순수 오버헤드</div>
+        <div class="ed-essay-item">멀티태스킹 구현의 핵심 메커니즘. 스레드 전환은 프로세스 전환보다 경량</div>
+      </div>
+    </div>
 
-  <div class="ed-section">
-    <div class="ed-h2"><span class="num">10</span> 리마인드 — 11문항</div>
-    <div id="ed-quiz-list"></div>
-    <button class="ed-reset" onclick="resetQuiz('ed')">전체 초기화</button>
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">02</span> 체크 포인트</div>
+      <div class="ed-check danger"><span class="ed-check-label danger">혼동 주의</span><strong>문맥교환 ≠ CPU 스케줄링.</strong> 스케줄링은 "누구를 실행할지 결정"하는 정책, 문맥교환은 그 결정을 "실제로 구현"하는 메커니즘이다.</div>
+      <div class="ed-check danger"><span class="ed-check-label danger">혼동 주의</span><strong>문맥교환 ≠ 인터럽트 처리.</strong> 인터럽트 발생 시 커널 스택 저장은 인터럽트 처리이고, 다른 프로세스로의 전환이 문맥교환이다.</div>
+      <div class="ed-check success"><span class="ed-check-label success">핵심 암기</span><strong>PCB 저장 핵심 3요소:</strong> 프로그램 카운터(PC) + 범용 레지스터 + 스택 포인터(SP). 이 세 가지가 없으면 프로세스 재개 불가.</div>
+      <div class="ed-check success"><span class="ed-check-label success">핵심 암기</span><strong>스레드 문맥교환 &lt; 프로세스 문맥교환:</strong> 주소 공간을 공유하므로 TLB 플러시 없이 레지스터만 교환 → 경량.</div>
+    </div>
+
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">03</span> 기출 포인트</div>
+      <div class="ed-exam-meta"><span class="years">2016 · 2018 · 2019 · 2020 · 2022</span>PCB 구성 요소, 문맥교환 정의 및 절차, 디스패처 개념, 프로세스 상태 전이가 집중 출제. 스레드와의 비교 문제 비중 증가 추세.</div>
+
+      <div class="ed-exam-subtitle freq">자주 출제</div>
+      <table class="ed-exam-table">
+        <tr><td class="exam-year-col">2020중</td><td class="exam-text-col">문맥교환 시 저장되는 프로그램 카운터(PC), 레지스터 등 CPU 상태 정보</td></tr>
+        <tr><td class="exam-year-col">2018중</td><td class="exam-text-col">PCB 구성 요소(프로세스 상태, PC, 레지스터, 메모리 정보 등) 전반</td></tr>
+        <tr><td class="exam-year-col">2016중</td><td class="exam-text-col">문맥교환의 정의와 발생 조건 (인터럽트·시스템 콜·타이머 만료)</td></tr>
+        <tr><td class="exam-year-col">2022중</td><td class="exam-text-col">디스패처(Dispatcher)의 역할과 디스패처 지연(Dispatcher Latency) 개념</td></tr>
+        <tr><td class="exam-year-col">2019중</td><td class="exam-text-col">프로세스 상태 전이 5단계와 전이 조건</td></tr>
+      </table>
+
+      <div class="ed-exam-subtitle normal">간헐 출제</div>
+      <table class="ed-exam-table">
+        <tr><td class="exam-year-col">상시</td><td class="exam-text-col">스레드 문맥교환과 프로세스 문맥교환의 차이 (TLB 플러시 여부, 공유 자원 범위)</td></tr>
+        <tr><td class="exam-year-col">상시</td><td class="exam-text-col">CPU 스케줄링 알고리즘과 문맥교환 빈도의 상관관계</td></tr>
+        <tr><td class="exam-year-col">상시</td><td class="exam-text-col">선점형 vs 비선점형 스케줄링에서 문맥교환 발생 방식</td></tr>
+        <tr><td class="exam-year-col">상시</td><td class="exam-text-col">TLB 플러시와 캐시 오염이 문맥교환 오버헤드에 미치는 영향</td></tr>
+      </table>
+    </div>
+
+    <div class="ed-section">
+      <div class="ed-h2"><span class="num">04</span> 리마인드 — 11문항</div>
+      <div id="quiz-list"></div>
+      <button class="ed-reset" onclick="resetQuiz()">전체 초기화</button>
+    </div>
+
   </div>
 
 </div>
-</div>
 
-<!-- ══════════════════════════════════════════ BENTO ══════════════════════════════════════════ -->
-<div class="view-panel" data-style="bento">
-<div class="bn-page">
-<div class="bn-master">
-
-  <div class="bn-tile hero">
-    <div class="bn-eyebrow">운영체제 · 프로세스 관리</div>
-    <div class="bn-big">문맥교환<br>Context Switch</div>
-    <div class="bn-lede">CPU가 실행 중인 프로세스를 교체할 때 현재 상태를 저장하고 새 프로세스 상태를 복원하는 커널의 작업. 이 구간 전체는 순수 오버헤드.</div>
-  </div>
-  <div class="bn-tile stat"><div class="num">6</div><div class="lbl">절차 단계</div></div>
-  <div class="bn-tile stat"><div class="num">11</div><div class="lbl">리마인드 문항</div></div>
-
-  <div class="bn-tile trigger"><div class="t-name">타이머 인터럽트</div><div class="t-desc">타임 슬라이스 만료 시 CPU 강제 회수</div></div>
-  <div class="bn-tile trigger"><div class="t-name">I/O 요청·이벤트 대기</div><div class="t-desc">Waiting 전환, 타 프로세스가 CPU 점유</div></div>
-  <div class="bn-tile trigger"><div class="t-name">시스템 콜</div><div class="t-desc">커널 서비스 요청 중 일부가 문맥교환 유발</div></div>
-  <div class="bn-tile trigger"><div class="t-name">고우선순위 프로세스 도착</div><div class="t-desc">Ready 큐에 우선순위 높은 프로세스 진입 시 선점</div></div>
-
-  <div class="bn-tile step"><div class="s-no">01</div><div class="s-name">인터럽트 / 시스템 콜 발생</div><div class="s-desc">P1 실행 일시 중단</div></div>
-  <div class="bn-tile step wide"><div class="s-no">02 · 문맥 핵심</div><div class="s-name">P1 문맥 저장 → PCB₁</div><div class="s-desc">PC·레지스터·SP·플래그 등 CPU 상태 전체를 PCB에 기록한다</div></div>
-  <div class="bn-tile step"><div class="s-no">03</div><div class="s-name">Ready/Waiting 전환</div><div class="s-desc">원인에 따라 큐 이동</div></div>
-  <div class="bn-tile step"><div class="s-no">04</div><div class="s-name">P2 선택</div><div class="s-desc">스케줄러가 다음 프로세스 결정</div></div>
-  <div class="bn-tile step wide"><div class="s-no">05 · 문맥 핵심</div><div class="s-name">P2 문맥 복원 ← PCB₂</div><div class="s-desc">PCB에 저장된 상태를 레지스터에 적재한다</div></div>
-  <div class="bn-tile step"><div class="s-no">06</div><div class="s-name">P2 실행 재개</div><div class="s-desc">커널→사용자 모드 전환</div></div>
-
-  <div class="bn-tile state">
-    <div class="bn-state-seg"><div class="bn-state-name">NEW</div><div class="bn-state-desc">생성 중, 문맥 없음</div></div>
-    <div class="bn-state-seg"><div class="bn-state-name">READY</div><div class="bn-state-desc">CPU 할당 대기</div></div>
-    <div class="bn-state-seg running"><div class="bn-state-name">RUNNING</div><div class="bn-state-desc">문맥교환 출발/도착점</div></div>
-    <div class="bn-state-seg"><div class="bn-state-name">WAITING</div><div class="bn-state-desc">I/O 대기, 저장 발생</div></div>
-    <div class="bn-state-seg"><div class="bn-state-name">TERMINATED</div><div class="bn-state-desc">PCB 해제, 복원 불필요</div></div>
-  </div>
-
-  <div class="bn-tile pcb core">
-    <div class="bn-pcb-title">CPU 상태 정보 — 문맥 핵심</div>
-    <div class="bn-pcb-grid-items">
-      <div class="bn-pcb-chip">프로그램 카운터 (PC)</div>
-      <div class="bn-pcb-chip">범용 레지스터</div>
-      <div class="bn-pcb-chip">스택 포인터 (SP)</div>
-      <div class="bn-pcb-chip">상태 레지스터</div>
-    </div>
-  </div>
-  <div class="bn-tile pcb"><div class="bn-pcb-title">프로세스 식별 정보</div><div class="bn-pcb-item-list">PID · 부모 PID(PPID) · 사용자 ID(UID)</div></div>
-  <div class="bn-tile pcb"><div class="bn-pcb-title">프로세스 제어 정보</div><div class="bn-pcb-item-list">프로세스 상태 · 우선순위 · 대기 이벤트</div></div>
-  <div class="bn-tile pcb"><div class="bn-pcb-title">자원 관리 정보</div><div class="bn-pcb-item-list">메모리 맵 · 열린 파일 목록 · I/O 장치</div></div>
-
-  <div class="bn-tile overhead main"><div class="bn-overhead-label">디스패처 지연 (Dispatcher Latency)</div><div class="bn-overhead-desc">문맥교환에 소요되는 순수 시간. 이 시간 동안 CPU는 사용자 프로세스를 실행하지 못한다. 운영체제 설계의 핵심 최적화 대상.</div></div>
-  <div class="bn-tile overhead"><div class="bn-overhead-label">캐시 오염</div><div class="bn-overhead-desc">이전 프로세스의 캐시 데이터 무효화 → 콜드 캐시로 재시작</div></div>
-  <div class="bn-tile overhead"><div class="bn-overhead-label">TLB 플러시</div><div class="bn-overhead-desc">주소 공간 변경 시 페이지 테이블 캐시 무효화. ASID로 완화 가능</div></div>
-
-  <div class="bn-tile compare">
-    <table class="bn-compare-table">
-      <thead><tr><th>구분</th><th>프로세스</th><th>스레드</th></tr></thead>
-      <tbody>
-        <tr><td>주소 공간</td><td>별도</td><td>공유</td></tr>
-        <tr><td>TLB 플러시</td><td>필요</td><td>불필요</td></tr>
-        <tr><td>비용</td><td>높음 (Heavy)</td><td>낮음 (Light)</td></tr>
-        <tr><td>캐시 오염</td><td>심각</td><td>경미</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="bn-tile check danger"><span class="bn-check-tag">혼동 주의</span>문맥교환 ≠ CPU 스케줄링. 스케줄링은 정책, 문맥교환은 구현.</div>
-  <div class="bn-tile check danger"><span class="bn-check-tag">혼동 주의</span>문맥교환 ≠ 인터럽트 처리. 커널 스택 저장과는 구별된다.</div>
-  <div class="bn-tile check success"><span class="bn-check-tag">핵심 암기</span>PCB 핵심 3요소: PC + 레지스터 + SP.</div>
-  <div class="bn-tile check success"><span class="bn-check-tag">핵심 암기</span>스레드 전환 &lt; 프로세스 전환 (경량).</div>
-
-  <div class="bn-tile examhead">
-    <div class="bn-examhead-years">2016 · 2018 · 2019 · 2020 · 2022</div>
-    <div class="bn-examhead-note">PCB 구성 요소, 문맥교환 정의 및 절차, 디스패처 개념, 프로세스 상태 전이가 집중 출제. 스레드와의 비교 문제 비중 증가 추세.</div>
-  </div>
-  <div class="bn-tile exam freq">
-    <span class="bn-exam-tag">자주 출제</span>
-    <div class="bn-exam-text">[2020중] PC·레지스터 등 CPU 상태 정보 저장</div>
-    <div class="bn-exam-text">[2018중] PCB 구성 요소 전반</div>
-    <div class="bn-exam-text">[2016중] 문맥교환 정의·발생 조건</div>
-    <div class="bn-exam-text">[2022중] 디스패처 역할·디스패처 지연</div>
-    <div class="bn-exam-text">[2019중] 프로세스 상태 전이 5단계</div>
-  </div>
-  <div class="bn-tile exam normal">
-    <span class="bn-exam-tag" style="color:#8A6010;">간헐 출제</span>
-    <div class="bn-exam-text">스레드 vs 프로세스 문맥교환 차이</div>
-    <div class="bn-exam-text">스케줄링 알고리즘과 문맥교환 빈도</div>
-    <div class="bn-exam-text">선점형 vs 비선점형 발생 방식</div>
-    <div class="bn-exam-text">TLB 플러시·캐시 오염의 영향</div>
-  </div>
-
-  <div id="bn-quiz-list"></div>
-  <button class="bn-reset-tile" onclick="resetQuiz('bn')">전체 초기화</button>
-
-</div>
-</div>
-</div>
-
-<!-- ══════════════════════════════════════════ MIX ══════════════════════════════════════════ -->
-<div class="view-panel" data-style="mix">
-<div class="mx-page">
-
-  <div class="mx-eyebrow">운영체제 · 프로세스 관리</div>
-  <div class="mx-title">문맥교환</div>
-  <div class="mx-lede"><strong>문맥교환(Context Switch)</strong>은 CPU가 실행 중인 프로세스를 교체할 때, 현재 상태를 저장하고 새 프로세스 상태를 복원하는 커널의 작업. 이 구간 전체는 순수 오버헤드로 간주된다.</div>
-
-  <div class="mx-section">
-    <div class="mx-h2">발생 조건</div>
-    <div class="mx-tile-grid-4">
-      <div class="mx-tile"><div class="mx-tile-name">타이머 인터럽트</div><div class="mx-tile-desc">타임 슬라이스 만료 시 CPU 강제 회수</div></div>
-      <div class="mx-tile"><div class="mx-tile-name">I/O 요청</div><div class="mx-tile-desc">Waiting 전환, 타 프로세스가 점유</div></div>
-      <div class="mx-tile"><div class="mx-tile-name">시스템 콜</div><div class="mx-tile-desc">일부 호출이 문맥교환 유발</div></div>
-      <div class="mx-tile"><div class="mx-tile-name">고우선순위 도착</div><div class="mx-tile-desc">Ready 큐 우선순위 역전 시 선점</div></div>
-    </div>
-  </div>
-
-  <div class="mx-section">
-    <div class="mx-h2">문맥교환 절차 — 6단계</div>
-    <div class="mx-flow">
-      <div class="mx-flowstep"><div class="mx-flowstep-title">인터럽트 / 시스템 콜 발생</div><div class="mx-flowstep-desc">문맥교환의 트리거. P1 실행이 일시 중단된다.</div></div>
-      <div class="mx-flowstep accent"><div class="mx-flowstep-title">P1 문맥 저장 → PCB₁</div><div class="mx-flowstep-desc">PC·레지스터·SP·플래그 등 CPU 상태 전체를 P1의 PCB에 기록한다.</div></div>
-      <div class="mx-flowstep"><div class="mx-flowstep-title">P1 상태 전환 → Ready / Waiting</div><div class="mx-flowstep-desc">원인에 따라 Ready 큐 또는 Waiting 큐로 이동한다.</div></div>
-      <div class="mx-flowstep"><div class="mx-flowstep-title">스케줄러가 P2 선택</div><div class="mx-flowstep-desc">Ready 큐에서 다음 실행할 프로세스를 결정한다.</div></div>
-      <div class="mx-flowstep accent"><div class="mx-flowstep-title">P2 문맥 복원 ← PCB₂</div><div class="mx-flowstep-desc">P2의 PCB에 저장된 상태를 레지스터에 적재한다.</div></div>
-      <div class="mx-flowstep"><div class="mx-flowstep-title">P2 실행 재개</div><div class="mx-flowstep-desc">디스패처가 커널 모드 → 사용자 모드로 전환하고 P2를 실행한다.</div></div>
-    </div>
-  </div>
-
-  <div class="mx-section">
-    <div class="mx-h2">프로세스 상태 전이</div>
-    <div class="mx-state-row">
-      <div class="mx-state-seg"><div class="mx-state-name">NEW</div><div class="mx-state-desc">생성 중</div></div>
-      <div class="mx-state-seg"><div class="mx-state-name">READY</div><div class="mx-state-desc">CPU 대기</div></div>
-      <div class="mx-state-seg running"><div class="mx-state-name">RUNNING</div><div class="mx-state-desc">실행 중·핵심</div></div>
-      <div class="mx-state-seg"><div class="mx-state-name">WAITING</div><div class="mx-state-desc">I/O 대기</div></div>
-      <div class="mx-state-seg"><div class="mx-state-name">TERMINATED</div><div class="mx-state-desc">종료</div></div>
-    </div>
-  </div>
-
-  <div class="mx-section">
-    <div class="mx-h2">PCB 구성 요소</div>
-    <div class="mx-pcb-row accent"><div class="mx-pcb-label accent">CPU 상태 (핵심)</div><div class="mx-pcb-chips"><span class="mx-pcb-chip">PC</span><span class="mx-pcb-chip">범용 레지스터</span><span class="mx-pcb-chip">SP</span><span class="mx-pcb-chip">플래그</span></div></div>
-    <div class="mx-pcb-row"><div class="mx-pcb-label">식별 정보</div><div class="mx-pcb-chips"><span class="mx-pcb-chip">PID</span><span class="mx-pcb-chip">PPID</span><span class="mx-pcb-chip">UID</span></div></div>
-    <div class="mx-pcb-row"><div class="mx-pcb-label">제어 정보</div><div class="mx-pcb-chips"><span class="mx-pcb-chip">프로세스 상태</span><span class="mx-pcb-chip">우선순위</span></div></div>
-    <div class="mx-pcb-row"><div class="mx-pcb-label">자원 관리</div><div class="mx-pcb-chips"><span class="mx-pcb-chip">메모리 맵</span><span class="mx-pcb-chip">열린 파일</span><span class="mx-pcb-chip">I/O 장치</span></div></div>
-  </div>
-
-  <div class="mx-section">
-    <div class="mx-h2">프로세스 vs 스레드 문맥교환</div>
-    <table class="mx-vstable">
-      <thead><tr><th>구분</th><th>프로세스</th><th>스레드</th></tr></thead>
-      <tbody>
-        <tr><td>주소 공간</td><td>별도</td><td>공유</td></tr>
-        <tr><td>TLB 플러시</td><td>필요</td><td>불필요</td></tr>
-        <tr><td>비용</td><td>높음</td><td>낮음</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="mx-section">
-    <div class="mx-h2">체크 포인트</div>
-    <div class="mx-check-grid">
-      <div class="mx-check danger"><span class="mx-check-tag">혼동 주의</span>문맥교환 ≠ CPU 스케줄링. 스케줄링은 정책, 문맥교환은 구현.</div>
-      <div class="mx-check danger"><span class="mx-check-tag">혼동 주의</span>문맥교환 ≠ 인터럽트 처리.</div>
-      <div class="mx-check success"><span class="mx-check-tag">핵심 암기</span>PCB 핵심 3요소: PC + 레지스터 + SP.</div>
-      <div class="mx-check success"><span class="mx-check-tag">핵심 암기</span>스레드 전환 &lt; 프로세스 전환.</div>
-    </div>
-  </div>
-
-  <div class="mx-section">
-    <div class="mx-h2">기출 포인트</div>
-    <div class="mx-exam-card">
-      <div class="mx-exam-years">2016 · 2018 · 2019 · 2020 · 2022</div>
-      <div class="mx-exam-note">PCB 구성 요소, 문맥교환 정의·절차, 디스패처 개념이 집중 출제.</div>
-    </div>
-    <div class="mx-exam-item"><div class="mx-exam-tag">2020중</div><div class="mx-exam-text">PC·레지스터 등 CPU 상태 정보 저장</div></div>
-    <div class="mx-exam-item"><div class="mx-exam-tag">2018중</div><div class="mx-exam-text">PCB 구성 요소 전반</div></div>
-    <div class="mx-exam-item"><div class="mx-exam-tag">2016중</div><div class="mx-exam-text">문맥교환 정의와 발생 조건</div></div>
-    <div class="mx-exam-item"><div class="mx-exam-tag">2022중</div><div class="mx-exam-text">디스패처 역할·디스패처 지연</div></div>
-    <div class="mx-exam-item"><div class="mx-exam-tag">2019중</div><div class="mx-exam-text">프로세스 상태 전이 5단계</div></div>
-    <div class="mx-exam-item"><div class="mx-exam-tag">상시</div><div class="mx-exam-text">스레드·프로세스 문맥교환 차이</div></div>
-    <div class="mx-exam-item"><div class="mx-exam-tag">상시</div><div class="mx-exam-text">TLB 플러시·캐시 오염의 영향</div></div>
-  </div>
-
-  <div class="mx-section">
-    <div class="mx-h2">리마인드 — 11문항</div>
-    <div id="mx-quiz-list"></div>
-    <button class="mx-reset" onclick="resetQuiz('mx')">전체 초기화</button>
-  </div>
-
-</div>
-</div>
-
+<script src="js/data.js"></script>
+<script src="js/config.js"></script>
+<script src="js/ui.js"></script>
 <script>
-function setStyle(style) {
-  document.querySelectorAll('.view-panel').forEach(p => p.classList.toggle('active', p.dataset.style === style));
-  ['editorial','bento','mix'].forEach(s => document.getElementById('btn-'+s).classList.toggle('active', s === style));
+/* ── 키워드 패널 토글 ── */
+function toggleKeywords() {
+  document.getElementById('kwPanel').classList.toggle('open');
 }
 
-/* ── 원본 11문항 그대로 ── */
+/* ── 메인/Tip 모드 토글 ── */
+function setMode(mode) {
+  document.getElementById('mode-concept').classList.toggle('active', mode === 'concept');
+  document.getElementById('mode-tip').classList.toggle('active', mode === 'tip');
+  document.getElementById('btn-concept').classList.toggle('active', mode === 'concept');
+  document.getElementById('btn-tip').classList.toggle('active', mode === 'tip');
+}
+
+/* ── 둘러보기 시각화 토글 (lazy load) ── */
+let vizLoaded = false;
+function toggleViz() {
+  const btn = document.getElementById('vizBtn');
+  const wrap = document.getElementById('vizWrap');
+  const opening = !wrap.classList.contains('open');
+  wrap.classList.toggle('open');
+  btn.classList.toggle('open');
+  if (opening && !vizLoaded) {
+    vizLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'visualizations/context-switch.js';
+    document.body.appendChild(s);
+  }
+}
+
+/* ── 리마인드 퀴즈 — 원본 11문항 그대로 ── */
 const QUIZ_DATA = [
   { type:'ox', q:'문맥교환(Context Switch)이 발생하는 동안 CPU는 사용자 프로세스의 유용한 작업을 수행할 수 없다.', answer:'O', explain:'문맥교환 시간은 레지스터 저장·복원에 사용되므로 순수 오버헤드(Dispatcher Latency)다.' },
   { type:'ox', q:'문맥교환 시 저장되는 정보에는 프로그램 카운터(PC), 범용 레지스터, 스택 포인터(SP)가 포함된다.', answer:'O', explain:'이 세 가지가 문맥(Context)의 핵심 구성 요소이며 PCB에 저장된다.' },
@@ -688,100 +477,62 @@ const QUIZ_DATA = [
   { type:'mc', q:'스케줄러가 선택한 프로세스에게 CPU 제어권을 실제로 넘기는 역할을 하며, 레지스터 적재·사용자 모드 전환·PC 점프를 수행하는 것은?', options:['스케줄러 (Scheduler)','디스패처 (Dispatcher)','인터럽트 핸들러 (Interrupt Handler)','세마포어 (Semaphore)'], answer:1, explain:'디스패처(Dispatcher)다. 스케줄러가 "누구를 실행할지" 결정하면, 디스패처가 "실제로 CPU를 넘기는" 작업을 수행한다.' },
 ];
 
-const state = { ed: [], bn: [], mx: [] };
-QUIZ_DATA.forEach(() => { state.ed.push({revealed:false,selected:null}); state.bn.push({revealed:false,selected:null}); state.mx.push({revealed:false,selected:null}); });
+let quizState = QUIZ_DATA.map(() => ({ revealed: false, selected: null }));
 
-function buildQuiz(prefix) {
-  const wrap = prefix === 'ed' ? document.getElementById('ed-quiz-list')
-             : prefix === 'bn' ? document.getElementById('bn-quiz-list')
-             : document.getElementById('mx-quiz-list');
-  const s = state[prefix];
+function buildQuiz() {
+  const wrap = document.getElementById('quiz-list');
+  wrap.innerHTML = QUIZ_DATA.map((q, i) => {
+    const s = quizState[i];
+    let choiceHTML = '';
 
-  if (prefix === 'bn') {
-    wrap.innerHTML = QUIZ_DATA.map((q,i) => {
-      const wide = q.type !== 'ox';
-      return `<div class="bn-tile quiz ${wide?'wide':''}" id="${prefix}-q${i}">
-        <div class="bn-quiz-type">${q.type==='ox'?'O / X':q.type==='fill'?'빈칸 채우기':'객관식'}</div>
-        <div class="bn-quiz-q">${i+1}. ${q.q}</div>
-        ${buildChoices(prefix, q, i)}
-      </div>`;
-    }).join('');
-  } else {
-    const itemClass = prefix === 'ed' ? 'ed-quiz-item' : 'mx-quiz-item';
-    const qClass = prefix === 'ed' ? 'ed-quiz-q' : 'mx-quiz-q';
-    const nClass = prefix === 'ed' ? 'ed-quiz-n' : '';
-    wrap.innerHTML = QUIZ_DATA.map((q,i) => `
-      <div class="${itemClass}" id="${prefix}-q${i}">
-        ${prefix==='ed' ? `<div class="${nClass}">${q.type==='ox'?'O / X':q.type==='fill'?'빈칸 채우기':'객관식'}</div>` : ''}
-        <div class="${qClass}">${i+1}. ${q.q}</div>
-        ${buildChoices(prefix, q, i)}
-      </div>`).join('');
-  }
+    if (q.type === 'ox') {
+      choiceHTML = `<div class="ed-quiz-ox">` + ['O','X'].map(ans => {
+        const sel = s.selected === ans, corr = q.answer === ans;
+        let cls = 'ed-quiz-ox-btn';
+        if (s.revealed && corr) cls += ' correct';
+        else if (s.revealed && sel) cls += ' wrong';
+        return `<button class="${cls}" onclick="pickQuiz(${i},'${ans}')">${ans}</button>`;
+      }).join('') + `</div>`;
+    } else if (q.type === 'fill') {
+      choiceHTML = s.revealed
+        ? `<div class="ed-quiz-fill-answer">정답: ${q.answer}</div>`
+        : `<button class="ed-quiz-fill-btn" onclick="pickQuiz(${i},'reveal')">정답 보기</button>`;
+    } else {
+      choiceHTML = `<div class="ed-quiz-mc">` + q.options.map((opt, oi) => {
+        const sel = s.selected === oi, corr = oi === q.answer;
+        let cls = 'ed-quiz-mc-btn';
+        if (s.revealed && corr) cls += ' correct';
+        else if (s.revealed && sel) cls += ' wrong';
+        return `<button class="${cls}" onclick="pickQuiz(${i},${oi})">${oi+1}. ${opt}</button>`;
+      }).join('') + `</div>`;
+    }
+
+    const explainHTML = s.revealed ? `<div class="ed-quiz-explain">${q.explain}</div>` : '';
+    const typeLabel = q.type==='ox' ? 'O / X' : q.type==='fill' ? '빈칸 채우기' : '객관식';
+
+    return `<div class="ed-quiz-item">
+      <div class="ed-quiz-n">${typeLabel}</div>
+      <div class="ed-quiz-q">${i+1}. ${q.q}</div>
+      ${choiceHTML}
+      ${explainHTML}
+    </div>`;
+  }).join('');
 }
 
-function buildChoices(prefix, q, i) {
-  const s = state[prefix][i];
-  const btnCls = prefix === 'ed' ? '' : prefix + '-quiz-btn';
-  const oxCls = prefix === 'ed' ? 'ed-quiz-ox-btn' : prefix + '-quiz-btn';
-  const oxWrapCls = prefix + '-quiz-ox';
-  const mcWrapCls = prefix + '-quiz-mc';
-  const mcBtnCls = prefix === 'ed' ? 'ed-quiz-mc-btn' : prefix + '-quiz-btn';
-  const fillBtnCls = prefix + '-quiz-fillbtn';
-  const fillAnsCls = prefix + '-quiz-fillanswer';
-  const explainCls = prefix + '-quiz-explain';
-
-  let html = '';
-  if (q.type === 'ox') {
-    html += `<div class="${oxWrapCls}">`;
-    ['O','X'].forEach(ans => {
-      const sel = s.selected === ans, corr = q.answer === ans;
-      let cls = oxCls;
-      if (s.revealed && sel) cls += corr ? ' correct' : ' wrong';
-      else if (s.revealed && corr) cls += ' correct';
-      html += `<button class="${cls}" onclick="pickQuiz('${prefix}',${i},'${ans}')">${ans}</button>`;
-    });
-    html += `</div>`;
-  } else if (q.type === 'fill') {
-    html += s.revealed
-      ? `<div class="${fillAnsCls}">정답: ${q.answer}</div>`
-      : `<button class="${fillBtnCls}" onclick="pickQuiz('${prefix}',${i},'reveal')">정답 보기</button>`;
-  } else {
-    html += `<div class="${mcWrapCls}">`;
-    q.options.forEach((opt, oi) => {
-      const sel = s.selected === oi, corr = oi === q.answer;
-      let cls = mcBtnCls;
-      if (s.revealed && corr) cls += ' correct';
-      else if (s.revealed && sel) cls += ' wrong';
-      html += `<button class="${cls}" onclick="pickQuiz('${prefix}',${i},${oi})">${oi+1}. ${opt}</button>`;
-    });
-    html += `</div>`;
-  }
-  if (s.revealed) {
-    html += `<div class="${explainCls}">${q.explain}</div>`;
-  }
-  return html;
-}
-
-function pickQuiz(prefix, i, val) {
-  const s = state[prefix][i];
+function pickQuiz(i, val) {
+  const s = quizState[i];
   if (typeof val === 'number') s.selected = val;
   else if (val !== 'reveal') s.selected = val;
   s.revealed = true;
-  rerenderQuizItem(prefix, i);
+  buildQuiz();
 }
 
-function rerenderQuizItem(prefix, i) {
-  buildQuiz(prefix); // 간단화: 전체 리스트 재생성 (11문항 규모라 성능 문제 없음)
+function resetQuiz() {
+  quizState = QUIZ_DATA.map(() => ({ revealed: false, selected: null }));
+  buildQuiz();
 }
 
-function resetQuiz(prefix) {
-  state[prefix] = QUIZ_DATA.map(() => ({revealed:false, selected:null}));
-  buildQuiz(prefix);
-}
-
-buildQuiz('ed');
-buildQuiz('bn');
-buildQuiz('mx');
+buildQuiz();
 </script>
 </body>
 </html>
