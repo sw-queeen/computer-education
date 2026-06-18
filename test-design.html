@@ -204,43 +204,42 @@
   .ed-quiz-q { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.55; margin-bottom: 16px; max-width: 560px; }
 
   /* OX: 클릭 가능함이 분명하게 보이도록 배경+테두리 기본 제공, 누른 것만 색칠 */
-  .ed-quiz-ox { display: flex; gap: 12px; }
+  /* OX: 박스 없이 큰 타이포. 화면 폭을 활용해 크게, 클릭 안내는 hover 색 변화로만 */
+  .ed-quiz-ox { display: flex; gap: 36px; }
   .ed-quiz-ox-btn {
-    font-size: 22px; font-weight: 800; color: var(--text-secondary);
-    cursor: pointer; background: var(--bg-surface); border: 2px solid transparent;
-    border-radius: 12px; padding: 10px 26px; font-family: var(--font-body);
-    transition: all .15s; line-height: 1;
+    font-size: 34px; font-weight: 800; color: var(--border-mid);
+    cursor: pointer; background: none; border: none; padding: 4px 0;
+    font-family: var(--font-body); transition: color .15s; line-height: 1;
   }
-  .ed-quiz-ox-btn:hover { background: var(--border-light); transform: translateY(-1px); }
-  .ed-quiz-ox-btn.picked-correct { background: #EAF3DE; color: #3A8858; border-color: #3A8858; }
-  .ed-quiz-ox-btn.picked-wrong { background: #FDECEA; color: #C03838; border-color: #C03838; }
+  .ed-quiz-ox-btn:hover { color: var(--text-secondary); }
+  .ed-quiz-ox-btn.picked-correct { color: #3A8858; }
+  .ed-quiz-ox-btn.picked-wrong { color: #C03838; }
 
-  /* 객관식: 클릭 가능함이 분명하게 보이도록 hover 시 명확한 변화, 정답/오답 색은 배경으로도 */
-  .ed-quiz-mc { display: flex; flex-direction: column; gap: 8px; max-width: 540px; }
+  /* 객관식: 박스 없음. 정답은 색상+볼드, 오답은 취소선만 */
+  .ed-quiz-mc { display: flex; flex-direction: column; gap: 10px; max-width: 540px; }
   .ed-quiz-mc-btn {
     text-align: left; font-size: 14.5px; color: var(--text-secondary); cursor: pointer;
-    background: var(--bg-surface); border: 2px solid transparent; border-radius: 10px;
-    padding: 11px 16px; font-family: var(--font-body);
-    line-height: 1.5; transition: all .15s; display: block; width: 100%;
+    background: none; border: none; padding: 0; font-family: var(--font-body);
+    line-height: 1.5; transition: color .15s; display: block;
   }
-  .ed-quiz-mc-btn:hover { background: var(--border-light); }
-  .ed-quiz-mc-btn.correct { background: #EAF3DE; color: #2E5010; border-color: #3A8858; font-weight: 700; }
-  .ed-quiz-mc-btn.wrong { background: #FDECEA; color: #7A2010; border-color: #C03838; }
+  .ed-quiz-mc-btn:hover { color: var(--text-primary); }
+  .ed-quiz-mc-btn.correct { color: #3A8858; font-weight: 700; }
+  .ed-quiz-mc-btn.wrong { color: var(--text-tertiary); text-decoration: line-through; }
 
-  /* 빈칸: 포인트색 버튼 + 포인트색 정답 강조 */
+  /* 빈칸: 텍스트 링크처럼 가볍게, 본문 흐름 안에 */
   .ed-quiz-fill-btn {
-    font-size: 13.5px; font-weight: 700; color: var(--td-bg-white); cursor: pointer;
-    background: var(--td-coral-deep); border: none; border-radius: 10px;
-    padding: 9px 20px; font-family: var(--font-body); transition: opacity .15s;
+    font-size: 14px; font-weight: 600; color: var(--td-coral-deep); cursor: pointer;
+    background: none; border: none; padding: 0; font-family: var(--font-body);
+    text-decoration: underline; text-decoration-color: var(--td-coral-bg); text-underline-offset: 3px;
   }
-  .ed-quiz-fill-btn:hover { opacity: .85; }
+  .ed-quiz-fill-btn:hover { color: var(--text-primary); }
   .ed-quiz-fill-answer { font-size: 15px; font-weight: 700; color: var(--td-coral-deep); }
 
   .ed-quiz-explain { font-size: 13.5px; color: var(--text-tertiary); line-height: 1.6; margin-top: 12px; max-width: 540px; }
 
-  .quiz-footer { display: flex; justify-content: flex-end; margin-top: 36px; padding-bottom: 8px; }
-  .ed-reset { font-size: 13px; font-weight: 600; color: var(--text-tertiary); cursor: pointer; background: none; border: none; padding: 0; font-family: var(--font-body); text-decoration: underline; }
-  .ed-reset:hover { color: var(--text-secondary); }
+  .quiz-footer { display: flex; justify-content: center; margin-top: 36px; padding-bottom: 8px; }
+  .ed-reset { font-size: 13px; font-weight: 600; color: var(--border-mid); cursor: pointer; background: none; border: none; padding: 8px 18px; font-family: var(--font-body); transition: color .15s; }
+  .ed-reset:hover { color: var(--text-tertiary); }
 
   @media (max-width: 720px) {
     .ed-title { font-size: 34px; }
