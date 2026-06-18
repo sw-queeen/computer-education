@@ -39,9 +39,9 @@
   --font-body:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
     
-  --bg-page:    #F7F5F2;
-  --bg-white:   #FFFFFF;
-  --bg-surface: #F0EDE8;
+  --bg-page:    #E8E8EC;
+  --bg-white:   #F6F6F8;
+  --bg-surface: #DCDCE2;
 
   --text-primary:   #2C2825;
   --text-secondary: #6B6560;

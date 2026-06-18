@@ -139,6 +139,7 @@ a { color: inherit; text-decoration: none; }
   .hero-big { font-size: 36px; }
   .hero-stats { flex-wrap: wrap; gap: 14px; }
   .acc-concept-grid { grid-template-columns: 1fr 1fr; }
+  .area-columns { grid-template-columns: 1fr; gap: 28px; }
 }
 
 @media (max-width: 480px) {
@@ -553,7 +554,12 @@ a { color: inherit; text-decoration: none; }
   margin-top: 2px;
 }
 
-.area-section { margin-bottom: 36px; }
+.area-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+}
+.area-column { min-width: 0; }
 .area-title {
   font-size: 11px;
   font-weight: 700;
@@ -664,10 +670,24 @@ a { color: inherit; text-decoration: none; }
   max-height: 2000px;
   padding: 4px 4px 22px;
 }
+.acc-chapter { margin-bottom: 16px; }
+.acc-chapter:last-child { margin-bottom: 0; }
+.acc-chapter-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--subject-accent, var(--text-secondary));
+  margin-bottom: 8px;
+  padding-left: 1px;
+}
+.acc-chapter-count {
+  font-weight: 400;
+  color: var(--text-tertiary);
+  margin-left: 2px;
+}
 .acc-concept-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 7px;
 }
 .acc-concept-card {
   background: var(--bg-surface);
