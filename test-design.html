@@ -138,7 +138,7 @@
     padding-bottom: 36px;
     border-top: none;
   }
-  .ed-section:first-of-type { padding-top: 0; border-top: none; }
+  .ed-section:first-of-type { padding-top: 0; }
 
   /* ── 발생 조건: 박스 제거, 큰 숫자 + 텍스트 흐름 ── */
   .ed-trigger { display: flex; gap: 24px; padding: 20px 0; }
@@ -280,6 +280,7 @@
     .ed-pcb-row { flex-direction: column; gap: 6px; }
 
     .ed-statetable { margin-bottom: 20px; }
+    .ed-statetable thead { display: none; }
     .ed-statetable tr {
       display: block;
       border: 1px solid rgba(0, 0, 0, 0.08);
@@ -298,7 +299,7 @@
     }
     .ed-statetable td::before {
       content: attr(data-label);
-      min-width: 70px;
+      flex: 0 0 auto;
       font-size: 11px;
       font-weight: 700;
       letter-spacing: .03em;
