@@ -17,7 +17,6 @@
     --td-primary-text:  #803300;
     --td-primary-deep:  #C8682A;
     --td-primary-light: rgba(200, 104, 42, 0.08);
-    --td-primary-bar:   #C8682A;
   }
   
   * { box-sizing: border-box; }
@@ -46,35 +45,44 @@
   .ed-lede { font-size: 17px; color: var(--text-secondary); line-height: 1.6; max-width: 580px; margin-bottom: 32px; }
   .ed-lede strong { color: var(--text-primary); font-weight: 700; }
 
-  /* ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 가로 배치 ── */
-  .explore-toggles {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+  /* ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 탭 스타일 ── */
+  .explore-tabs {
     margin-bottom: 48px;
   }
-  .explore-toggle-item {
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 12px;
-    background: var(--td-bg-white);
-    overflow: hidden;
-    transition: all .2s;
+  .explore-tab-buttons {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    margin-bottom: 24px;
   }
-  .explore-toggle-item:hover {
-    border-color: var(--td-primary-deep);
-    box-shadow: 0 2px 8px rgba(200, 104, 42, 0.1);
-  }
-  .explore-toggle-btn {
-    display: flex; align-items: center; gap: 8px;
-    width: 100%; text-align: left; cursor: pointer;
-    background: none; border: none; padding: 16px;
-    font-size: 14.5px; font-weight: 700; color: var(--text-primary);
+  .explore-tab-btn {
+    flex: 1;
+    padding: 14px 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-secondary);
     font-family: var(--font-body, var(--font-main));
+    border-bottom: 3px solid transparent;
+    transition: all .2s;
+    text-align: left;
+    position: relative;
   }
-  .explore-toggle-chevron { font-size: 13px; color: var(--td-primary-deep); transition: transform .2s; }
-  .explore-toggle-item.open .explore-toggle-chevron { transform: rotate(90deg); }
-  .explore-toggle-body { display: none; padding: 0 16px 16px; max-height: 0; overflow: hidden; }
-  .explore-toggle-item.open .explore-toggle-body { display: block; max-height: 600px; }
+  .explore-tab-btn:hover {
+    color: var(--text-primary);
+  }
+  .explore-tab-btn.active {
+    color: var(--td-primary-deep);
+    border-bottom-color: var(--td-primary-deep);
+  }
+  .explore-tab-content {
+    display: none;
+  }
+  .explore-tab-content.active {
+    display: block;
+  }
   .keyword-graph-wrap svg { width: 100%; height: auto; display: block; }
   .kw-node-circle { transition: r .15s; cursor: pointer; }
   .kw-node-circle:hover { opacity: .8; }
@@ -123,21 +131,18 @@
   }
   .ed-h2 .num { font-size: 13px; color: var(--td-primary-deep); font-weight: 800; }
 
-  /* ── 섹션: 배경 그래디언트 제거, Editorial 라인만 ── */
+  /* ── 섹션: Editorial 스타일 ── */
   .ed-section {
     margin-bottom: 0;
     padding-top: 36px;
     padding-bottom: 36px;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
-    border-left: 4px solid var(--td-primary-bar);
-    padding-left: 24px;
   }
   .ed-section:first-of-type { padding-top: 0; border-top: none; }
 
   /* ── 발생 조건: 박스 제거, 큰 숫자 + 텍스트 흐름 ── */
-  .ed-trigger { display: flex; gap: 24px; padding: 20px 0; border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
-  .ed-trigger:first-child { padding-top: 0; }
-  .ed-trigger:last-child { border-bottom: none; padding-bottom: 0; }
+  .ed-trigger { display: flex; gap: 24px; padding: 20px 0; }
+  .ed-trigger:not(:last-child) { border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
   .ed-trigger-n { font-size: 28px; font-weight: 800; color: rgba(200, 104, 42, 0.15); min-width: 44px; line-height: 1.1; }
   .ed-trigger-name { font-size: 16.5px; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
   .ed-trigger-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.65; max-width: 500px; }
@@ -168,17 +173,19 @@
   .ed-statetable td:last-child { color: var(--text-tertiary); font-size: 13px; padding-right: 0; }
 
   /* ── PCB: 박스 제거, Editorial 행 ── */
-  .ed-pcb-row { display: flex; gap: 28px; padding: 20px 0; border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
+  .ed-pcb-row { display: flex; gap: 28px; padding: 20px 0; }
+  .ed-pcb-row:not(:last-child) { border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
   .ed-pcb-row:first-child { padding-top: 0; }
-  .ed-pcb-row:last-child { border-bottom: none; padding-bottom: 16px; }
+  .ed-pcb-row:last-child { padding-bottom: 16px; }
   .ed-pcb-label-col { min-width: 170px; font-size: 14.5px; font-weight: 700; color: var(--text-primary); }
   .ed-pcb-row.accent .ed-pcb-label-col { color: var(--td-primary-deep); }
   .ed-pcb-items { flex: 1; font-size: 13.5px; color: var(--text-secondary); line-height: 1.8; }
 
   /* ── 오버헤드: Editorial 리스트 ── */
-  .ed-over-item { padding: 18px 0; border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
+  .ed-over-item { padding: 18px 0; }
+  .ed-over-item:not(:last-child) { border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
   .ed-over-item:first-child { padding-top: 0; }
-  .ed-over-item:last-child { border-bottom: none; padding-bottom: 16px; }
+  .ed-over-item:last-child { padding-bottom: 16px; }
   .ed-over-label { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
   .ed-over-label.accent { color: var(--td-primary-deep); }
   .ed-over-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
@@ -197,9 +204,10 @@
   .ed-essay-item { font-size: 14px; color: var(--text-secondary); line-height: 1.7; padding-left: 16px; position: relative; margin-bottom: 5px; }
   .ed-essay-item::before { content:'—'; position:absolute; left:0; color: rgba(0, 0, 0, 0.08); }
 
-  .ed-check { display: flex; gap: 14px; padding: 18px 0; border-bottom: 1px solid rgba(0, 0, 0, 0.06); font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+  .ed-check { display: flex; gap: 14px; padding: 18px 0; font-size: 14px; line-height: 1.65; color: var(--text-secondary); }
+  .ed-check:not(:last-child) { border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
   .ed-check:first-child { padding-top: 0; }
-  .ed-check:last-child { border-bottom: none; padding-bottom: 16px; }
+  .ed-check:last-child { padding-bottom: 16px; }
   .ed-check-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; flex-shrink: 0; width: 76px; padding-top: 2px; }
   .ed-check-label.danger { color: #C03838; }
   .ed-check-label.success { color: #3A8858; }
@@ -209,18 +217,20 @@
   /* ── 기출 포인트: 박스 제거, 빈출도를 점 표시로 ── */
   .ed-exam-meta { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 36px; }
   .ed-exam-meta .years { font-size: 20px; font-weight: 800; color: var(--text-primary); letter-spacing: -.01em; display: block; margin-bottom: 8px; }
-  .ed-exam-item { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid rgba(0, 0, 0, 0.06); align-items: baseline; }
+  .ed-exam-item { display: flex; gap: 16px; padding: 16px 0; align-items: baseline; }
+  .ed-exam-item:not(:last-child) { border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
   .ed-exam-item:first-child { padding-top: 0; }
-  .ed-exam-item:last-child { border-bottom: none; padding-bottom: 16px; }
+  .ed-exam-item:last-child { padding-bottom: 16px; }
   .ed-exam-year { font-size: 13px; font-weight: 800; color: var(--td-primary-deep); width: 60px; flex-shrink: 0; text-align: center; }
   .ed-exam-freq-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--td-primary-deep); margin-right: 8px; vertical-align: middle; }
   .ed-exam-freq-dot.invisible { background: transparent; }
   .ed-exam-text { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
 
   /* ── 리마인드 ── */
-  .ed-quiz-item { padding: 26px 0; border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
+  .ed-quiz-item { padding: 26px 0; }
+  .ed-quiz-item:not(:last-child) { border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
   .ed-quiz-item:first-child { padding-top: 0; }
-  .ed-quiz-item:last-child { border-bottom: none; padding-bottom: 16px; }
+  .ed-quiz-item:last-child { padding-bottom: 16px; }
   .ed-quiz-n { font-size: 11.5px; font-weight: 700; color: var(--text-tertiary); margin-bottom: 8px; letter-spacing: .04em; text-transform: uppercase; }
   .ed-quiz-q { font-size: 16px; font-weight: 600; color: var(--text-primary); line-height: 1.55; margin-bottom: 16px; max-width: 560px; }
 
@@ -268,7 +278,6 @@
     .ed-title { font-size: 34px; }
     .ed-page { padding: 28px 16px 80px; }
     .ed-pcb-row { flex-direction: column; gap: 6px; }
-    .explore-toggles { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -293,23 +302,17 @@
   <div class="ed-title">문맥교환</div>
   <div class="ed-lede"><strong>문맥교환(Context Switch)</strong>은 CPU가 실행 중인 프로세스를 교체할 때, 현재 프로세스의 상태를 저장하고 새 프로세스의 상태를 복원하는 작업입니다. 이는 현대 운영체제의 멀티태스킹을 실현하는 핵심 메커니즘입니다.</div>
 
-  <!-- ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 가로 배치 ── -->
-  <div class="explore-toggles">
-    <div class="explore-toggle-item" id="toggle-kw">
-      <button class="explore-toggle-btn" onclick="toggleExploreItem('kw')">
-        <span class="explore-toggle-chevron">›</span> 키워드 그래프
-      </button>
-      <div class="explore-toggle-body" id="body-kw">
-        <div class="keyword-graph-wrap" id="kwGraphWrap"></div>
-      </div>
+  <!-- ── 둘러보기: 키워드 그래프 / 인터랙티브 시각화 — 탭 스타일 ── -->
+  <div class="explore-tabs">
+    <div class="explore-tab-buttons">
+      <button class="explore-tab-btn active" onclick="switchExploreTab('kw')">키워드 그래프</button>
+      <button class="explore-tab-btn" onclick="switchExploreTab('viz')">인터랙티브 시각화</button>
     </div>
-    <div class="explore-toggle-item" id="toggle-viz">
-      <button class="explore-toggle-btn" onclick="toggleExploreItem('viz')">
-        <span class="explore-toggle-chevron">›</span> 인터랙티브 시각화
-      </button>
-      <div class="explore-toggle-body" id="body-viz">
-        <div id="viz-container"></div>
-      </div>
+    <div class="explore-tab-content active" id="content-kw">
+      <div class="keyword-graph-wrap" id="kwGraphWrap"></div>
+    </div>
+    <div class="explore-tab-content" id="content-viz">
+      <div id="viz-container"></div>
     </div>
   </div>
 
@@ -442,6 +445,27 @@
 <script src="js/config.js"></script>
 <script src="js/ui.js"></script>
 <script>
+/* ── 탭 전환 ── */
+function switchExploreTab(tab) {
+  const btns = document.querySelectorAll('.explore-tab-btn');
+  const contents = document.querySelectorAll('.explore-tab-content');
+  
+  btns.forEach(b => b.classList.remove('active'));
+  contents.forEach(c => c.classList.remove('active'));
+  
+  document.querySelector(`[onclick="switchExploreTab('${tab}')"]`).classList.add('active');
+  document.getElementById(`content-${tab}`).classList.add('active');
+  
+  // viz 탭 클릭 시 lazy-load
+  if (tab === 'viz' && !vizLoaded) {
+    vizLoaded = true;
+    const s = document.createElement('script');
+    s.src = 'visualizations/context-switch.js';
+    s.onload = hookCtxTabScroll;
+    document.body.appendChild(s);
+  }
+}
+
 /* ── 키워드 그래프 (노드 + 선, 옵시디언 스타일) ── */
 const KW_NODES = [
   { id:'core',  label:'문맥교환', x:380, y:160, r:30, core:true },
@@ -546,18 +570,6 @@ function buildKeywordGraph() {
 }
 buildKeywordGraph();
 
-function toggleExploreItem(which) {
-  const item = document.getElementById('toggle-' + which);
-  item.classList.toggle('open');
-  if (which === 'viz' && item.classList.contains('open') && !vizLoaded) {
-    vizLoaded = true;
-    const s = document.createElement('script');
-    s.src = 'visualizations/context-switch.js';
-    s.onload = hookCtxTabScroll;
-    document.body.appendChild(s);
-  }
-}
-
 function setMode(mode) {
   document.getElementById('mode-concept').classList.toggle('active', mode === 'concept');
   document.getElementById('mode-tip').classList.toggle('active', mode === 'tip');
@@ -579,7 +591,6 @@ function hookCtxTabScroll() {
       if (tabsEl) {
         const rect = tabsEl.getBoundingClientRect();
         const stickyHeight = document.querySelector('.sticky-header-group').offsetHeight;
-        // 탭을 누를 때마다 탭 바가 고정 헤더 바로 아래(여유 12px)에 오도록 항상 보정
         window.scrollTo({ top: window.scrollY + rect.top - stickyHeight - 12, behavior: 'smooth' });
       }
     }, 30);
@@ -601,7 +612,7 @@ const QUIZ_DATA = [
   { type:'ox', q:'프로세스 문맥교환과 스레드 문맥교환은 TLB 플러시 필요 여부가 동일하다.', answer:'X', explain:'프로세스 문맥교환은 주소 공간이 바뀌어 TLB 플러시 필요. 스레드는 주소 공간 공유해 TLB 플러시 불필요.' },
   { type:'ox', q:'CPU 스케줄링과 문맥교환은 동일한 개념이다.', answer:'X', explain:'스케줄링은 "어떤 프로세스를 실행할지 결정"하는 정책. 문맥교환은 그 결정을 실행하는 구체적 메커니즘.' },
   { type:'ox', q:'PCB(Process Control Block)에는 열린 파일 목록(파일 디스크립터)이 포함된다.', answer:'O', explain:'PCB는 CPU 상태 정보 외에도 열린 파일 목록, I/O 장치 정보, 메모리 맵 등을 포함한다.' },
-  { type:'fill', q:'문맥교환 시 현재 실행 중인 프로세스의 CPU 상태 정보를 저��하는 운영체제의 자료구조를 (   )(이)라 한다.', answer:'PCB (Process Control Block) / 프로세스 제어 블록', explain:'PCB는 프로세스 상태 전환의 중심. 여기에 저장되지 않으면 프로세스 복원이 불가능하다.' },
+  { type:'fill', q:'문맥교환 시 현재 실행 중인 프로세스의 CPU 상태 정보를 저장하는 운영체제의 자료구조를 (   )(이)라 한다.', answer:'PCB (Process Control Block) / 프로세스 제어 블록', explain:'PCB는 프로세스 상태 전환의 중심. 여기에 저장되지 않으면 프로세스 복원이 불가능하다.' },
   { type:'fill', q:'스케줄러가 선택한 프로세스에게 실제로 CPU를 넘기고 레지스터 적재·모드 전환을 수행하는 운영체제 컴포넌트를 (   )(이)라 한다.', answer:'디스패처 (Dispatcher)', explain:'디스패처는 CPU 스케줄링 결정을 실제 실행으로 옮기는 PCB → 레지스터 복원 → PC 점프 등을 담당.' },
   { type:'fill', q:'프로세스가 CPU 실행을 대기하는 상태를 (   ) 상태, I/O 완료를 기다리는 상태를 (   ) 상태라 한다.', answer:'Ready / Waiting (Blocked)', explain:'프로세스 상태 5개: New(생성) → Ready(대기) → Running(실행) → Waiting(블로킹) → Terminated(종료)' },
   { type:'mc', q:'문맥교환에 대한 설명으로 옳지 않은 것은?', options:['문맥교환 중 CPU는 유용한 사용자 작업을 수행하지 못한다.','문맥교환 시 프로그램 카운터(PC)는 필수 저장 항목이다.','문맥교환은 TLB 플러시 없이도 항상 가능하다.','문맥교환 절차에 디스패처가 관여한다.'], answer:2, explain:'문맥교환은 프로세스일 때 TLB 플러시 필요. 이것이 프로세스 전환이 스레드 전환보다 느린 이유다.' },
@@ -618,7 +629,6 @@ function buildQuiz() {
     let choiceHTML = '';
 
     if (q.type === 'ox') {
-      // 누른 버튼만 정답/오답 색칠. 나머지는 무채색 유지.
       choiceHTML = `<div class="ed-quiz-ox">` + ['O','X'].map(ans => {
         let cls = 'ed-quiz-ox-btn';
         if (s.revealed && s.selected === ans) {
