@@ -17,13 +17,15 @@
   * { box-sizing: border-box; }
   body { background: var(--td-bg-page) !important; }
 
+  .sticky-header-group {
+    position: sticky; top: 0; z-index: 50;
+  }
   .test-banner {
     background: var(--td-bg-white);
     border-bottom: 1px solid var(--border-light);
     padding: 10px 24px;
     display: flex; align-items: center; justify-content: space-between;
     gap: 16px; flex-wrap: wrap;
-    position: sticky; top: 0; z-index: 50;
   }
   .test-banner-label { font-size: 11px; font-weight: 700; letter-spacing: .06em; color: var(--text-tertiary); text-transform: uppercase; }
   .test-back { font-size: 12px; color: var(--text-tertiary); cursor: pointer; }
@@ -38,7 +40,7 @@
   .ed-lede strong { color: var(--text-primary); font-weight: 700; }
 
   /* ── 키워드 그래프 뷰 (옵시디언 스타일: 노드 + 선) ── */
-  .keyword-panel { margin-bottom: 28px; }
+  .keyword-panel { margin-bottom: 44px; }
   .keyword-panel-head {
     display: flex; align-items: center; justify-content: space-between;
     cursor: pointer; padding: 12px 0; border-top: 1px solid var(--border-mid); border-bottom: 1px solid var(--border-mid);
@@ -56,13 +58,11 @@
 
   /* ── Concept / Note 토글: 가운데 정렬 + 상단 고정 ── */
   .mode-toggle-sticky {
-    position: sticky; top: 49px; z-index: 40;
-    background: var(--td-bg-page);
-    padding: 14px 0;
-    margin: 0 -24px 44px;
+    background: var(--td-bg-white);
+    border-bottom: 1px solid var(--border-light);
+    padding: 12px 0;
     display: flex; justify-content: center;
   }
-  @media (min-width: 1024px) { .mode-toggle-sticky { margin: 0 -16px 44px; } }
   .mode-toggle {
     display: inline-flex; gap: 4px; background: var(--td-bg-white);
     border-radius: 20px; padding: 4px; border: 1px solid var(--border-light);
@@ -194,6 +194,7 @@
   .ed-exam-item:last-child { border-bottom: none; padding-bottom: 0; }
   .ed-exam-year { font-size: 13px; font-weight: 800; color: var(--td-coral-deep); width: 60px; flex-shrink: 0; text-align: center; }
   .ed-exam-freq-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--td-coral-deep); margin-right: 8px; vertical-align: middle; }
+  .ed-exam-freq-dot.invisible { background: transparent; }
   .ed-exam-text { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
 
   /* ── 리마인드 ── */
@@ -223,7 +224,7 @@
     line-height: 1.5; transition: color .15s; display: block;
   }
   .ed-quiz-mc-btn:hover { color: var(--text-primary); }
-  .ed-quiz-mc-btn.correct { color: #3A8858; font-weight: 700; }
+  .ed-quiz-mc-btn.correct { color: var(--td-coral-deep); font-weight: 700; }
   .ed-quiz-mc-btn.wrong { color: var(--text-tertiary); text-decoration: line-through; }
 
   /* 빈칸: 텍스트 링크처럼 가볍게, 본문 흐름 안에 */
@@ -252,9 +253,17 @@
 </head>
 <body>
 
-<div class="test-banner">
-  <span class="test-back" onclick="location.href='index.html'">‹ 메인으로</span>
-  <div class="test-banner-label">디자인 실험 · 문맥교환 · Editorial</div>
+<div class="sticky-header-group">
+  <div class="test-banner">
+    <span class="test-back" onclick="location.href='index.html'">‹ 메인으로</span>
+    <div class="test-banner-label">디자인 실험 · 문맥교환 · Editorial</div>
+  </div>
+  <div class="mode-toggle-sticky">
+    <div class="mode-toggle">
+      <button class="mode-toggle-btn active" id="btn-concept" onclick="setMode('concept')">Concept</button>
+      <button class="mode-toggle-btn" id="btn-tip" onclick="setMode('tip')">Note</button>
+    </div>
+  </div>
 </div>
 
 <div class="ed-page">
@@ -270,13 +279,6 @@
       <span class="keyword-panel-chevron">›</span>
     </div>
     <div class="keyword-graph-wrap" id="kwGraphWrap"></div>
-  </div>
-
-  <div class="mode-toggle-sticky">
-    <div class="mode-toggle">
-      <button class="mode-toggle-btn active" id="btn-concept" onclick="setMode('concept')">Concept</button>
-      <button class="mode-toggle-btn" id="btn-tip" onclick="setMode('tip')">Note</button>
-    </div>
   </div>
 
   <!-- ══════════════════════════ Concept ══════════════════════════ -->
@@ -395,10 +397,10 @@
       <div class="ed-exam-item"><div class="ed-exam-year">2016중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>문맥교환의 정의와 발생 조건 (인터럽트·시스템 콜·타이머 만료)</div></div>
       <div class="ed-exam-item"><div class="ed-exam-year">2022중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>디스패처(Dispatcher)의 역할과 디스패처 지연(Dispatcher Latency) 개념</div></div>
       <div class="ed-exam-item"><div class="ed-exam-year">2019중</div><div class="ed-exam-text"><span class="ed-exam-freq-dot"></span>프로세스 상태 전이 5단계와 전이 조건</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text">스레드 문맥교환과 프로세스 문맥교환의 차이 (TLB 플러시 여부, 공유 자원 범위)</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text">CPU 스케줄링 알고리즘과 문맥교환 빈도의 상관관계</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text">선점형 vs 비선점형 스케줄링에서 문맥교환 발생 방식</div></div>
-      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text">TLB 플러시와 캐시 오염이 문맥교환 오버헤드에 미치는 영향</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>스레드 문맥교환과 프로세스 문맥교환의 차이 (TLB 플러시 여부, 공유 자원 범위)</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>CPU 스케줄링 알고리즘과 문맥교환 빈도의 상관관계</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>선점형 vs 비선점형 스케줄링에서 문맥교환 발생 방식</div></div>
+      <div class="ed-exam-item"><div class="ed-exam-year">상시</div><div class="ed-exam-text"><span class="ed-exam-freq-dot invisible"></span>TLB 플러시와 캐시 오염이 문맥교환 오버헤드에 미치는 영향</div></div>
     </div>
 
     <div class="ed-section">
@@ -442,17 +444,8 @@ const KW_EDGES = [
 function buildKeywordGraph() {
   const wrap = document.getElementById('kwGraphWrap');
   const W = 640, H = 340;
-  // 각 노드에 고유한 흔들림 위상(phase)과 속도 부여 → 자연스러운 둥둥 떠다니는 느낌
-  KW_NODES.forEach((n, idx) => {
-    n.baseX = n.x; n.baseY = n.y;
-    n.phaseX = idx * 0.7;
-    n.phaseY = idx * 1.3 + 1;
-    n.ampX = 4 + (idx % 3) * 2;
-    n.ampY = 5 + (idx % 4) * 2;
-    n.speed = 0.55 + (idx % 5) * 0.08;
-  });
 
-  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" id="kwSvg">`;
   svg += `<g id="kwEdgeLayer">`;
   KW_EDGES.forEach(([a,b], i) => {
     svg += `<line class="kw-edge" id="kwEdge${i}" x1="0" y1="0" x2="0" y2="0"/>`;
@@ -462,7 +455,7 @@ function buildKeywordGraph() {
     const fill = n.core ? 'var(--td-coral-deep)' : 'var(--td-coral-bg)';
     const textColor = n.core ? '#fff' : 'var(--td-coral-text)';
     const fontSize = n.core ? 13 : n.r >= 18 ? 11.5 : 10;
-    svg += `<g id="kwNode-${n.id}">
+    svg += `<g class="kw-node-group" id="kwNode-${n.id}" data-id="${n.id}" transform="translate(${n.x},${n.y})">
       <circle class="kw-node-circle" r="${n.r}" fill="${fill}"/>
       <text class="kw-node-text" text-anchor="middle" dominant-baseline="central" font-size="${fontSize}" font-weight="700" fill="${textColor}">${n.label}</text>
     </g>`;
@@ -470,15 +463,7 @@ function buildKeywordGraph() {
   svg += `</g></svg>`;
   wrap.innerHTML = svg;
 
-  let t = 0;
-  function animateGraph() {
-    t += 0.016;
-    KW_NODES.forEach(n => {
-      n.x = n.baseX + Math.sin(t * n.speed + n.phaseX) * n.ampX;
-      n.y = n.baseY + Math.cos(t * n.speed * 0.8 + n.phaseY) * n.ampY;
-      const g = document.getElementById('kwNode-' + n.id);
-      if (g) g.setAttribute('transform', `translate(${n.x},${n.y})`);
-    });
+  function updateEdges() {
     KW_EDGES.forEach(([a,b], i) => {
       const na = KW_NODES.find(n=>n.id===a), nb = KW_NODES.find(n=>n.id===b);
       const edge = document.getElementById('kwEdge' + i);
@@ -487,25 +472,59 @@ function buildKeywordGraph() {
         edge.setAttribute('x2', nb.x); edge.setAttribute('y2', nb.y);
       }
     });
-    if (document.getElementById('kwPanel').classList.contains('open')) {
-      requestAnimationFrame(animateGraph);
-    } else {
-      kwAnimRunning = false;
-    }
   }
-  window.kwStartAnim = () => {
-    if (!kwAnimRunning) { kwAnimRunning = true; animateGraph(); }
-  };
+  updateEdges();
+
+  /* ── 드래그로 노드 옮기기 (옵시디언 그래프 뷰처럼) ── */
+  const svgEl = document.getElementById('kwSvg');
+  let dragging = null;
+
+  function svgPoint(evt) {
+    const rect = svgEl.getBoundingClientRect();
+    const cx = evt.touches ? evt.touches[0].clientX : evt.clientX;
+    const cy = evt.touches ? evt.touches[0].clientY : evt.clientY;
+    const x = (cx - rect.left) / rect.width * W;
+    const y = (cy - rect.top) / rect.height * H;
+    return { x, y };
+  }
+
+  KW_NODES.forEach(n => {
+    const g = document.getElementById('kwNode-' + n.id);
+    g.style.cursor = 'grab';
+    const startDrag = (evt) => {
+      evt.preventDefault();
+      dragging = n;
+      g.style.cursor = 'grabbing';
+    };
+    g.addEventListener('mousedown', startDrag);
+    g.addEventListener('touchstart', startDrag, { passive: false });
+  });
+
+  function moveDrag(evt) {
+    if (!dragging) return;
+    const p = svgPoint(evt);
+    dragging.x = Math.max(dragging.r, Math.min(W - dragging.r, p.x));
+    dragging.y = Math.max(dragging.r, Math.min(H - dragging.r, p.y));
+    const g = document.getElementById('kwNode-' + dragging.id);
+    g.setAttribute('transform', `translate(${dragging.x},${dragging.y})`);
+    updateEdges();
+  }
+  function endDrag() {
+    if (dragging) {
+      const g = document.getElementById('kwNode-' + dragging.id);
+      if (g) g.style.cursor = 'grab';
+    }
+    dragging = null;
+  }
+  svgEl.addEventListener('mousemove', moveDrag);
+  svgEl.addEventListener('touchmove', moveDrag, { passive: false });
+  window.addEventListener('mouseup', endDrag);
+  window.addEventListener('touchend', endDrag);
 }
-let kwAnimRunning = false;
 buildKeywordGraph();
 
 function toggleKeywords() {
-  const panel = document.getElementById('kwPanel');
-  panel.classList.toggle('open');
-  if (panel.classList.contains('open') && window.kwStartAnim) {
-    window.kwStartAnim();
-  }
+  document.getElementById('kwPanel').classList.toggle('open');
 }
 
 function setMode(mode) {
@@ -526,6 +545,7 @@ function toggleViz() {
     vizLoaded = true;
     const s = document.createElement('script');
     s.src = 'visualizations/context-switch.js';
+    s.onload = hookCtxTabScroll;
     document.body.appendChild(s);
   }
   if (opening) {
@@ -535,6 +555,27 @@ function toggleViz() {
       window.scrollTo({ top: targetY, behavior: 'smooth' });
     }, 60);
   }
+}
+
+/* ── 인터랙티브 시각화 내부 탭 변경 시, 탭 바가 보이는 위치로 스크롤 ── */
+function hookCtxTabScroll() {
+  if (typeof window.ctxTab !== 'function' || window.ctxTab._hooked) return;
+  const original = window.ctxTab;
+  const wrapped = function(tab) {
+    original(tab);
+    setTimeout(() => {
+      const tabsEl = document.querySelector('#ctx-wrap .cv-tabs');
+      if (tabsEl) {
+        const rect = tabsEl.getBoundingClientRect();
+        const stickyHeight = document.querySelector('.sticky-header-group').offsetHeight;
+        if (rect.top < stickyHeight) {
+          window.scrollTo({ top: window.scrollY + rect.top - stickyHeight - 12, behavior: 'smooth' });
+        }
+      }
+    }, 30);
+  };
+  wrapped._hooked = true;
+  window.ctxTab = wrapped;
 }
 
 /* ── 맨 위로 가기 버튼 표시 ── */
