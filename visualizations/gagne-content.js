@@ -41,7 +41,7 @@
     if (!el) return;
     el.innerHTML = `
     <div class="ed-section">
-      <div class="detail-section-title">${C.summary.intro}</div>
+      <div class="ed-h2"><span class="num">01</span> ${C.summary.intro}</div>
       <div class="cs-intro-box">
         <strong>가네(R. Gagné, 1916~2002)</strong> — 미국 교육심리학자.<br>
         학습목표에 따라 적합한 교수방법을 처방해야 한다는 교수설계이론 주창.<br>
@@ -50,7 +50,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">학습의 조건</div>
+      <div class="ed-h2"><span class="num">02</span> 학습의 조건</div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div class="cs-intro-box">
           <div style="font-size:13px;font-weight:700;color:${CSS_ACCENT};margin-bottom:8px;">외적 조건 — 학습자 외부에서 가해지는 교수사태</div>
@@ -77,7 +77,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">9가지 수업사태</div>
+      <div class="ed-h2"><span class="num">03</span> 9가지 수업사태</div>
       <div style="display:flex;flex-direction:column;gap:4px;">
         ${STEPS.map(([inner,outer,star],i)=>`
           <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--radius-sm);background:var(--bg-surface);">
@@ -89,7 +89,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">5가지 수업목표</div>
+      <div class="ed-h2"><span class="num">04</span> 5가지 수업목표</div>
       <div style="border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border-light);">
         ${GOALS.map(([name,desc,analysis,color],i,arr)=>`
           <div style="display:flex;align-items:center;gap:12px;padding:9px 14px;background:var(--bg-white);${i<arr.length-1?'border-bottom:1px solid var(--border-light);':''}">
@@ -104,7 +104,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">05</span> ${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'기본 개념', items:['학습목표에 따라 상이한 교수방법 처방','교수활동은 인간의 내적 학습과정에 맞추어 설계'] },
         { label:'9가지 수업사태 핵심 3단계', items:['4단계 — 자극자료 제시 (선택적 지각 촉진)','5단계 — 학습안내 제공 (부호화·정교화·스캐폴딩)','6단계 — 수행 유도 (실제 문제 상황 적용)'] },
@@ -113,7 +113,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">06</span> ${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'"자극자료 제시 = 학습안내 제공" → X. 자극자료 제시는 새 정보를 <strong>제시</strong>, 학습안내는 내용을 <strong>종합·부호화</strong>' },
         { type:'danger',  text:'"8단계 형성평가 = 총괄평가" → X. 수업 중 이해 여부를 점검하는 <strong>형성</strong>평가(수행평가)' },

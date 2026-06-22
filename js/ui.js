@@ -90,15 +90,15 @@ window.CS = window.CS || {};
 
     el.innerHTML = `
       <div class="ed-section">
-        <div class="detail-section-title">${C.exam.history}</div>
+        <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">01</span> ${C.exam.history}</div>
         <div class="cs-history-box">${opts.historyHTML}</div>
       </div>
       <div class="ed-section">
-        <div class="detail-section-title" style="--subject-accent:#A83222;">${C.exam.freq}</div>
+        <div class="ed-h2"><span class="num">02</span> ${C.exam.freq}</div>
         ${makeList(opts.freqItems, 'cs-exam-item-freq')}
       </div>
       <div class="ed-section">
-        <div class="detail-section-title" style="--subject-accent:#8A6010;">${C.exam.normal}</div>
+        <div class="ed-h2" style="--subject-accent:#8A6010;"><span class="num">03</span> ${C.exam.normal}</div>
         ${makeList(opts.normalItems, 'cs-exam-item-normal')}
       </div>`;
   };
@@ -132,54 +132,41 @@ window.CS = window.CS || {};
       const s = state[i];
       const reveal = s.revealed;
 
-      /* 선택지 버튼 */
+      /* 선택지 HTML */
       let choiceHTML = '';
 
       if (q.type === 'ox') {
-        choiceHTML = `<div class="cs-quiz-ox">
+        choiceHTML = `<div class="ed-quiz-ox">
           ${['O', 'X'].map(ans => {
-            const sel = s.selected === ans, corr = q.answer === ans;
-            let cls = '';
-            if (reveal && sel)  cls = corr ? 'state-correct' : 'state-wrong';
-            else if (sel)       cls = 'state-selected';
-            return `<button class="cs-quiz-btn cs-quiz-btn-ox ${cls}"
-              onclick="${prefix}QuizPick(${i},'${ans}')">${ans}</button>`;
+            let cls = 'ed-quiz-ox-btn';
+            if (reveal && s.selected === ans) cls += (ans === q.answer) ? ' picked-correct' : ' picked-wrong';
+            return `<button class="${cls}" onclick="${prefix}QuizPick(${i},'${ans}')">${ans}</button>`;
           }).join('')}
         </div>`;
 
       } else if (q.type === 'fill') {
         choiceHTML = reveal
-          ? `<div class="cs-quiz-fill-answer">정답: ${q.answer}</div>`
-          : `<div style="margin-top:10px;">
-               <button class="cs-quiz-btn cs-quiz-btn-reveal"
-                 onclick="${prefix}QuizPick(${i},'reveal')">${C.quiz.btnReveal}</button>
-             </div>`;
+          ? `<div class="ed-quiz-fill-answer"><span class="fill-label">정답:</span> <span class="fill-value">${q.answer}</span></div>`
+          : `<button class="ed-quiz-fill-btn" onclick="${prefix}QuizPick(${i},'reveal')">${C.quiz.btnReveal}</button>`;
 
       } else {
-        choiceHTML = `<div class="cs-quiz-options">
+        choiceHTML = `<div class="ed-quiz-mc">
           ${q.options.map((opt, oi) => {
             const sel = s.selected === oi, corr = oi === q.answer;
-            let cls = '';
-            if (reveal && corr)       cls = 'state-correct';
-            else if (reveal && sel)   cls = 'state-wrong';
-            else if (!reveal && sel)  cls = 'state-selected';
-            return `<button class="cs-quiz-btn cs-quiz-btn-mc ${cls}"
-              onclick="${prefix}QuizPick(${i},${oi})">
-              <span style="font-weight:700;margin-right:6px;">${oi + 1}.</span>${opt}
-            </button>`;
+            let cls = 'ed-quiz-mc-btn';
+            if (reveal && corr)      cls += ' correct';
+            else if (reveal && sel)  cls += ' wrong';
+            return `<button class="${cls}" onclick="${prefix}QuizPick(${i},${oi})">${oi + 1}. ${opt}</button>`;
           }).join('')}
         </div>`;
       }
 
-      const explainHTML = reveal
-        ? `<div class="cs-quiz-explain">
-             <strong>${C.quiz.explainLabel}</strong> ${q.explain}
-           </div>` : '';
+      const explainHTML = reveal ? `<div class="ed-quiz-explain">${q.explain}</div>` : '';
 
       return `
-        <div class="cs-quiz-card">
-          <div class="cs-quiz-type">${typeLabel(q.type)}</div>
-          <div class="cs-quiz-q">${i + 1}. ${q.q}</div>
+        <div class="ed-quiz-item">
+          <div class="ed-quiz-n">${typeLabel(q.type)}</div>
+          <div class="ed-quiz-q">${i + 1}. ${q.q}</div>
           ${choiceHTML}
           ${explainHTML}
         </div>`;
@@ -188,11 +175,11 @@ window.CS = window.CS || {};
     function buildAll() {
       el.innerHTML = `
         <div class="ed-section">
-          <div class="detail-section-title">
-            ${C.quiz.title} — 총 ${quizData.length}문항
-          </div>
+          <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">04</span> ${C.quiz.title} — 총 ${quizData.length}문항</div>
           ${quizData.map((q, i) => buildCard(q, i)).join('')}
-          <button class="cs-quiz-reset" onclick="${prefix}QuizReset()">${C.quiz.btnReset}</button>
+        </div>
+        <div class="quiz-footer">
+          <button class="ed-reset" onclick="${prefix}QuizReset()">${C.quiz.btnReset}</button>
         </div>`;
     }
 
