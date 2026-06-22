@@ -13,7 +13,7 @@
     const el = $('tab-summary');
     if (!el) return;
     el.innerHTML = `
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">${C.summary.intro}</div>
       <div class="cs-intro-box">
         <strong>마르시아(J. Marcia)</strong> — 캐나다 출신 발달심리학자. 에릭슨의 정체성 이론을 조작적으로 확장.<br>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">정체감 지위 구분 기준</div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         ${[
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">4가지 정체감 지위</div>
       <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;">
         ${[
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">교육적 시사점 (자아정체감 높이는 방법)</div>
       ${[
         ['#C87840', '교사 측면',     '교사의 솔선수범',           '청소년기 가장 중요한 관계는 교사. 교사의 언행이 모델링에 영향을 주므로 잘못된 모델링을 하지 않도록 신경써야 한다.'],
@@ -81,7 +81,7 @@
         </div>`).join('')}
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">다른 이론과 비교</div>
       ${[
         ['에릭슨 — 이론적 토대', '자아정체감 대 역할혼미 (심리사회발달 5단계)', '마르시아는 에릭슨이 청소년기 과제로 제시한 \'정체성 탐색\'을 <strong>위기·전념</strong> 두 기준으로 조작적 정의하여 구체화했다. 에릭슨의 개념을 측정 가능한 4가지 지위로 확장한 것이 핵심 기여이다.'],
@@ -94,7 +94,7 @@
         </div>`).join('')}
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'두 가지 기준 제시', items:['위기(crisis) — 정체성 탐색 여부', '전념(commitment) — 특정 가치·역할에 대한 헌신 여부'] },
@@ -103,7 +103,7 @@
       ])}
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'정체감 유실 vs 유예 — 둘 다 위기나 전념 중 하나가 ✕이지만, 어떤 것이 ✕인지 정반대' },
