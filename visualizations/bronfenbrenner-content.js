@@ -22,7 +22,7 @@
     if (!el) return;
     el.innerHTML = `
     <div class="ed-section">
-      <div class="detail-section-title">${C.summary.intro}</div>
+      <div class="ed-h2"><span class="num">01</span> ${C.summary.intro}</div>
       <div class="cs-intro-box">
         <strong>브론펜브레너(U. Bronfenbrenner, 1917~2005)</strong> — 러시아 태생 미국 발달심리학자.<br>
         인간의 발달은 개인을 둘러싼 다층적 환경 체계들과의 <strong>상호작용</strong>을 통해 이루어진다.<br>
@@ -31,7 +31,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">이론의 특징</div>
+      <div class="ed-h2"><span class="num">02</span> 이론의 특징</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
           '개인의 발달은 <strong>유전과 환경 모두</strong>의 영향을 받는다.',
@@ -46,7 +46,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">5가지 환경 체계</div>
+      <div class="ed-h2"><span class="num">03</span> 5가지 환경 체계</div>
       <div style="display:flex;flex-direction:column;gap:8px;">
         ${LAYERS.map(l => `
           <div style="border-radius:var(--radius-md);padding:14px 16px;background:${l.bg};">
@@ -61,7 +61,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">교육적 시사점</div>
+      <div class="ed-h2"><span class="num">04</span> 교육적 시사점</div>
       ${[
         '미시체계에만 집중하는 관점에서 벗어나, <strong>여러 환경체계들 간의 상호관계</strong>의 중요성을 강조했다.',
         '아동을 둘러싼 가정교육뿐만 아니라 <strong>사회 전체의 노력</strong>이 함께 요구된다.',
@@ -73,7 +73,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">다른 이론과 비교</div>
+      <div class="ed-h2"><span class="num">05</span> 다른 이론과 비교</div>
       ${[
         ['피아제 — 인지발달이론', '내적 인지 구조의 발달', '피아제는 아동 내부의 <strong>인지 도식</strong>이 동화·조절·평형화를 거쳐 발달한다고 보았다. 브론펜브레너는 이와 달리 외부 <strong>환경 체계와의 상호작용</strong>에 초점을 둔다. 두 이론 모두 아동을 능동적 존재로 본다는 공통점이 있다.'],
         ['비고츠키 — 사회문화이론', '근접발달영역과 비계설정', '비고츠키는 <strong>근접발달영역·비계</strong>처럼 사회적 상호작용의 구체적 메커니즘을 설명했다. 브론펜브레너는 환경 체계의 <strong>구조와 층위</strong>를 분류하는 데 집중했다. 두 이론 모두 사회적 맥락이 발달에 필수적이라는 관점을 공유한다.'],
@@ -86,7 +86,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">06</span> ${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'기본 관점 2가지',    items:['유전과 환경의 상호작용', '아동은 능동적 존재'] },
         { label:'5가지 환경 체계',    items:['미 → 중 → 외 → 거 → 시 순서로 열거', '체계명 — 정의 — 구체적 예시(2개 이상) 세트로 서술'] },
@@ -96,7 +96,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">07</span> ${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'외체계 vs 거시체계 — 외체계는 아동이 직접 참여하지 않는 사회적 환경(부모 직장 등). 거시체계는 더 넓은 문화·법·관습 수준. 외체계 ⊂ 거시체계 구조로 외체계가 안쪽임을 주의.' },
         { type:'danger',  text:'시간체계는 고리 밖 별도 차원. 공간적 층위가 아닌 시간적 차원이며, 다른 네 체계와 달리 \'연대체계\'라고도 불린다.' },

@@ -53,7 +53,7 @@
 
     el.innerHTML = `
     <div class="ed-section">
-      <div class="detail-section-title">${C.summary.intro}</div>
+      <div class="ed-h2"><span class="num">01</span> ${C.summary.intro}</div>
       <div class="cs-intro-box">
         <strong>피아제(J. Piaget, 1896~1980)</strong> — 스위스 아동심리학자.<br>
         학습자는 기본적으로 인지구조를 가지고 있으며 능동적이다.<br>
@@ -62,7 +62,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">${C.summary.learning}</div>
+      <div class="ed-h2"><span class="num">02</span> ${C.summary.learning}</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
           '학습자는 기본적으로 인지구조를 가지고 있으며 능동적이다. 타고난 인지 기능으로 물리적 환경과 상호작용하여 지식을 구성한다. <strong>(= 인지적 구성주의)</strong>',
@@ -76,7 +76,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">${C.summary.teacherRole}</div>
+      <div class="ed-h2"><span class="num">03</span> ${C.summary.teacherRole}</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
           ['발견학습 제공', '학습자는 능동적으로 학습할 수 있으므로 스스로 관찰하고 탐구할 수 있는 수업을 제공한다. 단순한 설명식 수업은 피해야 한다.'],
@@ -91,7 +91,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">${C.summary.stageChart || '단계별 특징 개요'}</div>
+      <div class="ed-h2"><span class="num">04</span> ${C.summary.stageChart || '단계별 특징 개요'}</div>
       <!-- 테이블 (≥560px) -->
       <div class="cs-table-wrap pc-table-show">
         <table class="cs-table">
@@ -124,7 +124,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">피아제 vs 비고츠키</div>
+      <div class="ed-h2"><span class="num">05</span> 피아제 vs 비고츠키</div>
       <div style="margin-bottom:14px;">
         <div style="font-size:11px;font-weight:700;color:${CSS_ACCENT};letter-spacing:.04em;margin-bottom:8px;">공통점</div>
         ${commonPoints.map((pt, i) => `
@@ -170,7 +170,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">06</span> ${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'학습과정 2가지',   items:['인지적 구성주의', '동화·조절을 통한 평형화'] },
         { label:'교사역할 3가지',   items:['발견학습 제공', '인지적 불균형 유발', '인지발달 수준 고려'] },
@@ -180,7 +180,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">07</span> ${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'피아제의 불평형 = 사회적 상호작용으로 해소" → X. 개인 내적 과정(동화·조절)으로 해소됨. 사회적 상호작용은 비고츠키.' },
         { type:'danger',  text:'"반성적 추상화 = 메타인지" → X. 반성적 추상화는 형식적조작기의 추상사고 능력.' },

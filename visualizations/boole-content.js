@@ -57,7 +57,7 @@
     if (!el) return;
     el.innerHTML = `
     <div class="ed-section">
-      <div class="detail-section-title">${C.summary.intro}</div>
+      <div class="ed-h2"><span class="num">01</span> ${C.summary.intro}</div>
       <div class="cs-intro-box">
         <strong>부울 대수(Boolean Algebra)</strong> — 0과 1 두 값만 사용하는 논리 대수. 조지 부울이 1854년 창안.<br>
         <strong>논리게이트(Logic Gate)</strong> — 부울 대수 연산을 물리적으로 구현한 전자 회로 소자.<br>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">기본 논리게이트 8종</div>
+      <div class="ed-h2"><span class="num">02</span> 기본 논리게이트 8종</div>
       <div class="bc-gate-grid">
         ${GATES.map(g => `
           <div class="bc-gate-card">
@@ -79,10 +79,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">
-        부울 대수 법칙
-        <span style="font-size:11px;font-weight:400;color:var(--text-tertiary);margin-left:8px;">19가지 핵심 공식</span>
-      </div>
+      <div class="ed-h2"><span class="num">03</span> 부울 대수 법칙 <span style="font-size:11px;font-weight:400;color:var(--text-tertiary);margin-left:8px;">19가지 핵심 공식</span></div>
       <div>
         ${LAWS.map(([expr, name], i) => `
           <div class="bc-law-row">
@@ -94,7 +91,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">카르노맵 (Karnaugh Map)</div>
+      <div class="ed-h2"><span class="num">04</span> 카르노맵 (Karnaugh Map)</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
           ['목적', '복잡한 부울 식을 시각적으로 최소화(SOP/POS 형태로 간소화)하는 도구'],
@@ -110,7 +107,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title">드모르간 법칙 (핵심)</div>
+      <div class="ed-h2"><span class="num">05</span> 드모르간 법칙 (핵심)</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
           ["(x + y)' = x'·y'", 'OR의 부정 = 각각 부정 후 AND'],
@@ -124,7 +121,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay || '논술 답안 구조'}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">06</span> ${C.summary.essay || '논술 답안 구조'}</div>
       ${CS.renderEssayGroups([
         { label:'논리게이트 서술 순서', items:['게이트명 → 부울 식 → 진리표 → 특징·활용'] },
         { label:'카르노맵 풀이 순서', items:['진리표 작성 → 카르노맵 배치 → 2의 거듭제곱으로 그룹화 → SOP 식 도출'] },
@@ -133,7 +130,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check || '체크 포인트'}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">07</span> ${C.summary.check || '체크 포인트'}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:`XOR vs XNOR — XOR은 입력이 <strong>다를 때</strong> 1, XNOR는 입력이 <strong>같을 때</strong> 1. 시험에서 혼동하기 쉬운 포인트.` },
         { type:'danger',  text:`카르노맵 그룹 크기: 3개, 5개는 불가. 반드시 1, 2, 4, 8(2의 거듭제곱)이어야 함.` },
