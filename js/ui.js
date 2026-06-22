@@ -89,15 +89,15 @@ window.CS = window.CS || {};
       ).join('');
 
     el.innerHTML = `
-      <div class="detail-section">
+      <div class="ed-section">
         <div class="detail-section-title">${C.exam.history}</div>
         <div class="cs-history-box">${opts.historyHTML}</div>
       </div>
-      <div class="detail-section">
+      <div class="ed-section">
         <div class="detail-section-title" style="--subject-accent:#A83222;">${C.exam.freq}</div>
         ${makeList(opts.freqItems, 'cs-exam-item-freq')}
       </div>
-      <div class="detail-section">
+      <div class="ed-section">
         <div class="detail-section-title" style="--subject-accent:#8A6010;">${C.exam.normal}</div>
         ${makeList(opts.normalItems, 'cs-exam-item-normal')}
       </div>`;
@@ -187,7 +187,7 @@ window.CS = window.CS || {};
 
     function buildAll() {
       el.innerHTML = `
-        <div class="detail-section">
+        <div class="ed-section">
           <div class="detail-section-title">
             ${C.quiz.title} — 총 ${quizData.length}문항
           </div>

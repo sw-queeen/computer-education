@@ -40,7 +40,7 @@
     const el = $('tab-summary');
     if (!el) return;
     el.innerHTML = `
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">${C.summary.intro}</div>
       <div class="cs-intro-box">
         <strong>가네(R. Gagné, 1916~2002)</strong> — 미국 교육심리학자.<br>
@@ -49,7 +49,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">학습의 조건</div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div class="cs-intro-box">
@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">9가지 수업사태</div>
       <div style="display:flex;flex-direction:column;gap:4px;">
         ${STEPS.map(([inner,outer,star],i)=>`
@@ -88,7 +88,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">5가지 수업목표</div>
       <div style="border-radius:var(--radius-md);overflow:hidden;border:1px solid var(--border-light);">
         ${GOALS.map(([name,desc,analysis,color],i,arr)=>`
@@ -103,7 +103,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'기본 개념', items:['학습목표에 따라 상이한 교수방법 처방','교수활동은 인간의 내적 학습과정에 맞추어 설계'] },
@@ -112,7 +112,7 @@
       ])}
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'"자극자료 제시 = 학습안내 제공" → X. 자극자료 제시는 새 정보를 <strong>제시</strong>, 학습안내는 내용을 <strong>종합·부호화</strong>' },

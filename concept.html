@@ -28,6 +28,8 @@
 
 </div>
 
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
 <script src="js/data.js"></script>
 <script src="js/config.js"></script>
 <script src="js/ui.js"></script>
@@ -65,7 +67,6 @@ function toggleSidebar() {
   } else {
     const sidebar = document.getElementById('sidebar');
     sidebar.classList.toggle('collapsed');
-    // 데스크탑도 ☰↔✕ 토글
     const menuBtn = document.querySelector('.topbar-menu-btn');
     if (menuBtn) menuBtn.textContent = sidebar.classList.contains('collapsed') ? '☰' : '✕';
     try { localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0'); } catch(e) {}
@@ -74,7 +75,6 @@ function toggleSidebar() {
 
 function openSidebar() {
   const sidebar = document.getElementById('sidebar');
-  // 첫 열기 시 트랜지션 활성화
   if (!sidebar.classList.contains('sidebar-ready')) {
     sidebar.classList.add('sidebar-ready');
   }
@@ -149,53 +149,156 @@ function renderBreadcrumb() {
   if (conceptName) document.title = `${conceptName} — CS.im`;
 }
 
-/* ── 탭 전환 ───────────────────────────────────────── */
-function switchTab(btn, targetId) {
-  document.querySelectorAll('.detail-tab').forEach(t => {
-    t.classList.remove('active');
-    t.style.color = '';
-    t.style.borderBottomColor = '';
+/* ── Concept / Note 모드 토글 ──────────────────────── */
+function setConceptMode(mode) {
+  document.getElementById('mode-concept').classList.toggle('active', mode === 'concept');
+  document.getElementById('mode-note').classList.toggle('active', mode === 'note');
+  document.getElementById('btn-concept').classList.toggle('active', mode === 'concept');
+  document.getElementById('btn-note').classList.toggle('active', mode === 'note');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Explore 탭 전환 ─────────────────────────────── */
+function switchExploreTab(tab) {
+  document.querySelectorAll('.explore-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.explore-tab-content').forEach(c => c.classList.remove('active'));
+  const btn = document.querySelector(`.explore-tab-btn[data-tab="${tab}"]`);
+  if (btn) btn.classList.add('active');
+  const content = document.getElementById(`content-${tab}`);
+  if (content) content.classList.add('active');
+
+  /* viz 탭 lazy-load */
+  if (tab === 'viz' && !window._vizLoaded) {
+    window._vizLoaded = true;
+    const vizFile = VIZ_MAP[conceptName];
+    const container = document.getElementById('viz-container');
+    if (vizFile && container) {
+      const s = document.createElement('script');
+      s.src = vizFile;
+      s.onerror = () => { container.innerHTML = `<div class="content-placeholder">시각화를 불러올 수 없어요.</div>`; };
+      document.body.appendChild(s);
+    } else if (container) {
+      container.innerHTML = `<div class="content-placeholder">아직 시각화가 준비되지 않았어요.</div>`;
+    }
+  }
+}
+
+/* ── 키워드 그래프 빌드 ───────────────────────────── */
+function buildKeywordGraph(nodes, edges, containerId) {
+  const wrap = document.getElementById(containerId || 'kwGraphWrap');
+  if (!wrap) return;
+  const W = 640, H = 320;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" id="kwSvg">`;
+  svg += `<g id="kwEdgeLayer">`;
+  edges.forEach((e, i) => {
+    svg += `<line class="kw-edge" id="kwEdge${i}" x1="0" y1="0" x2="0" y2="0"/>`;
   });
-  const s = SUBJECTS[subjectName];
-  if (s) { btn.style.color = s.color.accent; btn.style.borderBottomColor = s.color.accent; }
-  btn.classList.add('active');
-  ['tab-summary','tab-viz','tab-exam','tab-quiz'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = id === targetId ? '' : 'none';
+  svg += `</g><g id="kwNodeLayer">`;
+  nodes.forEach(n => {
+    const fill = n.core ? 'var(--subject-accent)' : 'var(--subject-bg)';
+    const textColor = n.core ? '#fff' : 'var(--subject-text)';
+    const fontSize = n.core ? 13 : n.r >= 18 ? 11.5 : 10;
+    svg += `<g class="kw-node-group" id="kwNode-${n.id}" data-id="${n.id}" transform="translate(${n.x},${n.y})">
+      <circle class="kw-node-circle" r="${n.r}" fill="${fill}"/>
+      <text class="kw-node-text" text-anchor="middle" dominant-baseline="central" font-size="${fontSize}" font-weight="700" fill="${textColor}">${n.label}</text>
+    </g>`;
   });
-  // 탭 전환 시 탭 바 위치로 스크롤
-  setTimeout(() => {
-    const tabBar = document.querySelector('.detail-tabs');
-    if (tabBar) tabBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 50);
+  svg += `</g></svg>`;
+  wrap.innerHTML = svg;
+
+  function updateEdges() {
+    edges.forEach(([a, b], i) => {
+      const na = nodes.find(n => n.id === a), nb = nodes.find(n => n.id === b);
+      if (!na || !nb) return;
+      const edge = document.getElementById('kwEdge' + i);
+      if (edge) {
+        edge.setAttribute('x1', na.x); edge.setAttribute('y1', na.y);
+        edge.setAttribute('x2', nb.x); edge.setAttribute('y2', nb.y);
+      }
+    });
+  }
+  updateEdges();
+
+  /* ── 드래그 ── */
+  const svgEl = document.getElementById('kwSvg');
+  if (!svgEl) return;
+  let dragging = null;
+
+  function svgPoint(evt) {
+    const rect = svgEl.getBoundingClientRect();
+    const cx = evt.touches ? evt.touches[0].clientX : evt.clientX;
+    const cy = evt.touches ? evt.touches[0].clientY : evt.clientY;
+    return {
+      x: (cx - rect.left) / rect.width * W,
+      y: (cy - rect.top) / rect.height * H
+    };
+  }
+
+  nodes.forEach(n => {
+    const g = document.getElementById('kwNode-' + n.id);
+    if (!g) return;
+    g.style.cursor = 'grab';
+    const startDrag = evt => { evt.preventDefault(); dragging = n; g.style.cursor = 'grabbing'; };
+    g.addEventListener('mousedown', startDrag);
+    g.addEventListener('touchstart', startDrag, { passive: false });
+  });
+
+  svgEl.addEventListener('mousemove', evt => {
+    if (!dragging) return;
+    const p = svgPoint(evt);
+    dragging.x = Math.max(dragging.r, Math.min(W - dragging.r, p.x));
+    dragging.y = Math.max(dragging.r, Math.min(H - dragging.r, p.y));
+    const g = document.getElementById('kwNode-' + dragging.id);
+    if (g) g.setAttribute('transform', `translate(${dragging.x},${dragging.y})`);
+    updateEdges();
+  });
+  svgEl.addEventListener('touchmove', evt => {
+    if (!dragging) return;
+    const p = svgPoint(evt);
+    dragging.x = Math.max(dragging.r, Math.min(W - dragging.r, p.x));
+    dragging.y = Math.max(dragging.r, Math.min(H - dragging.r, p.y));
+    const g = document.getElementById('kwNode-' + dragging.id);
+    if (g) g.setAttribute('transform', `translate(${dragging.x},${dragging.y})`);
+    updateEdges();
+  }, { passive: false });
+  function endDrag() {
+    if (dragging) {
+      const g = document.getElementById('kwNode-' + dragging.id);
+      if (g) g.style.cursor = 'grab';
+    }
+    dragging = null;
+  }
+  window.addEventListener('mouseup', endDrag);
+  window.addEventListener('touchend', endDrag);
+}
+
+/* ── 개념 키워드로 기본 그래프 자동 생성 ─────────── */
+function buildAutoKeywordGraph(conceptNameStr, keywordsStr) {
+  const kws = keywordsStr.split(/[·,·\s]+/).map(k => k.trim()).filter(k => k.length > 0);
+  const cx = 320, cy = 155;
+  const nodes = [{ id: 'core', label: conceptNameStr.replace(/\s*\(.+\)/, ''), x: cx, y: cy, r: 28, core: true }];
+  const edges = [];
+  const count = Math.min(kws.length, 10);
+  kws.slice(0, count).forEach((kw, i) => {
+    const angle = (i / count) * 2 * Math.PI - Math.PI / 2;
+    const dist = 120;
+    const r = kw.length > 5 ? 14 : 12;
+    nodes.push({ id: `kw${i}`, label: kw, x: Math.round(cx + dist * Math.cos(angle)), y: Math.round(cy + dist * Math.sin(angle)), r });
+    edges.push(['core', `kw${i}`]);
+  });
+  return { nodes, edges };
 }
 
 /* ── 파일 로드 ─────────────────────────────────────── */
-function loadViz(name) {
-  const vizFile = VIZ_MAP[name];
-  const container = document.getElementById('viz-container');
-  if (!container) return;
-  if (vizFile) {
-    // 이미 로드된 경우 재실행 방지
-    const existingId = 'viz-script-' + name.replace(/[^a-zA-Z0-9가-힣]/g, '_');
-    if (document.getElementById(existingId)) return;
-    const s = document.createElement('script');
-    s.id = existingId;
-    s.src = vizFile;
-    s.onerror = () => { container.innerHTML = `<div class="content-placeholder">시각화를 불러올 수 없어요.</div>`; };
-    document.body.appendChild(s);
-  } else {
-    container.innerHTML = `<div class="content-placeholder">아직 시각화가 준비되지 않았어요.</div>`;
-  }
-}
 function loadContent(name) {
   const f = CONTENT_MAP[name];
   if (!f) return;
-  // 특수문자 제거한 안전한 ID 생성
   const id = 'cs-' + name.replace(/[^a-zA-Z0-9가-힣]/g, '_');
   if (document.getElementById(id)) return;
   const s = document.createElement('script');
-  s.id = id; s.src = f;
+  s.id = id;
+  s.src = f;
   document.body.appendChild(s);
 }
 
@@ -216,66 +319,94 @@ function renderConcept() {
   main.style.setProperty('--subject-mid',    s.color.mid);
   main.style.setProperty('--subject-accent', s.color.accent);
   main.style.setProperty('--subject-text',   s.color.text);
+  /* Editorial 레이아웃: main 패딩 제거 (ed-page가 자체 패딩 관리) */
+  main.style.padding = '0';
 
-  const hasViz  = !!VIZ_MAP[conceptName];
-  const hasQuiz = concept.quiz;
-  const freqLabel = f => f==='높음'?C.freq.high : f==='중간'?C.freq.mid : C.freq.low;
-  const freqClass = f => f==='높음'?'badge-high' : f==='중간'?'badge-mid' : 'badge-low';
-  const vizTab  = hasViz  ? `<div class="detail-tab" onclick="switchTab(this,'tab-viz')">${C.tabs.viz}</div>` : '';
-  const quizTab = hasQuiz ? `<div class="detail-tab" onclick="switchTab(this,'tab-quiz')">${C.tabs.quiz}</div>` : '';
+  const hasViz = !!VIZ_MAP[conceptName];
 
   main.innerHTML = `
-    <div class="concept-detail">
-      <div class="detail-header" style="background:${s.color.bg};">
-        <div class="detail-subject-path">${subjectName} › ${concept.chapter}</div>
-        <div class="detail-title" style="color:${s.color.text};">${concept.name}</div>
-        <div class="detail-keywords" style="color:${s.color.text};">${concept.keywords}</div>
-        <div class="detail-badges">
-          <span class="badge ${freqClass(concept.freq)}">${freqLabel(concept.freq)}</span>
-          ${hasViz  ? `<span class="badge" style="background:var(--bg-surface,#F0EDE8);color:var(--text-tertiary,#A09890);">${C.badges.viz}</span>` : ''}
-          ${hasQuiz ? `<span class="badge" style="background:var(--bg-surface,#F0EDE8);color:var(--text-tertiary,#A09890);">${C.badges.quiz}</span>` : ''}
+    <!-- ── 상단 고정: 스크롤 프로그레스 + 모드 토글 ── -->
+    <div class="sticky-header-group" id="conceptStickyHeader">
+      <div class="scroll-progress">
+        <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+      </div>
+      <div class="mode-toggle-sticky">
+        <div class="mode-toggle">
+          <button class="mode-toggle-btn active" id="btn-concept" onclick="setConceptMode('concept')">Concept</button>
+          <button class="mode-toggle-btn" id="btn-note" onclick="setConceptMode('note')">Note</button>
         </div>
       </div>
-      <div class="detail-tabs">
-        <div class="detail-tab active"
-          style="color:${s.color.accent};border-bottom-color:${s.color.accent};"
-          onclick="switchTab(this,'tab-summary')">${C.tabs.summary}</div>
-        ${vizTab}
-        ${quizTab}
-        <div class="detail-tab" onclick="switchTab(this,'tab-exam')">${C.tabs.exam}</div>
+    </div>
+
+    <!-- ── Editorial 본문 ── -->
+    <div class="ed-page" id="edPage">
+      <div class="ed-eyebrow">${subjectName} · ${concept.chapter}</div>
+      <div class="ed-title">${concept.name}</div>
+      <div class="ed-lede">${concept.keywords}</div>
+
+      <!-- ── Explore: 키워드 그래프 / 인터랙티브 시각화 ── -->
+      <div class="explore-tabs">
+        <div class="explore-tab-buttons">
+          <button class="explore-tab-btn active" data-tab="kw" onclick="switchExploreTab('kw')">키워드 그래프</button>
+          ${hasViz ? `<button class="explore-tab-btn" data-tab="viz" onclick="switchExploreTab('viz')">인터랙티브 시각화</button>` : ''}
+        </div>
+        <div class="explore-tab-content active" id="content-kw">
+          <div class="keyword-graph-wrap" id="kwGraphWrap"></div>
+        </div>
+        ${hasViz ? `<div class="explore-tab-content" id="content-viz"><div id="viz-container"></div></div>` : ''}
       </div>
-      <div id="tab-summary">
-        <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${C.summary.intro}</div>
-          <div class="content-placeholder">
-            이 개념의 핵심 정리 내용을 여기에 작성하세요.<br>
-            <small style="margin-top:8px;display:block;">키워드: ${concept.keywords}</small>
+
+      <!-- ── Concept 모드 패널 ── -->
+      <div class="mode-panel active" id="mode-concept">
+        <div id="tab-summary">
+          <div class="ed-section">
+            <div class="ed-h2"><span class="num">—</span> ${C.summary.intro}</div>
+            <div class="content-placeholder">
+              이 개념의 핵심 정리 내용을 여기에 작성하세요.<br>
+              <small style="margin-top:8px;display:block;">키워드: ${concept.keywords}</small>
+            </div>
           </div>
         </div>
       </div>
-      <div id="tab-viz" style="display:none;">
-        <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${conceptName}</div>
-          <div id="viz-container"></div>
+
+      <!-- ── Note 모드 패널 ── -->
+      <div class="mode-panel" id="mode-note">
+        <div id="tab-exam">
+          <div class="ed-section">
+            <div class="content-placeholder">${C.tabs.exam} 내용을 작성하세요.</div>
+          </div>
         </div>
-      </div>
-      <div id="tab-exam" style="display:none;">
-        <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${C.tabs.exam}</div>
-          <div class="content-placeholder">연도별 출제 키워드와 ${C.exam.essay}를 작성하세요.</div>
-        </div>
-      </div>
-      <div id="tab-quiz" style="display:none;">
-        <div class="detail-section">
-          <div class="detail-section-title" style="--subject-accent:${s.color.accent};">${C.tabs.quiz}</div>
-          <div class="content-placeholder">O/X 문제, 빈칸 채우기 퀴즈를 작성하세요.</div>
-        </div>
+        <div id="tab-quiz"></div>
       </div>
     </div>`;
 
-  loadViz(conceptName);
+  /* ── 키워드 그래프 초기화 ── */
+  function initKeywordGraph() {
+    const customNodes = window.CONCEPT_KW_NODES;
+    const customEdges = window.CONCEPT_KW_EDGES;
+    if (customNodes && customEdges) {
+      buildKeywordGraph(customNodes, customEdges, 'kwGraphWrap');
+    } else {
+      const { nodes, edges } = buildAutoKeywordGraph(concept.name, concept.keywords);
+      buildKeywordGraph(nodes, edges, 'kwGraphWrap');
+    }
+  }
+  initKeywordGraph();
+
+  /* ── 콘텐츠 로드 ── */
   loadContent(conceptName);
 }
+
+/* ── 스크롤 이벤트 ─────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scrollTopBtn');
+  if (btn) btn.classList.toggle('visible', window.scrollY > 400);
+  const bar = document.getElementById('scrollProgressBar');
+  if (bar) {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (total > 0 ? (window.scrollY / total) * 100 : 0) + '%';
+  }
+});
 
 /* ── 초기화 ────────────────────────────────────────── */
 renderSidebar();
@@ -305,12 +436,12 @@ renderConcept();
       dropdown.innerHTML = '<div style="padding:14px 16px;font-size:13px;color:var(--text-tertiary);">검색 결과 없음</div>';
     } else {
       dropdown.innerHTML = results.map(c => {
-        const s = SUBJECTS[c.subject];
+        const subj = SUBJECTS[c.subject];
         return `<div onmousedown="location.href='concept.html?subject=${encodeURIComponent(c.subject)}&concept=${encodeURIComponent(c.name)}'"
           style="padding:10px 16px;cursor:pointer;border-bottom:1px solid var(--border-light);font-size:13px;"
           onmouseover="this.style.background='var(--bg-surface)'" onmouseout="this.style.background=''">
           <div style="font-weight:600;color:var(--text-primary);">${c.name}</div>
-          <div style="font-size:11px;color:${s?.color.accent || 'var(--text-tertiary)'};">${c.subject} › ${c.chapter}</div>
+          <div style="font-size:11px;color:${subj?.color.accent || 'var(--text-tertiary)'};">${c.subject} › ${c.chapter}</div>
         </div>`;
       }).join('');
     }
@@ -321,7 +452,6 @@ renderConcept();
     showResults(this.value.trim().toLowerCase());
   });
 
-  // blur로 닫기 (mousedown으로 결과 클릭 후 blur 발생 전에 이동하므로 안전)
   input.addEventListener('blur', () => {
     setTimeout(() => { dropdown.style.display = 'none'; }, 150);
   });

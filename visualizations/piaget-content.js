@@ -52,7 +52,7 @@
     if (!el) return;
 
     el.innerHTML = `
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">${C.summary.intro}</div>
       <div class="cs-intro-box">
         <strong>피아제(J. Piaget, 1896~1980)</strong> — 스위스 아동심리학자.<br>
@@ -61,7 +61,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">${C.summary.learning}</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
@@ -75,7 +75,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">${C.summary.teacherRole}</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
@@ -90,7 +90,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">${C.summary.stageChart || '단계별 특징 개요'}</div>
       <!-- 테이블 (≥560px) -->
       <div class="cs-table-wrap pc-table-show">
@@ -123,7 +123,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">피아제 vs 비고츠키</div>
       <div style="margin-bottom:14px;">
         <div style="font-size:11px;font-weight:700;color:${CSS_ACCENT};letter-spacing:.04em;margin-bottom:8px;">공통점</div>
@@ -169,7 +169,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'학습과정 2가지',   items:['인지적 구성주의', '동화·조절을 통한 평형화'] },
@@ -179,7 +179,7 @@
       ])}
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'피아제의 불평형 = 사회적 상호작용으로 해소" → X. 개인 내적 과정(동화·조절)으로 해소됨. 사회적 상호작용은 비고츠키.' },

@@ -56,7 +56,7 @@
     const el = $('tab-summary');
     if (!el) return;
     el.innerHTML = `
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">${C.summary.intro}</div>
       <div class="cs-intro-box">
         <strong>부울 대수(Boolean Algebra)</strong> — 0과 1 두 값만 사용하는 논리 대수. 조지 부울이 1854년 창안.<br>
@@ -65,7 +65,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">기본 논리게이트 8종</div>
       <div class="bc-gate-grid">
         ${GATES.map(g => `
@@ -78,7 +78,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">
         부울 대수 법칙
         <span style="font-size:11px;font-weight:400;color:var(--text-tertiary);margin-left:8px;">19가지 핵심 공식</span>
@@ -93,7 +93,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">카르노맵 (Karnaugh Map)</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
@@ -109,7 +109,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title">드모르간 법칙 (핵심)</div>
       <div style="display:flex;flex-direction:column;gap:6px;">
         ${[
@@ -123,7 +123,7 @@
       </div>
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.essay || '논술 답안 구조'}</div>
       ${CS.renderEssayGroups([
         { label:'논리게이트 서술 순서', items:['게이트명 → 부울 식 → 진리표 → 특징·활용'] },
@@ -132,7 +132,7 @@
       ])}
     </div>
 
-    <div class="detail-section">
+    <div class="ed-section">
       <div class="detail-section-title" style="--subject-accent:#6B6560;">${C.summary.check || '체크 포인트'}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:`XOR vs XNOR — XOR은 입력이 <strong>다를 때</strong> 1, XNOR는 입력이 <strong>같을 때</strong> 1. 시험에서 혼동하기 쉬운 포인트.` },
