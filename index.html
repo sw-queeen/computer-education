@@ -165,15 +165,20 @@ function renderHome() {
 
   let html = `
     <div class="home-hero">
-      <div class="hero-eyebrow">${C.siteName} — 정보컴퓨터 임용시험</div>
-      <h1 class="hero-big">COMPUTER<br><span class="hero-dim">EDUCATION</span></h1>
-      <p class="hero-desc">${C.heroDesc}</p>
-      <div class="hero-stats">
-        <div class="hero-stat"><div class="hero-stat-num">${total}</div><div class="hero-stat-label">개념 카드</div></div>
-        <div class="hero-stat"><div class="hero-stat-num">${highCount}</div><div class="hero-stat-label">${C.freq.high}</div></div>
-        <div class="hero-stat"><div class="hero-stat-num">${vizCount}</div><div class="hero-stat-label">${C.badges.viz}</div></div>
+      <div class="hero-glow hero-glow-a" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-b" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-c" aria-hidden="true"></div>
+      <div class="hero-content">
+        <div class="hero-eyebrow"><span class="hero-eyebrow-dot">✦</span>${C.siteName} — 정보컴퓨터 임용시험</div>
+        <h1 class="hero-big">COMPUTER<br><span class="hero-dim">EDUCATION</span></h1>
+        <p class="hero-desc">${C.heroDesc}</p>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="hero-stat-num">${total}</div><div class="hero-stat-label">개념 카드</div></div>
+          <div class="hero-stat"><div class="hero-stat-num">${highCount}</div><div class="hero-stat-label">${C.freq.high}</div></div>
+          <div class="hero-stat"><div class="hero-stat-num">${vizCount}</div><div class="hero-stat-label">${C.badges.viz}</div></div>
+        </div>
+        <button class="test-link-btn" onclick="location.href='test-design.html'"><span class="test-link-btn-icon">🧪</span>디자인 실험 — 문맥교환 (Bento / Editorial)</button>
       </div>
-      <button class="test-link-btn" onclick="location.href='test-design.html'">🧪 디자인 실험 — 문맥교환 (Bento / Editorial)</button>
     </div>
     <div class="area-columns">`;
 
