@@ -58,6 +58,14 @@
   --sidebar-width: 232px;
   --topbar-height: 56px;
 
+  /* ── 히어로 글로우 (랜딩 배경 블롭) ── */
+  --hero-glow-1: var(--c-coral-bg);
+  --hero-glow-2: var(--c-lilac-bg);
+  --hero-glow-3: var(--c-mint-bg);
+  --hero-glow-opacity: .65;
+  --hero-card-shadow: 0 1px 2px rgba(44,40,37,0.04), 0 20px 48px -24px rgba(44,40,37,0.22);
+  --hero-card-shadow-hover: 0 1px 2px rgba(44,40,37,0.05), 0 24px 56px -20px rgba(44,40,37,0.26);
+
   /* ══════════════════════════════════════════════
      6색 팔레트 — 모든 과목이 이 6가지 색 중 하나를 공유
      bg: 배경 / text: 텍스트 / mid: 서브텍스트(accent로도 사용)
@@ -117,6 +125,13 @@
 
     --border-light: rgba(255,255,255,0.07);
     --border-mid:   rgba(255,255,255,0.13);
+
+    --hero-glow-1: #F0B070;
+    --hero-glow-2: #B888F0;
+    --hero-glow-3: #58D8A0;
+    --hero-glow-opacity: .22;
+    --hero-card-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 20px 48px -24px rgba(0,0,0,0.55);
+    --hero-card-shadow-hover: 0 1px 2px rgba(0,0,0,0.32), 0 24px 56px -20px rgba(0,0,0,0.6);
 
     /* bg: 배경(#1C)보다 충분히 밝게 → #3C~#48 수준
        mid: 더 밝은 채도있는 색                        */
