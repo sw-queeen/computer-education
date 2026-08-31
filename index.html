@@ -259,7 +259,7 @@ function renderRoadmap() {
     </div>
     <div class="card-grid">
       ${concepts.map(c => `
-        <div class="concept-card" style="border-left-color:${s.color.mid};"
+        <div class="concept-card"
           onclick="navigate({subject:'${openSubject}',chapter:'${encodeURIComponent(c.chapter)}',concept:'${encodeURIComponent(c.name)}'})">
           <div class="concept-card-name">${c.name}</div>
           <div class="concept-card-keywords">${c.keywords}</div>
@@ -321,7 +321,7 @@ function renderSubject(subjectName) {
       </div>
       <div class="card-grid">`;
     cc.forEach(concept => {
-      html += `<div class="concept-card" style="border-left-color:${s.color.mid};"
+      html += `<div class="concept-card"
         data-freq="${concept.freq}" data-viz="${concept.viz}" data-quiz="${concept.quiz}"
         onclick="navigate({subject:'${subjectName}',chapter:'${encodeURIComponent(chapter)}',concept:'${encodeURIComponent(concept.name)}'})">
         <div class="concept-card-name">${concept.name}</div>
