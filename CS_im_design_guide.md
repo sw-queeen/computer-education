@@ -3,6 +3,15 @@
 정보컴퓨터 임용시험 학습 사이트 CS.im의  
 새 개념 페이지를 만들 때 따르는 규칙 문서.
 
+> **⚠ 2026 디자인 시스템 전환 — Terminal CLI**
+> 사이트 전체가 따뜻한 파스텔 "Editorial" 테마에서 다크 전용 **Terminal CLI** 테마로 전환됨(`css/variables.css` 전면 재작성). 아래 §11(디자인 토큰)·§15(6색 파스텔 팔레트)는 옛 라이트 테마 값을 그대로 남겨둔 **역사적 기록**이며, 실제 라이브 토큰 값은 `css/variables.css`가 유일한 소스입니다. 핵심 변경 사항:
+> - 배경은 다크 전용(`#0a0a0a`), `@media (prefers-color-scheme: dark)` 라이트/다크 분기 제거
+> - 폰트: `--font-main/--font-heading/--font-body`가 모두 `--font-mono`(JetBrains Mono + Nanum Gothic Coding)로 통일 — "Monospace Supremacy"
+> - `--radius-*` 전부 `0px` (둥근 모서리 없음), `box-shadow` 전면 제거
+> - 6색 파스텔 팔레트(`--c-pink/coral/yellow/mint/blue/lilac-*`)는 변수 이름은 그대로 두고 값만 포스포(phosphor) 그린/앰버/옐로우/시안/블루/바이올렛 계열로 재매핑 — `js/data.js`의 SUBJECTS 색상 참조 코드는 수정 불필요
+> - 탭 구조·콘텐츠 작성 규칙(§2~§10, §17~§19)은 변경 없음. 새 개념을 추가할 때 색상 값을 하드코딩하지 말고 항상 `var(--...)` 토큰을 참조할 것 (§13 참고).
+> - `test-design.html`은 이번 전환 범위에서 제외(원래도 본 사이트와 무관한 실험 페이지, §16 참고).
+
 ---
 
 ## 1. 파일 구조 & 역할

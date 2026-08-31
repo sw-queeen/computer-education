@@ -90,7 +90,7 @@ window.CS = window.CS || {};
 
     el.innerHTML = `
       <div class="ed-section">
-        <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">01</span> ${C.exam.history}</div>
+        <div class="ed-h2" style="--subject-accent:var(--text-tertiary);"><span class="num">01</span> ${C.exam.history}</div>
         <div class="cs-history-box">${opts.historyHTML}</div>
       </div>
       <div class="ed-section">
@@ -98,7 +98,7 @@ window.CS = window.CS || {};
         ${makeList(opts.freqItems, 'cs-exam-item-freq')}
       </div>
       <div class="ed-section">
-        <div class="ed-h2" style="--subject-accent:#8A6010;"><span class="num">03</span> ${C.exam.normal}</div>
+        <div class="ed-h2" style="--subject-accent:var(--secondary);"><span class="num">03</span> ${C.exam.normal}</div>
         ${makeList(opts.normalItems, 'cs-exam-item-normal')}
       </div>`;
   };
@@ -175,7 +175,7 @@ window.CS = window.CS || {};
     function buildAll() {
       el.innerHTML = `
         <div class="ed-section">
-          <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">04</span> ${C.quiz.title} — 총 ${quizData.length}문항</div>
+          <div class="ed-h2" style="--subject-accent:var(--text-tertiary);"><span class="num">04</span> ${C.quiz.title} — 총 ${quizData.length}문항</div>
           ${quizData.map((q, i) => buildCard(q, i)).join('')}
         </div>
         <div class="quiz-footer">
