@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CS.im — 정보컴퓨터 임용</title>
+  <title>CS.im — 컴퓨터·정보 개념 학습</title>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
 </head>
@@ -86,7 +86,7 @@ document.addEventListener('keydown', e => {
 });
 
 /* ── 사이드바 렌더 (영역별 드롭다운 + 과목 그리드) ────
-   영역 순서는 반드시 SITE_CONFIG.areas 순서(교육학 → 교과교육학 → 전공)를
+   영역 순서는 반드시 SITE_CONFIG.areas 순서(교육학 → 교과교육학 → 컴퓨터공학)를
    따라야 index.html의 사이드바/홈 화면과 순서가 일치한다. ── */
 let sidebarOpenArea = null;
 
@@ -320,9 +320,6 @@ function renderConcept() {
   main.style.setProperty('--subject-text',   s.color.text);
   /* Editorial 레이아웃: main 패딩 제거 (ed-page가 자체 패딩 관리) */
   main.style.padding = '0';
-
-  /* 홈 대시보드의 학습 진행률/완료 배지를 위해 열람 상태 기록 */
-  CS.markVisited(subjectName, conceptName);
 
   const hasViz = !!VIZ_MAP[conceptName];
 

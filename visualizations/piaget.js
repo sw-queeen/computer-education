@@ -360,7 +360,7 @@
           </div>
 
           <div class="p-exam">
-            <div class="p-exam-title">임용 기출 포인트</div>
+            <div class="p-exam-title">기출 포인트</div>
             <div class="p-exam-body"><ul style="padding-left:16px;">${examList}</ul></div>
           </div>
         </div>
