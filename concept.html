@@ -14,15 +14,14 @@
     <div class="topbar-logo" onclick="location.href='index.html'" style="cursor:pointer;">CS.im</div>
     <div class="topbar-breadcrumb" id="breadcrumb"></div>
     <div class="topbar-search">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="conceptSearch" placeholder="개념 검색...">
+      <input type="text" id="conceptSearch" placeholder="SEARCH">
     </div>
     <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="메뉴">☰</button>
   </header>
 
   <div class="body-row">
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-    <nav class="sidebar" id="sidebar"></nav>
+    <nav class="sidebar" id="sidebar" onclick="if(event.target===this) closeSidebar();"></nav>
     <main class="main" id="main"></main>
   </div>
 
