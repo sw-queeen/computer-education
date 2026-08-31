@@ -69,9 +69,9 @@ Always aim to:
 **Vibe**: Airy, luminous, modern, and calm — closer to looking through a pane of frosted glass in soft daylight than to touching plastic. It should feel light and a little playful (interactive elements answer a tap with a small elastic "jelly wobble"), while staying legible enough for dense study content: text always sits on a surface opaque enough to read comfortably, never directly on the raw gradient.
 
 **Unique Visual Signatures**:
-- **Fixed calm gradient backdrop**: a soft but *visibly tinted* lavender → periwinkle → mint gradient (`--bg-gradient`) pinned to the viewport (`background-attachment: fixed`). The gradient needs enough chroma for `backdrop-filter` to have something to blur — a near-white gradient makes every glass panel look like a plain card no matter how the shadow is tuned, because there's nothing colorful behind it to visibly diffuse.
+- **Fixed near-neutral gradient backdrop**: a barely-there off-white gradient (`--bg-gradient`) pinned to the viewport (`background-attachment: fixed`). Reference the "liquid glass" prompt this system was built from: `.liquid-glass` itself is colorless (`rgba(255,255,255,0.1)` on white) — the blue/purple in that demo is the *demo's own page background*, a one-off showcase choice, not part of the glass material. Color on this site belongs to deliberate accents (`--subject-accent`, active states) — the backdrop is not one of them. An earlier revision pushed the gradient's saturation up (plus a stronger `saturate()` on `--glass-blur`) to make the blur more visible, and the combination bled a persistent blue-violet cast across every glass surface site-wide, including ones with no subject-color context at all — that was a real regression, not a feature; it was reverted.
 - **Shadow stays light, transparency does the work** (`box-shadow`, no real `border`): a faint outer drop shadow + inset top sheen (rim light) + a crisp `0 0 0 1px` hairline rim. This replaces neumorphism's dual-shadow "extruded/inset" physics while keeping the same token *names* (`--shadow-extruded*`, `--shadow-inset*`) so every existing component picks it up automatically — but the *values* are deliberately much softer than a neumorphic shadow would be.
-- **Backdrop blur strong enough to read**: `backdrop-filter: blur(26px) saturate(180%)` (`--glass-blur`) on every card, bar, well, and pill — never a flat opaque fill. The saturate boost is what makes the blurred backdrop colour visibly bleed through a translucent white surface.
+- **Backdrop blur, restrained saturate**: `backdrop-filter: blur(26px) saturate(130%)` (`--glass-blur`) on every card, bar, well, and pill — never a flat opaque fill. Keep the saturate boost modest: it exists to give subject-tinted panels (which *do* have color behind them) a touch more life, not to manufacture color out of a neutral backdrop — a high saturate value amplifies whatever's behind a panel, tinted backdrop included, so it can turn "neutral" into "visibly colored" faster than it looks like it should when tuning in isolation.
 - **Translucent surface hierarchy**: `--bg-page` (≈0.38 alpha, chrome/sticky bars) < `--bg-surface` (≈0.30 alpha, recessed wells) < `--bg-white` (≈0.52 alpha, raised cards) — opacity itself communicates elevation, the same way neumorphism used shadow direction. One deliberate exception: `--bg-overlay` (≈0.88 alpha) is reserved for popovers that float over arbitrary page content (the search dropdown) — a floating list needs to stay legible regardless of what's scrolled underneath it, so it trades some "see-through" for guaranteed contrast. Don't use `--bg-overlay` for ordinary cards.
 - **Glass-tinted subject palette**: the 6-color pastel palette's `-bg` tokens become translucent (`rgba(…,0.55)`) so a subject-colored box still reads as glass, not a flat sticker; `-mid`/`-accent`/`-text` stay fully opaque for legibility.
 - **One accent signal per list row, not three**: when a list has one color per item (quiz steps, a stage timeline, per-item viz data), let exactly *one* element carry that color — usually a small number badge or pill — and keep the row's title/body text in the neutral `--text-primary`/`--text-secondary` scale. Coloring the badge *and* the title *and* a tag pill on every row at once reads as a loud, uncoordinated "highlighter" list even when each color is individually fine — this was a real regression caught during review (Gagne's "5 Learning Outcomes" list) and the fix (matching the more restrained "9 Events of Instruction" list right next to it) is the reference to copy. Reserve full multi-signal coloring for genuine legends/matrices where every cell *is* a distinct coded category shown at once (e.g. a 2×2 identity-status matrix) — that's a different kind of component from a plain sequential list.
@@ -87,14 +87,14 @@ Always aim to:
 Unlike neumorphism's single flat base color, the page sits on a **fixed decorative gradient** that every glass surface blurs through:
 
 ```css
---bg-gradient: linear-gradient(135deg, #DCE6FB 0%, #E1DBF6 45%, #DAF1E8 100%);
+--bg-gradient: linear-gradient(135deg, #F4F4F4 0%, #F1F1F1 50%, #F3F3F3 100%);
 ```
 
-Applied only once, on `body`, with `background-attachment: fixed` so scrolling never reveals a seam between the gradient and the translucent bars/panels sitting on top of it. Note this is more saturated than a "safe" near-white gradient would be — that saturation is load-bearing for the glass effect (see Core Principles above), not decorative excess.
+Applied only once, on `body`, with `background-attachment: fixed` so scrolling never reveals a seam between the gradient and the translucent bars/panels sitting on top of it. Every stop is exactly R=G=B — fully achromatic, only lightness varies — so there is no hue anywhere for `saturate()` to amplify; the gradient exists so the page isn't perfectly flat, not to inject color.
 
-### Colors (Light Mode — Translucent Glass over Cool Gradient)
+### Colors (Light Mode — Translucent Glass over a Near-Neutral Gradient)
 
-- **Background (decorative)**: `--bg-gradient` — lavender → periwinkle → mint, calm rather than showy but with enough chroma to visibly blur. No photography, no busy ambient orbs beyond the existing hero glow blobs.
+- **Background (decorative)**: `--bg-gradient` — near-white, essentially achromatic, a whisper of directional variation rather than a colored wash. No photography, no busy ambient orbs beyond the existing hero glow blobs, and — per the regression above — no more chroma than this.
 - **Chrome surface** (`--bg-page: rgba(255,255,255,0.38)`) — topbar, sidebar, sticky bars. The most transparent "raised" surface — chrome should feel like it barely interrupts the backdrop.
 - **Card surface** (`--bg-white: rgba(255,255,255,0.52)`) — concept cards, quiz cards, detail sections. The most opaque of the three standard surfaces; content here needs to read clearly.
 - **Well/recessed surface** (`--bg-surface: rgba(255,255,255,0.30)`) — intro boxes, essay groups, check cards, exam items, inset inputs. More see-through than a card, reinforcing that it's *pressed into* the glass rather than floating above it.
@@ -187,7 +187,7 @@ box-shadow:
 
 **Backdrop blur** — applied alongside every one of the surfaces above:
 ```css
---glass-blur: blur(26px) saturate(180%);
+--glass-blur: blur(26px) saturate(130%);
 backdrop-filter: var(--glass-blur);
 -webkit-backdrop-filter: var(--glass-blur);
 ```
@@ -274,4 +274,5 @@ Genuinely bespoke visualization layout (Boole's Karnaugh-map grid and logic-gate
 - **Poor Contrast**: Never place body text directly on `--bg-gradient` without a glass surface underneath it — always route through `--bg-page`/`--bg-white`/`--bg-surface`.
 - **Shadow-heavy "glass"**: Don't reach for a darker/bigger outer shadow or an extra inset bevel layer to make a surface feel "more premium" or "more defined" — that's the neumorphism instinct, and it's exactly what makes a glass panel start looking like an embossed button. If a surface doesn't read as glassy enough, the fix is almost always more transparency/blur, not more shadow.
 - **Coloring every part of a list row**: Don't tint the badge *and* the title *and* a tag pill with the same per-item accent on a plain sequential list — pick one carrier (usually the number/badge) and leave the rest neutral. See "One accent signal per list row" above.
+- **Tinting the backdrop to prove the blur works**: If cards don't look glassy enough, resist raising `--bg-gradient`'s saturation or `--glass-blur`'s `saturate()` to compensate — both amplify sitewide, so a small nudge in isolation becomes a persistent color cast everywhere once every panel is blurring it (this happened: a lavender/periwinkle/mint gradient plus `saturate(180%)` turned the whole site visibly blue). The backdrop stays near-neutral; color comes from `--subject-accent` and other deliberate accents, never from the passive background.
 </design-system>

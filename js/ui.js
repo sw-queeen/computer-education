@@ -241,4 +241,54 @@ window.CS = window.CS || {};
     initWobble();
   }
 
+  /* ── 개념 카드: 마우스 3D 틸트 + 컬러 스포트라이트 + 형제 카드 흐려짐 ──
+     document에 위임(delegation)으로 붙여서, 카드 그리드가 나중에
+     다시 렌더링돼도(챕터 전환, 필터 등) 별도 재초기화가 필요 없다.
+     색은 하드코딩하지 않고 --subject-accent를 그대로 읽는다
+     (components.css .concept-card::before 참고). */
+  var TILT_MAX_DEG = 8;
+
+  function initConceptCardTilt() {
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    document.addEventListener('mousemove', function (e) {
+      var card = e.target.closest && e.target.closest('.concept-card');
+      if (!card) return;
+      var rect = card.getBoundingClientRect();
+      var nx = (e.clientX - rect.left) / rect.width;
+      var ny = (e.clientY - rect.top) / rect.height;
+      card.style.setProperty('--mx', (nx * 100) + '%');
+      card.style.setProperty('--my', (ny * 100) + '%');
+      card.style.setProperty('--tilt-x', (TILT_MAX_DEG * (0.5 - ny) * 2) + 'deg');
+      card.style.setProperty('--tilt-y', (TILT_MAX_DEG * (nx - 0.5) * 2) + 'deg');
+    });
+
+    document.addEventListener('mouseover', function (e) {
+      var card = e.target.closest && e.target.closest('.concept-card');
+      if (!card || card.classList.contains('is-hovered')) return;
+      if (card.contains(e.relatedTarget)) return;
+      card.classList.add('is-hovered');
+      var grid = card.closest('.card-grid');
+      if (grid) grid.classList.add('has-hover');
+    });
+
+    document.addEventListener('mouseout', function (e) {
+      var card = e.target.closest && e.target.closest('.concept-card');
+      if (!card) return;
+      if (card.contains(e.relatedTarget)) return;
+      card.classList.remove('is-hovered');
+      card.style.removeProperty('--tilt-x');
+      card.style.removeProperty('--tilt-y');
+      var grid = card.closest('.card-grid');
+      if (grid) grid.classList.remove('has-hover');
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initConceptCardTilt);
+  } else {
+    initConceptCardTilt();
+  }
+
 })(window.CS);

@@ -572,15 +572,68 @@ a { color: inherit; text-decoration: none; }
   padding: 14px 16px;
   cursor: pointer;
   box-shadow: var(--shadow-extruded-sm);
-  transition: box-shadow .25s ease-out, transform .25s ease-out, background .25s ease-out;
+  transition: box-shadow .25s ease-out, transform .12s ease-out, background .25s ease-out, opacity .2s ease-out;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  position: relative;
+  overflow: hidden;
+  /* --tilt-x/--tilt-y/--mx/--my는 js/ui.js의 마우스 위임 리스너가 실시간으로
+     갱신한다(카드가 다시 렌더링돼도 다시 초기화할 필요 없음). --card-scale은
+     이 카드가 속한 .card-grid의 다른 카드가 호버 중일 때만 축소된다. */
+  transform:
+    perspective(900px)
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg))
+    scale(var(--card-scale, 1))
+    translateY(var(--card-lift, 0px));
 }
 .concept-card:hover {
   background: color-mix(in srgb, var(--subject-mid, var(--primary)) 13%, var(--bg-white));
   box-shadow: var(--shadow-extruded-hover);
-  transform: translateY(-2px);
+  --card-lift: -2px;
+}
+/* 형제 카드 흐려짐 — 같은 그리드의 다른 카드를 호버하면 이 카드는 옅어지고
+   살짝 줄어든다. 호버 중인 카드 자신은 제외된다. */
+.card-grid.has-hover .concept-card:not(.is-hovered) {
+  opacity: .55;
+  --card-scale: .98;
+}
+/* 컬러 스포트라이트 — 커서 위치를 따라가는 과목색 라디얼 글로우 */
+.concept-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease-out;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--subject-accent, var(--primary)) 25%, transparent), transparent 65%);
+}
+.concept-card.is-hovered::before { opacity: 1; }
+/* 시머 스윕 — 호버 시 빛이 대각선으로 한 번 스치고 지나감 */
+.concept-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 55%;
+  pointer-events: none;
+  transform: translateX(-160%) skewX(-12deg);
+  transition: transform .7s ease-out;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,.45), transparent);
+}
+.concept-card.is-hovered::after { transform: translateX(280%) skewX(-12deg); }
+/* 글로우/시머는 z-index:0으로 뒤에 깔고, 텍스트 콘텐츠는 z-index:1로
+   그 위에서 항상 또렷하게 읽히도록 명시적으로 쌓는다. */
+.concept-card::before, .concept-card::after { z-index: 0; }
+.concept-card-name, .concept-card-keywords, .concept-card-footer {
+  position: relative;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .concept-card { transition: box-shadow .25s ease-out, background .25s ease-out; }
+  .concept-card::after { transition: none; }
 }
 .concept-card-name {
   font-family: var(--font-heading, var(--font-main));

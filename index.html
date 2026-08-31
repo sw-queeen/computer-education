@@ -259,7 +259,7 @@ function renderRoadmap() {
     </div>
     <div class="card-grid">
       ${concepts.map(c => `
-        <div class="concept-card" style="border-left-color:${s.color.mid};"
+        <div class="concept-card"
           onclick="navigate({subject:'${openSubject}',chapter:'${encodeURIComponent(c.chapter)}',concept:'${encodeURIComponent(c.name)}'})">
           <div class="concept-card-name">${c.name}</div>
           <div class="concept-card-keywords">${c.keywords}</div>
@@ -278,6 +278,13 @@ function renderRoadmap() {
       <div class="roadmap-subject-list">${subjectListHtml}</div>
     </div>
     <div class="roadmap-main">${mainHtml}</div>`;
+
+  /* .concept-card의 color-mix() 틴트·스포트라이트가 읽는 --subject-*가
+     이 안 어디에도 설정된 적이 없었다 — 그래서 항상 --primary(보라)로
+     폴백되어 카드가 과목과 무관하게 계속 파랗게 보이는 버그가 있었다.
+     카드 그리드를 담은 .roadmap-main에 지금 열려 있는 과목의 색을
+     심어준다. */
+  if (s) setSubjectVars(openSubject, roadmap.querySelector('.roadmap-main'));
 }
 
 /* ── 과목 렌더 ─────────────────────────────────────── */
@@ -321,7 +328,7 @@ function renderSubject(subjectName) {
       </div>
       <div class="card-grid">`;
     cc.forEach(concept => {
-      html += `<div class="concept-card" style="border-left-color:${s.color.mid};"
+      html += `<div class="concept-card"
         data-freq="${concept.freq}" data-viz="${concept.viz}" data-quiz="${concept.quiz}"
         onclick="navigate({subject:'${subjectName}',chapter:'${encodeURIComponent(chapter)}',concept:'${encodeURIComponent(concept.name)}'})">
         <div class="concept-card-name">${concept.name}</div>
