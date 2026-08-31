@@ -1,19 +1,22 @@
-# CS.im Design System — Serif (Ink Black Edition)
+# CS.im Design System — Neumorphism (Soft UI, Cool Grey Edition)
 
-> 이 문서는 CS.im 사이트에 적용된 "Serif" 디자인 시스템의 원본 스펙입니다.
-> 원본 스펙(아래 링크 참고)은 액센트 컬러로 **번드 골드(`#B8860B`)** 를 제안하지만,
-> 이 사이트는 옐로우/골드 계열을 전혀 쓰지 않고 **잉크 블랙(`#0A0A0A`) 단일 액센트**를
-> 쓰기로 확정했으므로, 색상 토큰과 그 색을 설명하는 본문 서술을 모두 블랙 기준으로
-> 고쳐서 기록합니다. **앞으로 이 사이트에서 디자인을 다루는 모든 작업(신규 페이지,
-> 컴포넌트 리팩터링, 색상 추가 등)은 이 문서를 일관되게 따릅니다.**
+> 이 문서는 CS.im 사이트에 적용된 **뉴모피즘(Neumorphism / Soft UI)** 디자인 시스템의
+> 원본 스펙입니다. 기존에 있던 "Serif (Ink Black Edition)" 스펙 전체를 대체합니다.
 >
+> - **베이스 그레이는 `#E0E5EC` 로 고정합니다.** 뉴모피즘에서 자주 쓰이는 다른 회색
+>   값(예: `#ECEFF1`, `#F0F0F3`, `#E0E0E0` 등)이 아니라 반드시 `#E0E5EC` 하나만
+>   사용하고, 배경·카드·버튼·인풋 등 모든 표면(surface)이 이 색과 동일한 재질에서
+>   깎이거나(inset) 돋아난(extruded) 것처럼 보이도록 그림자만으로 형태를 표현합니다.
+> - **나머지 색상 토큰(전경색·보조색·뮤트·섀도우 등)은 전부 이 `#E0E5EC` 베이스를
+>   기준으로 대비·톤을 맞춰 파생했습니다.** 임의의 그레이·틴트를 추가하지 않고,
+>   아래 §Design Token System에 정의된 값만 사용합니다.
+> - **단, 과목/개념별 포인트 색상(6색 파스텔 팔레트 `--c-pink/coral/yellow/mint/blue/lilac-*`
+>   와 그로부터 파생되는 `--c-edu-*`/`--c-info-*`/`--c-cs-*` 매핑)은 이번 전환 대상이
+>   아닙니다.** 기존에 `css/variables.css`에 등록되어 있던 값을 그대로 유지합니다 —
+>   이 팔레트는 뉴모피즘의 모노크롬 규율과 별개 레이어로, 과목 구분 전용입니다.
 > - 실제 라이브 토큰 값의 유일한 소스(source of truth)는 항상 `css/variables.css`입니다.
 >   이 문서와 코드가 어긋나면 코드가 맞고, 이 문서를 코드에 맞춰 갱신해야 합니다.
 > - 콘텐츠 작성 규칙·탭 구조 등 시각 디자인 이외의 규칙은 `CS_im_design_guide.md`를 따릅니다.
-> - 과목 구분용 6색 파스텔 팔레트(`--c-pink/coral/yellow/mint/blue/lilac-*`)는 이 액센트
->   시스템과 별개 레이어이며 그대로 유지합니다 — 여기서 "옐로우/골드 톤을 블랙으로"라는
->   요청은 **사이트 공통 액센트(버튼·링크·포커스링·룰라인)** 에 한정되고, 과목 구분 팔레트의
->   `--c-yellow-*`(과목 색상 6종 중 하나)는 대상이 아닙니다.
 
 ---
 
@@ -50,478 +53,177 @@ Always aim to:
 </role>
 
 <design-system>
-# Design Style: Serif
+# Design Style: Neumorphism (Soft UI)
 
 ## Design Philosophy
 
-### Core Principle
+**Core Principles**: Neumorphism creates the illusion of physical depth through carefully balanced dual shadows—one light source from the top-left, one dark shadow falling bottom-right—on monochromatic backgrounds. Elements appear to either extrude from the surface (convex/raised) or be pressed into it (concave/inset). The effect mimics soft, pillowed physical objects with realistic lighting, creating a "molded from the same material" aesthetic. Every element feels like it's part of the same continuous surface, either raised or pressed, never flat.
 
-**Typographic elegance through classical restraint.** This design system draws inspiration from the finest editorial publications, literary magazines, and luxury brand identities. It believes that the highest form of design is one that elevates content through refined typography, considered spacing, and deliberate simplicity.
+**Vibe**: Tactile, calm, modern, and physically grounded. This is UI that feels like cool matte plastic or soft ceramic. It is satisfying and tangible. The aesthetic is deliberately restrained, utilizing a cooler grey palette anchored to `#E0E5EC` to feel fresh and distinct from "warm" legacy neumorphism. The design prioritizes accessibility with WCAG AA compliant contrast ratios while maintaining the soft aesthetic.
 
-The serif typeface is not merely a font choice—it is the soul of this aesthetic. Every curve of the letterform, every carefully weighted stroke, speaks to centuries of typographic tradition. This design honors that heritage while executing with modern precision.
-
-### The Visual Vibe
-
-**Editorial. Timeless. Warm. Refined.**
-
-Imagine opening a beautifully designed hardcover book or a premium architecture magazine. The pages breathe. The typography has room to speak. Nothing screams for attention because everything has been placed with intention. This is the feeling we create.
-
-**Emotional Keywords:**
-- *Timeless* — This design would feel appropriate today, a decade ago, or a decade from now. It transcends trends.
-- *Warm* — The ivory backgrounds, the organic serif curves, and a single ink-black accent create an inviting, refined quality.
-- *Sophisticated* — Small caps, refined rules, generous margins all whisper quality and attention to detail.
-- *Literary* — This feels like it belongs in the world of ideas, of considered communication, of meaningful content.
-- *Confident* — True elegance comes from restraint, not embellishment. This design is secure enough to be quiet.
-
-**What This Design Is NOT:**
-- Not cold or stark (despite being minimal)
-- Not trendy or ephemeral (the serif anchors it in timelessness)
-- Not decorative or ornate (restraint is key)
-- Not corporate or generic (the typography gives it soul)
-- Not loud or aggressive (it draws you in rather than demanding attention)
-
-### The DNA of This Style
-
-#### 1. The Signature Serif
-
-The **Playfair Display** typeface is the cornerstone. Its high contrast between thick and thin strokes, its elegant ball terminals, and its classical proportions immediately establish editorial gravitas. This font has presence—it commands attention without raising its voice.
-
-**Where it appears:**
-- All major headlines (h1, h2, h3)
-- Large display numbers (pricing, stats)
-- Pull quotes in testimonials
-- Logo wordmark
-
-**Why it works:** Serif typefaces carry associations with tradition, trustworthiness, and intellectual depth. Playfair Display specifically feels both classical and contemporary—it's not stuffy or old-fashioned but brings warmth and character.
-
-#### 2. The Warm Palette
-
-Color in this system is used with extreme restraint. The palette is essentially monochromatic with a single black accent:
-
-- **Ivory (#FAFAF8)** — A cream-tinted white that feels warmer than pure white
-- **Rich Black (#1A1A1A)** — Deep but not harsh, for primary text
-- **Warm Gray (#6B6B6B)** — For secondary text, with slight warmth
-- **Ink Black (#0A0A0A)** — The single accent color, used sparingly for emphasis
-
-The black accent is inspired by the pooled ink of a fountain pen, the inked rules of a letterpress galley, the ebony spine of a bound first edition. It adds just enough contrast and distinction without overwhelming the monochrome foundation.
-
-#### 3. The Rule Line System
-
-Thin horizontal rules (1px lines) are a defining element:
-- Section dividers
-- Card borders (top accent lines)
-- Underline effects on key elements
-- Table separators
-
-These rules are inspired by editorial layouts where fine lines create structure and rhythm without visual weight. They're always in the border color (#E8E4DF), slightly warmer than pure gray.
-
-#### 4. Small Caps & Tracking
-
-**Small caps** are used extensively for:
-- Section labels
-- Meta information (dates, categories)
-- Supporting text
-- Navigation items
-
-Combined with **generous letter-spacing (0.1em - 0.15em)**, small caps create a refined, sophisticated look that's distinctly editorial. This is not a cheap trick—it's a typography fundamental that separates thoughtful design from generic output.
-
-#### 5. Generous Whitespace
-
-This design breathes. Margins are large. Padding is substantial. Line heights are relaxed.
-
-- Section padding: `py-32` to `py-44`
-- Content max-width: `max-w-5xl` (narrower for reading comfort)
-- Line height for body: `1.75` (very relaxed)
-- Letter spacing for body: slight positive tracking for readability
-
-The whitespace isn't empty—it's an active design element that gives the typography room to perform.
-
-#### 6. Asymmetric Balance
-
-While the overall aesthetic is classical, the layouts embrace asymmetric compositions:
-- Hero: Centered but with offset decorative elements
-- Benefits: Uneven column splits (1.3fr / 0.7fr)
-- Cards: Thin top border creates visual weight at top
-
-This prevents the design from feeling static or predictable while maintaining elegance.
-
-### Differentiation: Minimalism With Soul
-
-Many minimalist designs strip away so much that they become characterless—white backgrounds, gray text, system fonts. This design proves that minimalism and personality are not mutually exclusive.
-
-**The serif typeface is the key differentiator.** It brings:
-- Visual interest without decoration
-- Warmth without color
-- Character without complexity
-- Timelessness without being dated
-
-This is minimalism with a point of view. It has something to say.
-
-### Sensory Description
-
-If this design were a physical space, it would be:
-- A private library with floor-to-ceiling bookshelves
-- Natural light filtering through tall windows
-- A worn leather chair and a mahogany writing desk
-- The smell of aged paper and fresh coffee
-- Silence that invites contemplation
-
-If it were music, it would be:
-- Solo piano, perhaps Satie or Debussy
-- Lots of space between notes
-- Warm, resonant tones
-- Something you'd hear in a boutique hotel lobby
-- Understated but unmistakably refined
+**Unique Visual Signatures**:
+- **Dual opposing RGB shadows** (top-left light, bottom-right dark) using alpha transparency for smoother, more realistic blending than solid hex shadows.
+- **Monochromatic "Cool Grey" discipline** (`#E0E5EC`) where shadows and highlights do all the visual heavy lifting. No flat backgrounds.
+- **Same-surface illusion**: Elements appear to be part of the same material as the background—molded, not placed.
+- **Deep Inset States**: Wells for icons and inputs that feel significantly deeper (`insetDeep`) than standard pressed states, creating true 3D depth.
+- **Soft, Hyper-Rounded Corners**: `32px` for containers and `16px` for smaller elements, reinforcing the pillowed, organic aesthetic.
+- **Complex Nested Depth**: Visuals formed by nesting elements (Extruded → Inset → Extruded) to showcase the physics of the system.
+- **Smooth Micro-interactions**: 300ms transitions with scale, rotation, and shadow depth changes. Floating animations for ambient motion.
+- **Mobile-First Responsive**: Fully responsive with touch-friendly targets (44px minimum), hamburger menu, and maintained neumorphic aesthetic on all screen sizes.
 
 ---
 
 ## Design Token System (The DNA)
 
-### Color Strategy
+### Colors (Light Mode - Cool Monochromatic)
 
-**Monochrome With Warmth:** An intentionally limited palette that gains sophistication through restraint. The single ink-black accent provides just enough distinction.
+The entire chrome/UI palette is built around a single base cool grey, **`#E0E5EC`**. All visual interest comes from shadow play, not color variety. (The per-subject 6-color palette described in "Subject Point Colors" below is a separate, unchanged layer used only to tint chapter/subject accents — it is not part of this monochrome discipline.)
 
-| Token | Value | Usage & Context |
-|:------|:------|:----------------|
-| `background` | `#FAFAF8` | Primary canvas. Warm ivory that feels more refined than pure white. |
-| `foreground` | `#1A1A1A` | Primary text. Rich black, not pure black. |
-| `muted` | `#F5F3F0` | Secondary surfaces, card backgrounds. Slightly warmer than background. |
-| `muted-foreground` | `#6B6B6B` | Secondary text. Warm gray with softness. |
-| `accent` | `#0A0A0A` | Ink black. Links, highlights, key interactive elements. |
-| `accent-secondary` | `#3A3A40` | Warm charcoal for gradients and hover states. |
-| `accent-foreground` | `#FFFFFF` | Text on accent backgrounds. |
-| `border` | `#E8E4DF` | Warm gray for rules, dividers, card borders. |
-| `card` | `#FFFFFF` | Card surfaces. Pure white for maximum lift from ivory background. |
-| `ring` | `#0A0A0A` | Focus rings. Matches accent black. |
+- **Background**: `#E0E5EC` — The base "cool clay" surface. Everything is molded from this. Cards, inputs, and surfaces all use this exact same value; only shadows differentiate them.
+- **Foreground**: `#3D4852` — Dark blue-grey for primary text. Excellent contrast (7.5:1 ratio) for optimal readability on `#E0E5EC`.
+- **Muted**: `#6B7280` — Cool grey for secondary text with WCAG AA compliant contrast (4.6:1 ratio on the background).
+- **Accent**: `#6C63FF` — Soft violet for interactive highlights. Used sparingly for CTAs and focus states.
+- **Accent Light**: `#8B84FF` — Lighter violet for gradients and hover states.
+- **Accent Secondary**: `#38B2AC` — Teal for success states, checkmarks, and positive indicators.
+- **Border**: `transparent` — Neumorphism **never** uses borders; shadows define all edges.
 
----
+**Shadow Colors** (CRITICAL - RGBA for Smoothness, tuned to `#E0E5EC`):
+- **Shadow Light**: `rgba(255, 255, 255, 0.5-0.6)` — Pure white with transparency for the light-source shadow (top-left).
+- **Shadow Dark**: `rgb(163, 177, 198, 0.6-0.7)` — A specific cool blue-grey shadow color that matches the `#E0E5EC` background tone perfectly (bottom-right).
 
-### Typography System
+### Subject Point Colors (unchanged, separate layer)
 
-**Font Pairing (Editorial System):**
-- **Display/Headlines:** `"Playfair Display", Georgia, serif` — Elegant high-contrast serif for all headings. The signature of this design.
-- **Body/UI:** `"Source Sans 3", system-ui, sans-serif` — Clean, highly readable sans-serif that complements without competing.
-- **Monospace:** `"IBM Plex Mono", monospace` — For labels and small caps treatments.
+CS.im already registers a 6-color pastel palette for subject/chapter differentiation
+(`--c-pink/coral/yellow/mint/blue/lilac-*` in `css/variables.css`, and the derived
+`--c-edu-*`/`--c-info-*`/`--c-cs-*` per-chapter mappings). These values are **kept exactly
+as registered** — they are not adjusted to fit the neumorphic monochrome base. Components
+that need a subject accent (chapter chips, active tabs, quiz explain boxes, left-accent
+bars, etc.) read `--subject-bg` / `--subject-mid` / `--subject-accent` / `--subject-text`
+as before; only the neutral chrome around them (card body, shadows, radius) changes.
 
-**Type Scale & Usage:**
+### Typography
 
-| Element | Size | Font | Weight | Tracking | Notes |
-|:--------|:-----|:-----|:-------|:---------|:------|
-| Hero Headline | `7xl` → `4.5rem` | Playfair Display | Normal | `-0.02em` | Tight leading (1.1). Center-aligned. |
-| Section Headlines | `4xl` → `2.5rem` | Playfair Display | Normal | `-0.01em` | Leading 1.2. |
-| Card Titles | `xl` → `1.25rem` | Playfair Display | Semibold | Normal | Leading 1.3. |
-| Body Text | `base` → `lg` | Source Sans 3 | Normal | `0.01em` | Relaxed line-height (1.75). |
-| Section Labels | `xs` (12px) | IBM Plex Mono | Medium | `0.15em` | UPPERCASE small caps style. |
-| Navigation | `sm` | Source Sans 3 | Medium | `0.05em` | Slightly tracked. |
+- **Display Font**: **"Plus Jakarta Sans"** (500, 600, 700, 800) — Modern geometric sans for headlines. Applied via `.font-display` class / `--font-heading`.
+- **Body Font**: **"DM Sans"** (400, 500, 700) — Clean, highly legible sans-serif for all body text and UI elements. `--font-body`.
+- **Weights**:
+  - Display Headings: `font-extrabold` (800) with `tracking-tight`
+  - Headings: `font-bold` (700) with `tracking-tight`
+  - Body: `font-normal` (400) to `font-medium` (500)
+- **Colors**:
+  - Primary: `#3D4852` (excellent contrast)
+  - Secondary/Muted: `#6B7280` (WCAG AA compliant)
+- **Scale**: Responsive scale from `text-sm` (14px) to `text-7xl` (72px) for hero headlines
 
-**Small Caps Pattern:**
+### Radius
+
+- **Container / Card**: `32px` (`rounded-[32px]`) — Very soft, friendly corners.
+- **Base / Button**: `16px` (`rounded-2xl`).
+- **Inner Elements**: `12px` (`rounded-xl`) or `9999px` (`rounded-full`).
+
+### Shadows & Effects (The Physics)
+
+Shadows are defined using `rgba` for a premium, smooth finish.
+
+**Extruded (Standard)** — The default resting state:
 ```css
-.small-caps {
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
+box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5);
+```
+
+**Extruded Hover (Lifted)** — For hover states:
+```css
+box-shadow: 12px 12px 20px rgb(163,177,198,0.7), -12px -12px 20px rgba(255,255,255,0.6);
+```
+
+**Extruded Small** — For smaller elements:
+```css
+box-shadow: 5px 5px 10px rgb(163,177,198,0.6), -5px -5px 10px rgba(255,255,255,0.5);
+```
+
+**Inset (Pressed)** — For standard pressed states or shallow wells:
+```css
+box-shadow: inset 6px 6px 10px rgb(163,177,198,0.6), inset -6px -6px 10px rgba(255,255,255,0.5);
+```
+
+**Inset Deep** — For inputs, active wells, and deep "carved" elements:
+```css
+box-shadow: inset 10px 10px 20px rgb(163,177,198,0.7), inset -10px -10px 20px rgba(255,255,255,0.6);
+```
+
+**Inset Small** — For subtle tracks or pills:
+```css
+box-shadow: inset 3px 3px 6px rgb(163,177,198,0.6), inset -3px -3px 6px rgba(255,255,255,0.5);
 ```
 
 ---
 
-### Spacing & Layout
-
-**Core Principle:** Luxurious breathing room. This design is not afraid of empty space.
-
-- **Section Spacing:** Large vertical padding (`py-32` to `py-44`) creates paced, contemplative scrolling.
-- **Container Width:** `max-w-5xl` (64rem) for narrower, more readable content columns.
-- **Component Density:** Generous internal padding (p-8 to p-10) on cards.
-- **Grid Gaps:** `gap-8` to `gap-12` between grid items.
-
-**Layout Patterns:**
-- Hero: Centered, narrow container, stacked elements
-- Features: 3-column grid with generous gaps
-- Benefits: Asymmetric 2-column (`grid-cols-[1.3fr_0.7fr]`)
-- Use thin rule lines to create visual structure
-
----
-
-### Borders, Surfaces & Shadows
-
-**Surfaces:**
-- Cards use pure white (`#FFFFFF`) for lift from ivory background
-- Very subtle shadows—this isn't about depth, it's about refinement
-- Thin borders (1px) in warm gray
-
-**Border System:**
-| Token | Value | Usage |
-|:------|:------|:------|
-| `border-thin` | `1px solid #E8E4DF` | Primary borders, rules |
-| `border-accent` | `1px solid #0A0A0A` | Accent borders, highlighted cards |
-
-**Shadow System:**
-| Token | Value | Usage |
-|:------|:------|:------|
-| `shadow-sm` | `0 1px 2px rgba(26,26,26,0.04)` | Subtle lift |
-| `shadow-md` | `0 4px 12px rgba(26,26,26,0.06)` | Cards, hover states |
-| `shadow-lg` | `0 8px 24px rgba(26,26,26,0.08)` | Elevated elements |
-
-**Rule Lines (Critical for Style Identity):**
-- Thin horizontal rules as section dividers
-- Top border accent on cards (1px accent color)
-- Decorative rule under headlines
-
----
-
-## Component Styling & Interactions
+## Component Styling
 
 ### Buttons
-
-**Primary Button:**
-- Background: accent black
-- Text: White, medium weight, slightly tracked
-- Border-radius: `rounded-md` (6px) — not too round, not too sharp
-- Shadow: Very subtle, accent-tinted (`shadow-sm`)
-- Hover: Color shifts to `accent-secondary`, shadow enhances to `shadow-accent`, subtle lift (-translate-y-0.5)
-- Active: Returns to base position (translate-y-0)
-- Touch: `touch-manipulation` class for better mobile interaction
-- Minimum height: 44px on mobile (accessibility requirement)
-
-**Secondary/Outline Button:**
-- Background: Transparent
-- Border: `1px` in `foreground` color (strong contrast)
-- Text: `foreground`
-- Hover: Fill with `muted` background, border and text shift to `accent` color
-- Smooth color transitions on all properties
-
-**Ghost Button:**
-- No background or border
-- Text: `muted-foreground` → `foreground` on hover
-- Underline appears on hover with `accent` color decoration
-- Underline offset: 4px for breathing room
-
-**Animation:** Refined transitions (`200ms`). Subtle lift on primary buttons adds tactile feedback while maintaining elegance.
-
----
+- **Shape**: `rounded-2xl` (16px).
+- **Transition**: `duration-300 ease-out`.
+- **Default State**: Extruded shadow.
+- **Hover State**: `translate-y-[-1px]` (slight lift) + Extruded Hover shadow.
+- **Active/Pressed State**: `translate-y-[0.5px]` (physical press) + Inset Small shadow.
+- **Primary**: Accent background `#6C63FF`. Active state uses specific rgba inset shadows to work on color.
+- **Secondary**: Background `#E0E5EC` (match page).
 
 ### Cards
-
-**Standard Card:**
-- Background: `card` (white)
-- Border: `1px` in `border` color
-- Border-radius: `rounded-lg` (8px)
-- Shadow: `shadow-sm` — very subtle
-- Top accent: Optional `2px` accent border on top edge (when `accentTop` prop used)
-
-**Hover Effects (when `hoverEffect` prop used):**
-- Shadow increases to `shadow-md`
-- Border color shifts to `border-hover`
-- Background subtle tint to `muted/30` (30% opacity)
-- No translate/lift — maintains elegant restraint
-- Smooth `200ms` transition on all properties
-
-**Elevated Card:**
-- Uses `shadow-md` by default (when `elevated` prop used)
-- Provides more depth for important content like highlighted pricing tiers
-
-**Featured Card:**
-- Background tint of accent color at 6% (`accent-muted`)
-- Accent top border at 2px thickness
-- Often combined with elevated shadow for maximum prominence
-
----
+- **Shape**: `rounded-[32px]` (significant rounding) for hero/major containers; `16px` for standard content cards.
+- **Background**: `#E0E5EC`.
+- **Padding**: `p-8` to `p-20` depending on prominence.
+- **Hover**: `translate-y-[-2px]` + Extruded Hover shadow.
+- **Feature**: Use nested depth. Card is Extruded → icon well inside is Inset Deep → icon inside is distinct.
 
 ### Inputs
+- **Shape**: `rounded-2xl`.
+- **Background**: `#E0E5EC`.
+- **Default**: Inset shadow.
+- **Focus**: Inset Deep shadow + Accent color ring (offset by 2px with background color).
+- **Placeholder**: `#A0AEC0`.
 
-- Height: `h-12` (44px minimum for accessibility)
-- Border: `1px` in `input` color (matches `border`)
-- Border-radius: `rounded-md` (6px)
-- Background: Transparent
-- Hover: Border shifts to `border-hover` color
-- Focus:
-  - `ring-2 ring-accent ring-offset-2`
-  - Border shifts to `accent` color for clear visual feedback
-  - Smooth `150ms` transition
-- Placeholder: `text-muted-foreground/60` (60% opacity for subtle hierarchy)
-- Typography: Sans-serif body font, base size
-- Transitions: All properties animate smoothly with `ease-out` easing
+### Visual Decorations
+- **Icon Wells**: Always use Inset Deep or Inset shadows for icon containers. This makes them look "drilled" into the card.
+- **Decorations**: Use concentric circles of alternating Extruded and Inset shadows to create abstract, tactile background art.
 
 ---
 
-### Section Labels
+## Layout Principles
 
-A consistent label pattern appears at the start of each section:
-```jsx
-<div className="mb-6 flex items-center gap-4">
-  <span className="h-px flex-1 bg-[var(--border)]" />
-  <span className="font-mono text-xs font-medium uppercase tracking-[0.15em] text-[var(--accent)]">
-    Section Name
-  </span>
-  <span className="h-px flex-1 bg-[var(--border)]" />
-</div>
-```
+- **Spacing**: Open and airy. Use generous section padding to let the shadows breathe.
+- **Container**: Wide, modern feel; keep existing site max-widths (`.main > *`, `.ed-page`, etc.).
+- **Background**: The page background must be `#E0E5EC` globally. No gradients on the root background.
 
----
+## Animation & Micro-interactions
+- **Duration**: `300ms` for UI elements, `500ms` for nested depth circles (weightier, physics-based feel).
+- **Easing**: `ease-out` for natural deceleration.
+- **Properties**: `transform` (scale, translateY, rotate), `box-shadow` (depth changes).
+- **Hover Effects**:
+  - Cards: `-translate-y-1` (1px lift) + enhanced shadow depth
+  - Buttons: `-translate-y-1` on hover, `translate-y-0.5` on active (press down)
+- **Smooth Scrolling**: `scroll-behavior: smooth` for anchor navigation.
 
-## The "Bold Factor" (Signature Elements)
+## Accessibility
+- **Contrast**:
+  - Primary text `#3D4852` on `#E0E5EC`: 7.5:1 (WCAG AAA)
+  - Muted text `#6B7280` on `#E0E5EC`: 4.6:1 (WCAG AA)
+- **Focus States**: Visible 2px accent rings (`ring-2 ring-[#6C63FF]`) with 2px offset on `#E0E5EC` background. Mandatory on all interactive elements.
+- **Touch Targets**: Minimum 44x44px for mobile.
+- **Keyboard Navigation**: Full keyboard support with visible focus indicators on all links and buttons.
 
-These elements prevent generic output and define this style:
+## Responsive Design
 
-1. **Dramatic Serif Headlines:** Oversized serif typography (7xl in hero) that commands attention through scale and beauty, not decoration.
-
-2. **Rule Line System:** Thin horizontal rules throughout create rhythm and structure—a distinctly editorial element.
-
-3. **Small Caps Labels:** All section labels and meta info use tracked uppercase monospace, creating refined visual rhythm.
-
-4. **Ink-Black Accent:** The single black accent adds just enough contrast to prevent sterility, without introducing color.
-
-5. **Generous Whitespace:** Sections breathe with `py-32` to `py-44` padding. This is premium, not cramped.
-
-6. **Large Display Numbers:** Stats and pricing use serif display numbers at dramatic sizes (5xl+).
-
-7. **Decorative Quote Marks:** Testimonials feature large opening quote marks in accent black.
-
-8. **Asymmetric Layouts:** Strategic use of uneven columns prevents static feeling while maintaining elegance.
-
-9. **Layered Depth in Abstracts:** Product detail and benefits sections feature enhanced abstract graphics with:
-   - Gradient backgrounds (`from-[color] via-[color] to-[color]`)
-   - Decorative ring/circle elements with low opacity
-   - Multi-layered card elements with borders and shadows
-   - Hover-interactive elements that respond to user interaction
-   - Subtle accent color tints for visual interest
-
-10. **Paper Texture Overlay:** Subtle noise texture overlay at 30% opacity across entire page creates tactile, print-like quality.
-
-11. **Ambient Glow:** Large blurred circle with 2% opacity accent color creates warm atmospheric depth.
-
-12. **Enhanced Micro-interactions:**
-    - Button subtle lift on hover with return animation
-    - Card background tinting on hover
-    - Border color shifts throughout interface
-    - Smooth 200ms transitions on all interactive elements
+- **Mobile First**: Design starts with mobile view and enhances upward.
+- **Breakpoints**: `md:` (768px) for tablet, `lg:` (1024px) for desktop — matches the site's existing breakpoints.
+- **Navigation**: Sticky header with backdrop blur retained. Mobile menu keeps its extruded shadow.
 
 ---
 
-## Effects & Animation
-
-**Motion Philosophy:** Restrained and refined. Nothing bounces, nothing overshoots. Every animation should feel inevitable, not surprising.
-
-**Transition Defaults:**
-- Standard: `transition-all duration-200 ease-out`
-- Subtle: `duration-150`
-
-**Interaction States:**
-- Hover brightness change: 5-10%, no dramatic shifts
-- Shadow enhancement on hover
-- Underlines appearing/growing
-- NO translate/lift effects — too trendy for this timeless aesthetic
-
-**Entrance Animations (Optional, Subtle):**
-```js
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.6, ease: "easeOut" } }
-};
-```
-
----
-
-## Responsive Strategy
-
-**Breakpoint Philosophy:** Mobile layouts maintain the editorial feel through typography and spacing, even when structure simplifies. All interactive elements meet accessibility requirements for touch targets.
-
-### Mobile Adaptations (< 768px)
-
-- **Hero:**
-  - Single column with centered text
-  - Headline size: `text-[2.5rem]` (40px) maintains presence
-  - CTAs stack vertically with full width on small screens
-  - Maintains generous vertical padding
-
-- **Stats:**
-  - 2-column grid on mobile (4-column on desktop)
-  - Vertical dividers between columns only (not all items)
-  - Numbers scale to `text-4xl` (still prominent)
-  - Horizontal gap added (`gap-x-6`) to prevent crowding
-
-- **Features/Testimonials/Blog:**
-  - Stack to single column
-  - Generous gaps maintained (`gap-8` minimum)
-  - Card styling remains consistent
-  - Hover effects work as tap effects on mobile
-
-- **Pricing:**
-  - Stack vertically
-  - Highlighted tier loses elevation (no -translate-y-4) but keeps visual distinction through background tint
-  - All cards equal width for consistency
-
-- **Navigation:**
-  - Logo scales down slightly (`text-lg` → `text-xl`)
-  - Desktop nav hidden on mobile/tablet
-  - Primary CTA always visible
-  - Mobile menu would be hamburger pattern (if implemented)
-
-### Touch Optimization
-
-- **All buttons:** Minimum 44px height (`min-h-[44px]`) on mobile
-- **FAQ accordions:** 44px minimum height with `touch-manipulation`
-- **All interactive elements:** Use `touch-manipulation` CSS for better tap response
-- **Links:** Adequate padding and spacing for fat-finger friendly tapping
-
-**Key Adaptations:**
-- Section padding reduces gracefully but maintains premium feel
-- Typography scales down but hierarchy crystal clear
-- Serif font impact preserved—soul of design intact on all devices
-- Rule lines and black accents remain consistent
-- No horizontal overflow—tested with various content widths
-- Touch targets meet WCAG AAA standards (minimum 44x44px)
-
----
-
-## Accessibility & Best Practices
-
-**Color Contrast:**
-- All text meets WCAG AA standards minimum
-- Rich black (#1A1A1A) on ivory (#FAFAF8) provides excellent readability
-- Ink-black accent (#0A0A0A) passes contrast requirements on white backgrounds (trivially — black on white is the maximum possible contrast)
-- Muted foreground (#6B6B6B) maintains sufficient contrast for secondary text
-
-**Focus States:**
-- Visible focus rings on all interactive elements: `ring-2 ring-accent ring-offset-2`
-- Focus states use the accent black color for consistency
-- Offset creates clear visual separation from element
-- Input borders shift to accent color on focus for additional feedback
-- All focus states tested with keyboard navigation
-
-**Touch & Interaction:**
-- All buttons meet minimum 44x44px touch target (WCAG AAA)
-- `touch-manipulation` CSS prevents double-tap zoom on mobile
-- FAQ accordion buttons have adequate size and spacing
-- All clickable areas have sufficient padding
-- No touch targets overlap or create confusion
-
-**Typography:**
-- Body text uses relaxed line-height (1.75) for comfortable reading
-- Slight positive tracking improves readability on screens
-- Base font size: 16px (never smaller for body text)
-- Heading hierarchy clearly defined with size and font variation
-- Line length controlled with max-width (max-w-5xl) for optimal reading
-
-**Motion:**
-- All animations are subtle and respectful (200ms standard)
-- No rapid movements or flashing
-- Transforms limited to subtle shifts (translate-y-0.5)
-- `prefers-reduced-motion` should be respected in production
-- Easing curves use gentle `ease-out` for natural feel
-
-**Semantic HTML:**
-- Proper heading hierarchy (h1 → h2 → h3)
-- Button elements for interactive actions (not divs)
-- Semantic sections with appropriate ARIA when needed
-- Images include meaningful alt text (width/height prevent CLS)
-- Form inputs properly labeled
-
-**Performance:**
-- CSS variables reduce specificity and improve maintainability
-- Transitions use transform and opacity (GPU-accelerated)
-- Images specify dimensions to prevent layout shift
-- Font loading optimized with proper font-display values
+## Anti-Patterns (Do Not Do)
+- **Hard Hex Shadows**: Do not use opaque hex codes for shadows (e.g., `#A3B1C6`). Use `rgb(... 0.6)` for transparency and blending.
+- **White Backgrounds**: Never use `bg-white` for cards. They must match the body background `#E0E5EC`.
+- **Flat Buttons**: Buttons must have depth (shadows). No flat designs.
+- **Sharp Corners**: `rounded-lg` is too sharp. Use `rounded-2xl` (16px) or `rounded-3xl` (24px) minimum for standalone containers.
+- **Poor Contrast**: Never use light greys like `#8B95A5` or `#A0AEC0` for body text. Use `#6B7280` or darker for WCAG compliance.
+- **Missing Focus States**: All interactive elements must have visible focus indicators.
+- **Recoloring subject accents**: Never adjust the `--c-*` subject palette to "fit" the neumorphic base — it stays as registered.
 </design-system>

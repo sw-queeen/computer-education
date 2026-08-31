@@ -31,7 +31,7 @@ a { color: inherit; text-decoration: none; }
   gap: 12px;
   padding: 0 12px 0 20px;
   background: var(--bg-white);
-  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 6px 18px rgba(163,177,198,0.35);
 }
 
 /* 탑바 아래 콘텐츠 행 — 사이드바는 더 이상 레이아웃을 나눠 갖지 않고
@@ -63,8 +63,7 @@ a { color: inherit; text-decoration: none; }
   width: var(--sidebar-width);
   z-index: 300;
   background: var(--bg-white);
-  border-left: 1px solid var(--border-light);
-  box-shadow: -8px 0 32px rgba(20,18,14,0.10);
+  box-shadow: -10px 0 30px rgba(163,177,198,0.35);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 14px 0 40px;
@@ -80,7 +79,7 @@ a { color: inherit; text-decoration: none; }
   display: none;
   position: fixed; inset: 0;
   top: var(--topbar-height);
-  background: rgba(20,18,14,0.32);
+  background: rgba(45,52,61,0.35);
   z-index: 299;
 }
 .sidebar-overlay.visible { display: block; }
@@ -140,19 +139,20 @@ a { color: inherit; text-decoration: none; }
 }
 .topbar-search input {
   width: 100%;
-  padding: 7px 14px 7px 36px;
-  border: 1px solid var(--border-light);
+  padding: 8px 14px 8px 36px;
+  border: none;
   border-radius: 20px;
   background: var(--bg-surface);
+  box-shadow: var(--shadow-inset-sm);
   font-size: 13px;
   color: var(--text-primary);
   font-family: var(--font-main);
   outline: none;
-  transition: border-color .15s;
+  transition: box-shadow .2s ease-out;
 }
 .topbar-search input:focus {
-  border-color: var(--primary);
   background: var(--bg-white);
+  box-shadow: var(--shadow-inset);
   outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
@@ -190,7 +190,7 @@ a { color: inherit; text-decoration: none; }
   width: 36px;
   height: 36px;
   flex-shrink: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   border: none;
   background: transparent;
   color: var(--text-secondary);
@@ -199,13 +199,13 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background .12s, color .12s;
+  transition: box-shadow .15s ease-out, color .12s;
   padding: 0;
   font-family: inherit;
   line-height: 1;
   margin-left: auto; /* 검색창 이후 오른쪽 끝으로 */
 }
-.topbar-menu-btn:hover { background: var(--bg-surface); color: var(--text-primary); }
+.topbar-menu-btn:hover { box-shadow: var(--shadow-inset-sm); color: var(--text-primary); }
 
 /* ── 사이드바 내부: 영역별 드롭다운(아코디언) + 과목 그리드 ──
    교육학/교과교육학/컴퓨터공학 사이의 위계는 없으므로, 세로로 길게 나열하는
@@ -228,7 +228,7 @@ a { color: inherit; text-decoration: none; }
   text-align: left;
   transition: background .12s;
 }
-.sb-area-head:hover { background: var(--bg-surface); }
+.sb-area-head:hover { box-shadow: var(--shadow-inset-sm); }
 .sb-area-head-left {
   display: flex;
   align-items: center;
@@ -281,21 +281,23 @@ a { color: inherit; text-decoration: none; }
   color: var(--text-secondary);
   cursor: pointer;
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
+  border: none;
   background: var(--bg-surface);
+  box-shadow: var(--shadow-extruded-sm);
   word-break: keep-all;
-  transition: background .12s, color .12s, border-color .12s;
+  transition: box-shadow .2s ease-out, color .12s, transform .2s ease-out;
 }
 .sb-subject-chip:hover {
-  background: var(--bg-white);
-  border-color: var(--border-mid);
+  box-shadow: var(--shadow-extruded-hover);
   color: var(--text-primary);
+  transform: translateY(-1px);
 }
 .sb-subject-chip.active {
   font-weight: 600;
   background: var(--subject-bg, var(--bg-surface));
   color: var(--subject-text, var(--text-primary));
-  border-color: var(--subject-accent, var(--border-mid));
+  box-shadow: var(--shadow-inset-sm);
+  transform: none;
 }
 .sidebar-dot {
   width: 8px;
@@ -337,25 +339,28 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 20px;
 }
 .filter-btn {
-  padding: 5px 14px;
+  padding: 6px 16px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-light);
+  border: none;
   background: var(--bg-white);
+  box-shadow: var(--shadow-extruded-sm);
   font-size: 12px;
   color: var(--text-secondary);
   cursor: pointer;
   font-family: var(--font-main);
-  transition: all .12s;
+  transition: box-shadow .2s ease-out, color .12s, transform .2s ease-out;
 }
 .filter-btn:hover {
-  border-color: var(--primary);
+  box-shadow: var(--shadow-extruded-hover);
   color: var(--text-primary);
+  transform: translateY(-1px);
 }
 .filter-btn.active {
   background: var(--subject-accent, var(--primary));
   color: white;
-  border-color: transparent;
+  box-shadow: var(--shadow-inset-sm);
   font-weight: 600;
+  transform: none;
 }
 
 /* ── 챕터 섹션 ── */
@@ -368,6 +373,7 @@ a { color: inherit; text-decoration: none; }
   display: inline-block;
   padding: 3px 12px;
   border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-inset-sm);
   margin-bottom: 12px;
 }
 
@@ -379,21 +385,21 @@ a { color: inherit; text-decoration: none; }
 }
 .concept-card {
   background: var(--bg-white);
-  border: 1px solid var(--border-light);
+  border: none;
   border-radius: var(--radius-md);
   padding: 14px 16px;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow .2s, border-color .2s;
+  box-shadow: var(--shadow-extruded-sm);
+  transition: box-shadow .25s ease-out, transform .25s ease-out, border-left-color .2s;
   border-left: 3px solid var(--subject-mid, var(--border-mid));
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 .concept-card:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--subject-mid, var(--border-mid));
+  box-shadow: var(--shadow-extruded-hover);
   border-left-color: var(--subject-accent, var(--text-secondary));
+  transform: translateY(-2px);
 }
 .concept-card-name {
   font-family: var(--font-heading, var(--font-main));
@@ -427,7 +433,7 @@ a { color: inherit; text-decoration: none; }
 .badge-mid   { background: var(--badge-mid-bg);  color: var(--badge-mid-text); }
 .badge-low   { background: var(--badge-low-bg);  color: var(--badge-low-text); }
 .badge-viz   { background: var(--subject-bg, #eee); color: var(--subject-text, #333); }
-.badge-quiz  { background: var(--bg-surface); color: var(--text-secondary); }
+.badge-quiz  { background: var(--bg-surface); color: var(--text-secondary); box-shadow: var(--shadow-inset-sm); }
 
 /* ── 개념 상세 페이지 ── */
 .concept-detail {
@@ -441,6 +447,7 @@ a { color: inherit; text-decoration: none; }
   padding: 20px 24px;
   background: var(--subject-bg, var(--bg-surface));
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-inset);
   margin-bottom: 24px;
 }
 .detail-subject-path {
@@ -488,10 +495,11 @@ a { color: inherit; text-decoration: none; }
 
 .detail-section {
   background: var(--bg-white);
-  border: 1px solid var(--border-light);
+  border: none;
   border-radius: var(--radius-md);
   padding: 20px 24px;
   margin-bottom: 16px;
+  box-shadow: var(--shadow-extruded-sm);
 }
 .detail-section-title {
   font-size: 13px;
@@ -518,16 +526,17 @@ a { color: inherit; text-decoration: none; }
   text-align: center;
   color: var(--text-tertiary);
   font-size: 13px;
+  box-shadow: var(--shadow-inset-sm);
 }
 
-/* ── 홈 히어로 (Serif — 에디토리얼 표지) ── */
+/* ── 홈 히어로 (Neumorphism — 양각 카드) ── */
 .home-hero {
   position: relative;
   overflow: hidden;
   isolation: isolate;
   margin-bottom: 44px;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--border-light);
+  border: none;
   background: var(--bg-white);
   box-shadow: var(--hero-card-shadow);
   text-align: center;
@@ -706,9 +715,10 @@ a { color: inherit; text-decoration: none; }
   align-items: stretch;
   max-width: 1180px;
   margin: 0 auto;
-  border: 1px solid var(--border-light);
+  border: none;
   border-radius: var(--radius-lg);
   background: var(--bg-white);
+  box-shadow: var(--shadow-extruded);
   overflow: hidden;
   min-height: 480px;
 }
@@ -732,22 +742,21 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 5px;
   padding: 12px 4px;
-  border: 1px solid transparent;
+  border: none;
   border-radius: var(--radius-md);
   background: none;
   cursor: pointer;
   font-family: var(--font-main);
-  transition: background .12s, border-color .12s;
+  transition: box-shadow .2s ease-out;
 }
-.rail-item:hover { background: var(--bg-white); }
+.rail-item:hover { box-shadow: var(--shadow-extruded-sm); }
 .rail-item.active {
   background: var(--bg-white);
-  border-color: var(--border-mid);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-inset-sm);
 }
-/* 이모지 아이콘 대신, 이 사이트의 시그니처인 세리프 표제 서체로 대분류명
-   앞 두 글자를 작은 모노그램처럼 보여준다 (장식이 아니라 타이포그래피로
-   시각적 구심점을 만드는 Serif 디자인 시스템 원칙) */
+/* 이모지 아이콘 대신, 대분류명 앞 두 글자를 표제 서체(Plus Jakarta Sans)로
+   작은 모노그램처럼 보여준다 — 장식이 아니라 타이포그래피로 시각적
+   구심점을 만드는 디자인 원칙 */
 .rail-mark {
   font-family: var(--font-heading, var(--font-main));
   font-size: 17px;
@@ -810,7 +819,7 @@ a { color: inherit; text-decoration: none; }
   text-align: left;
   transition: background .12s, color .12s;
 }
-.rs-item:hover { background: var(--bg-surface); color: var(--text-primary); }
+.rs-item:hover { box-shadow: var(--shadow-inset-sm); color: var(--text-primary); }
 .rs-item.active {
   font-weight: 600;
   background: var(--subject-bg, var(--bg-surface));
@@ -882,10 +891,11 @@ a { color: inherit; text-decoration: none; }
 /* ── 퀴즈 ── */
 .quiz-card {
   background: var(--bg-white);
-  border: 1px solid var(--border-light);
+  border: none;
   border-radius: var(--radius-md);
   padding: 20px 24px;
   margin-bottom: 12px;
+  box-shadow: var(--shadow-extruded-sm);
 }
 .quiz-q {
   font-size: 15px;
@@ -898,14 +908,16 @@ a { color: inherit; text-decoration: none; }
 .quiz-option {
   padding: 10px 16px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--border-light);
+  border: none;
+  background: var(--bg-white);
+  box-shadow: var(--shadow-extruded-sm);
   font-size: 13px;
   cursor: pointer;
-  transition: all .12s;
+  transition: box-shadow .2s ease-out, background .12s, transform .2s ease-out;
 }
-.quiz-option:hover { border-color: var(--subject-mid, var(--border-mid)); background: var(--subject-bg, var(--bg-surface)); }
-.quiz-option.correct { background: #EBF5EA; border-color: #4EA87A; color: #1E5A3C; }
-.quiz-option.wrong   { background: #FDECEA; border-color: #D05840; color: #6E2010; }
+.quiz-option:hover { box-shadow: var(--shadow-extruded-hover); background: var(--subject-bg, var(--bg-surface)); transform: translateY(-1px); }
+.quiz-option.correct { background: #EBF5EA; box-shadow: var(--shadow-inset-sm); color: #1E5A3C; }
+.quiz-option.wrong   { background: #FDECEA; box-shadow: var(--shadow-inset-sm); color: #6E2010; }
 
 /* ── 반응형 ── */
 
@@ -929,8 +941,9 @@ a { color: inherit; text-decoration: none; }
 
 /* ── 개요 박스 ── */
 .cs-intro-box {
-  background: var(--subject-bg, #F0EDE8);
+  background: var(--subject-bg, var(--bg-surface));
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-inset-sm);
   padding: 14px 18px;
   font-size: 13px;
   line-height: 1.9;
@@ -951,8 +964,8 @@ a { color: inherit; text-decoration: none; }
 }
 .cs-num-sm { width: 18px; height: 18px; font-size: 10px; }
 .cs-num-md { width: 22px; height: 22px; font-size: 11px; }
-.cs-num-prim { background: var(--subject-accent, #6B6560); }
-.cs-num-gray { background: #A09890; }
+.cs-num-prim { background: var(--subject-accent, var(--text-secondary)); }
+.cs-num-gray { background: var(--text-tertiary); }
 
 /* ── 번호 카드 행 (원형 번호 + 텍스트) ── */
 .cs-num-row {
@@ -962,6 +975,7 @@ a { color: inherit; text-decoration: none; }
   padding: 10px 14px;
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-inset-sm);
   font-family: var(--font-body, var(--font-main));
   font-size: 13px;
   line-height: 1.8;
@@ -973,6 +987,7 @@ a { color: inherit; text-decoration: none; }
   padding: 10px 14px;
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-inset-sm);
   line-height: 1.8;
   font-family: var(--font-body, var(--font-main));
   font-size: 13px;
@@ -1000,6 +1015,7 @@ a { color: inherit; text-decoration: none; }
 .cs-check-card {
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-inset-sm);
   padding: 10px 14px;
   border-left: 3px solid;
   font-size: 12px;
@@ -1026,6 +1042,7 @@ a { color: inherit; text-decoration: none; }
 .cs-exam-item {
   background: var(--bg-surface);
   border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-inset-sm);
   padding: 10px 14px;
   font-size: 12px;
   line-height: 1.7;
@@ -1041,14 +1058,15 @@ a { color: inherit; text-decoration: none; }
   padding: 1px 7px;
   border-radius: 4px;
   margin-right: 6px;
-  background: var(--subject-bg, #F0EDE8);
-  color: var(--subject-accent, #6B6560);
+  background: var(--subject-bg, var(--bg-surface));
+  color: var(--subject-accent, var(--text-secondary));
 }
 
 /* ── 기출 연도 현황 박스 ── */
 .cs-history-box {
-  background: var(--subject-bg, #F0EDE8);
+  background: var(--subject-bg, var(--bg-surface));
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-inset-sm);
   padding: 13px 16px;
   font-size: 12px;
   line-height: 2;
@@ -1066,6 +1084,7 @@ a { color: inherit; text-decoration: none; }
 .cs-compare-card {
   background: var(--bg-surface);
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-inset-sm);
   padding: 12px 14px;
   font-family: var(--font-body, var(--font-main));
 }
@@ -1106,9 +1125,9 @@ a { color: inherit; text-decoration: none; }
   text-align: left;
   font-size: 11px;
   font-weight: 700;
-  background: var(--subject-bg, #F0EDE8);
-  color: var(--subject-accent, #6B6560);
-  border-bottom: 2px solid var(--subject-mid, rgba(0,0,0,.12));
+  background: var(--subject-bg, var(--bg-surface));
+  color: var(--subject-accent, var(--text-secondary));
+  border-bottom: 2px solid var(--subject-mid, var(--border-mid));
 }
 .cs-table td {
   padding: 8px 10px;
@@ -1116,7 +1135,7 @@ a { color: inherit; text-decoration: none; }
   vertical-align: top;
   line-height: 1.65;
 }
-.cs-table tr:hover td { background: var(--bg-surface); }
+.cs-table tr:hover td { background: rgba(163,177,198,0.14); }
 .cs-table td.cs-td-key {
   font-weight: 600;
   color: var(--text-primary);
@@ -1130,10 +1149,11 @@ a { color: inherit; text-decoration: none; }
 /* ── 퀴즈 카드 ── */
 .cs-quiz-card {
   background: var(--bg-white);
-  border: 1px solid var(--border-light);
+  border: none;
   border-radius: var(--radius-md);
   padding: 16px;
   margin-bottom: 12px;
+  box-shadow: var(--shadow-extruded-sm);
 }
 .cs-quiz-type {
   font-size: 11px;
@@ -1159,13 +1179,16 @@ a { color: inherit; text-decoration: none; }
 }
 .cs-quiz-btn {
   border-radius: var(--radius-sm);
-  border: 1.5px solid var(--border-light);
+  border: none;
   background: var(--bg-white);
+  box-shadow: var(--shadow-extruded-sm);
   color: var(--text-primary);
   cursor: pointer;
   font-family: inherit;
-  transition: border-color .12s, background .12s;
+  transition: box-shadow .2s ease-out, background .12s, transform .15s ease-out;
 }
+.cs-quiz-btn:hover { box-shadow: var(--shadow-extruded-hover); transform: translateY(-1px); }
+.cs-quiz-btn:active { box-shadow: var(--shadow-inset-sm); transform: translateY(0.5px); }
 .cs-quiz-btn-ox {
   flex: 1;
   padding: 9px;
@@ -1187,30 +1210,31 @@ a { color: inherit; text-decoration: none; }
 }
 /* 퀴즈 상태 색상 */
 .cs-quiz-btn.state-correct {
-  border-color: #4EA87A;
   background: #EBF5EA;
+  box-shadow: var(--shadow-inset-sm);
   color: #1E5A3C;
 }
 .cs-quiz-btn.state-wrong {
-  border-color: #D05840;
   background: #FDECEA;
+  box-shadow: var(--shadow-inset-sm);
   color: #A83222;
 }
 .cs-quiz-btn.state-selected {
-  border-color: var(--subject-accent);
   background: var(--bg-surface);
+  box-shadow: var(--shadow-inset-sm);
 }
 .cs-quiz-btn.state-revealed {
-  border-color: var(--subject-accent);
-  background: var(--subject-bg, #F0EDE8);
+  background: var(--subject-bg, var(--bg-surface));
+  box-shadow: var(--shadow-inset-sm);
   color: var(--subject-accent);
   font-weight: 700;
 }
 /* 퀴즈 해설 */
 .cs-quiz-explain {
   margin-top: 10px;
-  background: var(--subject-bg, #F0EDE8);
+  background: var(--subject-bg, var(--bg-surface));
   border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-inset-sm);
   padding: 10px 14px;
   font-size: 12px;
   line-height: 1.7;
@@ -1224,7 +1248,8 @@ a { color: inherit; text-decoration: none; }
   margin-top: 10px;
   padding: 9px 14px;
   border-radius: var(--radius-sm);
-  background: var(--subject-bg, #F0EDE8);
+  background: var(--subject-bg, var(--bg-surface));
+  box-shadow: var(--shadow-inset-sm);
   border: 1.5px solid var(--subject-accent);
   font-size: 12px;
   font-weight: 700;
@@ -1244,18 +1269,23 @@ a { color: inherit; text-decoration: none; }
   margin: 8px auto 0;
   padding: 10px 28px;
   border-radius: 20px;
-  border: 1.5px solid var(--border-light);
+  border: none;
   background: var(--bg-surface);
+  box-shadow: var(--shadow-extruded-sm);
   font-size: 13px;
   cursor: pointer;
   color: var(--text-secondary);
   font-family: inherit;
+  transition: box-shadow .2s ease-out;
 }
+.cs-quiz-reset:hover { box-shadow: var(--shadow-extruded-hover); }
+.cs-quiz-reset:active { box-shadow: var(--shadow-inset-sm); }
 
 /* ── 시사점 카드 ── */
 .cs-insight-card {
   background: var(--bg-surface);
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-inset-sm);
   padding: 12px 14px;
   font-family: var(--font-body, var(--font-main));
 }
@@ -1319,8 +1349,8 @@ a { color: inherit; text-decoration: none; }
   background: var(--bg-white);
   border-radius: 20px;
   padding: 4px;
-  border: 1px solid var(--border-light);
-  box-shadow: 0 2px 10px rgba(0,0,0,.05);
+  border: none;
+  box-shadow: var(--shadow-extruded-sm);
 }
 .mode-toggle-btn {
   font-size: 13px;
@@ -1337,6 +1367,7 @@ a { color: inherit; text-decoration: none; }
 }
 .mode-toggle-btn.active {
   background: var(--subject-accent, var(--text-secondary));
+  box-shadow: var(--shadow-inset-sm);
   color: #fff;
 }
 .mode-panel { display: none; }
@@ -1359,7 +1390,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 12px rgba(0,0,0,.18);
+  box-shadow: 6px 6px 16px rgba(163,177,198,0.5), -3px -3px 10px rgba(255,255,255,0.35);
   opacity: 0;
   pointer-events: none;
   transition: opacity .2s, transform .15s;
