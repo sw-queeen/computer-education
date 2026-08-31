@@ -1,13 +1,14 @@
 /**
  * 운영체제 — 문맥교환 (Context Switch) 인터랙티브 시각화
  * 마운트: #viz-container
+ *
+ * 탭/카드/웰/배지는 components.css의 공용 유리 컴포넌트(.viz-*)를 그대로
+ * 쓴다 — 색은 --viz-accent 등을 따로 지정하지 않으므로 concept.html이
+ * 이미 #main에 심어둔 --subject-accent(이 개념의 경우 운영체제 코랄톤)로
+ * 자동 폴백된다. 이 파일에는 CPU 타임라인 Gantt 행/구간처럼 진짜 이
+ * 시각화에만 있는 레이아웃만 남긴다.
  */
 (function () {
-
-  const CSS_ACCENT = '#D05840';
-  const CSS_BG     = '#FAE8E4';
-  const CSS_MID    = '#ECA898';
-  const CSS_TEXT   = '#6E2010';
 
   if (!document.getElementById('ctx-viz-style')) {
     const s = document.createElement('style');
@@ -16,50 +17,17 @@
       #ctx-wrap { font-family:var(--font-body,var(--font-main)); max-width:100%; color:var(--text-primary); }
       #ctx-wrap * { box-sizing:border-box; }
 
-      /* 탭 — components.css .filter-btn 패턴 통일 */
-      #ctx-wrap .cv-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
-      #ctx-wrap .cv-tab {
-        padding:6px 16px; border-radius:20px; font-size:12px; font-weight:600;
-        cursor:pointer; border:1px solid var(--border-light); color:var(--text-secondary);
-        background:var(--bg-white); transition:all .15s;
-        font-family:var(--font-body,var(--font-main));
-      }
-      #ctx-wrap .cv-tab:hover { border-color:var(--border-mid); color:var(--text-primary); }
-      #ctx-wrap .cv-tab.on { background:${CSS_ACCENT}; color:white; border-color:transparent; font-weight:600; }
-
-      /* 단계 아코디언 */
-      #ctx-wrap .cv-step {
-        border-radius:var(--radius-md,10px); border:1.5px solid transparent;
-        background:var(--bg-white); cursor:pointer; transition:all .15s;
-        overflow:hidden; margin-bottom:4px;
-      }
-      #ctx-wrap .cv-step:hover { border-color:${CSS_MID}; }
-      #ctx-wrap .cv-step.on { border-color:${CSS_ACCENT}; box-shadow:0 2px 12px rgba(208,88,64,.15); }
+      /* 단계 아코디언 카드 내부 배치 (.viz-card.clickable 위에 얹는 레이아웃) */
       #ctx-wrap .cv-step-head { display:flex; align-items:center; gap:10px; padding:11px 14px; }
-      #ctx-wrap .cv-step-num {
-        width:28px; height:28px; border-radius:50%;
-        display:flex; align-items:center; justify-content:center;
-        font-size:12px; font-weight:800; flex-shrink:0;
-        background:${CSS_BG}; color:${CSS_ACCENT};
-      }
-      #ctx-wrap .cv-step.on .cv-step-num { background:${CSS_ACCENT}; color:white; }
       #ctx-wrap .cv-step-title { font-family:var(--font-heading,var(--font-main)); font-size:15px; font-weight:700; flex:1; }
-      #ctx-wrap .cv-step-badge {
-        font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px;
-        background:${CSS_BG}; color:${CSS_ACCENT};
-      }
       #ctx-wrap .cv-step-body {
         display:none; padding:0 14px 14px 52px;
         font-size:12px; color:var(--text-secondary); line-height:1.75;
       }
       #ctx-wrap .cv-step.on .cv-step-body { display:block; }
-      #ctx-wrap .cv-step-detail {
-        background:${CSS_BG}; border-radius:var(--radius-sm,6px);
-        padding:10px 14px; font-size:12px; line-height:1.8;
-        color:var(--text-primary); margin-top:8px;
-      }
+      #ctx-wrap .cv-step-detail { margin-top:8px; }
 
-      /* 타임라인 */
+      /* CPU 타임라인 — 이 시각화 고유의 Gantt 레이아웃 */
       #ctx-wrap .cv-row { display:flex; align-items:stretch; gap:0; margin-bottom:6px; }
       #ctx-wrap .cv-label {
         width:80px; flex-shrink:0; display:flex; align-items:center;
@@ -72,16 +40,16 @@
         white-space:nowrap; overflow:hidden; padding:0 8px;
         font-family:var(--font-body,var(--font-main));
       }
-      #ctx-wrap .cv-seg-run  { background:${CSS_ACCENT}; color:white; }
+      /* Gantt 구간 색은 데이터 인코딩이므로 유리로 바꾸지 않고 또렷하게 유지한다 */
+      #ctx-wrap .cv-seg-run  { background:var(--subject-accent, var(--primary)); color:white; }
       #ctx-wrap .cv-seg-wait { background:var(--bg-surface); color:var(--text-tertiary); }
-      #ctx-wrap .cv-seg-ctx  { background:${CSS_MID}; color:${CSS_TEXT}; }
+      #ctx-wrap .cv-seg-ctx  { background:var(--subject-mid, var(--secondary)); color:white; }
 
       /* PCB 그리드 */
       #ctx-wrap .cv-pcb-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-      #ctx-wrap .cv-pcb-card { background:var(--bg-surface); border-radius:var(--radius-md,10px); padding:12px 14px; }
       #ctx-wrap .cv-pcb-title { font-size:11px; font-weight:700; letter-spacing:.04em; color:var(--text-tertiary); margin-bottom:6px; }
       #ctx-wrap .cv-pcb-item { display:flex; align-items:baseline; gap:6px; font-size:12px; margin-bottom:3px; }
-      #ctx-wrap .cv-pcb-key { font-weight:700; color:${CSS_ACCENT}; min-width:80px; font-size:11px; flex-shrink:0; }
+      #ctx-wrap .cv-pcb-key { font-weight:700; color:var(--subject-accent, var(--primary)); min-width:80px; font-size:11px; flex-shrink:0; }
 
       @media(max-width:480px) {
         #ctx-wrap .cv-label { width:60px; font-size:10px; }
@@ -136,10 +104,10 @@
     if (!c) return;
     c.innerHTML = `
       <div id="ctx-wrap">
-        <div class="cv-tabs">
-          <div class="cv-tab ${curTab==='flow'?'on':''}" onclick="ctxTab('flow')">문맥교환 단계</div>
-          <div class="cv-tab ${curTab==='tl'?'on':''}"   onclick="ctxTab('tl')">CPU 타임라인</div>
-          <div class="cv-tab ${curTab==='pcb'?'on':''}"  onclick="ctxTab('pcb')">PCB 구조</div>
+        <div class="viz-tabs">
+          <div class="viz-tab ${curTab==='flow'?'on':''}" onclick="ctxTab('flow')">문맥교환 단계</div>
+          <div class="viz-tab ${curTab==='tl'?'on':''}"   onclick="ctxTab('tl')">CPU 타임라인</div>
+          <div class="viz-tab ${curTab==='pcb'?'on':''}"  onclick="ctxTab('pcb')">PCB 구조</div>
         </div>
         <div id="cv-flow" style="display:${curTab==='flow'?'':'none'};">${renderFlow()}</div>
         <div id="cv-tl"   style="display:${curTab==='tl'?'':'none'};">${renderTimeline()}</div>
@@ -153,15 +121,15 @@
         ${STEPS.map(step => {
           const on = activeStep === step.num;
           return `
-          <div class="cv-step ${on?'on':''}" onclick="ctxStep(${step.num})">
+          <div class="viz-card clickable cv-step ${on?'on':''}" onclick="ctxStep(${step.num})">
             <div class="cv-step-head">
-              <div class="cv-step-num">${step.num}</div>
+              <div class="viz-num ${on?'on':''}">${step.num}</div>
               <div class="cv-step-title">${step.title}</div>
-              <div class="cv-step-badge">${step.badge}</div>
+              <div class="viz-badge">${step.badge}</div>
             </div>
             <div class="cv-step-body">
               <div>${step.desc}</div>
-              <div class="cv-step-detail">${step.detail}</div>
+              <div class="viz-well accent cv-step-detail">${step.detail}</div>
             </div>
           </div>`;
         }).join('')}
@@ -184,7 +152,7 @@
     }
     return `
       <div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.8;">
-        문맥교환(주황 구간) 동안 CPU는 <strong style="color:${CSS_ACCENT};">유용한 작업을 수행하지 못한다.</strong>
+        문맥교환(강조 구간) 동안 CPU는 <strong style="color:var(--subject-accent, var(--primary));">유용한 작업을 수행하지 못한다.</strong>
         이 시간이 문맥교환의 오버헤드(Dispatcher Latency)이다.
       </div>
       ${row('P1', TL.P1)}
@@ -197,8 +165,8 @@
             <span style="color:var(--text-secondary);">${lb}</span>
           </div>`).join('')}
       </div>
-      <div style="margin-top:14px;background:${CSS_BG};border-radius:var(--radius-md,10px);padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
-        <strong style="color:${CSS_ACCENT};">핵심 포인트</strong><br>
+      <div class="viz-well accent" style="margin-top:14px;font-size:12px;line-height:1.8;color:var(--text-primary);">
+        <strong style="color:var(--subject-accent, var(--primary));">핵심 포인트</strong><br>
         P1이 <strong>저장</strong>되고 P2가 <strong>복원</strong>되는 사이 구간 전체가 순수 오버헤드.
         하드웨어가 레지스터 저장을 지원하면(예: 인텔 TSS) 오버헤드를 줄일 수 있다.
       </div>`;
@@ -212,8 +180,8 @@
       </div>
       <div class="cv-pcb-grid">
         ${PCB_GROUPS.map(g => `
-          <div class="cv-pcb-card" style="${g.accent ? `background:${CSS_BG};` : ''}">
-            <div class="cv-pcb-title" style="${g.accent ? `color:${CSS_ACCENT};` : ''}">${g.title}</div>
+          <div class="viz-well cv-pcb-card ${g.accent ? 'accent' : ''}">
+            <div class="cv-pcb-title" style="${g.accent ? 'color:var(--subject-accent, var(--primary));' : ''}">${g.title}</div>
             ${g.items.map(([k,v]) => `
               <div class="cv-pcb-item">
                 <span class="cv-pcb-key">${k}</span>
@@ -221,8 +189,8 @@
               </div>`).join('')}
           </div>`).join('')}
       </div>
-      <div style="margin-top:12px;background:${CSS_BG};border-radius:var(--radius-md,10px);padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
-        <strong style="color:${CSS_ACCENT};">저장/복원 핵심 항목:</strong>
+      <div class="viz-well accent" style="margin-top:12px;font-size:12px;line-height:1.8;color:var(--text-primary);">
+        <strong style="color:var(--subject-accent, var(--primary));">저장/복원 핵심 항목:</strong>
         프로그램 카운터(PC), 범용 레지스터, 스택 포인터(SP) — 이 세 가지가 반드시 처리되어야 한다.
         메모리 맵(페이지 테이블)도 함께 전환되어야 주소 공간이 정확히 전환된다.
       </div>`;

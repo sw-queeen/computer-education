@@ -2,11 +2,19 @@
  * 부울 대수·논리게이트 인터랙티브 시각화
  * 탑재: 게이트 시뮬레이터(SVG 심볼) / 카르노맵 3·4변수 / 부울 법칙
  * 마운트: #viz-container
+ *
+ * 탭/카드/버튼은 components.css의 공용 유리 컴포넌트(.viz-*)를 쓴다.
+ * ACCENT/BG는 더 이상 하드코딩된 보라색이 아니라 --subject-accent(이
+ * 개념의 경우 컴퓨터구조 라일락톤)를 그대로 읽는다 — 게이트 SVG의
+ * stroke/fill도 같은 변수를 그대로 쓰므로, 다이어그램 색도 페이지
+ * 전체 톤과 자동으로 맞는다. 카르노맵 그리드 셀만은 표 형태를 읽기
+ * 위해 실제 셀 경계선(진짜 grid line)을 계속 사용한다 — 표의 행/열
+ * 구분선은 유리 표면 가장자리와 성격이 달라, 이 예외는 유지한다.
  */
 (function () {
 
-  const ACCENT = '#6058C0';
-  const BG     = '#EAE8F8';
+  const ACCENT = 'var(--subject-accent, var(--primary))';
+  const BG     = 'color-mix(in srgb, var(--subject-accent, var(--primary)) 14%, white)';
   const FONT   = "var(--font-body,var(--font-main),'Pretendard','Apple SD Gothic Neo',sans-serif)";
   const MONO   = "var(--font-mono)";
 
@@ -16,72 +24,77 @@
     s.id = 'boole-viz-style';
     s.textContent = `
       #boole-wrap *{box-sizing:border-box;}
-      #boole-wrap{font-family:${FONT};color:var(--text-primary,#2C2825);max-width:100%;}
-      #boole-wrap .bv-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-      #boole-wrap .bv-tab{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;
-        cursor:pointer;border:1.5px solid #C8C0F0;color:${ACCENT};background:var(--bg-white,#fff);
-        transition:all .15s;font-family:${FONT};}
-      #boole-wrap .bv-tab.on{background:${BG};color:#3A2898;border-color:${ACCENT};}
-      #boole-wrap .bv-card{background:var(--bg-white,#fff);border:1.5px solid #D0CCF0;
-        border-radius:16px;padding:18px 20px;margin-bottom:12px;}
-      #boole-wrap .bv-label{font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);
-        letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;}
-      /* 게이트 버튼 */
+      #boole-wrap{font-family:${FONT};color:var(--text-primary);max-width:100%;}
+
+      /* 게이트 선택 버튼 — .viz-tab과 같은 문법의 작은 칩 */
       #boole-wrap .bv-gate-btns{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;}
-      #boole-wrap .bv-gbtn{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;
-        cursor:pointer;border:1.5px solid #C8C0F0;color:${ACCENT};background:var(--bg-white,#fff);
-        font-family:${FONT};transition:all .15s;}
-      #boole-wrap .bv-gbtn.on{background:${BG};color:#3A2898;border-color:${ACCENT};}
-      /* 입력 버튼 */
+      #boole-wrap .bv-gbtn{
+        padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;
+        cursor:pointer;border:none;color:var(--text-secondary);
+        background:var(--bg-white);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+        box-shadow:var(--shadow-extruded-sm);
+        font-family:${FONT};transition:box-shadow .2s ease-out,color .12s;
+      }
+      #boole-wrap .bv-gbtn:hover{box-shadow:var(--shadow-extruded-hover);color:var(--text-primary);}
+      #boole-wrap .bv-gbtn.on{background:${ACCENT};color:#fff;box-shadow:var(--shadow-inset-sm);}
+
+      /* 입력 비트 토글 */
       #boole-wrap .bv-input-row{display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
       #boole-wrap .bv-ig{display:flex;flex-direction:column;align-items:center;gap:5px;}
-      #boole-wrap .bv-ilbl{font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);}
-      #boole-wrap .bv-bit{width:46px;height:46px;border-radius:11px;border:2px solid;font-size:20px;
-        font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;
-        transition:all .15s;font-family:${FONT};}
-      #boole-wrap .bv-bit0{background:var(--bg-surface,#F0EDE8);border-color:#C8C0A8;color:var(--text-tertiary,#A09890);}
-      #boole-wrap .bv-bit1{background:${BG};border-color:${ACCENT};color:#3A2898;}
-      #boole-wrap .bv-arrow{font-size:20px;color:#C0BBB0;align-self:flex-end;padding-bottom:10px;}
-      #boole-wrap .bv-out{width:54px;height:54px;border-radius:13px;border:2px solid;font-size:22px;
-        font-weight:900;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-      #boole-wrap .bv-out0{background:var(--bg-surface,#F0EDE8);border-color:#C8C0A8;color:var(--text-tertiary,#A09890);}
-      #boole-wrap .bv-out1{background:#D8D4F8;border-color:${ACCENT};color:#3A2898;box-shadow:0 0 14px #9888E038;}
-      /* 진리표 */
+      #boole-wrap .bv-ilbl{font-size:11px;font-weight:700;color:var(--text-tertiary);}
+      #boole-wrap .bv-bit{
+        width:46px;height:46px;border-radius:11px;border:none;font-size:20px;font-weight:900;
+        cursor:pointer;display:flex;align-items:center;justify-content:center;
+        backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+        transition:box-shadow .15s ease-out,background .15s ease-out;font-family:${FONT};
+      }
+      #boole-wrap .bv-bit0{background:var(--bg-surface);color:var(--text-tertiary);box-shadow:var(--shadow-inset-sm);}
+      #boole-wrap .bv-bit1{background:${BG};color:${ACCENT};box-shadow:var(--shadow-extruded-sm), 0 0 0 2px ${ACCENT};}
+      #boole-wrap .bv-arrow{font-size:20px;color:var(--text-tertiary);align-self:flex-end;padding-bottom:10px;}
+      #boole-wrap .bv-out{
+        width:54px;height:54px;border-radius:13px;font-size:22px;font-weight:900;
+        display:flex;align-items:center;justify-content:center;transition:all .2s;
+        backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+      }
+      #boole-wrap .bv-out0{background:var(--bg-surface);color:var(--text-tertiary);box-shadow:var(--shadow-inset-sm);}
+      #boole-wrap .bv-out1{background:${BG};color:${ACCENT};box-shadow:var(--shadow-extruded-hover), 0 0 0 2px ${ACCENT};}
+
+      /* 진리표 — .cs-table과 같은 유리 표 문법 */
       #boole-wrap .bv-tt{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;font-family:${MONO};}
-      #boole-wrap .bv-tt th{padding:6px 10px;background:${BG};color:${ACCENT};font-weight:700;
-        border-bottom:2px solid ${ACCENT};text-align:center;}
-      #boole-wrap .bv-tt td{padding:5px 10px;text-align:center;border-bottom:1px solid var(--border-light,rgba(0,0,0,.07));}
-      #boole-wrap .bv-tt tr.on td{background:${BG};font-weight:700;color:#3A2898;}
-      /* SVG 게이트 */
-      #boole-wrap .bv-svg-wrap{display:flex;align-items:center;justify-content:center;
-        background:var(--bg-surface,#F0EDE8);border-radius:12px;padding:16px;margin-bottom:12px;}
-      /* 카르노맵 */
+      #boole-wrap .bv-tt th{
+        padding:6px 10px;background:${BG};color:${ACCENT};font-weight:700;
+        border-bottom:2px solid var(--border-mid);text-align:center;
+      }
+      #boole-wrap .bv-tt td{padding:5px 10px;text-align:center;border-bottom:1px solid var(--border-light);}
+      #boole-wrap .bv-tt tr.on td{background:${BG};font-weight:700;color:${ACCENT};}
+
+      /* SVG 게이트 다이어그램 래퍼 */
+      #boole-wrap .bv-svg-wrap{
+        display:flex;align-items:center;justify-content:center;margin-bottom:12px;
+      }
+
+      /* 카르노맵 — 표 형태를 읽기 위한 실제 그리드 셀 경계선은 예외적으로 유지 */
       #boole-wrap .bv-kmap{border-collapse:collapse;font-family:${MONO};font-size:13px;margin:0 auto;}
-      #boole-wrap .bv-kmap th{padding:6px 12px;background:${BG};color:${ACCENT};font-weight:700;
-        text-align:center;border:1.5px solid #C0BBF0;}
-      #boole-wrap .bv-kmap td{width:50px;height:42px;text-align:center;vertical-align:middle;
-        border:1.5px solid #C0BBF0;font-weight:600;cursor:pointer;transition:all .15s;}
-      #boole-wrap .bv-kmap td.k0{background:var(--bg-page,#F7F5F2);color:var(--text-tertiary,#C0BBB0);}
-      #boole-wrap .bv-kmap td.k1{background:${BG};color:#3A2898;}
-      #boole-wrap .bv-kmap td.kx{background:var(--bg-surface,#FBF8F0);color:#C8A030;}
-      #boole-wrap .bv-kmap td.kg{outline:3px solid ${ACCENT};outline-offset:-3px;background:#D0CCF8!important;color:#3A2898;}
-      #boole-wrap .bv-kresult{margin-top:10px;padding:9px 14px;background:${BG};border-radius:8px;
-        font-family:${MONO};font-size:13px;color:#3A2898;font-weight:700;}
-      /* 법칙 */
+      #boole-wrap .bv-kmap th{
+        padding:6px 12px;background:${BG};color:${ACCENT};font-weight:700;
+        text-align:center;border:1.5px solid color-mix(in srgb, ${ACCENT} 35%, white);
+      }
+      #boole-wrap .bv-kmap td{
+        width:50px;height:42px;text-align:center;vertical-align:middle;
+        border:1.5px solid var(--border-mid);font-weight:600;cursor:pointer;transition:all .15s;
+      }
+      #boole-wrap .bv-kmap td.k0{background:var(--bg-page);color:var(--text-tertiary);}
+      #boole-wrap .bv-kmap td.k1{background:${BG};color:${ACCENT};}
+      #boole-wrap .bv-kmap td.kx{background:var(--bg-surface);color:#B08020;}
+      #boole-wrap .bv-kmap td.kg{outline:3px solid ${ACCENT};outline-offset:-3px;background:color-mix(in srgb, ${ACCENT} 26%, white)!important;color:${ACCENT};}
+
+      /* 부울 법칙 카드 */
       #boole-wrap .bv-law-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-      #boole-wrap .bv-law{padding:9px 12px;background:var(--bg-surface,#F7F5F2);border-radius:9px;
-        border-left:3px solid ${ACCENT};cursor:pointer;transition:background .15s;}
-      #boole-wrap .bv-law:hover,#boole-wrap .bv-law.on{background:${BG};}
-      #boole-wrap .bv-lname{font-size:10px;color:var(--text-tertiary,#A09890);font-weight:700;margin-bottom:2px;}
-      #boole-wrap .bv-lexpr{font-family:${MONO};font-size:12px;color:#3A2898;font-weight:700;}
-      #boole-wrap .bv-lex{font-size:11px;color:${ACCENT};margin-top:4px;display:none;line-height:1.5;}
+      #boole-wrap .bv-lname{font-size:10px;color:var(--text-tertiary);font-weight:700;margin-bottom:2px;}
+      #boole-wrap .bv-lexpr{font-family:${MONO};font-size:12px;color:${ACCENT};font-weight:700;}
+      #boole-wrap .bv-lex{font-size:11px;color:var(--text-secondary);margin-top:4px;display:none;line-height:1.5;}
       #boole-wrap .bv-law.on .bv-lex{display:block;}
-      /* 카르노맵 탭 전환 */
-      #boole-wrap .bv-kvar-tabs{display:flex;gap:6px;margin-bottom:12px;}
-      #boole-wrap .bv-kvtab{padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;
-        cursor:pointer;border:1.5px solid #C8C0F0;color:${ACCENT};background:var(--bg-white,#fff);
-        font-family:${FONT};transition:all .15s;}
-      #boole-wrap .bv-kvtab.on{background:${BG};color:#3A2898;border-color:${ACCENT};}
+
       @media(max-width:540px){
         #boole-wrap .bv-law-grid{grid-template-columns:1fr;}
         #boole-wrap .bv-kmap td{width:40px;height:36px;font-size:11px;}
@@ -173,28 +186,21 @@
   let cv3 = new Array(8).fill(0);
   let cv4 = new Array(16).fill(0);
 
-  /* ── 렌더 헬퍼 ────────────────────────────────── */
-  function $ (id) { return document.getElementById(id); }
-  function h (tag, attr, inner) {
-    return `<${tag} ${Object.entries(attr||{}).map(([k,v])=>`${k}="${v}"`).join(' ')}>${inner||''}</${tag}>`;
-  }
-
   /* ── 메인 렌더 ────────────────────────────────── */
   function render() {
     const container = document.getElementById('viz-container');
     if (!container) return;
     container.innerHTML = `
       <div id="boole-wrap">
-        <div class="bv-tabs">
-          <div class="bv-tab on" onclick="bvTab('sim')">게이트 시뮬레이터</div>
-          <div class="bv-tab" onclick="bvTab('kmap')">카르노맵</div>
-          <div class="bv-tab" onclick="bvTab('laws')">부울 대수 법칙</div>
+        <div class="viz-tabs">
+          <div class="viz-tab on" onclick="bvTab('sim')">게이트 시뮬레이터</div>
+          <div class="viz-tab" onclick="bvTab('kmap')">카르노맵</div>
+          <div class="viz-tab" onclick="bvTab('laws')">부울 대수 법칙</div>
         </div>
         <div id="bv-sim">${renderSim()}</div>
         <div id="bv-kmap" style="display:none;">${renderKmap()}</div>
         <div id="bv-laws" style="display:none;">${renderLaws()}</div>
       </div>`;
-    bindEvents();
   }
 
   /* ── 1. 게이트 시뮬레이터 ────────────────────── */
@@ -209,10 +215,10 @@
       <div class="bv-gate-btns">${Object.keys(GATES).map(name=>`
         <button class="bv-gbtn${name===curGate?' on':''}" onclick="bvSetGate('${name}')">${name}</button>`).join('')}
       </div>
-      <div class="bv-card">
-        <div style="font-family:var(--font-heading,var(--font-main));font-size:17px;font-weight:700;color:#3A2898;margin-bottom:4px;">${g.title} 게이트</div>
-        <div style="font-family:${MONO};font-size:13px;color:${ACCENT};margin-bottom:12px;">${g.expr}</div>
-        <div class="bv-svg-wrap">${GATE_SVG[curGate]||''}</div>
+      <div class="viz-card">
+        <div style="font-family:var(--font-heading,var(--font-main));font-size:17px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">${g.title} 게이트</div>
+        <div style="font-family:${MONO};font-size:13px;color:var(--subject-accent, var(--primary));margin-bottom:12px;">${g.expr}</div>
+        <div class="viz-well bv-svg-wrap">${GATE_SVG[curGate]||''}</div>
         <div class="bv-input-row">
           <div class="bv-ig">
             <div class="bv-ilbl">A</div>
@@ -228,12 +234,12 @@
             <div class="bv-out bv-out${y}">${y}</div>
           </div>
         </div>
-        <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:10px;line-height:1.6;">${g.desc}</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;line-height:1.6;">${g.desc}</div>
         <table class="bv-tt">
           <tr>${g.n===2?'<th>A</th><th>B</th>':'<th>A</th>'}<th>Y</th></tr>
           ${rows.map(r=>`<tr class="${r.active?'on':''}">
             <td>${r.a}</td>${r.b!==null?`<td>${r.b}</td>`:''}
-            <td style="font-weight:700;color:${r.y?ACCENT:'var(--text-tertiary,#A09890)'};">${r.y}</td>
+            <td style="font-weight:700;color:${r.y?'var(--subject-accent, var(--primary))':'var(--text-tertiary)'};">${r.y}</td>
           </tr>`).join('')}
         </table>
       </div>`;
@@ -242,18 +248,18 @@
   /* ── 2. 카르노맵 ──────────────────────────────── */
   function renderKmap() {
     return `
-      <div class="bv-card">
-        <div style="font-family:var(--font-heading,var(--font-main));font-size:16px;font-weight:700;color:#3A2898;margin-bottom:6px;">카르노맵 (Karnaugh Map)</div>
-        <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:12px;line-height:1.6;">
+      <div class="viz-card">
+        <div style="font-family:var(--font-heading,var(--font-main));font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:6px;">카르노맵 (Karnaugh Map)</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;line-height:1.6;">
           셀 클릭: <strong>0 → 1 → x</strong>(don't care) 순환 | 1인 셀 그루핑 후 SOP 자동 출력
         </div>
-        <div class="bv-kvar-tabs">
-          <button class="bv-kvtab${kVar===3?' on':''}" onclick="bvKvar(3)">3변수 (A·B·C)</button>
-          <button class="bv-kvtab${kVar===4?' on':''}" onclick="bvKvar(4)">4변수 (A·B·C·D)</button>
+        <div class="viz-tabs">
+          <button class="viz-tab${kVar===3?' on':''}" onclick="bvKvar(3)">3변수 (A·B·C)</button>
+          <button class="viz-tab${kVar===4?' on':''}" onclick="bvKvar(4)">4변수 (A·B·C·D)</button>
         </div>
         ${kVar===3 ? render3Kmap() : render4Kmap()}
-        <div class="bv-kresult" id="bv-kresult">1인 셀을 클릭하면 SOP 식이 나타납니다</div>
-        <div style="margin-top:8px;font-size:11px;color:var(--text-tertiary,#A09890);">
+        <div class="viz-well accent" id="bv-kresult" style="margin-top:10px;font-family:${MONO};font-size:13px;color:var(--subject-accent, var(--primary));font-weight:700;">1인 셀을 클릭하면 SOP 식이 나타납니다</div>
+        <div style="margin-top:8px;font-size:11px;color:var(--text-tertiary);">
           그루핑 규칙: 2ⁿ개씩 · 사각형 · 경계 래핑 허용 · x는 1로 활용 가능
         </div>
       </div>`;
@@ -310,7 +316,7 @@
   function renderLaws() {
     return `<div class="bv-law-grid">
       ${LAWS.map((l,i)=>`
-        <div class="bv-law" id="bvlaw${i}" onclick="bvLaw(${i})">
+        <div class="viz-card clickable bv-law" id="bvlaw${i}" onclick="bvLaw(${i})">
           <div class="bv-lname">${l.name}</div>
           <div class="bv-lexpr">${l.e}</div>
           <div class="bv-lex">예: ${l.ex}</div>
@@ -444,42 +450,13 @@
   function isGrouped3(idx) { return _grouped3.has(idx); }
   function isGrouped4(idx) { return _grouped4.has(idx); }
 
-  function refreshKmap() {
-    const wrap = document.getElementById('bv-kmap');
-    if (!wrap) return;
-    if (kVar === 3) {
-      const r = simplify(3, cv3);
-      _grouped3 = r.grouped;
-      wrap.innerHTML = renderKmap();
-    } else {
-      const r = simplify(4, cv4);
-      _grouped4 = r.grouped;
-      wrap.innerHTML = renderKmap();
-    }
-    // 결과 표시
-    setTimeout(() => {
-      const el = document.getElementById('bv-kresult');
-      if (el) el.textContent = kVar===3 ? simplify(3,cv3).expr : simplify(4,cv4).expr;
-    }, 10);
-    bindKmapEvents();
-  }
-
-  /* ── 이벤트 바인딩 ────────────────────────────── */
-  function bindEvents() {
-    bindKmapEvents();
-  }
-
-  function bindKmapEvents() {
-    // 이미 onclick 인라인으로 처리됨
-  }
-
   /* ── 글로벌 핸들러 ────────────────────────────── */
   window.bvTab = function(name) {
     ['sim','kmap','laws'].forEach(s => {
       const el = document.getElementById('bv-'+s);
       if (el) el.style.display = s===name ? '' : 'none';
     });
-    document.querySelectorAll('#boole-wrap .bv-tab').forEach((t,i) => {
+    document.querySelectorAll('#boole-wrap .viz-tab').forEach((t,i) => {
       t.classList.toggle('on', ['sim','kmap','laws'][i]===name);
     });
     // 탭 전환 시 시각화 상단으로 스크롤
