@@ -46,6 +46,13 @@
   --border-light: #E8E4DF;
   --border-mid:   #D6D0C8;
 
+  /* ── 빈출도 배지 (badge-high/mid/low) — 값은 그대로, 하드코딩만 토큰화 ──
+     추후 배지 색만 바꾸고 싶을 때 여기 3쌍만 고치면 됨 (components.css는
+     손대지 않아도 됨) */
+  --badge-high-bg:   #FDECEA; --badge-high-text: #A83222;
+  --badge-mid-bg:    #FBF4E0; --badge-mid-text:  #8A6010;
+  --badge-low-bg:    #EBF5EA; --badge-low-text:  #2E6A28;
+
   /* ── 반경 — 6~16px (rounded-md/lg 기준) ── */
   --radius-sm: 6px;
   --radius-md: 8px;
