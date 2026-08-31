@@ -147,8 +147,6 @@ function renderSidebar() {
 let openSubject = null;    // 현재 우측에 펼쳐진 과목명
 let selectedArea = null;   // 현재 좌측 레일에서 선택된 대분류 (edu/info/cs)
 
-const AREA_ICON = { edu: '🎓', info: '📘', cs: '💻' };
-
 function subjectsByArea(areaKey) {
   return Object.keys(SUBJECTS).filter(name => SUBJECTS[name].areaKey === areaKey);
 }
@@ -220,7 +218,7 @@ function renderRoadmap() {
 
   const railHtml = Object.entries(C.areas).map(([areaKey, areaLabel]) => `
     <button class="rail-item ${selectedArea === areaKey ? 'active' : ''}" onclick="selectArea('${areaKey}')">
-      <span class="rail-icon">${AREA_ICON[areaKey] || '📚'}</span>
+      <span class="rail-mark">${areaLabel.slice(0, 2)}</span>
       <span class="rail-label">${areaLabel}</span>
     </button>`).join('');
 
