@@ -213,7 +213,7 @@ window.CS = window.CS || {};
     '.topbar-menu-btn', '.explore-tab-btn', '.detail-tab',
     '.ed-quiz-ox-btn', '.ed-quiz-mc-btn', '.ed-quiz-fill-btn',
     '.ed-reset', '.test-link-btn',
-    '.cv-tab', '.cv-step'
+    '.viz-tab', '.viz-card.clickable', '.viz-nav-btn'
   ].join(', ');
 
   CS.wobble = function (el) {

@@ -1550,6 +1550,146 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ════════════════════════════════════════════════
+   시각화(visualizations/*.js) 공용 유리 컴포넌트
+   ────────────────────────────────────────────────
+   각 인터랙티브 시각화 스크립트(boole/bronfenbrenner/context-switch/
+   gagne/marcia/piaget 등)는 예전에 각자 #xx-wrap 안에 자기만의
+   탭·카드·뱃지 CSS를 통째로 새로 정의했다 — 거의 동일한 모양을
+   6번 복붙하면서 매번 실제 border를 쓰고 배경도 flat했다(글래스
+   아님). 이제 그 "크롬"(탭/카드/웰/뱃지/네비게이션)은 여기 한 곳에서만
+   정의하고, 각 스크립트는 클래스만 갖다 쓴다. 시각화 고유의 레이아웃
+   (동심원 SVG, 카르노맵 그리드, 3×3 매트릭스, 타임라인 스트립 등)만
+   각 파일 자체 <style> 블록에 남긴다.
+
+   색상은 하드코딩하지 않고 --viz-accent/--viz-bg/--viz-mid/--viz-text
+   4개 변수만 읽는다. 이 변수를 스크립트가 직접 설정하지 않으면 그
+   개념 페이지에 이미 설정돼 있는 --subject-accent 등으로 자동
+   폴백된다(concept.html이 #main에 매 개념마다 --subject-*를 심어준다).
+   반면 피아제의 발달단계·브론펜브레너의 생태체계처럼 "항목별로
+   다른 색"이 필요한 시각화는, 그 항목 wrapper에 인라인으로
+   --viz-accent 등을 다시 설정해 덮어쓰면 된다(피아제가 이미 이
+   패턴을 쓰고 있었다 — 그 관례를 전역 이름으로 통일한 것뿐).
+════════════════════════════════════════════════ */
+
+.viz-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 20px; }
+.viz-tab {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  color: var(--text-secondary);
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-extruded-sm);
+  transition: box-shadow .2s ease-out, color .12s, transform .2s ease-out;
+  font-family: var(--font-body, var(--font-main));
+}
+.viz-tab:hover { box-shadow: var(--shadow-extruded-hover); color: var(--text-primary); transform: translateY(-1px); }
+.viz-tab.on {
+  background: var(--viz-accent, var(--subject-accent, var(--primary)));
+  color: #fff;
+  box-shadow: var(--shadow-inset-sm);
+  transform: none;
+}
+
+/* 카드 — 정적 콘텐츠 박스(.viz-card)와, 눌러서 펼치는 아코디언
+   (.viz-card.clickable, 펼친 상태는 .on)을 겸한다 */
+.viz-card {
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-extruded-sm);
+  padding: 16px 18px;
+  transition: box-shadow .2s ease-out, background .2s ease-out, transform .2s ease-out;
+}
+.viz-card + .viz-card { margin-top: 8px; }
+.viz-card.clickable { cursor: pointer; }
+.viz-card.clickable:hover { box-shadow: var(--shadow-extruded-hover); transform: translateY(-1px); }
+.viz-card.on {
+  background: color-mix(in srgb, var(--viz-accent, var(--subject-accent, var(--primary))) 10%, var(--bg-white));
+  box-shadow: var(--shadow-extruded-hover);
+}
+/* 항목마다 늘 자기 색이 보여야 하는 매트릭스/그리드 카드용 —
+   선택 여부와 무관하게 상시 옅은 색을 띠고, .on이 겹치면 더 진해지며
+   accent 색 링(테두리 대용 box-shadow)으로 선택 상태를 표시한다 */
+.viz-card.tinted {
+  background: color-mix(in srgb, var(--viz-accent, var(--subject-accent, var(--primary))) 14%, var(--bg-white));
+}
+.viz-card.tinted.clickable:hover { transform: translateY(-2px); }
+.viz-card.tinted.on {
+  background: color-mix(in srgb, var(--viz-accent, var(--subject-accent, var(--primary))) 24%, var(--bg-white));
+  box-shadow: var(--shadow-extruded-hover), 0 0 0 2px var(--viz-accent, var(--subject-accent, var(--primary)));
+  transform: translateY(-2px);
+}
+
+/* 웰 — 카드 안쪽에 들어가는 "눌려 들어간" 상세/설명 박스 */
+.viz-well {
+  background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-inset-sm);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+}
+.viz-well.accent {
+  background: color-mix(in srgb, var(--viz-accent, var(--subject-accent, var(--primary))) 12%, var(--bg-surface));
+}
+
+.viz-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--viz-accent, var(--subject-accent, var(--primary))) 16%, var(--bg-surface));
+  color: var(--viz-accent, var(--subject-accent, var(--primary)));
+}
+
+.viz-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--viz-accent, var(--subject-accent, var(--primary))) 16%, var(--bg-surface));
+  color: var(--viz-accent, var(--subject-accent, var(--primary)));
+}
+.viz-num.on { background: var(--viz-accent, var(--subject-accent, var(--primary))); color: #fff; }
+
+.viz-nav-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: none;
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-extruded-sm);
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-family: inherit;
+  transition: box-shadow .2s ease-out, color .12s;
+}
+.viz-nav-btn:hover { box-shadow: var(--shadow-extruded-hover); color: var(--text-primary); }
+.viz-nav-btn:disabled { opacity: .35; cursor: default; box-shadow: var(--shadow-extruded-sm); }
+.viz-nav-btn.prim {
+  background: var(--viz-accent, var(--subject-accent, var(--primary)));
+  color: #fff;
+  box-shadow: var(--shadow-inset-sm);
+}
+
+.viz-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-mid); transition: background .15s; }
+.viz-dot.on { background: var(--viz-accent, var(--subject-accent, var(--primary))); }
+
+/* ════════════════════════════════════════════════
    Editorial Design System
    --subject-* CSS 변수 활용 (test-design.html 포팅)
 ════════════════════════════════════════════════ */
