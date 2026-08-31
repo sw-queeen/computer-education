@@ -140,8 +140,18 @@ function renderSidebar() {
   document.getElementById('sidebar').innerHTML = html;
 }
 
-/* ── 홈 렌더 (아코디언 구조) ──────────────────────── */
-let openSubject = null; // 현재 펼쳐진 과목명
+/* ── 홈 렌더 (학습 로드맵: 대분류 아이콘 레일 + 중분류 목록 + 카드 대시보드) ──
+   과목 목록을 아코디언으로 세로로 쭉 펼치던 방식 대신, 커리큘럼 지도를
+   보듯 왼쪽에서 대분류→중분류를 고르면 오른쪽 카드 그리드만 가볍게
+   다시 그려지는 3단 구조로 바꿨다. */
+let openSubject = null;    // 현재 우측에 펼쳐진 과목명
+let selectedArea = null;   // 현재 좌측 레일에서 선택된 대분류 (edu/info/cs)
+
+const AREA_ICON = { edu: '🎓', info: '📘', cs: '💻' };
+
+function subjectsByArea(areaKey) {
+  return Object.keys(SUBJECTS).filter(name => SUBJECTS[name].areaKey === areaKey);
+}
 
 function renderHome() {
   const C = SITE_CONFIG;
@@ -149,14 +159,7 @@ function renderHome() {
   const highCount = CONCEPTS.filter(c => c.freq === '높음').length;
   const vizCount  = CONCEPTS.filter(c => c.viz).length;
 
-  const areas = {};
-  Object.entries(SUBJECTS).forEach(([name, meta]) => {
-    if (!areas[meta.area]) areas[meta.area] = [];
-    const count = CONCEPTS.filter(c => c.subject === name).length;
-    areas[meta.area].push({ name, meta, count });
-  });
-
-  let html = `
+  const html = `
     <div class="home-hero">
       <div class="hero-glow hero-glow-a" aria-hidden="true"></div>
       <div class="hero-glow hero-glow-b" aria-hidden="true"></div>
@@ -173,80 +176,111 @@ function renderHome() {
         <button class="test-link-btn" onclick="location.href='test-design.html'"><span class="test-link-btn-icon">→</span>디자인 실험 — 문맥교환 (Bento / Editorial)</button>
       </div>
     </div>
-    <div class="area-columns">`;
-
-  // areas 순서는 SITE_CONFIG.areas의 키 순서를 따름 (교육학 → 교과교육학 → 전공), 3개 열로 나란히 배치
-  Object.entries(C.areas).forEach(([key, areaLabel]) => {
-    const subjects = areas[areaLabel];
-    if (!subjects) { html += `<div class="area-column"></div>`; return; }
-    html += `<div class="area-column"><div class="area-title">${areaLabel}</div><div class="acc-list">`;
-    subjects.forEach(({ name, meta, count }) => {
-      const isOpen = openSubject === name;
-      const style = `--subject-accent:${meta.color.accent};--subject-mid:${meta.color.mid};--subject-bg:${meta.color.bg};--subject-text:${meta.color.text}`;
-      const concepts = isOpen ? CONCEPTS.filter(c => c.subject === name) : [];
-      const chapters = isOpen ? [...new Set(concepts.map(c => c.chapter))] : [];
-      html += `
-        <div class="acc-item ${isOpen ? 'open' : ''}" id="acc-${encodeURIComponent(name)}" style="${style}">
-          <div class="acc-head" onclick="toggleSubject('${name}')">
-            <div class="acc-left">
-              <span class="acc-dot" style="background:${meta.color.mid};"></span>
-              <span class="acc-name">${name}</span>
-              <span class="acc-count">${count}개 개념</span>
-            </div>
-            <span class="acc-chevron">›</span>
-          </div>
-          <div class="acc-body">
-            ${chapters.map(chapter => {
-              const cc = concepts.filter(c => c.chapter === chapter);
-              return `
-              <div class="acc-chapter">
-                <div class="acc-chapter-title">${chapter} <span class="acc-chapter-count">${cc.length}</span></div>
-                <div class="acc-concept-grid">
-                  ${cc.map(c => `
-                    <div class="acc-concept-card" onclick="navigate({subject:'${name}',chapter:'${encodeURIComponent(c.chapter)}',concept:'${encodeURIComponent(c.name)}'})">
-                      <div class="acc-concept-name">${c.name}</div>
-                      <div class="acc-concept-meta">${c.freq === '높음' ? C.freq.high : c.freq === '중간' ? C.freq.mid : C.freq.low}${c.viz ? ' · ' + C.badges.viz : ''}</div>
-                    </div>`).join('')}
-                </div>
-              </div>`;
-            }).join('')}
-          </div>
-        </div>`;
-    });
-    html += `</div></div>`;
-  });
-  html += `</div>`;
+    <div class="roadmap" id="roadmap"></div>`;
 
   document.getElementById('main').innerHTML = html;
+  renderRoadmap();
 }
 
-function toggleSubject(name) {
-  const willOpen = openSubject !== name;
-  openSubject = willOpen ? name : null;
-  renderHome();
-  renderSidebar();
-  if (willOpen) {
-    setTimeout(() => {
-      const el = document.getElementById('acc-' + encodeURIComponent(name));
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
-  }
+/* 대분류(아이콘 레일)를 바꾸면, 그 안의 첫 중분류를 자동으로 선택해
+   우측이 비어 보이지 않게 한다. */
+function selectArea(areaKey) {
+  if (areaKey === selectedArea) return;
+  selectedArea = areaKey;
+  const first = subjectsByArea(areaKey)[0];
+  if (first) selectSubject(first);
+  else renderRoadmap();
 }
 
-function goHomeAndOpen(name) {
-  if (getParam('subject') !== null) {
-    const url = new URL(location.href);
-    url.searchParams.delete('subject');
-    history.pushState({}, '', url);
-  }
+/* 중분류 선택 — 우측 카드 그리드와 좌측 목록의 active 표시만 다시 그린다
+   (페이지 전체를 새로고침하지 않는 가벼운 갱신). */
+function selectSubject(name) {
+  if (!SUBJECTS[name]) return;
   openSubject = name;
-  renderHome();
+  selectedArea = SUBJECTS[name].areaKey;
+  const url = new URL(location.href);
+  url.searchParams.set('subject', name);
+  history.pushState({}, '', url);
+  renderRoadmap();
   renderSidebar();
-  setTimeout(() => {
-    const el = document.getElementById('acc-' + encodeURIComponent(name));
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    else window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, 50);
+}
+
+/* 사이드바 드로어 등 다른 진입점에서 특정 과목을 열 때 사용 */
+function goHomeAndOpen(name) {
+  selectSubject(name);
+  const title = document.getElementById('roadmapMainTitle');
+  if (title) title.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  else window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderRoadmap() {
+  const C = SITE_CONFIG;
+  const roadmap = document.getElementById('roadmap');
+  if (!roadmap) return;
+
+  const railHtml = Object.entries(C.areas).map(([areaKey, areaLabel]) => `
+    <button class="rail-item ${selectedArea === areaKey ? 'active' : ''}" onclick="selectArea('${areaKey}')">
+      <span class="rail-icon">${AREA_ICON[areaKey] || '📚'}</span>
+      <span class="rail-label">${areaLabel}</span>
+    </button>`).join('');
+
+  const subjectNames = subjectsByArea(selectedArea);
+  const subjectListHtml = subjectNames.map(name => {
+    const s = SUBJECTS[name];
+    const concepts = CONCEPTS.filter(c => c.subject === name);
+    const doneCount = concepts.filter(c => CS.isVisited(name, c.name)).length;
+    const active = openSubject === name ? 'active' : '';
+    const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
+    return `
+      <button class="rs-item ${active}" style="${style}" onclick="selectSubject('${name}')">
+        <span class="rs-dot" style="background:${s.color.mid}"></span>
+        <span class="rs-name">${name}</span>
+        <span class="rs-count">${doneCount ? doneCount + '/' : ''}${concepts.length}</span>
+      </button>`;
+  }).join('');
+
+  const s = SUBJECTS[openSubject];
+  const concepts = s ? CONCEPTS.filter(c => c.subject === openSubject) : [];
+  const doneCount = concepts.filter(c => CS.isVisited(openSubject, c.name)).length;
+  const pct = concepts.length ? Math.round(doneCount / concepts.length * 100) : 0;
+  const freqLabel = f => f === '높음' ? C.freq.high : f === '중간' ? C.freq.mid : C.freq.low;
+  const freqClass = f => f === '높음' ? 'badge-high' : f === '중간' ? 'badge-mid' : 'badge-low';
+
+  const mainHtml = !s ? '' : `
+    <div class="roadmap-main-header">
+      <div class="roadmap-main-eyebrow">${s.area}</div>
+      <div class="roadmap-main-title" id="roadmapMainTitle">${openSubject}</div>
+      <div class="roadmap-main-meta">
+        <span>${concepts.length}개 개념</span>
+        <span class="roadmap-progress-track"><span class="roadmap-progress-bar" style="width:${pct}%;background:${s.color.accent};"></span></span>
+        <span>${doneCount}/${concepts.length} 학습 완료</span>
+      </div>
+    </div>
+    <div class="card-grid roadmap-card-grid">
+      ${concepts.map(c => {
+        const done = CS.isVisited(openSubject, c.name);
+        return `
+        <div class="concept-card ${done ? 'done' : ''}" style="border-left-color:${s.color.mid};"
+          onclick="navigate({subject:'${openSubject}',chapter:'${encodeURIComponent(c.chapter)}',concept:'${encodeURIComponent(c.name)}'})">
+          ${done ? '<span class="cc-done-badge" title="학습 완료">✓</span>' : ''}
+          <div class="concept-card-name">${c.name}</div>
+          <div class="concept-card-keywords">${c.keywords}</div>
+          <div class="concept-card-footer">
+            <span class="badge ${freqClass(c.freq)}">${freqLabel(c.freq)}</span>
+            ${c.viz  ? `<span class="badge badge-quiz">${C.badges.viz}</span>` : ''}
+            ${c.quiz ? `<span class="badge badge-quiz">${C.badges.quiz}</span>` : ''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  roadmap.innerHTML = `
+    <div class="roadmap-rail">${railHtml}</div>
+    <div class="roadmap-subjects">
+      <div class="roadmap-subjects-title">${C.areas[selectedArea] || ''}</div>
+      <div class="roadmap-subject-list">${subjectListHtml}</div>
+    </div>
+    <div class="roadmap-main">${mainHtml}</div>`;
 }
 
 /* ── 과목 렌더 ─────────────────────────────────────── */
@@ -350,7 +384,15 @@ document.getElementById('globalSearch').addEventListener('input', function() {
 /* ── 라우터 ────────────────────────────────────────── */
 function render() {
   const subject = getParam('subject');
-  if (subject && SUBJECTS[subject]) openSubject = subject;
+  if (subject && SUBJECTS[subject]) {
+    openSubject = subject;
+    selectedArea = SUBJECTS[subject].areaKey;
+  } else {
+    if (!selectedArea) selectedArea = Object.keys(SITE_CONFIG.areas)[0];
+    if (!openSubject || !SUBJECTS[openSubject] || SUBJECTS[openSubject].areaKey !== selectedArea) {
+      openSubject = subjectsByArea(selectedArea)[0] || null;
+    }
+  }
   renderSidebar();
   renderHome();
 }

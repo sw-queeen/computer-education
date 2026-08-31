@@ -12,10 +12,43 @@
  *   CS.renderCheckCards(cards)          → 체크 포인트 카드 HTML
  *   CS.renderExamSection(el, opts)      → 기출 포인트 탭 전체 렌더
  *   CS.renderQuizSection(el, quizData, prefix) → 리마인드 탭 전체 렌더
+ *   CS.isVisited(subject, name)         → 개념 학습(열람) 완료 여부
+ *   CS.markVisited(subject, name)       → 개념을 학습 완료로 표시 (localStorage)
  */
 window.CS = window.CS || {};
 
 (function (CS) {
+
+  /* ── 학습 진행(열람) 상태 — localStorage 기반 ─────
+     실제 강의/진도 데이터가 없으므로, "개념 상세 페이지를 열람했는지"를
+     학습 완료 신호로 삼는다. 홈 대시보드의 진행률/완료 배지에 쓰인다. */
+  const VISITED_KEY = 'cs-visited-concepts';
+  let visitedCache = null;
+
+  function visitedKey(subject, name) { return subject + '::' + name; }
+
+  function loadVisited() {
+    if (visitedCache) return visitedCache;
+    try {
+      visitedCache = new Set(JSON.parse(localStorage.getItem(VISITED_KEY) || '[]'));
+    } catch (e) {
+      visitedCache = new Set();
+    }
+    return visitedCache;
+  }
+
+  CS.isVisited = function (subject, name) {
+    return loadVisited().has(visitedKey(subject, name));
+  };
+
+  CS.markVisited = function (subject, name) {
+    const set = loadVisited();
+    const key = visitedKey(subject, name);
+    if (set.has(key)) return false;
+    set.add(key);
+    try { localStorage.setItem(VISITED_KEY, JSON.stringify([...set])); } catch (e) {}
+    return true;
+  };
 
   /* ── 기출 태그 파싱 ───────────────────────── */
   CS.parseExamItem = function (text) {

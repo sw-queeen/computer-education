@@ -321,6 +321,9 @@ function renderConcept() {
   /* Editorial 레이아웃: main 패딩 제거 (ed-page가 자체 패딩 관리) */
   main.style.padding = '0';
 
+  /* 홈 대시보드의 학습 진행률/완료 배지를 위해 열람 상태 기록 */
+  CS.markVisited(subjectName, conceptName);
+
   const hasViz = !!VIZ_MAP[conceptName];
 
   main.innerHTML = `
