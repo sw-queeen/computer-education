@@ -1671,33 +1671,48 @@ a { color: inherit; text-decoration: none; }
 }
 .ed-lede strong { color: var(--text-primary); font-weight: 700; }
 
-/* ── Explore Tabs ── */
-.explore-tabs { margin-bottom: 48px; }
+/* ── Explore Tabs — 그래프/시각화 영역 전체를 유리 패널로 감싸고,
+   탭 버튼은 세그먼트 컨트롤(모드 토글과 동일한 문법)로 만든다 ── */
+.explore-tabs {
+  margin-bottom: 32px;
+  padding: 20px 24px 26px;
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-extruded-sm);
+}
 .explore-tab-buttons {
   display: flex;
-  gap: 0;
-  border-bottom: 1px solid var(--border-light);
-  margin-bottom: 24px;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 20px;
+  background: var(--bg-surface);
+  border-radius: 20px;
+  box-shadow: var(--shadow-inset-sm);
 }
 .explore-tab-btn {
   flex: 1;
-  padding: 14px 16px;
+  padding: 10px 14px;
   background: none;
   border: none;
+  border-radius: 16px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text-secondary);
   font-family: var(--font-body, var(--font-main));
-  border-bottom: 3px solid transparent;
-  transition: all .2s;
-  text-align: left;
+  transition: box-shadow .2s ease-out, color .12s;
+  text-align: center;
   position: relative;
 }
 .explore-tab-btn:hover { color: var(--text-primary); }
 .explore-tab-btn.active {
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--shadow-extruded-sm);
   color: var(--subject-accent, var(--text-primary));
-  border-bottom-color: var(--subject-accent, var(--text-primary));
 }
 .explore-tab-content { display: none; }
 .explore-tab-content.active { display: block; }
@@ -1730,15 +1745,18 @@ a { color: inherit; text-decoration: none; }
   font-weight: 800;
 }
 
-/* ── Ed Section ── */
+/* ── Ed Section — 번호 섹션 하나하나를 독립된 유리 카드로 감싼다 ── */
 .ed-section {
-  margin-bottom: 0;
-  padding-top: 36px;
-  padding-bottom: 36px;
+  margin-bottom: 20px;
+  padding: 30px 32px 34px;
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-extruded-sm);
   border-top: none;
 }
-.ed-section:first-child,
-.ed-section:first-of-type { padding-top: 0; }
+.ed-section:last-child { margin-bottom: 0; }
 
 /* ── Trigger (발생 조건) ── */
 .ed-trigger { display: flex; gap: 24px; padding: 20px 0; }
@@ -1938,54 +1956,78 @@ a { color: inherit; text-decoration: none; }
   margin-bottom: 16px;
   max-width: 560px;
 }
-.ed-quiz-ox { display: flex; gap: 36px; justify-content: center; }
+.ed-quiz-ox { display: flex; gap: 28px; justify-content: center; }
 .ed-quiz-ox-btn {
-  font-size: 34px;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 28px;
   font-weight: 800;
-  color: var(--subject-bg, rgba(0,0,0,.12));
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 4px 0;
-  font-family: var(--font-body, var(--font-main));
-  transition: color .15s;
-  line-height: 1;
-}
-.ed-quiz-ox-btn:hover { color: var(--text-secondary); }
-.ed-quiz-ox-btn.picked-correct { color: #3A8858; }
-.ed-quiz-ox-btn.picked-wrong { color: #C03838; }
-.ed-quiz-mc { display: flex; flex-direction: column; gap: 10px; max-width: 540px; }
-.ed-quiz-mc-btn {
-  text-align: left;
-  font-size: 14.5px;
-  color: var(--text-secondary);
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  font-family: var(--font-body, var(--font-main));
-  line-height: 1.5;
-  transition: color .15s;
-  display: block;
-}
-.ed-quiz-mc-btn:hover { color: var(--text-primary); }
-.ed-quiz-mc-btn.correct { color: var(--subject-accent); font-weight: 700; }
-.ed-quiz-mc-btn.wrong { color: var(--text-tertiary); text-decoration: line-through; }
-.ed-quiz-fill-btn {
-  font-size: 14px;
-  font-weight: 600;
   color: var(--subject-accent, var(--text-secondary));
   cursor: pointer;
-  background: none;
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: none;
-  padding: 0;
+  box-shadow: var(--shadow-extruded-sm);
   font-family: var(--font-body, var(--font-main));
-  text-decoration: underline;
-  text-decoration-color: var(--subject-bg, var(--border-light));
-  text-underline-offset: 3px;
+  transition: box-shadow .2s ease-out, color .15s, transform .15s ease-out;
+  line-height: 1;
 }
-.ed-quiz-fill-btn:hover { color: var(--text-primary); }
-.ed-quiz-fill-answer { font-size: 15px; }
+.ed-quiz-ox-btn:hover { box-shadow: var(--shadow-extruded-hover); color: var(--text-primary); transform: translateY(-1px); }
+.ed-quiz-ox-btn.picked-correct { background: #EBF5EA; box-shadow: var(--shadow-inset-sm); color: #1E5A3C; transform: none; }
+.ed-quiz-ox-btn.picked-wrong   { background: #FDECEA; box-shadow: var(--shadow-inset-sm); color: #A83222; transform: none; }
+.ed-quiz-mc { display: flex; flex-direction: column; gap: 8px; max-width: 540px; }
+.ed-quiz-mc-btn {
+  text-align: left;
+  font-size: 14px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-extruded-sm);
+  font-family: var(--font-body, var(--font-main));
+  line-height: 1.5;
+  transition: box-shadow .2s ease-out, color .12s, transform .15s ease-out;
+  display: block;
+}
+.ed-quiz-mc-btn:hover { box-shadow: var(--shadow-extruded-hover); color: var(--text-primary); transform: translateY(-1px); }
+.ed-quiz-mc-btn.correct { background: #EBF5EA; box-shadow: var(--shadow-inset-sm); color: #1E5A3C; font-weight: 700; transform: none; }
+.ed-quiz-mc-btn.wrong   { background: #FDECEA; box-shadow: var(--shadow-inset-sm); color: #A83222; text-decoration: line-through; transform: none; }
+.ed-quiz-fill-btn {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--subject-accent, var(--text-secondary));
+  cursor: pointer;
+  background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: none;
+  border-radius: 20px;
+  padding: 8px 18px;
+  box-shadow: var(--shadow-extruded-sm);
+  font-family: var(--font-body, var(--font-main));
+  transition: box-shadow .2s ease-out, color .12s, transform .15s ease-out;
+}
+.ed-quiz-fill-btn:hover { box-shadow: var(--shadow-extruded-hover); color: var(--text-primary); transform: translateY(-1px); }
+.ed-quiz-fill-answer {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 14px;
+  padding: 8px 16px;
+  background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-inset-sm);
+}
 .ed-quiz-fill-answer .fill-label { font-weight: 600; color: var(--text-primary); }
 .ed-quiz-fill-answer .fill-value { font-weight: 700; color: var(--subject-accent); }
 .ed-quiz-explain {
@@ -1999,20 +2041,27 @@ a { color: inherit; text-decoration: none; }
 .ed-reset {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   cursor: pointer;
-  background: none;
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: none;
-  padding: 8px 18px;
+  border-radius: 20px;
+  padding: 10px 26px;
+  box-shadow: var(--shadow-extruded-sm);
   font-family: var(--font-body, var(--font-main));
-  transition: color .15s;
+  transition: box-shadow .2s ease-out, color .12s, transform .15s ease-out;
 }
-.ed-reset:hover { color: var(--text-secondary); }
+.ed-reset:hover { box-shadow: var(--shadow-extruded-hover); color: var(--text-primary); transform: translateY(-1px); }
+.ed-reset:active { box-shadow: var(--shadow-inset-sm); transform: translateY(0.5px); }
 
 /* ── Responsive: Editorial ── */
 @media (max-width: 720px) {
   .ed-title { font-size: 34px; }
   .ed-page { padding: 28px 16px 80px; }
+  .ed-section { padding: 22px 18px 26px; margin-bottom: 14px; }
+  .explore-tabs { padding: 16px 16px 20px; }
   .ed-pcb-row { flex-direction: column; gap: 6px; }
   .ed-statetable { margin-bottom: 20px; }
   .ed-statetable thead { display: none; }
