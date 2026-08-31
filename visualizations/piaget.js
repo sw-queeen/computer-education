@@ -9,7 +9,7 @@
   const STAGES = [
     {
       num: "1", name: "감각운동기", age: "~2세", keyword: "감각·운동으로 세계 이해",
-      bg: "#2a1a00", accent: "#ffb000", border: "#7a5200",
+      bg: "#FBF0E6", accent: "#C87840", border: "#F0C89A",
       desc: "감각 및 운동을 통해 세계를 이해하는 단계. 사고능력은 없다.",
       chars: [
         "대상영속성 개념 발달",
@@ -32,7 +32,7 @@
     },
     {
       num: "2", name: "전조작기", age: "2~7세", keyword: "정신적 능력 발달·상징·자기중심",
-      bg: "#2a0d1f", accent: "#ff2e9e", border: "#7a1f5c",
+      bg: "#F5E6EC", accent: "#C4688E", border: "#E8AECA",
       desc: "생각으로 사물을 다룰 수 있는 정신적 능력이 발달하는 단계.",
       chars: [
         "상징적 사고",
@@ -66,7 +66,7 @@
     },
     {
       num: "3", name: "구체적조작기", age: "7~11세", keyword: "경험할 수 있는 것만 논리적 사고",
-      bg: "#002a24", accent: "#00e5c7", border: "#005c4f",
+      bg: "#E6F2EC", accent: "#4EA87A", border: "#A8D8BC",
       desc: "경험할 수 있는 것만 논리적으로 사고하는 단계.",
       chars: [
         "보존개념 발달",
@@ -98,7 +98,7 @@
     },
     {
       num: "4", name: "형식적조작기", age: "12세~", keyword: "가설적·추상적 개념을 논리적 사고",
-      bg: "#1a002a", accent: "#b06bff", border: "#5c2b7a",
+      bg: "#EAE8F8", accent: "#6058C0", border: "#B0A8E8",
       desc: "가설적이고 추상적인 개념을 논리적으로 사고하는 단계.",
       chars: [
         "추상적 사고(반성적 추상화)",
@@ -134,22 +134,22 @@
   // ── 원페이지(1) 기준 핵심개념 ─────────────────────
   const CORE = [
     {
-      name: "도식 (Schema)", accent: "#ffb000", bg: "#2a1a00",
+      name: "도식 (Schema)", accent: "#C87840", bg: "#FBF0E6",
       desc: "세상을 이해하는 인지적 틀. 경험이 쌓이면서 점점 정교해지고 세분화됨.",
       ex: "예: 처음엔 '네 발 달린 동물 = 강아지' → 경험 후 강아지·고양이·소로 분화"
     },
     {
-      name: "동화 (Assimilation)", accent: "#00e5c7", bg: "#002a24",
+      name: "동화 (Assimilation)", accent: "#4EA87A", bg: "#E6F2EC",
       desc: "새로운 경험을 기존 도식에 끼워 맞추는 과정. 도식 자체는 변하지 않음.",
       ex: "예: 고양이를 처음 보고 기존 '강아지' 도식에 넣어 '강아지!'라고 함"
     },
     {
-      name: "조절 (Accommodation)", accent: "#b06bff", bg: "#1a002a",
+      name: "조절 (Accommodation)", accent: "#6058C0", bg: "#EAE8F8",
       desc: "기존 도식으로 설명이 안 될 때 도식 자체를 수정·확장하는 과정.",
       ex: "예: 고양이가 강아지와 다르다는 걸 알고 '고양이' 도식을 새로 형성"
     },
     {
-      name: "평형화 (Equilibration)", accent: "#ff2e9e", bg: "#2a0d1f",
+      name: "평형화 (Equilibration)", accent: "#C4688E", bg: "#F5E6EC",
       desc: "불평형 상태 → 평형 욕구 → 동화 또는 조절 → 새로운 평형(인지발달). 인지 성장의 원동력.",
       ex: "예: 길쭉한 컵이 납작한 컵보다 물이 많다고 생각(불평형) → 가역성 획득으로 같음을 이해(평형)"
     }
@@ -168,57 +168,57 @@
     const style = document.createElement('style');
     style.id = 'piaget-style';
     style.textContent = `
-      #piaget-wrap{--s-bg:#2a1a00;--s-accent:#ffb000;--s-border:#7a5200;max-width:100%;box-sizing:border-box;}
+      #piaget-wrap{--s-bg:#FBF0E6;--s-accent:#C87840;--s-border:#F0C89A;max-width:100%;box-sizing:border-box;}
       #piaget-wrap *{box-sizing:border-box;}
-      #piaget-wrap .p-timeline{display:flex;border-radius:0;overflow:hidden;border:1px solid var(--border-light,#1f521f);margin-bottom:20px;}
-      #piaget-wrap .p-tl{flex:1;padding:10px 6px 8px;cursor:pointer;text-align:center;border-right:1px solid var(--border-light,#1f521f);transition:background .15s;min-width:0;}
+      #piaget-wrap .p-timeline{display:flex;border-radius:12px;overflow:hidden;border:1px solid var(--border-light,rgba(0,0,0,.08));margin-bottom:20px;}
+      #piaget-wrap .p-tl{flex:1;padding:10px 6px 8px;cursor:pointer;text-align:center;border-right:1px solid var(--color-border-tertiary,#e0ddd8);transition:background .15s;min-width:0;}
       #piaget-wrap .p-tl:last-child{border-right:none;}
       #piaget-wrap .p-tl.on{background:var(--s-bg);}
       #piaget-wrap .p-tl-num{font-size:11px;font-weight:700;margin-bottom:2px;}
-      #piaget-wrap .p-tl-name{font-size:11px;font-weight:600;color:var(--text-primary,#33ff00);margin-bottom:1px;}
-      #piaget-wrap .p-tl-age{font-size:10px;color:var(--text-tertiary,#34a02c);}
-      #piaget-wrap .p-tl-bar{height:3px;border-radius:0;opacity:0;margin-top:7px;transition:opacity .15s;}
+      #piaget-wrap .p-tl-name{font-size:11px;font-weight:600;color:var(--text-primary,#2C2825);margin-bottom:1px;}
+      #piaget-wrap .p-tl-age{font-size:10px;color:var(--text-tertiary,#A09890);}
+      #piaget-wrap .p-tl-bar{height:3px;border-radius:2px;opacity:0;margin-top:7px;transition:opacity .15s;}
       #piaget-wrap .p-tl.on .p-tl-bar{opacity:1;}
-      #piaget-wrap .p-panel{background:var(--bg-white,#0d0f0d);border:1px solid var(--border-light,#1f521f);border-radius:0;padding:20px 20px;margin-bottom:14px;}
+      #piaget-wrap .p-panel{background:var(--bg-white,#fff);border:1px solid var(--border-light,rgba(0,0,0,.08));border-radius:14px;padding:20px 20px;margin-bottom:14px;}
       #piaget-wrap .p-header{display:flex;align-items:flex-start;gap:16px;margin-bottom:18px;}
-      #piaget-wrap .p-badge{width:48px;height:48px;border-radius:0;background:var(--s-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--s-border);}
+      #piaget-wrap .p-badge{width:48px;height:48px;border-radius:12px;background:var(--s-bg);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--s-border);}
       #piaget-wrap .p-badge-num{font-size:18px;font-weight:700;color:var(--s-accent);}
       #piaget-wrap .p-badge-lbl{font-size:8px;font-weight:700;color:var(--s-accent);letter-spacing:.04em;}
-      #piaget-wrap .p-title{font-size:20px;font-weight:700;color:var(--text-primary,#33ff00);margin-bottom:2px;}
-      #piaget-wrap .p-age{font-size:12px;color:var(--text-tertiary,#34a02c);font-weight:500;}
-      #piaget-wrap .p-kw{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:0;background:var(--s-bg);color:var(--s-accent);margin-top:4px;}
+      #piaget-wrap .p-title{font-family:var(--font-heading,var(--font-main));font-size:22px;font-weight:700;color:var(--text-primary,#2C2825);margin-bottom:2px;}
+      #piaget-wrap .p-age{font-size:12px;color:var(--text-tertiary,#A09890);font-weight:500;}
+      #piaget-wrap .p-kw{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px;background:var(--s-bg);color:var(--s-accent);margin-top:4px;}
       #piaget-wrap .p-grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
-      #piaget-wrap .p-icard{background:var(--bg-surface,#131813);border-radius:0;padding:12px 14px;}
-      #piaget-wrap .p-ilabel{font-size:10px;font-weight:700;color:var(--text-tertiary,#34a02c);letter-spacing:.05em;margin-bottom:6px;}
-      #piaget-wrap .p-ibody{font-size:13px;color:var(--text-primary,#33ff00);line-height:1.65;}
-      #piaget-wrap .p-viz{background:var(--s-bg);border-radius:0;padding:14px 16px;margin-bottom:14px;min-height:72px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;}
+      #piaget-wrap .p-icard{background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:12px 14px;}
+      #piaget-wrap .p-ilabel{font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.05em;margin-bottom:6px;}
+      #piaget-wrap .p-ibody{font-size:13px;color:var(--text-primary,#2C2825);line-height:1.65;}
+      #piaget-wrap .p-viz{background:var(--s-bg);border-radius:10px;padding:14px 16px;margin-bottom:14px;min-height:72px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:0;}
       #piaget-wrap .p-viz-item{text-align:center;padding:8px 12px;}
-      #piaget-wrap .p-viz-circle{width:44px;height:44px;border-radius:0;background:var(--s-accent);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:18px;}
+      #piaget-wrap .p-viz-circle{width:44px;height:44px;border-radius:50%;background:var(--s-accent);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-size:18px;}
       #piaget-wrap .p-viz-lbl{font-size:11px;font-weight:600;color:var(--s-accent);}
       #piaget-wrap .p-viz-arrow{font-size:18px;color:var(--s-accent);opacity:.5;align-self:center;padding:0 4px;}
-      #piaget-wrap .p-bar{height:24px;border-radius:0;background:var(--s-accent);display:flex;align-items:center;padding:0 10px;font-size:11px;font-weight:600;color:#000;margin-bottom:3px;}
-      #piaget-wrap .p-exam{background:var(--bg-white,#0d0f0d);border:1px solid var(--s-border);border-left:3px solid var(--s-accent);border-radius:0;padding:12px 16px;margin-bottom:14px;}
+      #piaget-wrap .p-bar{height:24px;border-radius:6px;background:var(--s-accent);display:flex;align-items:center;padding:0 10px;font-size:11px;font-weight:600;color:#fff;margin-bottom:3px;}
+      #piaget-wrap .p-exam{background:var(--bg-white,#fff);border:1px solid var(--s-border);border-left:3px solid var(--s-accent);border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:14px;}
       #piaget-wrap .p-exam-title{font-size:11px;font-weight:700;color:var(--s-accent);letter-spacing:.05em;margin-bottom:6px;}
-      #piaget-wrap .p-exam-body{font-size:12px;color:var(--text-secondary,#5be03f);line-height:1.75;}
+      #piaget-wrap .p-exam-body{font-size:12px;color:var(--text-secondary,#6B6560);line-height:1.75;}
       #piaget-wrap .p-ctabs{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;}
-      #piaget-wrap .p-ctab{padding:5px 12px;border-radius:0;border:1px solid var(--border-light,#1f521f);background:var(--bg-surface,#131813);font-size:12px;font-weight:500;cursor:pointer;color:var(--text-secondary,#5be03f);transition:all .12s;font-family:inherit;}
+      #piaget-wrap .p-ctab{padding:5px 12px;border-radius:20px;border:1px solid var(--border-light,rgba(0,0,0,.08));background:var(--bg-surface,#F0EDE8);font-size:12px;font-weight:500;cursor:pointer;color:var(--text-secondary,#6B6560);transition:all .12s;font-family:inherit;}
       #piaget-wrap .p-ctab.on{background:var(--s-bg);color:var(--s-accent);border-color:var(--s-border);font-weight:700;}
-      #piaget-wrap .p-ccontent{background:var(--bg-surface,#131813);border-radius:0;padding:14px 16px;font-size:13px;color:var(--text-secondary,#5be03f);line-height:1.75;min-height:72px;}
+      #piaget-wrap .p-ccontent{background:var(--bg-surface,#F0EDE8);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--text-secondary,#6B6560);line-height:1.75;min-height:72px;}
       #piaget-wrap .p-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-      #piaget-wrap .p-nbtn{padding:8px 20px;border-radius:0;border:1px solid var(--border-light,#1f521f);background:var(--bg-white,#0d0f0d);font-size:13px;cursor:pointer;color:var(--text-secondary,#5be03f);font-family:inherit;transition:all .12s;}
-      #piaget-wrap .p-nbtn:hover{background:var(--bg-surface,#131813);}
+      #piaget-wrap .p-nbtn{padding:8px 20px;border-radius:20px;border:1px solid #c0bbb5;background:var(--bg-white,#fff);font-size:13px;cursor:pointer;color:var(--text-secondary,#6B6560);font-family:inherit;transition:all .12s;}
+      #piaget-wrap .p-nbtn:hover{background:var(--bg-surface,#F0EDE8);}
       #piaget-wrap .p-nbtn:disabled{opacity:.3;cursor:default;}
       #piaget-wrap .p-nbtn.prim{background:var(--s-bg);color:var(--s-accent);border-color:var(--s-border);font-weight:600;}
       #piaget-wrap .p-dots{display:flex;gap:6px;}
-      #piaget-wrap .p-dot{width:8px;height:8px;border-radius:0;background:var(--border-mid,#2f7a2a);transition:background .15s;}
+      #piaget-wrap .p-dot{width:8px;height:8px;border-radius:50%;background:#c0bbb5;transition:background .15s;}
       #piaget-wrap .p-dot.on{background:var(--s-accent);}
-      #piaget-wrap .p-core{background:var(--bg-surface,#131813);border-radius:0;padding:18px 20px;}
-      #piaget-wrap .p-core-title{font-size:11px;font-weight:700;color:var(--text-tertiary,#34a02c);letter-spacing:.05em;margin-bottom:14px;}
+      #piaget-wrap .p-core{background:var(--bg-surface,#F0EDE8);border-radius:14px;padding:18px 20px;}
+      #piaget-wrap .p-core-title{font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);letter-spacing:.05em;margin-bottom:14px;}
       #piaget-wrap .p-core-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;}
-      #piaget-wrap .p-ccard{border-radius:0;padding:12px;}
+      #piaget-wrap .p-ccard{border-radius:10px;padding:12px;}
       #piaget-wrap .p-ccard-name{font-size:12px;font-weight:700;margin-bottom:5px;}
-      #piaget-wrap .p-ccard-desc{font-size:11px;line-height:1.6;color:var(--text-secondary,#5be03f);}
-      #piaget-wrap .p-ccard-ex{font-size:10px;margin-top:5px;color:var(--text-tertiary,#34a02c);line-height:1.5;}
+      #piaget-wrap .p-ccard-desc{font-size:11px;line-height:1.6;color:var(--text-secondary,#6B6560);}
+      #piaget-wrap .p-ccard-ex{font-size:10px;margin-top:5px;color:var(--text-tertiary,#A09890);line-height:1.5;}
       @media(max-width:600px){
         #piaget-wrap .p-grid2{grid-template-columns:1fr;}
         #piaget-wrap .p-panel{padding:16px 14px;}
@@ -256,8 +256,8 @@
       s.viz.map(v => `
         <div style="display:flex;align-items:center;gap:10px;">
           <div style="width:90px;font-size:11px;font-weight:600;color:var(--s-accent);text-align:right;flex-shrink:0;line-height:1.3;">${v.label}</div>
-          <div style="flex:1;background:var(--bg-surface,#131813);border-radius:0;height:14px;overflow:hidden;">
-            <div style="width:${v.w};height:100%;background:var(--s-accent);border-radius:0;opacity:0.75;"></div>
+          <div style="flex:1;background:rgba(0,0,0,0.08);border-radius:20px;height:14px;overflow:hidden;">
+            <div style="width:${v.w};height:100%;background:var(--s-accent);border-radius:20px;opacity:0.75;"></div>
           </div>
         </div>`
       ).join('') + `</div>`;
@@ -275,7 +275,7 @@
     const mainDesc = parts[0];
     const examples = parts.slice(1).filter(p => p.trim());
     const exHtml = examples.length
-      ? `<div style="margin-top:8px;font-size:11px;color:var(--text-secondary,#5be03f);line-height:1.7;padding-left:4px;">
+      ? `<div style="margin-top:8px;font-size:11px;color:var(--text-secondary,#6B6560);line-height:1.7;padding-left:4px;">
           ${examples.map(e => `<div>${e}</div>`).join('')}
         </div>` : '';
     return `<div class="p-ctabs">${tabs}</div>
@@ -303,7 +303,7 @@
       if (!m) return text;
       const tag = m[1];
       const body = text.replace(/\s*\[[^\]]+\]/, '').trim();
-      return `<span style="display:inline-block;background:var(--s-bg);color:var(--s-accent);font-size:10px;font-weight:700;padding:1px 6px;border-radius:0;margin-right:6px;">${tag}</span>${body}`;
+      return `<span style="display:inline-block;background:var(--s-bg);color:var(--s-accent);font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-right:6px;">${tag}</span>${body}`;
     }
     const examList = s.exam.map(e => `<li style="margin-bottom:5px;">${fmtExam(e)}</li>`).join('');
 

@@ -7,7 +7,7 @@
   const C = window.SITE_CONFIG || {
     summary: { intro:'개요', essay:'논술 답안 구조', check:'체크 포인트' },
   };
-  const CSS_ACCENT = '#ffb000';
+  const CSS_ACCENT = '#D4874A';
 
   if (!document.getElementById('gagne-content-style')) {
     const s = document.createElement('style');
@@ -28,11 +28,11 @@
     ['일반화',         '파지와 전이 증진',    false],
   ];
   const GOALS = [
-    ['언어정보', '명제적(선언적) 지식. 언어로 표현하는 능력', '군집분석', '#e8d400'],
-    ['지적기능', '방법적(절차적) 지식. 상징적 기호 활용 능력', '위계분석', '#33aaff'],
-    ['인지전략', '기억·사고 학습전략을 찾아 활용하는 능력', '위계·절차 분석', '#00e5c7'],
-    ['태도',     '특정 사건·사물에 대한 개인적 성향', '통합분석', '#b06bff'],
-    ['운동기능', '신체 근육을 활용하여 동작을 수행하는 능력', '절차분석', '#ff2e9e'],
+    ['언어정보', '명제적(선언적) 지식. 언어로 표현하는 능력', '군집분석', '#D4874A'],
+    ['지적기능', '방법적(절차적) 지식. 상징적 기호 활용 능력', '위계분석', '#3A5AA0'],
+    ['인지전략', '기억·사고 학습전략을 찾아 활용하는 능력', '위계·절차 분석', '#2A9E94'],
+    ['태도',     '특정 사건·사물에 대한 개인적 성향', '통합분석', '#8050B8'],
+    ['운동기능', '신체 근육을 활용하여 동작을 수행하는 능력', '절차분석', '#D05840'],
   ];
 
   /* ── 1. 핵심정리 ── */
@@ -98,13 +98,13 @@
               <span style="font-size:13px;font-weight:700;color:${color};">${name}</span>
               <span style="font-size:11px;color:var(--text-secondary);margin-left:8px;">${desc}</span>
             </div>
-            <div style="font-size:10px;font-weight:700;color:${color};background:${color}18;padding:2px 8px;border-radius:0;white-space:nowrap;flex-shrink:0;">${analysis}</div>
+            <div style="font-size:10px;font-weight:700;color:${color};background:${color}18;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;">${analysis}</div>
           </div>`).join('')}
       </div>
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:var(--text-tertiary);"><span class="num">05</span> ${C.summary.essay}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">05</span> ${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'기본 개념', items:['학습목표에 따라 상이한 교수방법 처방','교수활동은 인간의 내적 학습과정에 맞추어 설계'] },
         { label:'9가지 수업사태 핵심 3단계', items:['4단계 — 자극자료 제시 (선택적 지각 촉진)','5단계 — 학습안내 제공 (부호화·정교화·스캐폴딩)','6단계 — 수행 유도 (실제 문제 상황 적용)'] },
@@ -113,7 +113,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:var(--text-tertiary);"><span class="num">06</span> ${C.summary.check}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">06</span> ${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'"자극자료 제시 = 학습안내 제공" → X. 자극자료 제시는 새 정보를 <strong>제시</strong>, 학습안내는 내용을 <strong>종합·부호화</strong>' },
         { type:'danger',  text:'"8단계 형성평가 = 총괄평가" → X. 수업 중 이해 여부를 점검하는 <strong>형성</strong>평가(수행평가)' },

@@ -5,10 +5,10 @@
  */
 (function () {
 
-  const ACCENT = '#b06bff';
-  const BG     = '#1a002a';
-  const FONT   = "var(--font-body,var(--font-main),'JetBrains Mono','Nanum Gothic Coding',monospace)";
-  const MONO   = "'JetBrains Mono','Nanum Gothic Coding',monospace";
+  const ACCENT = '#6058C0';
+  const BG     = '#EAE8F8';
+  const FONT   = "var(--font-body,var(--font-main),'Pretendard','Apple SD Gothic Neo',sans-serif)";
+  const MONO   = "var(--font-mono)";
 
   /* ── CSS 주입 ─────────────────────────────────── */
   if (!document.getElementById('boole-viz-style')) {
@@ -16,72 +16,72 @@
     s.id = 'boole-viz-style';
     s.textContent = `
       #boole-wrap *{box-sizing:border-box;}
-      #boole-wrap{font-family:${FONT};color:var(--text-primary,#33ff00);max-width:100%;}
+      #boole-wrap{font-family:${FONT};color:var(--text-primary,#2C2825);max-width:100%;}
       #boole-wrap .bv-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-      #boole-wrap .bv-tab{padding:6px 16px;border-radius:0;font-size:12px;font-weight:600;
-        cursor:pointer;border:1.5px solid var(--border-mid,#2f7a2a);color:${ACCENT};background:var(--bg-white,#0d0f0d);
+      #boole-wrap .bv-tab{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;
+        cursor:pointer;border:1.5px solid #C8C0F0;color:${ACCENT};background:var(--bg-white,#fff);
         transition:all .15s;font-family:${FONT};}
-      #boole-wrap .bv-tab.on{background:${BG};color:${ACCENT};border-color:${ACCENT};}
-      #boole-wrap .bv-card{background:var(--bg-white,#0d0f0d);border:1.5px solid var(--border-light,#1f521f);
-        border-radius:0;padding:18px 20px;margin-bottom:12px;}
-      #boole-wrap .bv-label{font-size:10px;font-weight:700;color:var(--text-tertiary,#34a02c);
+      #boole-wrap .bv-tab.on{background:${BG};color:#3A2898;border-color:${ACCENT};}
+      #boole-wrap .bv-card{background:var(--bg-white,#fff);border:1.5px solid #D0CCF0;
+        border-radius:16px;padding:18px 20px;margin-bottom:12px;}
+      #boole-wrap .bv-label{font-size:10px;font-weight:700;color:var(--text-tertiary,#A09890);
         letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;}
       /* 게이트 버튼 */
       #boole-wrap .bv-gate-btns{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;}
-      #boole-wrap .bv-gbtn{padding:4px 12px;border-radius:0;font-size:11px;font-weight:600;
-        cursor:pointer;border:1.5px solid var(--border-mid,#2f7a2a);color:${ACCENT};background:var(--bg-white,#0d0f0d);
+      #boole-wrap .bv-gbtn{padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;
+        cursor:pointer;border:1.5px solid #C8C0F0;color:${ACCENT};background:var(--bg-white,#fff);
         font-family:${FONT};transition:all .15s;}
-      #boole-wrap .bv-gbtn.on{background:${BG};color:${ACCENT};border-color:${ACCENT};}
+      #boole-wrap .bv-gbtn.on{background:${BG};color:#3A2898;border-color:${ACCENT};}
       /* 입력 버튼 */
       #boole-wrap .bv-input-row{display:flex;gap:12px;align-items:center;margin-bottom:14px;flex-wrap:wrap;}
       #boole-wrap .bv-ig{display:flex;flex-direction:column;align-items:center;gap:5px;}
-      #boole-wrap .bv-ilbl{font-size:11px;font-weight:700;color:var(--text-tertiary,#34a02c);}
-      #boole-wrap .bv-bit{width:46px;height:46px;border-radius:0;border:2px solid;font-size:20px;
+      #boole-wrap .bv-ilbl{font-size:11px;font-weight:700;color:var(--text-tertiary,#A09890);}
+      #boole-wrap .bv-bit{width:46px;height:46px;border-radius:11px;border:2px solid;font-size:20px;
         font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;
         transition:all .15s;font-family:${FONT};}
-      #boole-wrap .bv-bit0{background:var(--bg-surface,#131813);border-color:var(--border-light,#1f521f);color:var(--text-tertiary,#34a02c);}
-      #boole-wrap .bv-bit1{background:${BG};border-color:${ACCENT};color:${ACCENT};}
-      #boole-wrap .bv-arrow{font-size:20px;color:var(--text-tertiary,#34a02c);align-self:flex-end;padding-bottom:10px;}
-      #boole-wrap .bv-out{width:54px;height:54px;border-radius:0;border:2px solid;font-size:22px;
+      #boole-wrap .bv-bit0{background:var(--bg-surface,#F0EDE8);border-color:#C8C0A8;color:var(--text-tertiary,#A09890);}
+      #boole-wrap .bv-bit1{background:${BG};border-color:${ACCENT};color:#3A2898;}
+      #boole-wrap .bv-arrow{font-size:20px;color:#C0BBB0;align-self:flex-end;padding-bottom:10px;}
+      #boole-wrap .bv-out{width:54px;height:54px;border-radius:13px;border:2px solid;font-size:22px;
         font-weight:900;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-      #boole-wrap .bv-out0{background:var(--bg-surface,#131813);border-color:var(--border-light,#1f521f);color:var(--text-tertiary,#34a02c);}
-      #boole-wrap .bv-out1{background:${ACCENT};border-color:${ACCENT};color:#000;}
+      #boole-wrap .bv-out0{background:var(--bg-surface,#F0EDE8);border-color:#C8C0A8;color:var(--text-tertiary,#A09890);}
+      #boole-wrap .bv-out1{background:#D8D4F8;border-color:${ACCENT};color:#3A2898;box-shadow:0 0 14px #9888E038;}
       /* 진리표 */
       #boole-wrap .bv-tt{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;font-family:${MONO};}
       #boole-wrap .bv-tt th{padding:6px 10px;background:${BG};color:${ACCENT};font-weight:700;
         border-bottom:2px solid ${ACCENT};text-align:center;}
-      #boole-wrap .bv-tt td{padding:5px 10px;text-align:center;border-bottom:1px solid var(--border-light,#1f521f);}
-      #boole-wrap .bv-tt tr.on td{background:${ACCENT};font-weight:700;color:#000;}
+      #boole-wrap .bv-tt td{padding:5px 10px;text-align:center;border-bottom:1px solid var(--border-light,rgba(0,0,0,.07));}
+      #boole-wrap .bv-tt tr.on td{background:${BG};font-weight:700;color:#3A2898;}
       /* SVG 게이트 */
       #boole-wrap .bv-svg-wrap{display:flex;align-items:center;justify-content:center;
-        background:var(--bg-surface,#131813);border-radius:0;padding:16px;margin-bottom:12px;}
+        background:var(--bg-surface,#F0EDE8);border-radius:12px;padding:16px;margin-bottom:12px;}
       /* 카르노맵 */
       #boole-wrap .bv-kmap{border-collapse:collapse;font-family:${MONO};font-size:13px;margin:0 auto;}
       #boole-wrap .bv-kmap th{padding:6px 12px;background:${BG};color:${ACCENT};font-weight:700;
-        text-align:center;border:1.5px solid var(--border-mid,#2f7a2a);}
+        text-align:center;border:1.5px solid #C0BBF0;}
       #boole-wrap .bv-kmap td{width:50px;height:42px;text-align:center;vertical-align:middle;
-        border:1.5px solid var(--border-mid,#2f7a2a);font-weight:600;cursor:pointer;transition:all .15s;}
-      #boole-wrap .bv-kmap td.k0{background:var(--bg-page,#0a0a0a);color:var(--text-tertiary,#34a02c);}
-      #boole-wrap .bv-kmap td.k1{background:${BG};color:${ACCENT};}
-      #boole-wrap .bv-kmap td.kx{background:var(--bg-surface,#131813);color:var(--secondary,#ffb000);}
-      #boole-wrap .bv-kmap td.kg{outline:3px solid ${ACCENT};outline-offset:-3px;background:${ACCENT}!important;color:#000;}
-      #boole-wrap .bv-kresult{margin-top:10px;padding:9px 14px;background:${BG};border-radius:0;
-        font-family:${MONO};font-size:13px;color:${ACCENT};font-weight:700;}
+        border:1.5px solid #C0BBF0;font-weight:600;cursor:pointer;transition:all .15s;}
+      #boole-wrap .bv-kmap td.k0{background:var(--bg-page,#F7F5F2);color:var(--text-tertiary,#C0BBB0);}
+      #boole-wrap .bv-kmap td.k1{background:${BG};color:#3A2898;}
+      #boole-wrap .bv-kmap td.kx{background:var(--bg-surface,#FBF8F0);color:#C8A030;}
+      #boole-wrap .bv-kmap td.kg{outline:3px solid ${ACCENT};outline-offset:-3px;background:#D0CCF8!important;color:#3A2898;}
+      #boole-wrap .bv-kresult{margin-top:10px;padding:9px 14px;background:${BG};border-radius:8px;
+        font-family:${MONO};font-size:13px;color:#3A2898;font-weight:700;}
       /* 법칙 */
       #boole-wrap .bv-law-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
-      #boole-wrap .bv-law{padding:9px 12px;background:var(--bg-surface,#131813);border-radius:0;
+      #boole-wrap .bv-law{padding:9px 12px;background:var(--bg-surface,#F7F5F2);border-radius:9px;
         border-left:3px solid ${ACCENT};cursor:pointer;transition:background .15s;}
       #boole-wrap .bv-law:hover,#boole-wrap .bv-law.on{background:${BG};}
-      #boole-wrap .bv-lname{font-size:10px;color:var(--text-tertiary,#34a02c);font-weight:700;margin-bottom:2px;}
-      #boole-wrap .bv-lexpr{font-family:${MONO};font-size:12px;color:${ACCENT};font-weight:700;}
+      #boole-wrap .bv-lname{font-size:10px;color:var(--text-tertiary,#A09890);font-weight:700;margin-bottom:2px;}
+      #boole-wrap .bv-lexpr{font-family:${MONO};font-size:12px;color:#3A2898;font-weight:700;}
       #boole-wrap .bv-lex{font-size:11px;color:${ACCENT};margin-top:4px;display:none;line-height:1.5;}
       #boole-wrap .bv-law.on .bv-lex{display:block;}
       /* 카르노맵 탭 전환 */
       #boole-wrap .bv-kvar-tabs{display:flex;gap:6px;margin-bottom:12px;}
-      #boole-wrap .bv-kvtab{padding:4px 14px;border-radius:0;font-size:11px;font-weight:600;
-        cursor:pointer;border:1.5px solid var(--border-mid,#2f7a2a);color:${ACCENT};background:var(--bg-white,#0d0f0d);
+      #boole-wrap .bv-kvtab{padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;
+        cursor:pointer;border:1.5px solid #C8C0F0;color:${ACCENT};background:var(--bg-white,#fff);
         font-family:${FONT};transition:all .15s;}
-      #boole-wrap .bv-kvtab.on{background:${BG};color:${ACCENT};border-color:${ACCENT};}
+      #boole-wrap .bv-kvtab.on{background:${BG};color:#3A2898;border-color:${ACCENT};}
       @media(max-width:540px){
         #boole-wrap .bv-law-grid{grid-template-columns:1fr;}
         #boole-wrap .bv-kmap td{width:40px;height:36px;font-size:11px;}
@@ -210,7 +210,7 @@
         <button class="bv-gbtn${name===curGate?' on':''}" onclick="bvSetGate('${name}')">${name}</button>`).join('')}
       </div>
       <div class="bv-card">
-        <div style="font-size:15px;font-weight:700;color:${ACCENT};margin-bottom:4px;">${g.title} 게이트</div>
+        <div style="font-family:var(--font-heading,var(--font-main));font-size:17px;font-weight:700;color:#3A2898;margin-bottom:4px;">${g.title} 게이트</div>
         <div style="font-family:${MONO};font-size:13px;color:${ACCENT};margin-bottom:12px;">${g.expr}</div>
         <div class="bv-svg-wrap">${GATE_SVG[curGate]||''}</div>
         <div class="bv-input-row">
@@ -228,12 +228,12 @@
             <div class="bv-out bv-out${y}">${y}</div>
           </div>
         </div>
-        <div style="font-size:12px;color:var(--text-secondary,#5be03f);margin-bottom:10px;line-height:1.6;">${g.desc}</div>
+        <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:10px;line-height:1.6;">${g.desc}</div>
         <table class="bv-tt">
           <tr>${g.n===2?'<th>A</th><th>B</th>':'<th>A</th>'}<th>Y</th></tr>
           ${rows.map(r=>`<tr class="${r.active?'on':''}">
             <td>${r.a}</td>${r.b!==null?`<td>${r.b}</td>`:''}
-            <td style="font-weight:700;color:${r.y?ACCENT:'var(--text-tertiary,#34a02c)'};">${r.y}</td>
+            <td style="font-weight:700;color:${r.y?ACCENT:'var(--text-tertiary,#A09890)'};">${r.y}</td>
           </tr>`).join('')}
         </table>
       </div>`;
@@ -243,8 +243,8 @@
   function renderKmap() {
     return `
       <div class="bv-card">
-        <div style="font-size:14px;font-weight:700;color:${ACCENT};margin-bottom:6px;">카르노맵 (Karnaugh Map)</div>
-        <div style="font-size:12px;color:var(--text-secondary,#5be03f);margin-bottom:12px;line-height:1.6;">
+        <div style="font-family:var(--font-heading,var(--font-main));font-size:16px;font-weight:700;color:#3A2898;margin-bottom:6px;">카르노맵 (Karnaugh Map)</div>
+        <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:12px;line-height:1.6;">
           셀 클릭: <strong>0 → 1 → x</strong>(don't care) 순환 | 1인 셀 그루핑 후 SOP 자동 출력
         </div>
         <div class="bv-kvar-tabs">
@@ -253,7 +253,7 @@
         </div>
         ${kVar===3 ? render3Kmap() : render4Kmap()}
         <div class="bv-kresult" id="bv-kresult">1인 셀을 클릭하면 SOP 식이 나타납니다</div>
-        <div style="margin-top:8px;font-size:11px;color:var(--text-tertiary,#34a02c);">
+        <div style="margin-top:8px;font-size:11px;color:var(--text-tertiary,#A09890);">
           그루핑 규칙: 2ⁿ개씩 · 사각형 · 경계 래핑 허용 · x는 1로 활용 가능
         </div>
       </div>`;
