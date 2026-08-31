@@ -3,17 +3,18 @@
 컴퓨터·정보 교육 개념 학습 사이트 CS.im의  
 새 개념 페이지를 만들 때 따르는 규칙 문서.
 
-> **⚠ 2026 디자인 시스템 전환 — Serif (Editorial)**
-> 사이트 전체가 다크 전용 **Terminal CLI** 테마(2026.08 한때 적용)를 거쳐, 현재는 **Serif** 테마로 전환됨(`css/variables.css` 전면 재작성). 아래 §11(디자인 토큰)·§15(6색 파스텔 팔레트)는 최초 라이트 테마 당시 기록이며 세부 수치는 다를 수 있으나, **"라이트 배경 + 6색 파스텔 과목 팔레트"라는 구조 자체는 Serif에서 그대로 복원**되었습니다. 실제 라이브 토큰 값은 항상 `css/variables.css`가 유일한 소스입니다.
-> **Serif 디자인 시스템의 전체 원문 스펙(철학·토큰·컴포넌트 규칙)은 [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md)에 별도로 정리되어 있으며, 시각 디자인을 다루는 모든 작업은 그 문서를 일관되게 따릅니다.** 핵심 사항:
-> - 배경은 라이트 전용(아이보리 `#FAFAF8`), 다크모드 없음
-> - 폰트: 표제(`--font-heading`)는 `Playfair Display` + 한글 폴백 `Noto Serif KR`(명조), 본문(`--font-body`)은 `Source Sans 3` + `Pretendard`, 라벨(`--font-mono`)은 `IBM Plex Mono` + `Nanum Gothic Coding` — Playfair Display·IBM Plex Mono 모두 한글 글리프가 없어 한글 텍스트는 자동으로 폰트 스택의 두 번째 폰트로 폴백됨(의도된 동작)
-> - **사이트 공통 액센트(버튼·링크·포커스링·"Section Label" 룰라인)는 골드가 아니라 블랙**(`--primary`/`--accent: #0A0A0A`) — Serif 스펙 원문은 번드 골드(`#B8860B`)를 액센트로 제안하지만, 이 사이트는 블랙 단일 액센트로 확정
-> - `--radius-*`는 6~16px(버튼 6px·카드 8~12px), `box-shadow`는 은은하게 복원(`--shadow-sm/md/lg`)
-> - 6색 파스텔 팔레트(`--c-pink/coral/yellow/mint/blue/lilac-*`)는 §15 스프레드시트 원본 HEX 값 그대로 사용 — 과목 구분은 이 팔레트가 전담하고, 사이트 전역 블랙 액센트와는 별개 레이어임. 추가로 `--c-chrome-silver-*`(뮤트 표면) · `--c-ink-black-*`(블랙 액센트 원재료) 2종 중립 토큰 존재
+> **⚠ 2026 디자인 시스템 전환 — Neumorphism (Soft UI, Cool Grey)**
+> 사이트 전체가 다크 전용 **Terminal CLI** 테마 → **Serif** 테마를 거쳐, 현재는 **Neumorphism** 테마로 전환됨(`css/variables.css` 전면 재작성). 아래 §11(디자인 토큰)·§15(6색 파스텔 팔레트)는 최초 라이트 테마 당시 기록이며 세부 수치는 다를 수 있으나, **"라이트 배경 + 6색 파스텔 과목 팔레트"라는 구조 자체는 Neumorphism에서도 그대로 유지**됩니다. 실제 라이브 토큰 값은 항상 `css/variables.css`가 유일한 소스입니다.
+> **Neumorphism 디자인 시스템의 전체 원문 스펙(철학·토큰·컴포넌트 규칙)은 [`DESIGN_SYSTEM.md`](./DESIGN_SYSTEM.md)에 별도로 정리되어 있으며, 시각 디자인을 다루는 모든 작업은 그 문서를 일관되게 따릅니다.** 핵심 사항:
+> - 배경은 라이트 전용, 뉴모피즘 쿨그레이 단일 색 `#E0E5EC` (다크모드 없음) — 카드·버튼·인풋 모두 이 색과 동일한 배경이며, 그림자(양각/음각)만으로 형태를 구분
+> - 폰트: 표제(`--font-heading`)는 `Plus Jakarta Sans`, 본문(`--font-body`)은 `DM Sans` — 둘 다 한글 글리프가 없어 한글 텍스트는 시스템 산세리프로 자동 폴백됨(의도된 동작)
+> - **사이트 공통 액센트(버튼·링크·포커스링)는 소프트 바이올렛**(`--primary`/`--accent: #6C63FF`, 라이트 톤 `--secondary`/`--accent-secondary: #8B84FF`) — 모두 `#E0E5EC` 베이스에 맞춰 파생된 값
+> - **보더는 사용하지 않음** — 기존 `--border-light`/`--border-mid` 자리는 `transparent`이며, 구획 구분은 전부 `--shadow-extruded*`/`--shadow-inset*` 뉴모픽 그림자 토큰으로 대체
+> - `--radius-*`는 12~32px(버튼 16px·카드 32px)로 대폭 확대, `box-shadow`는 뉴모픽 이중 그림자(`--shadow-extruded/-hover/-sm`, `--shadow-inset/-deep/-sm`)로 전면 교체
+> - 6색 파스텔 팔레트(`--c-pink/coral/yellow/mint/blue/lilac-*`)는 §15 스프레드시트 원본 HEX 값 그대로 사용 — **이번 뉴모피즘 전환 대상이 아님.** 과목 구분은 이 팔레트가 전담하고, 사이트 전역 바이올렛 액센트·그레이 베이스와는 별개 레이어로 그대로 유지됨. 추가로 `--c-chrome-silver-*`·`--c-ink-black-*` 2종 중립 토큰 존재(과거 액센트 원재료, 참고용)
 > - 탭 구조·콘텐츠 작성 규칙(§2~§10, §17~§19)은 변경 없음. 새 개념을 추가할 때 색상 값을 하드코딩하지 말고 항상 `var(--...)` 토큰을 참조할 것 (§13 참고).
 > - `test-design.html`은 이번 전환 범위에서 제외(원래도 본 사이트와 무관한 실험 페이지, §16 참고).
-> - 카드 hover는 `translateY` 리프트 없이 그림자/보더 강조만 사용, 버튼 hover만 미세한 리프트(-1~2px) 허용 — Serif 스펙의 "카드는 절제, 버튼만 촉각 피드백" 원칙.
+> - 카드·버튼 hover는 그림자가 한 단계 더 깊어지는 `-hover` 톤 + 미세한 리프트(-1~2px)를 함께 사용, active(press) 시에는 인셋 그림자로 눌리는 느낌을 표현 — Neumorphism 스펙의 "모든 상호작용은 촉각적 피드백" 원칙.
 
 ---
 

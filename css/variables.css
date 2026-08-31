@@ -1,83 +1,99 @@
 /* ════════════════════════════════════════════════════════════
-   CS.im — SERIF 디자인 시스템
-   Typographic elegance through classical restraint.
-   Ivory · Playfair Display · Ink-black accent (no gold).
+   CS.im — NEUMORPHISM (Soft UI) 디자인 시스템
+   Cool Grey #E0E5EC · Plus Jakarta Sans / DM Sans · Soft Violet 액센트.
+   모든 표면(배경·카드·버튼·인풋)은 동일한 #E0E5EC — 형태는 오직
+   양각(extruded)/음각(inset) 이중 그림자로만 표현한다. 보더 없음.
    ════════════════════════════════════════════════════════════ */
 
-/* Playfair Display — 라틴 디스플레이 세리프 (표제) */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-/* Noto Serif KR — 한글 명조 폴백 (Playfair Display는 한글 글리프가 없음) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap');
-/* Source Sans 3 — 라틴 본문·UI */
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&display=swap');
-/* IBM Plex Mono — 라벨·스몰캡스 */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
+/* Plus Jakarta Sans — 디스플레이 (표제) */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+/* DM Sans — 본문·UI */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+/* Noto Sans KR — 한글 폴백 (Plus Jakarta Sans·DM Sans는 한글 글리프가 없음) */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap');
 
 :root {
   /* ── 타이포그래피 ── */
-  --font-display: 'Playfair Display', 'Noto Serif KR', Georgia, serif;
-  --font-sans:    'Source Sans 3', 'Pretendard', 'Apple SD Gothic Neo', system-ui, sans-serif;
-  --font-mono:    'IBM Plex Mono', 'Nanum Gothic Coding', 'D2Coding', monospace;
+  --font-display: 'Plus Jakarta Sans', 'Noto Sans KR', 'Pretendard', system-ui, sans-serif;
+  --font-sans:    'DM Sans', 'Noto Sans KR', 'Pretendard', 'Apple SD Gothic Neo', system-ui, sans-serif;
+  --font-mono:    var(--font-sans);
   --font-heading: var(--font-display);
   --font-main:    var(--font-sans);
   --font-body:    var(--font-sans);
 
   /* ══════════════════════════════════════════════
-     따뜻한 모노크롬 팔레트 — 단일 잉크 블랙 액센트
-     (골드 대신 블랙: 메인 화면 강조는 전부 블랙 계열)
+     쿨 그레이 모노크롬 팔레트 — 단일 베이스 #E0E5EC
+     배경·카드·인풋이 전부 동일한 색이며, 그림자만으로
+     양각/음각을 구분한다 (하얀 카드·플랫 보더 금지).
      ══════════════════════════════════════════════ */
-  --bg-page:    #FAFAF8;  /* ivory */
-  --bg-white:   #FFFFFF;  /* card */
-  --bg-surface: #F5F3F0;  /* muted */
+  --bg-page:    #E0E5EC;  /* 뉴모피즘 베이스 그레이 */
+  --bg-white:   #E0E5EC;  /* card — 페이지와 동일 (뉴모피즘: 흰 카드 금지) */
+  --bg-surface: #E0E5EC;  /* muted/well — 인셋 그림자로만 구분 */
 
-  --text-primary:   #1A1A1A;  /* foreground — rich black */
-  --text-secondary: #6B6B6B;  /* muted-foreground — warm gray */
-  --text-tertiary:  #9B968D;  /* 한층 옅은 caption 톤 (AA 대비 확보) */
+  --text-primary:   #3D4852;  /* foreground — 대비 7.5:1 (AAA) */
+  --text-secondary: #6B7280;  /* muted-foreground — 대비 4.6:1 (AA) */
+  --text-tertiary:  #7B8794;  /* 캡션용 — 본문에는 사용하지 않음 */
 
-  /* 액센트 = 잉크 블랙 (골드 폐지) */
-  --primary:            #0A0A0A;  /* 잉크 블랙 — 버튼·링크·포커스링 */
-  --secondary:          #3A3A40;  /* 크롬 실버 텍스트 톤 — hover/보조 강조 */
-  --accent:             #0A0A0A;
-  --accent-secondary:   #3A3A40;
+  /* 액센트 = 소프트 바이올렛 (#E0E5EC 베이스에 맞춰 파생) */
+  --primary:            #6C63FF;  /* 액센트 — 버튼·링크·포커스링 */
+  --secondary:          #8B84FF;  /* 액센트 라이트 — hover/그라디언트 */
+  --accent:             #6C63FF;
+  --accent-secondary:   #38B2AC;  /* 성공/체크 표시용 틸 */
   --accent-foreground:  #FFFFFF;
-  --muted:              #E8E8EC;  /* 크롬 실버 배경 — 뮤트 표면 */
-  --error:              #B3261E;
+  --muted:              #E0E5EC;  /* 뮤트 표면 — 페이지와 동일, 인셋으로 구분 */
+  --error:              #E5484D;
 
-  --border-light: #E8E4DF;
-  --border-mid:   #D6D0C8;
+  /* 카드/버튼/인풋 자체의 외곽선은 사용하지 않음(뉴모피즘 원칙).
+     아래 두 토큰은 표·탭 밑줄 등 "내용 구분용 가는 선"에만 한정해서 쓰는
+     그림자 톤 헤어라인이며, 절대 불투명 회색 보더로 되돌리지 않는다. */
+  --border-light: rgba(163,177,198,0.30);
+  --border-mid:   rgba(163,177,198,0.5);
 
-  /* ── 빈출도 배지 (badge-high/mid/low) — 값은 그대로, 하드코딩만 토큰화 ──
-     추후 배지 색만 바꾸고 싶을 때 여기 3쌍만 고치면 됨 (components.css는
-     손대지 않아도 됨) */
+  /* ── 빈출도 배지 (badge-high/mid/low) — 시맨틱 색상, 그레이 베이스와 무관하게 유지 ── */
   --badge-high-bg:   #FDECEA; --badge-high-text: #A83222;
   --badge-mid-bg:    #FBF4E0; --badge-mid-text:  #8A6010;
   --badge-low-bg:    #EBF5EA; --badge-low-text:  #2E6A28;
 
-  /* ── 반경 — 6~16px (rounded-md/lg 기준) ── */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
+  /* ── 반경 — 뉴모피즘: 12~32px, 훨씬 부드럽고 큰 코너 ── */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
 
   --sidebar-width: 300px;
   --topbar-height: 56px;
 
-  /* ── 섀도우 ── */
-  --shadow-sm: 0 1px 2px rgba(26,26,26,0.04);
-  --shadow-md: 0 4px 12px rgba(26,26,26,0.06);
-  --shadow-lg: 0 8px 24px rgba(26,26,26,0.08);
+  /* ══════════════════════════════════════════════
+     뉴모픽 이중 그림자 — The Physics
+     라이트(백색 반투명, 좌상단) + 다크(rgb(163,177,198), 우하단)
+     ══════════════════════════════════════════════ */
+  --shadow-extruded-sm:    5px 5px 10px rgba(163,177,198,0.6), -5px -5px 10px rgba(255,255,255,0.5);
+  --shadow-extruded:       9px 9px 16px rgba(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5);
+  --shadow-extruded-hover: 12px 12px 20px rgba(163,177,198,0.7), -12px -12px 20px rgba(255,255,255,0.6);
 
-  /* ── 히어로 앰비언트 글로우 — 단일 톤, 아주 옅게 (2%) ── */
+  --shadow-inset-sm:   inset 3px 3px 6px rgba(163,177,198,0.6), inset -3px -3px 6px rgba(255,255,255,0.5);
+  --shadow-inset:      inset 6px 6px 10px rgba(163,177,198,0.6), inset -6px -6px 10px rgba(255,255,255,0.5);
+  --shadow-inset-deep: inset 10px 10px 20px rgba(163,177,198,0.7), inset -10px -10px 20px rgba(255,255,255,0.6);
+
+  /* 기존 --shadow-sm/md/lg 참조 지점(컴포넌트 CSS 전역)이 자동으로
+     뉴모픽 그림자를 쓰도록 별칭 매핑 — 컴포넌트 파일을 건드리지 않아도
+     카드 전반이 양각으로 바뀐다. */
+  --shadow-sm: var(--shadow-extruded-sm);
+  --shadow-md: var(--shadow-extruded);
+  --shadow-lg: var(--shadow-extruded-hover);
+
+  /* ── 히어로 앰비언트 글로우 — 바이올렛/틸 톤, 아주 옅게 ── */
   --hero-glow-1: var(--primary);
-  --hero-glow-2: var(--primary);
-  --hero-glow-3: var(--primary);
-  --hero-glow-opacity: .02;
-  --hero-card-shadow: 0 1px 2px rgba(26,26,26,0.04), 0 20px 48px -24px rgba(26,26,26,0.12);
-  --hero-card-shadow-hover: 0 1px 2px rgba(26,26,26,0.05), 0 24px 56px -20px rgba(26,26,26,0.16);
+  --hero-glow-2: var(--secondary);
+  --hero-glow-3: var(--accent-secondary);
+  --hero-glow-opacity: .05;
+  --hero-card-shadow: var(--shadow-extruded);
+  --hero-card-shadow-hover: var(--shadow-extruded-hover);
 
   /* ══════════════════════════════════════════════
-     6색 팔레트 — 과목 구분용 (메인 액센트와는 별개)
-     지정된 스프레드시트 값 그대로 사용 (라이트 배경에 최적화된 원본 파스텔)
+     6색 팔레트 — 과목 구분용 (뉴모피즘 전환 대상 아님)
+     지정된 스프레드시트 값 그대로 사용 — 개념별 포인트 색상은
+     기존에 등록된 대로 유지한다.
      ══════════════════════════════════════════════ */
   --c-pink-bg:    #FFC9E3; --c-pink-text:   #7A1F4D; --c-pink-mid:   #993D6B;
   --c-coral-bg:   #FFD5B8; --c-coral-text:  #803300; --c-coral-mid:  #803300;
@@ -86,7 +102,7 @@
   --c-blue-bg:    #AEE2FF; --c-blue-text:   #0A3C5C; --c-blue-mid:   #1E5A80;
   --c-lilac-bg:   #E1C5FF; --c-lilac-text:  #3D1F6B; --c-lilac-mid:  #5C3D8C;
 
-  /* 스프레드시트의 추가 중립 톤 2종 — 블랙 액센트 계열의 재료로 사용 */
+  /* 스프레드시트의 추가 중립 톤 2종 — 과거 액센트 원재료(참고용, 미사용 가능) */
   --c-chrome-silver-bg:   #E8E8EC; --c-chrome-silver-text: #3A3A40; --c-chrome-silver-mid: #5C5C66;
   --c-ink-black-bg:       #0A0A0A; --c-ink-black-text:     #FFFFFF; --c-ink-black-mid:     #999999;
 
