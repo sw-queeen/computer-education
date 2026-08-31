@@ -223,7 +223,7 @@ a { color: inherit; text-decoration: none; }
   top: calc(100% + 8px);
   left: 0;
   right: 0;
-  background: var(--bg-white);
+  background: var(--bg-overlay);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-md);
@@ -564,6 +564,7 @@ a { color: inherit; text-decoration: none; }
 }
 .concept-card {
   background: var(--bg-white);
+  background: color-mix(in srgb, var(--subject-mid, var(--primary)) 7%, var(--bg-white));
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: none;
@@ -571,15 +572,14 @@ a { color: inherit; text-decoration: none; }
   padding: 14px 16px;
   cursor: pointer;
   box-shadow: var(--shadow-extruded-sm);
-  transition: box-shadow .25s ease-out, transform .25s ease-out, border-left-color .2s;
-  border-left: 3px solid var(--subject-mid, var(--border-mid));
+  transition: box-shadow .25s ease-out, transform .25s ease-out, background .25s ease-out;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 .concept-card:hover {
+  background: color-mix(in srgb, var(--subject-mid, var(--primary)) 13%, var(--bg-white));
   box-shadow: var(--shadow-extruded-hover);
-  border-left-color: var(--subject-accent, var(--text-secondary));
   transform: translateY(-2px);
 }
 .concept-card-name {
@@ -721,6 +721,11 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  /* .roadmap과 동일한 1180px로 맞춰, 홈 화면 안에서 히어로 카드와
+     아래 로드맵 카드의 좌우 폭이 어긋나지 않게 한다. */
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 44px;
   border-radius: var(--radius-xl);
   border: none;
@@ -1226,7 +1231,6 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-inset-sm);
   padding: 10px 14px;
-  border-left: 3px solid;
   font-size: 12px;
   line-height: 1.75;
   font-family: var(--font-body, var(--font-main));
@@ -1242,8 +1246,9 @@ a { color: inherit; text-decoration: none; }
   margin-right: 8px;
   letter-spacing: .02em;
 }
-.cs-check-danger  { border-left-color: #D05840; }
-.cs-check-success { border-left-color: #2D8A6A; }
+/* 왼쪽 색상 바 대신, 유리 표면 자체에 시맨틱 색을 아주 옅게(14%) 섞는다 */
+.cs-check-danger  { background: color-mix(in srgb, #D05840 14%, var(--bg-surface)); }
+.cs-check-success { background: color-mix(in srgb, #2D8A6A 14%, var(--bg-surface)); }
 .cs-check-danger  .cs-check-label { background: #D05840; }
 .cs-check-success .cs-check-label { background: #2D8A6A; }
 
@@ -1260,8 +1265,9 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--font-body, var(--font-main));
 }
 .cs-exam-item + .cs-exam-item { margin-top: 6px; }
-.cs-exam-item-freq   { border-left: 2px solid #D05840; }
-.cs-exam-item-normal { border-left: 2px solid #C8A830; }
+/* 왼쪽 색상 바 대신, 유리 표면 자체에 빈출도 색을 아주 옅게(12%) 섞는다 */
+.cs-exam-item-freq   { background: color-mix(in srgb, #D05840 12%, var(--bg-surface)); }
+.cs-exam-item-normal { background: color-mix(in srgb, #C8A830 12%, var(--bg-surface)); }
 .cs-exam-tag {
   display: inline-block;
   font-size: 10px;
@@ -1747,7 +1753,7 @@ a { color: inherit; text-decoration: none; }
 
 /* ── Ed Section — 번호 섹션 하나하나를 독립된 유리 카드로 감싼다 ── */
 .ed-section {
-  margin-bottom: 20px;
+  margin-bottom: 32px;
   padding: 30px 32px 34px;
   background: var(--bg-white);
   backdrop-filter: var(--glass-blur);
@@ -1958,13 +1964,13 @@ a { color: inherit; text-decoration: none; }
 }
 .ed-quiz-ox { display: flex; gap: 28px; justify-content: center; }
 .ed-quiz-ox-btn {
-  width: 72px;
-  height: 72px;
+  width: 84px;
+  height: 84px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 800;
   color: var(--subject-accent, var(--text-secondary));
   cursor: pointer;
@@ -1972,12 +1978,12 @@ a { color: inherit; text-decoration: none; }
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: none;
-  box-shadow: var(--shadow-extruded-sm);
+  box-shadow: var(--shadow-extruded);
   font-family: var(--font-body, var(--font-main));
   transition: box-shadow .2s ease-out, color .15s, transform .15s ease-out;
   line-height: 1;
 }
-.ed-quiz-ox-btn:hover { box-shadow: var(--shadow-extruded-hover); color: var(--text-primary); transform: translateY(-1px); }
+.ed-quiz-ox-btn:hover { box-shadow: var(--shadow-extruded-hover); color: var(--text-primary); transform: translateY(-2px) scale(1.03); }
 .ed-quiz-ox-btn.picked-correct { background: #EBF5EA; box-shadow: var(--shadow-inset-sm); color: #1E5A3C; transform: none; }
 .ed-quiz-ox-btn.picked-wrong   { background: #FDECEA; box-shadow: var(--shadow-inset-sm); color: #A83222; transform: none; }
 .ed-quiz-mc { display: flex; flex-direction: column; gap: 8px; max-width: 540px; }
@@ -2060,7 +2066,7 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 720px) {
   .ed-title { font-size: 34px; }
   .ed-page { padding: 28px 16px 80px; }
-  .ed-section { padding: 22px 18px 26px; margin-bottom: 14px; }
+  .ed-section { padding: 22px 18px 26px; margin-bottom: 22px; }
   .explore-tabs { padding: 16px 16px 20px; }
   .ed-pcb-row { flex-direction: column; gap: 6px; }
   .ed-statetable { margin-bottom: 20px; }

@@ -419,7 +419,7 @@ renderConcept();
 
   const dropdown = document.createElement('div');
   dropdown.id = 'searchDropdown';
-  dropdown.style.cssText = 'position:absolute;top:calc(100% + 6px);right:0;left:0;background:var(--bg-white);border:1px solid var(--border-light);border-radius:var(--radius-md);box-shadow:var(--shadow-md);z-index:500;max-height:320px;overflow-y:auto;display:none;';
+  dropdown.style.cssText = 'position:absolute;top:calc(100% + 6px);right:0;left:0;background:var(--bg-overlay);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-radius:var(--radius-md);box-shadow:var(--shadow-extruded);z-index:500;max-height:320px;overflow-y:auto;display:none;';
   input.parentElement.style.position = 'relative';
   input.parentElement.appendChild(dropdown);
 

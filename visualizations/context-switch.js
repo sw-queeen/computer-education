@@ -16,25 +16,31 @@
       #ctx-wrap { font-family:var(--font-body,var(--font-main)); max-width:100%; color:var(--text-primary); }
       #ctx-wrap * { box-sizing:border-box; }
 
-      /* 탭 — components.css .filter-btn 패턴 통일 */
+      /* 탭 — components.css .filter-btn 유리 버튼 패턴과 동일하게 */
       #ctx-wrap .cv-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
       #ctx-wrap .cv-tab {
         padding:6px 16px; border-radius:20px; font-size:12px; font-weight:600;
-        cursor:pointer; border:1px solid var(--border-light); color:var(--text-secondary);
-        background:var(--bg-white); transition:all .15s;
+        cursor:pointer; border:none; color:var(--text-secondary);
+        background:var(--bg-white); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur);
+        box-shadow:var(--shadow-extruded-sm); transition:box-shadow .2s ease-out, color .12s, transform .2s ease-out;
         font-family:var(--font-body,var(--font-main));
       }
-      #ctx-wrap .cv-tab:hover { border-color:var(--border-mid); color:var(--text-primary); }
-      #ctx-wrap .cv-tab.on { background:${CSS_ACCENT}; color:white; border-color:transparent; font-weight:600; }
+      #ctx-wrap .cv-tab:hover { box-shadow:var(--shadow-extruded-hover); color:var(--text-primary); transform:translateY(-1px); }
+      #ctx-wrap .cv-tab.on { background:${CSS_ACCENT}; color:white; box-shadow:var(--shadow-inset-sm); font-weight:600; transform:none; }
 
-      /* 단계 아코디언 */
+      /* 단계 아코디언 — 유리 카드. 펼친 상태는 시맨틱 색을 살짝 섞어 표시 */
       #ctx-wrap .cv-step {
-        border-radius:var(--radius-md,10px); border:1.5px solid transparent;
-        background:var(--bg-white); cursor:pointer; transition:all .15s;
-        overflow:hidden; margin-bottom:4px;
+        border-radius:var(--radius-md,10px);
+        background:var(--bg-white); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur);
+        box-shadow:var(--shadow-extruded-sm);
+        cursor:pointer; transition:box-shadow .2s ease-out, background .2s ease-out;
+        overflow:hidden; margin-bottom:8px;
       }
-      #ctx-wrap .cv-step:hover { border-color:${CSS_MID}; }
-      #ctx-wrap .cv-step.on { border-color:${CSS_ACCENT}; box-shadow:0 2px 12px rgba(208,88,64,.15); }
+      #ctx-wrap .cv-step:hover { box-shadow:var(--shadow-extruded-hover); }
+      #ctx-wrap .cv-step.on {
+        background:color-mix(in srgb, ${CSS_ACCENT} 10%, var(--bg-white));
+        box-shadow:var(--shadow-extruded-hover);
+      }
       #ctx-wrap .cv-step-head { display:flex; align-items:center; gap:10px; padding:11px 14px; }
       #ctx-wrap .cv-step-num {
         width:28px; height:28px; border-radius:50%;
@@ -54,7 +60,9 @@
       }
       #ctx-wrap .cv-step.on .cv-step-body { display:block; }
       #ctx-wrap .cv-step-detail {
-        background:${CSS_BG}; border-radius:var(--radius-sm,6px);
+        background:color-mix(in srgb, ${CSS_ACCENT} 12%, var(--bg-surface));
+        backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur);
+        box-shadow:var(--shadow-inset-sm); border-radius:var(--radius-sm,6px);
         padding:10px 14px; font-size:12px; line-height:1.8;
         color:var(--text-primary); margin-top:8px;
       }
@@ -78,7 +86,10 @@
 
       /* PCB 그리드 */
       #ctx-wrap .cv-pcb-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-      #ctx-wrap .cv-pcb-card { background:var(--bg-surface); border-radius:var(--radius-md,10px); padding:12px 14px; }
+      #ctx-wrap .cv-pcb-card {
+        background:var(--bg-surface); backdrop-filter:var(--glass-blur); -webkit-backdrop-filter:var(--glass-blur);
+        box-shadow:var(--shadow-inset-sm); border-radius:var(--radius-md,10px); padding:12px 14px;
+      }
       #ctx-wrap .cv-pcb-title { font-size:11px; font-weight:700; letter-spacing:.04em; color:var(--text-tertiary); margin-bottom:6px; }
       #ctx-wrap .cv-pcb-item { display:flex; align-items:baseline; gap:6px; font-size:12px; margin-bottom:3px; }
       #ctx-wrap .cv-pcb-key { font-weight:700; color:${CSS_ACCENT}; min-width:80px; font-size:11px; flex-shrink:0; }
@@ -197,7 +208,7 @@
             <span style="color:var(--text-secondary);">${lb}</span>
           </div>`).join('')}
       </div>
-      <div style="margin-top:14px;background:${CSS_BG};border-radius:var(--radius-md,10px);padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
+      <div style="margin-top:14px;background:color-mix(in srgb, ${CSS_ACCENT} 12%, var(--bg-surface));backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);box-shadow:var(--shadow-inset-sm);border-radius:var(--radius-md,10px);padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
         <strong style="color:${CSS_ACCENT};">핵심 포인트</strong><br>
         P1이 <strong>저장</strong>되고 P2가 <strong>복원</strong>되는 사이 구간 전체가 순수 오버헤드.
         하드웨어가 레지스터 저장을 지원하면(예: 인텔 TSS) 오버헤드를 줄일 수 있다.
@@ -212,7 +223,7 @@
       </div>
       <div class="cv-pcb-grid">
         ${PCB_GROUPS.map(g => `
-          <div class="cv-pcb-card" style="${g.accent ? `background:${CSS_BG};` : ''}">
+          <div class="cv-pcb-card" style="${g.accent ? `background:color-mix(in srgb, ${CSS_ACCENT} 14%, var(--bg-surface));` : ''}">
             <div class="cv-pcb-title" style="${g.accent ? `color:${CSS_ACCENT};` : ''}">${g.title}</div>
             ${g.items.map(([k,v]) => `
               <div class="cv-pcb-item">
@@ -221,7 +232,7 @@
               </div>`).join('')}
           </div>`).join('')}
       </div>
-      <div style="margin-top:12px;background:${CSS_BG};border-radius:var(--radius-md,10px);padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
+      <div style="margin-top:12px;background:color-mix(in srgb, ${CSS_ACCENT} 12%, var(--bg-surface));backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);box-shadow:var(--shadow-inset-sm);border-radius:var(--radius-md,10px);padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
         <strong style="color:${CSS_ACCENT};">저장/복원 핵심 항목:</strong>
         프로그램 카운터(PC), 범용 레지스터, 스택 포인터(SP) — 이 세 가지가 반드시 처리되어야 한다.
         메모리 맵(페이지 테이블)도 함께 전환되어야 주소 공간이 정확히 전환된다.
