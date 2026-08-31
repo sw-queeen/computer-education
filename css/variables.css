@@ -105,7 +105,7 @@
   --c-info-ct-bg:         var(--c-mint-bg);   --c-info-ct-mid:         var(--c-mint-mid);   --c-info-ct-accent:         var(--c-mint-mid);   --c-info-ct-text:         var(--c-mint-text);
   --c-info-swai-bg:       var(--c-blue-bg);   --c-info-swai-mid:       var(--c-blue-mid);   --c-info-swai-accent:       var(--c-blue-mid);   --c-info-swai-text:       var(--c-blue-text);
 
-  /* ── 전공(CS) ── */
+  /* ── 컴퓨터공학(CS) ── */
   --c-cs-ai-bg:        var(--c-pink-bg);   --c-cs-ai-mid:        var(--c-pink-mid);   --c-cs-ai-accent:        var(--c-pink-mid);   --c-cs-ai-text:        var(--c-pink-text);
   --c-cs-discrete-bg:  var(--c-pink-bg);   --c-cs-discrete-mid:  var(--c-pink-mid);   --c-cs-discrete-accent:  var(--c-pink-mid);   --c-cs-discrete-text:  var(--c-pink-text);
 

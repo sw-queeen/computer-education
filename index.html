@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CS.im — 정보컴퓨터 임용</title>
+  <title>CS.im — 컴퓨터·정보 개념 학습</title>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
 </head>
@@ -163,7 +163,7 @@ function renderHome() {
       <div class="hero-glow hero-glow-b" aria-hidden="true"></div>
       <div class="hero-glow hero-glow-c" aria-hidden="true"></div>
       <div class="hero-content">
-        <div class="hero-eyebrow">${C.siteName} · 정보컴퓨터 임용시험</div>
+        <div class="hero-eyebrow">${C.siteName} · 개념 학습 노트</div>
         <h1 class="hero-big">Computer<br><span class="hero-dim">Education</span></h1>
         <p class="hero-desc">${C.heroDesc}</p>
         <div class="hero-stats">
@@ -218,29 +218,28 @@ function renderRoadmap() {
 
   const railHtml = Object.entries(C.areas).map(([areaKey, areaLabel]) => `
     <button class="rail-item ${selectedArea === areaKey ? 'active' : ''}" onclick="selectArea('${areaKey}')">
-      <span class="rail-mark">${areaLabel.slice(0, 2)}</span>
+      <span class="rail-mark">${C.areaMarks[areaKey] || ''}</span>
       <span class="rail-label">${areaLabel}</span>
     </button>`).join('');
 
   const subjectNames = subjectsByArea(selectedArea);
   const subjectListHtml = subjectNames.map(name => {
     const s = SUBJECTS[name];
-    const concepts = CONCEPTS.filter(c => c.subject === name);
-    const doneCount = concepts.filter(c => CS.isVisited(name, c.name)).length;
+    const count = CONCEPTS.filter(c => c.subject === name).length;
     const active = openSubject === name ? 'active' : '';
     const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
     return `
       <button class="rs-item ${active}" style="${style}" onclick="selectSubject('${name}')">
         <span class="rs-dot" style="background:${s.color.mid}"></span>
         <span class="rs-name">${name}</span>
-        <span class="rs-count">${doneCount ? doneCount + '/' : ''}${concepts.length}</span>
+        <span class="rs-count">${count}</span>
       </button>`;
   }).join('');
 
   const s = SUBJECTS[openSubject];
   const concepts = s ? CONCEPTS.filter(c => c.subject === openSubject) : [];
-  const doneCount = concepts.filter(c => CS.isVisited(openSubject, c.name)).length;
-  const pct = concepts.length ? Math.round(doneCount / concepts.length * 100) : 0;
+  const highCount = concepts.filter(c => c.freq === '높음').length;
+  const vizCount  = concepts.filter(c => c.viz).length;
   const freqLabel = f => f === '높음' ? C.freq.high : f === '중간' ? C.freq.mid : C.freq.low;
   const freqClass = f => f === '높음' ? 'badge-high' : f === '중간' ? 'badge-mid' : 'badge-low';
 
@@ -248,19 +247,16 @@ function renderRoadmap() {
     <div class="roadmap-main-header">
       <div class="roadmap-main-eyebrow">${s.area}</div>
       <div class="roadmap-main-title" id="roadmapMainTitle">${openSubject}</div>
-      <div class="roadmap-main-meta">
-        <span>${concepts.length}개 개념</span>
-        <span class="roadmap-progress-track"><span class="roadmap-progress-bar" style="width:${pct}%;background:${s.color.accent};"></span></span>
-        <span>${doneCount}/${concepts.length} 학습 완료</span>
+      <div class="page-meta roadmap-main-meta">
+        <span class="count">${concepts.length}개 개념</span>
+        <span>${C.freq.high} ${highCount}개</span>
+        <span>${C.badges.viz} ${vizCount}개</span>
       </div>
     </div>
-    <div class="card-grid roadmap-card-grid">
-      ${concepts.map(c => {
-        const done = CS.isVisited(openSubject, c.name);
-        return `
-        <div class="concept-card ${done ? 'done' : ''}" style="border-left-color:${s.color.mid};"
+    <div class="card-grid">
+      ${concepts.map(c => `
+        <div class="concept-card" style="border-left-color:${s.color.mid};"
           onclick="navigate({subject:'${openSubject}',chapter:'${encodeURIComponent(c.chapter)}',concept:'${encodeURIComponent(c.name)}'})">
-          ${done ? '<span class="cc-done-badge" title="학습 완료">✓</span>' : ''}
           <div class="concept-card-name">${c.name}</div>
           <div class="concept-card-keywords">${c.keywords}</div>
           <div class="concept-card-footer">
@@ -268,8 +264,7 @@ function renderRoadmap() {
             ${c.viz  ? `<span class="badge badge-quiz">${C.badges.viz}</span>` : ''}
             ${c.quiz ? `<span class="badge badge-quiz">${C.badges.quiz}</span>` : ''}
           </div>
-        </div>`;
-      }).join('')}
+        </div>`).join('')}
     </div>`;
 
   roadmap.innerHTML = `
