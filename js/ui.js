@@ -12,6 +12,8 @@
  *   CS.renderCheckCards(cards)          → 체크 포인트 카드 HTML
  *   CS.renderExamSection(el, opts)      → 기출 포인트 탭 전체 렌더
  *   CS.renderQuizSection(el, quizData, prefix) → 리마인드 탭 전체 렌더
+ *   CS.wobble(el)                       → 젤리 워블 애니메이션 1회 재생
+ *                                          (버튼류는 document 위임 클릭으로 자동 부착됨)
  */
 window.CS = window.CS || {};
 
@@ -198,5 +200,44 @@ window.CS = window.CS || {};
 
     buildAll();
   };
+
+  /* ── 젤리 워블 클릭 인터랙션 ──────────────────
+     .cs-wobble 클래스를 위임 클릭으로 자동 부착/해제한다.
+     각 컴포넌트가 개별로 JS를 작성할 필요 없이, 아래 셀렉터에
+     해당하는 요소를 클릭하면 components.css의 csWobble
+     키프레임이 재생된다. prefers-reduced-motion에서는 아예 붙이지 않는다. */
+  var WOBBLE_SELECTOR = [
+    '.filter-btn', '.cs-quiz-btn', '.quiz-option', '.concept-card',
+    '.sb-subject-chip', '.sb-area-head', '.rail-item', '.rs-item',
+    '.mode-toggle-btn', '.cs-quiz-reset', '.scroll-top-btn',
+    '.topbar-menu-btn', '.explore-tab-btn', '.detail-tab',
+    '.ed-quiz-ox-btn', '.ed-quiz-mc-btn', '.ed-quiz-fill-btn',
+    '.ed-reset', '.test-link-btn'
+  ].join(', ');
+
+  CS.wobble = function (el) {
+    if (!el) return;
+    el.classList.remove('cs-wobble');
+    void el.offsetWidth; // 리플로우 강제 — 연타 시 애니메이션 재시작
+    el.classList.add('cs-wobble');
+    window.setTimeout(function () {
+      el.classList.remove('cs-wobble');
+    }, 950);
+  };
+
+  function initWobble() {
+    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest && e.target.closest(WOBBLE_SELECTOR);
+      if (el) CS.wobble(el);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWobble);
+  } else {
+    initWobble();
+  }
 
 })(window.CS);
