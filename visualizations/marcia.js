@@ -228,7 +228,7 @@
         <div class="mv-path-item">
           <div class="viz-num on" style="--viz-accent:${p.accent};">${i+1}</div>
           <div style="flex:1;font-family:${FONT};">
-            <div style="font-size:12px;font-weight:700;color:${p.accent};margin-bottom:3px;">
+            <div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:3px;">
               ${p.from} › ${p.to}
             </div>
             <div style="font-size:12px;color:var(--text-secondary);line-height:1.65;">${p.desc}</div>

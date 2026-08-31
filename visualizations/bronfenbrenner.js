@@ -30,7 +30,7 @@
       #bronf-wrap .bv-layer-header {
         display:flex; align-items:center; gap:12px; padding:12px 16px;
       }
-      #bronf-wrap .bv-layer-name { font-family:var(--font-heading,var(--font-main)); font-size:16px; font-weight:700; color:var(--viz-accent); }
+      #bronf-wrap .bv-layer-name { font-family:var(--font-heading,var(--font-main)); font-size:16px; font-weight:700; color:var(--text-primary); }
       #bronf-wrap .bv-layer-sub { font-size:11px; color:var(--text-secondary); margin-top:1px; }
       #bronf-wrap .bv-layer-detail {
         display:none; padding:0 16px 14px 60px; font-size:12px;
@@ -46,7 +46,7 @@
       }
 
       /* ── 연령대 흐름 카드 ── */
-      #bronf-wrap .bv-age-badge-label { font-size:13px; font-weight:800; color:var(--viz-accent); }
+      #bronf-wrap .bv-age-badge-label { font-size:13px; font-weight:800; color:var(--text-primary); }
       #bronf-wrap .bv-age-badge-range { font-size:10px; color:var(--text-tertiary); font-weight:600; }
       #bronf-wrap .bv-age-detail { padding:0 16px 14px 16px; font-family:${FONT}; }
 
@@ -151,7 +151,7 @@
     return LAYERS.map(l => {
       const isOn = activeLayer === l.num;
       return `
-        <div class="viz-card tinted clickable bv-layer-item ${isOn?'on':''}"
+        <div class="viz-card clickable bv-layer-item ${isOn?'on':''}"
           style="--viz-accent:${l.color};padding:0;"
           onclick="bronfClick(${l.num})">
           <div class="bv-layer-header">

@@ -60,11 +60,11 @@
   ];
 
   const GOALS = [
-    { name:'언어정보', desc:'명제적(선언적) 지식. 사실·개념·원리 등을 기억해 언어로 표현하는 능력.', method:'과제분석: 군집분석', analysis:'학습과제를 범주(군집)별로 묶는 기법', effective:'선행조직자 제시, 청킹', example:'정의 외우기, 역사 기억하기, 공식 진술', accent:'#D4874A', color:'#7A4018' },
-    { name:'지적기능', desc:'방법적(절차적) 지식. 언어·숫자·부호 등 상징적 기호를 사용하여 진술하는 능력.', method:'과제분석: 위계분석', analysis:'상위기능과 하위기능으로 분석하는 기법', effective:'위계학습, 예제사례 제시', example:'교집합·합집합 구분, 수식 계산', accent:'#3A5AA0', color:'#1A2E60' },
-    { name:'인지전략', desc:'학습자가 기억하고 사고하며 과제에 맞는 학습전략을 찾아내 활용하는 능력.', method:'과제분석: 위계·절차 분석', analysis:'다양한 상황에서의 문제해결 경험으로 개발', effective:'연습, 설명, 토의', example:'암기법, 메타인지 전략', accent:'#2A9E94', color:'#0E4E48' },
-    { name:'태도', desc:'특정 사건·사물·사람에 대해 나타나는 개인적 성향.', method:'과제분석: 통합분석', analysis:'군집·위계·절차 분석을 혼합하는 방법', effective:'관찰학습, 동일시, 교사시범', example:'솔선수범, 양보', accent:'#8050B8', color:'#3E1E6A' },
-    { name:'운동기능', desc:'신체 근육을 활용하여 특정한 동작을 수행하는 능력.', method:'과제분석: 절차분석', analysis:'먼저 수행해야 할 과제의 순서를 분석하는 기법', effective:'반복 연습, 시범', example:'수영하기, 축구하기, 글씨 쓰기', accent:'#D05840', color:'#6E2010' },
+    { name:'언어정보', desc:'명제적(선언적) 지식. 사실·개념·원리 등을 기억해 언어로 표현하는 능력.', method:'과제분석: 군집분석', analysis:'학습과제를 범주(군집)별로 묶는 기법', effective:'선행조직자 제시, 청킹', example:'정의 외우기, 역사 기억하기, 공식 진술', accent:'#D4874A' },
+    { name:'지적기능', desc:'방법적(절차적) 지식. 언어·숫자·부호 등 상징적 기호를 사용하여 진술하는 능력.', method:'과제분석: 위계분석', analysis:'상위기능과 하위기능으로 분석하는 기법', effective:'위계학습, 예제사례 제시', example:'교집합·합집합 구분, 수식 계산', accent:'#3A5AA0' },
+    { name:'인지전략', desc:'학습자가 기억하고 사고하며 과제에 맞는 학습전략을 찾아내 활용하는 능력.', method:'과제분석: 위계·절차 분석', analysis:'다양한 상황에서의 문제해결 경험으로 개발', effective:'연습, 설명, 토의', example:'암기법, 메타인지 전략', accent:'#2A9E94' },
+    { name:'태도', desc:'특정 사건·사물·사람에 대해 나타나는 개인적 성향.', method:'과제분석: 통합분석', analysis:'군집·위계·절차 분석을 혼합하는 방법', effective:'관찰학습, 동일시, 교사시범', example:'솔선수범, 양보', accent:'#8050B8' },
+    { name:'운동기능', desc:'신체 근육을 활용하여 특정한 동작을 수행하는 능력.', method:'과제분석: 절차분석', analysis:'먼저 수행해야 할 과제의 순서를 분석하는 기법', effective:'반복 연습, 시범', example:'수영하기, 축구하기, 글씨 쓰기', accent:'#D05840' },
   ];
 
   let activeStep = null;
@@ -128,7 +128,7 @@
             <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;">
               <div class="viz-num on" style="--viz-accent:${g.accent};">${i+1}</div>
               <div style="flex:1;">
-                <div class="gv-goal-name" style="color:${g.color};">${g.name}</div>
+                <div class="gv-goal-name">${g.name}</div>
                 <div class="gv-goal-desc">${g.desc}</div>
               </div>
               <div class="viz-badge" style="--viz-accent:${g.accent};white-space:nowrap;flex-shrink:0;">${g.method.replace('과제분석: ','')}</div>

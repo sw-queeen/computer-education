@@ -64,16 +64,17 @@ Always aim to:
 
 ## Design Philosophy
 
-**Core Principles**: Glassmorphism creates the illusion of frosted glass panes floating above a colored backdrop. Every surface is translucent (`rgba(255,255,255,α)`) and blurred (`backdrop-filter: blur()`), so the gradient and content behind it are always faintly visible through the panel — nothing is ever fully opaque. Depth comes from three simultaneous cues, not one: a soft outer drop shadow (the panel floats above the page), a bright inset top highlight (light catching the glass rim), and a subtle inset bottom bevel (the glass's own thickness). Raised elements (cards, buttons) are *more opaque* and cast a visible drop shadow; recessed elements (wells, inputs, quiz answer boxes) are *more transparent* and show only inward shadow, no outer lift.
+**Core Principles**: Glassmorphism creates the illusion of frosted glass panes floating above a colored backdrop. Every surface is translucent (`rgba(255,255,255,α)`) and blurred (`backdrop-filter: blur()`), so the gradient and content behind it are always faintly visible through the panel — nothing is ever fully opaque. Depth comes primarily from *transparency and blur*, not from stacked shadows: a soft, low outer drop shadow (the panel floats, barely), a bright inset top highlight (light catching the glass rim), and a crisp hairline rim (`0 0 0 1px`, not a real `border`) define the edge. There is deliberately **no dark inset "bottom bevel" layer** — an early pass of this system stacked outer shadow + top sheen + bottom bevel the way neumorphism did, and it read as an embossed plastic button, not glass, because heavy shadow is what neumorphism uses to fake depth *in place of* transparency. Glass gets its depth from being able to be seen through; lean on that, not on shadow weight. Raised elements (cards, buttons) are *more opaque* and cast the faint outer shadow; recessed elements (wells, inputs, quiz answer boxes) are *more transparent* and show only the inward shadow, no outer lift.
 
 **Vibe**: Airy, luminous, modern, and calm — closer to looking through a pane of frosted glass in soft daylight than to touching plastic. It should feel light and a little playful (interactive elements answer a tap with a small elastic "jelly wobble"), while staying legible enough for dense study content: text always sits on a surface opaque enough to read comfortably, never directly on the raw gradient.
 
 **Unique Visual Signatures**:
-- **Fixed calm gradient backdrop**: a soft, low-saturation lavender → periwinkle → mint gradient (`--bg-gradient`) pinned to the viewport (`background-attachment: fixed`) so every glass panel blurs a *consistent* backdrop regardless of scroll position.
-- **Three-layer glass shadow** (`box-shadow`, no real `border`): outer drop shadow (depth) + inset top sheen (rim light) + inset bottom bevel (glass thickness). This fully replaces the neumorphism dual-shadow "extruded/inset" physics with a translucent equivalent that keeps the same token *names* (`--shadow-extruded*`, `--shadow-inset*`) so every existing component picks it up automatically.
-- **Backdrop blur on every surface**: `backdrop-filter: blur(20px) saturate(160%)` (`--glass-blur`) on every card, bar, well, and pill — never a flat opaque fill.
-- **Translucent surface hierarchy**: `--bg-page` (≈0.42 alpha, chrome/sticky bars) < `--bg-surface` (≈0.34 alpha, recessed wells) < `--bg-white` (≈0.60 alpha, raised cards) — opacity itself communicates elevation, the same way neumorphism used shadow direction.
+- **Fixed calm gradient backdrop**: a soft but *visibly tinted* lavender → periwinkle → mint gradient (`--bg-gradient`) pinned to the viewport (`background-attachment: fixed`). The gradient needs enough chroma for `backdrop-filter` to have something to blur — a near-white gradient makes every glass panel look like a plain card no matter how the shadow is tuned, because there's nothing colorful behind it to visibly diffuse.
+- **Shadow stays light, transparency does the work** (`box-shadow`, no real `border`): a faint outer drop shadow + inset top sheen (rim light) + a crisp `0 0 0 1px` hairline rim. This replaces neumorphism's dual-shadow "extruded/inset" physics while keeping the same token *names* (`--shadow-extruded*`, `--shadow-inset*`) so every existing component picks it up automatically — but the *values* are deliberately much softer than a neumorphic shadow would be.
+- **Backdrop blur strong enough to read**: `backdrop-filter: blur(26px) saturate(180%)` (`--glass-blur`) on every card, bar, well, and pill — never a flat opaque fill. The saturate boost is what makes the blurred backdrop colour visibly bleed through a translucent white surface.
+- **Translucent surface hierarchy**: `--bg-page` (≈0.38 alpha, chrome/sticky bars) < `--bg-surface` (≈0.30 alpha, recessed wells) < `--bg-white` (≈0.52 alpha, raised cards) — opacity itself communicates elevation, the same way neumorphism used shadow direction. One deliberate exception: `--bg-overlay` (≈0.88 alpha) is reserved for popovers that float over arbitrary page content (the search dropdown) — a floating list needs to stay legible regardless of what's scrolled underneath it, so it trades some "see-through" for guaranteed contrast. Don't use `--bg-overlay` for ordinary cards.
 - **Glass-tinted subject palette**: the 6-color pastel palette's `-bg` tokens become translucent (`rgba(…,0.55)`) so a subject-colored box still reads as glass, not a flat sticker; `-mid`/`-accent`/`-text` stay fully opaque for legibility.
+- **One accent signal per list row, not three**: when a list has one color per item (quiz steps, a stage timeline, per-item viz data), let exactly *one* element carry that color — usually a small number badge or pill — and keep the row's title/body text in the neutral `--text-primary`/`--text-secondary` scale. Coloring the badge *and* the title *and* a tag pill on every row at once reads as a loud, uncoordinated "highlighter" list even when each color is individually fine — this was a real regression caught during review (Gagne's "5 Learning Outcomes" list) and the fix (matching the more restrained "9 Events of Instruction" list right next to it) is the reference to copy. Reserve full multi-signal coloring for genuine legends/matrices where every cell *is* a distinct coded category shown at once (e.g. a 2×2 identity-status matrix) — that's a different kind of component from a plain sequential list.
 - **Jelly wobble micro-interaction**: on click/tap, interactive elements (buttons, chips, quiz options, tabs) get a brief (~900ms) damped elastic `scale()`/`rotate()` keyframe animation (`.cs-wobble` / `csWobble`) — a light, playful bounce rather than a flat state change. Respects `prefers-reduced-motion`.
 - **Soft, generous corners retained**: the existing `12–32px` radius scale carries over unchanged — glassmorphism is a *material* swap (soft foam → frosted glass), not a layout rebuild.
 
@@ -86,17 +87,18 @@ Always aim to:
 Unlike neumorphism's single flat base color, the page sits on a **fixed decorative gradient** that every glass surface blurs through:
 
 ```css
---bg-gradient: linear-gradient(135deg, #EAF0FB 0%, #ECE9F7 45%, #EAF5F0 100%);
+--bg-gradient: linear-gradient(135deg, #DCE6FB 0%, #E1DBF6 45%, #DAF1E8 100%);
 ```
 
-Applied only once, on `body`, with `background-attachment: fixed` so scrolling never reveals a seam between the gradient and the translucent bars/panels sitting on top of it.
+Applied only once, on `body`, with `background-attachment: fixed` so scrolling never reveals a seam between the gradient and the translucent bars/panels sitting on top of it. Note this is more saturated than a "safe" near-white gradient would be — that saturation is load-bearing for the glass effect (see Core Principles above), not decorative excess.
 
 ### Colors (Light Mode — Translucent Glass over Cool Gradient)
 
-- **Background (decorative)**: `--bg-gradient` — soft lavender → periwinkle → mint, very low saturation, calm rather than showy. No photography, no busy ambient orbs beyond the existing hero glow blobs.
-- **Chrome surface** (`--bg-page: rgba(255,255,255,0.42)`) — topbar, sidebar, sticky bars. The most transparent "raised" surface — chrome should feel like it barely interrupts the backdrop.
-- **Card surface** (`--bg-white: rgba(255,255,255,0.60)`) — concept cards, quiz cards, detail sections, dropdowns. The most opaque surface; content here needs to read clearly.
-- **Well/recessed surface** (`--bg-surface: rgba(255,255,255,0.34)`) — intro boxes, essay groups, check cards, exam items, inset inputs. More see-through than a card, reinforcing that it's *pressed into* the glass rather than floating above it.
+- **Background (decorative)**: `--bg-gradient` — lavender → periwinkle → mint, calm rather than showy but with enough chroma to visibly blur. No photography, no busy ambient orbs beyond the existing hero glow blobs.
+- **Chrome surface** (`--bg-page: rgba(255,255,255,0.38)`) — topbar, sidebar, sticky bars. The most transparent "raised" surface — chrome should feel like it barely interrupts the backdrop.
+- **Card surface** (`--bg-white: rgba(255,255,255,0.52)`) — concept cards, quiz cards, detail sections. The most opaque of the three standard surfaces; content here needs to read clearly.
+- **Well/recessed surface** (`--bg-surface: rgba(255,255,255,0.30)`) — intro boxes, essay groups, check cards, exam items, inset inputs. More see-through than a card, reinforcing that it's *pressed into* the glass rather than floating above it.
+- **Overlay surface** (`--bg-overlay: rgba(255,255,255,0.88)`) — popovers/dropdowns floating over arbitrary scrolled content (the search dropdown). Deliberately far more opaque than the other three — legibility of a floating list must never depend on what happens to be underneath it. Still uses `--glass-blur`; it's the least transparent glass tier, not an escape hatch to a flat fill.
 - **Foreground**: `#28303A` — dark blue-grey for primary text. Deliberately a shade darker than the old neumorphism foreground (`#3D4852`) to guarantee contrast against a *brighter, more translucent* surface.
 - **Muted**: `#57626D` — secondary text.
 - **Tertiary**: `#7A8590` — captions, meta text (never body copy).
@@ -134,56 +136,58 @@ Unchanged — `32px` (container/card), `16px` (base/button), `12px`/`9999px` (in
 
 ### Shadows & Effects (The Physics)
 
-This is where glassmorphism most visibly diverges from neumorphism's dual-shadow bevel. Every shadow token now layers **three shadows in one `box-shadow` declaration**: an outer drop shadow (or none, for recessed wells), an inset top sheen, and an inset bottom bevel. No component selector needs to change — these are the same token *names* the neumorphism system used, redefined.
+Every shadow token layers a small number of *light* shadows in one `box-shadow` declaration — deliberately fewer and softer than neumorphism used, because here shadow is a minor supporting cue and transparency is the primary one. No component selector needs to change — these are the same token *names* the neumorphism system used, redefined.
 
 **Extruded (Standard)** — cards, buttons, chips at rest:
 ```css
 box-shadow:
-  0 10px 34px rgba(35,42,64,0.14),
-  inset 0 1.5px 0 rgba(255,255,255,0.6),
-  inset 0 -1px 0 rgba(35,42,64,0.06);
+  0 6px 22px rgba(35,42,64,0.10),
+  inset 0 1px 0 rgba(255,255,255,0.55),
+  0 0 0 1px rgba(255,255,255,0.45);
 ```
 
 **Extruded Hover (Lifted)**:
 ```css
 box-shadow:
-  0 16px 46px rgba(35,42,64,0.18),
-  inset 0 1.5px 0 rgba(255,255,255,0.7),
-  inset 0 -1px 0 rgba(35,42,64,0.07);
+  0 12px 32px rgba(35,42,64,0.14),
+  inset 0 1px 0 rgba(255,255,255,0.7),
+  0 0 0 1px rgba(255,255,255,0.55);
 ```
 
 **Extruded Small** — chips, small buttons:
 ```css
 box-shadow:
-  0 4px 18px rgba(35,42,64,0.10),
-  inset 0 1px 0 rgba(255,255,255,0.55),
-  inset 0 -1px 0 rgba(35,42,64,0.05);
+  0 3px 12px rgba(35,42,64,0.07),
+  inset 0 1px 0 rgba(255,255,255,0.5),
+  0 0 0 1px rgba(255,255,255,0.4);
 ```
+
+The `0 0 0 1px` layer is a crisp, un-blurred rim — the closest thing to a "border" this system allows, drawn with `box-shadow` spread instead of an actual `border` property so the no-real-border rule still holds. Note there is no dark inset "bottom bevel" layer in the extruded tiers: an earlier revision included one (`inset 0 -1px 0 rgba(35,42,64,0.06–0.08)`) to mimic glass thickness, and combined with the top sheen it produced a distinctly *embossed, neumorphism-flavored* edge rather than a glass one — cut it rather than tune it further.
 
 **Inset (Pressed / shallow well)** — no outer drop shadow (recessed elements don't cast light):
 ```css
 box-shadow:
-  inset 0 3px 8px rgba(35,42,64,0.13),
-  inset 0 -1px 0 rgba(255,255,255,0.4);
+  inset 0 2px 6px rgba(35,42,64,0.10),
+  0 0 0 1px rgba(35,42,64,0.05);
 ```
 
 **Inset Deep** — active/pressed states, deep wells:
 ```css
 box-shadow:
-  inset 0 5px 14px rgba(35,42,64,0.17),
-  inset 0 -1px 0 rgba(255,255,255,0.35);
+  inset 0 3px 9px rgba(35,42,64,0.13),
+  0 0 0 1px rgba(35,42,64,0.06);
 ```
 
 **Inset Small** — subtle tracks, pills:
 ```css
 box-shadow:
-  inset 0 1px 4px rgba(35,42,64,0.10),
-  inset 0 -1px 0 rgba(255,255,255,0.4);
+  inset 0 1px 3px rgba(35,42,64,0.08),
+  0 0 0 1px rgba(35,42,64,0.04);
 ```
 
 **Backdrop blur** — applied alongside every one of the surfaces above:
 ```css
---glass-blur: blur(20px) saturate(160%);
+--glass-blur: blur(26px) saturate(180%);
 backdrop-filter: var(--glass-blur);
 -webkit-backdrop-filter: var(--glass-blur);
 ```
@@ -218,6 +222,19 @@ backdrop-filter: var(--glass-blur);
 - **Icon Wells**: Inset Deep or Inset shadows on a `--bg-surface` glass fill — reads as "cut into" the pane.
 - **Jelly Wobble**: Applied via a shared `cs-wobble` class toggled by a small delegated click handler in `js/ui.js` (`CS.wobble`), so no per-component JS is needed. Skipped automatically under `prefers-reduced-motion: reduce`.
 
+### Interactive Visualizations (`visualizations/*.js`)
+
+Each concept's interactive visualization used to define its own bespoke tab/card/badge CSS from scratch (`#xx-wrap .xv-tab`, `.xv-card`, …) — six near-duplicates of the same chrome, each hand-tuned and each drifting slightly. `css/components.css` now defines that chrome once as a small shared component set, namespaced `.viz-*`, that every visualization script uses instead of reinventing it:
+
+- `.viz-tabs` / `.viz-tab` (+ `.on`) — the segmented tab bar, identical in spirit to `.explore-tab-buttons`/`.mode-toggle`.
+- `.viz-card` (+ `.clickable`, `.on`, `.tinted`) — a glass card; `.clickable` adds cursor/hover-lift, `.on` is the expanded/selected state, `.tinted` keeps the accent wash on *at rest* (reserve for legend/matrix-style displays — see the "one accent signal" rule above; a plain sequential list should stay neutral until `.on`).
+- `.viz-well` (+ `.accent`) — a recessed detail/example box, the visualization equivalent of `.cs-intro-box`.
+- `.viz-badge`, `.viz-num` (+ `.on`), `.viz-nav-btn` (+ `.prim`), `.viz-dot` (+ `.on`) — small pill/number/nav/progress primitives.
+
+All of these read color from a single custom property, `--viz-accent`, which is **not required** — omit it and they fall back to `var(--subject-accent, var(--primary))`, i.e. whatever accent the current concept page already set on `#main`. A visualization only needs to set `--viz-accent` explicitly when an item needs *its own* color independent of the page (Piaget's four developmental stages, Bronfenbrenner's five ecological systems): set it once on the outer card, and any `.viz-num`/`.viz-badge`/`.viz-well` nested inside inherit it automatically through normal CSS custom-property inheritance — no need to re-pass the color to every child by hand.
+
+Genuinely bespoke visualization layout (Boole's Karnaugh-map grid and logic-gate SVGs, Bronfenbrenner's concentric-ring SVG, Marcia's 3×3 matrix grid, Piaget's stage timeline strip, a Gantt-style timeline) stays as local CSS in that file's own `<style>` block — only the repeated chrome moved into the shared layer. Data-encoding color (a Gantt segment's fill, a Karnaugh cell's grid line) is a different thing from surface chrome and is intentionally left alone rather than forced through the glass treatment.
+
 ---
 
 ## Layout Principles
@@ -234,7 +251,7 @@ backdrop-filter: var(--glass-blur);
 - **Smooth Scrolling**: `scroll-behavior: smooth` — unchanged.
 
 ## Accessibility
-- **Contrast**: Primary text `#28303A` is checked against the *most transparent* surface it's likely to sit on (`--bg-surface` at ~0.34 alpha over the brightest gradient stop), not just the nominal hex — this is why foreground colors were darkened relative to the neumorphism edition.
+- **Contrast**: Primary text `#28303A` is checked against the *most transparent* surface it's likely to sit on (`--bg-surface` at ~0.30 alpha over the brightest gradient stop), not just the nominal hex — this is why foreground colors were darkened relative to the neumorphism edition.
 - **Focus States**: Visible 2px accent rings (`ring-2` in `--primary`), 2px offset. Mandatory on all interactive elements — unchanged.
 - **Touch Targets**: Minimum 44×44px — unchanged.
 - **Reduced Motion**: `prefers-reduced-motion: reduce` disables both the hero glow float animation and the jelly wobble.
@@ -243,7 +260,7 @@ backdrop-filter: var(--glass-blur);
 
 - **Mobile First**: Unchanged.
 - **Breakpoints**: `md:` (768px), `lg:` (1024px) — unchanged, matches site's existing breakpoints.
-- **Navigation**: Sticky header now genuinely glass (translucent + blurred) rather than flat-matching the page color — on mobile, this still reliably hides scrolled content because `--bg-page` is opaque enough (0.42 alpha) combined with the blur.
+- **Navigation**: Sticky header now genuinely glass (translucent + blurred) rather than flat-matching the page color — on mobile, this still reliably hides scrolled content because `--bg-page` is opaque enough (0.38 alpha) combined with the blur.
 
 ---
 
@@ -255,4 +272,6 @@ backdrop-filter: var(--glass-blur);
 - **Recoloring subject accents**: Never adjust `-mid`/`-accent`/`-text` in the 6-color palette to "fit" the glass base — only `-bg` became translucent; the rest stays exactly as registered.
 - **Wobble on passive elements**: The jelly wobble is for things the user *clicks* (buttons, chips, tabs, quiz options) — never apply it to cards on hover or to purely decorative elements; it should read as direct feedback to a tap, not ambient motion.
 - **Poor Contrast**: Never place body text directly on `--bg-gradient` without a glass surface underneath it — always route through `--bg-page`/`--bg-white`/`--bg-surface`.
+- **Shadow-heavy "glass"**: Don't reach for a darker/bigger outer shadow or an extra inset bevel layer to make a surface feel "more premium" or "more defined" — that's the neumorphism instinct, and it's exactly what makes a glass panel start looking like an embossed button. If a surface doesn't read as glassy enough, the fix is almost always more transparency/blur, not more shadow.
+- **Coloring every part of a list row**: Don't tint the badge *and* the title *and* a tag pill with the same per-item accent on a plain sequential list — pick one carrier (usually the number/badge) and leave the rest neutral. See "One accent signal per list row" above.
 </design-system>
