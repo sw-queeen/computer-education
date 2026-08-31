@@ -1,8 +1,10 @@
 /* ════════════════════════════════════════════════════════════
-   CS.im — NEUMORPHISM (Soft UI) 디자인 시스템
-   Cool Grey #E0E5EC · Plus Jakarta Sans / DM Sans · Soft Violet 액센트.
-   모든 표면(배경·카드·버튼·인풋)은 동일한 #E0E5EC — 형태는 오직
-   양각(extruded)/음각(inset) 이중 그림자로만 표현한다. 보더 없음.
+   CS.im — GLASSMORPHISM (Liquid Glass) 디자인 시스템
+   고정 라벤더→페리윙클→민트 그라디언트 배경 위에, 반투명(rgba) +
+   backdrop-filter(blur)로 뒤가 비치는 유리 표면들이 뜬다. 깊이는
+   바깥 드롭섀도 + 안쪽 상단 하이라이트(sheen) + 안쪽 하단 베벨의
+   3중 box-shadow로 표현한다. 실제 border는 사용하지 않는다.
+   Plus Jakarta Sans / DM Sans · Soft Violet 액센트(전 세대와 동일).
    ════════════════════════════════════════════════════════════ */
 
 /* Plus Jakarta Sans — 디스플레이 (표제) */
@@ -22,39 +24,50 @@
   --font-body:    var(--font-sans);
 
   /* ══════════════════════════════════════════════
-     쿨 그레이 모노크롬 팔레트 — 단일 베이스 #E0E5EC
-     배경·카드·인풋이 전부 동일한 색이며, 그림자만으로
-     양각/음각을 구분한다 (하얀 카드·플랫 보더 금지).
+     고정 배경 그라디언트 — body 전용, background-attachment:fixed로
+     스크롤해도 유리 패널이 항상 같은 배경을 블러링하게 한다.
+     사진·오브 배경은 쓰지 않는다(차분한 그라디언트만).
      ══════════════════════════════════════════════ */
-  --bg-page:    #E0E5EC;  /* 뉴모피즘 베이스 그레이 */
-  --bg-white:   #E0E5EC;  /* card — 페이지와 동일 (뉴모피즘: 흰 카드 금지) */
-  --bg-surface: #E0E5EC;  /* muted/well — 인셋 그림자로만 구분 */
+  --bg-gradient: linear-gradient(135deg, #EAF0FB 0%, #ECE9F7 45%, #EAF5F0 100%);
 
-  --text-primary:   #3D4852;  /* foreground — 대비 7.5:1 (AAA) */
-  --text-secondary: #6B7280;  /* muted-foreground — 대비 4.6:1 (AA) */
-  --text-tertiary:  #7B8794;  /* 캡션용 — 본문에는 사용하지 않음 */
+  /* ══════════════════════════════════════════════
+     반투명 유리 표면 3단계 — 불투명도 자체가 위계를 표현한다.
+     bg-page(가장 투명, 크롬) < bg-surface(웰/음각) < bg-white(카드).
+     항상 --glass-blur와 함께 사용한다(둘 중 하나만 쓰지 않는다).
+     ══════════════════════════════════════════════ */
+  --glass-blur: blur(20px) saturate(160%);
 
-  /* 액센트 = 소프트 바이올렛 (#E0E5EC 베이스에 맞춰 파생) */
+  --bg-page:    rgba(255,255,255,0.42);  /* 크롬 — 탑바·사이드바·스티키 바 */
+  --bg-white:   rgba(255,255,255,0.60);  /* 카드 — 가장 또렷한 "떠 있는" 유리 */
+  --bg-surface: rgba(255,255,255,0.34);  /* 웰/음각 — 더 비치는 "눌려 들어간" 유리 */
+
+  --text-primary:   #28303A;  /* foreground — 밝고 투명한 표면 위에서도 대비 확보 */
+  --text-secondary: #57626D;  /* muted-foreground */
+  --text-tertiary:  #7A8590;  /* 캡션용 — 본문에는 사용하지 않음 */
+
+  /* 액센트 = 소프트 바이올렛 (뉴모피즘 세대와 동일 값 유지) */
   --primary:            #6C63FF;  /* 액센트 — 버튼·링크·포커스링 */
   --secondary:          #8B84FF;  /* 액센트 라이트 — hover/그라디언트 */
   --accent:             #6C63FF;
   --accent-secondary:   #38B2AC;  /* 성공/체크 표시용 틸 */
   --accent-foreground:  #FFFFFF;
-  --muted:              #E0E5EC;  /* 뮤트 표면 — 페이지와 동일, 인셋으로 구분 */
+  --muted:              var(--bg-surface);  /* 뮤트 표면 — 웰과 동일한 유리톤 */
   --error:              #E5484D;
 
-  /* 카드/버튼/인풋 자체의 외곽선은 사용하지 않음(뉴모피즘 원칙).
-     아래 두 토큰은 표·탭 밑줄 등 "내용 구분용 가는 선"에만 한정해서 쓰는
-     그림자 톤 헤어라인이며, 절대 불투명 회색 보더로 되돌리지 않는다. */
-  --border-light: rgba(163,177,198,0.30);
-  --border-mid:   rgba(163,177,198,0.5);
+  /* 유리 패널 자체의 실제 외곽선(border)은 쓰지 않는다 — 가장자리는
+     --shadow-extruded*의 인셋 상단 하이라이트(sheen)로 표현한다.
+     아래 두 토큰은 표·탭 밑줄 등 "패널 내부 콘텐츠 구분용 가는 선"에만
+     한정해서 쓰는 반투명 다크 헤어라인이며, 절대 불투명 회색 보더로
+     되돌리지 않는다. */
+  --border-light: rgba(43,52,64,0.10);
+  --border-mid:   rgba(43,52,64,0.20);
 
-  /* ── 빈출도 배지 (badge-high/mid/low) — 시맨틱 색상, 그레이 베이스와 무관하게 유지 ── */
+  /* ── 빈출도 배지 (badge-high/mid/low) — 시맨틱 색상, 유리 베이스와 무관하게 유지 ── */
   --badge-high-bg:   #FDECEA; --badge-high-text: #A83222;
   --badge-mid-bg:    #FBF4E0; --badge-mid-text:  #8A6010;
   --badge-low-bg:    #EBF5EA; --badge-low-text:  #2E6A28;
 
-  /* ── 반경 — 뉴모피즘: 12~32px, 훨씬 부드럽고 큰 코너 ── */
+  /* ── 반경 — 뉴모피즘과 동일하게 유지: 재질만 바뀌고 레이아웃은 그대로 ── */
   --radius-sm: 12px;
   --radius-md: 16px;
   --radius-lg: 24px;
@@ -64,43 +77,64 @@
   --topbar-height: 56px;
 
   /* ══════════════════════════════════════════════
-     뉴모픽 이중 그림자 — The Physics
-     라이트(백색 반투명, 좌상단) + 다크(rgb(163,177,198), 우하단)
+     유리 3중 그림자 — The Physics
+     바깥 드롭섀도(깊이) + 안쪽 상단 하이라이트(rim light) +
+     안쪽 하단 베벨(유리 두께). 음각(inset) 계열은 바깥 드롭섀도가
+     없다 — 눌려 들어간 표면은 빛을 바깥으로 드리우지 않는다.
      ══════════════════════════════════════════════ */
-  --shadow-extruded-sm:    5px 5px 10px rgba(163,177,198,0.6), -5px -5px 10px rgba(255,255,255,0.5);
-  --shadow-extruded:       9px 9px 16px rgba(163,177,198,0.6), -9px -9px 16px rgba(255,255,255,0.5);
-  --shadow-extruded-hover: 12px 12px 20px rgba(163,177,198,0.7), -12px -12px 20px rgba(255,255,255,0.6);
+  --shadow-extruded-sm:
+    0 4px 18px rgba(35,42,64,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.55),
+    inset 0 -1px 0 rgba(35,42,64,0.05);
+  --shadow-extruded:
+    0 10px 34px rgba(35,42,64,0.14),
+    inset 0 1.5px 0 rgba(255,255,255,0.6),
+    inset 0 -1px 0 rgba(35,42,64,0.06);
+  --shadow-extruded-hover:
+    0 16px 46px rgba(35,42,64,0.18),
+    inset 0 1.5px 0 rgba(255,255,255,0.7),
+    inset 0 -1px 0 rgba(35,42,64,0.07);
 
-  --shadow-inset-sm:   inset 3px 3px 6px rgba(163,177,198,0.6), inset -3px -3px 6px rgba(255,255,255,0.5);
-  --shadow-inset:      inset 6px 6px 10px rgba(163,177,198,0.6), inset -6px -6px 10px rgba(255,255,255,0.5);
-  --shadow-inset-deep: inset 10px 10px 20px rgba(163,177,198,0.7), inset -10px -10px 20px rgba(255,255,255,0.6);
+  --shadow-inset-sm:
+    inset 0 1px 4px rgba(35,42,64,0.10),
+    inset 0 -1px 0 rgba(255,255,255,0.4);
+  --shadow-inset:
+    inset 0 3px 8px rgba(35,42,64,0.13),
+    inset 0 -1px 0 rgba(255,255,255,0.4);
+  --shadow-inset-deep:
+    inset 0 5px 14px rgba(35,42,64,0.17),
+    inset 0 -1px 0 rgba(255,255,255,0.35);
 
   /* 기존 --shadow-sm/md/lg 참조 지점(컴포넌트 CSS 전역)이 자동으로
-     뉴모픽 그림자를 쓰도록 별칭 매핑 — 컴포넌트 파일을 건드리지 않아도
-     카드 전반이 양각으로 바뀐다. */
+     유리 그림자를 쓰도록 별칭 매핑 — 컴포넌트 파일을 건드리지 않아도
+     카드 전반이 유리 물리로 바뀐다. */
   --shadow-sm: var(--shadow-extruded-sm);
   --shadow-md: var(--shadow-extruded);
   --shadow-lg: var(--shadow-extruded-hover);
+
+  /* ── 젤리 워블 클릭 애니메이션 타이밍 ── */
+  --wobble-duration: 900ms;
+  --wobble-easing:   cubic-bezier(.25,.46,.45,.94);
 
   /* ── 히어로 앰비언트 글로우 — 바이올렛/틸 톤, 아주 옅게 ── */
   --hero-glow-1: var(--primary);
   --hero-glow-2: var(--secondary);
   --hero-glow-3: var(--accent-secondary);
-  --hero-glow-opacity: .05;
+  --hero-glow-opacity: .08;
   --hero-card-shadow: var(--shadow-extruded);
   --hero-card-shadow-hover: var(--shadow-extruded-hover);
 
   /* ══════════════════════════════════════════════
-     6색 팔레트 — 과목 구분용 (뉴모피즘 전환 대상 아님)
-     지정된 스프레드시트 값 그대로 사용 — 개념별 포인트 색상은
-     기존에 등록된 대로 유지한다.
+     6색 팔레트 — 과목 구분용. -bg만 반투명 유리톤(rgba, α=0.55)으로
+     변환했다. -mid/-text는 텍스트·아이콘 가독성을 위해 스프레드시트
+     원본 HEX 값 그대로(불투명) 유지 — "배경만 유리, 글자는 또렷하게".
      ══════════════════════════════════════════════ */
-  --c-pink-bg:    #FFC9E3; --c-pink-text:   #7A1F4D; --c-pink-mid:   #993D6B;
-  --c-coral-bg:   #FFD5B8; --c-coral-text:  #803300; --c-coral-mid:  #803300;
-  --c-yellow-bg:  #FFF3B8; --c-yellow-text: #5C4D00; --c-yellow-mid: #806A00;
-  --c-mint-bg:    #B8FFE0; --c-mint-text:   #0A4D33; --c-mint-mid:   #1F7A52;
-  --c-blue-bg:    #AEE2FF; --c-blue-text:   #0A3C5C; --c-blue-mid:   #1E5A80;
-  --c-lilac-bg:   #E1C5FF; --c-lilac-text:  #3D1F6B; --c-lilac-mid:  #5C3D8C;
+  --c-pink-bg:    rgba(255,201,227,0.55); --c-pink-text:   #7A1F4D; --c-pink-mid:   #993D6B;
+  --c-coral-bg:   rgba(255,213,184,0.55); --c-coral-text:  #803300; --c-coral-mid:  #803300;
+  --c-yellow-bg:  rgba(255,243,184,0.55); --c-yellow-text: #5C4D00; --c-yellow-mid: #806A00;
+  --c-mint-bg:    rgba(184,255,224,0.55); --c-mint-text:   #0A4D33; --c-mint-mid:   #1F7A52;
+  --c-blue-bg:    rgba(174,226,255,0.55); --c-blue-text:   #0A3C5C; --c-blue-mid:   #1E5A80;
+  --c-lilac-bg:   rgba(225,197,255,0.55); --c-lilac-text:  #3D1F6B; --c-lilac-mid:  #5C3D8C;
 
   /* 스프레드시트의 추가 중립 톤 2종 — 과거 액센트 원재료(참고용, 미사용 가능) */
   --c-chrome-silver-bg:   #E8E8EC; --c-chrome-silver-text: #3A3A40; --c-chrome-silver-mid: #5C5C66;

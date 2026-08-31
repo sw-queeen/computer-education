@@ -3,13 +3,38 @@
 html { font-size: 15px; }
 body {
   font-family: var(--font-body, var(--font-main));
-  background: var(--bg-page);
+  background: var(--bg-gradient);
+  background-attachment: fixed;
   color: var(--text-primary);
   line-height: 1.6;
   min-height: 100vh;
 }
 
 a { color: inherit; text-decoration: none; }
+
+/* ════════════════════════════════════════════════
+   젤리 워블 — 클릭 가능한 유리 요소를 탭하면 재생되는
+   ~900ms 감쇠 탄성 바운스. js/ui.js의 CS.wobble()이
+   위임 클릭 핸들러로 .cs-wobble 클래스를 자동으로 붙였다 뗀다.
+════════════════════════════════════════════════ */
+@keyframes csWobble {
+  0%   { transform: scale(1)     rotate(0deg); }
+  10%  { transform: scale(1.06)  rotate(-1.5deg); }
+  20%  { transform: scale(0.97)  rotate(1.2deg); }
+  32%  { transform: scale(1.035) rotate(-0.8deg); }
+  45%  { transform: scale(0.985) rotate(0.5deg); }
+  58%  { transform: scale(1.015) rotate(-0.3deg); }
+  72%  { transform: scale(0.995) rotate(0.15deg); }
+  86%  { transform: scale(1.005) rotate(-0.05deg); }
+  100% { transform: scale(1)     rotate(0deg); }
+}
+.cs-wobble {
+  animation: csWobble var(--wobble-duration) var(--wobble-easing);
+  transform-origin: center center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-wobble { animation: none; }
+}
 
 /* ════════════════════════════════════════════════
    레이아웃 — topbar 고정 + sidebar/main flex 배치
@@ -31,7 +56,9 @@ a { color: inherit; text-decoration: none; }
   gap: 12px;
   padding: 0 12px 0 20px;
   background: var(--bg-white);
-  box-shadow: 0 6px 18px rgba(163,177,198,0.35);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: 0 6px 18px rgba(35,42,64,0.14);
 }
 
 /* 탑바 아래 콘텐츠 행 — 사이드바는 더 이상 레이아웃을 나눠 갖지 않고
@@ -63,7 +90,9 @@ a { color: inherit; text-decoration: none; }
   width: var(--sidebar-width);
   z-index: 300;
   background: var(--bg-white);
-  box-shadow: -10px 0 30px rgba(163,177,198,0.35);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: -10px 0 30px rgba(35,42,64,0.14);
   overflow-y: auto;
   overflow-x: hidden;
   padding: 14px 0 40px;
@@ -143,6 +172,8 @@ a { color: inherit; text-decoration: none; }
   border: none;
   border-radius: 20px;
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-inset-sm);
   font-size: 13px;
   color: var(--text-primary);
@@ -152,6 +183,8 @@ a { color: inherit; text-decoration: none; }
 }
 .topbar-search input:focus {
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-inset);
   outline: 2px solid var(--primary);
   outline-offset: 2px;
@@ -182,14 +215,17 @@ a { color: inherit; text-decoration: none; }
 #searchWrap.is-typing .search-icon-typing  { opacity: 1; transform: translateY(0); }
 
 /* ── 검색 드롭다운 — 포커스 시 펼쳐지는 액션 목록 ──
-   뉴모피즘 규칙 준수: bg-white(=페이지와 동일 색) + 이중 그림자로만 형태 표현,
-   보더 없음, rounded-md(16px), 등장은 높이 확장 + 페이드 + 아이템 스태거. */
+   글래스모피즘 규칙 준수: bg-white(반투명) + backdrop-filter 블러 +
+   3중 유리 그림자로 형태 표현, 실제 보더 없음, rounded-md(16px),
+   등장은 높이 확장 + 페이드 + 아이템 스태거. */
 .search-dropdown {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
   right: 0;
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-extruded);
   overflow: hidden;
@@ -418,6 +454,8 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius-sm);
   border: none;
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-extruded-sm);
   word-break: keep-all;
   transition: box-shadow .2s ease-out, color .12s, transform .2s ease-out;
@@ -430,6 +468,8 @@ a { color: inherit; text-decoration: none; }
 .sb-subject-chip.active {
   font-weight: 600;
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--subject-text, var(--text-primary));
   box-shadow: var(--shadow-inset-sm);
   transform: none;
@@ -478,6 +518,8 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius-sm);
   border: none;
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-extruded-sm);
   font-size: 12px;
   color: var(--text-secondary);
@@ -505,6 +547,8 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
   color: var(--subject-text, var(--text-primary));
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   display: inline-block;
   padding: 3px 12px;
   border-radius: var(--radius-sm);
@@ -520,6 +564,8 @@ a { color: inherit; text-decoration: none; }
 }
 .concept-card {
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: none;
   border-radius: var(--radius-md);
   padding: 14px 16px;
@@ -567,8 +613,8 @@ a { color: inherit; text-decoration: none; }
 .badge-high  { background: var(--badge-high-bg); color: var(--badge-high-text); }
 .badge-mid   { background: var(--badge-mid-bg);  color: var(--badge-mid-text); }
 .badge-low   { background: var(--badge-low-bg);  color: var(--badge-low-text); }
-.badge-viz   { background: var(--subject-bg, #eee); color: var(--subject-text, #333); }
-.badge-quiz  { background: var(--bg-surface); color: var(--text-secondary); box-shadow: var(--shadow-inset-sm); }
+.badge-viz   { background: var(--subject-bg, #eee); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); color: var(--subject-text, #333); }
+.badge-quiz  { background: var(--bg-surface); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); color: var(--text-secondary); box-shadow: var(--shadow-inset-sm); }
 
 /* ── 개념 상세 페이지 ── */
 .concept-detail {
@@ -581,6 +627,8 @@ a { color: inherit; text-decoration: none; }
 .detail-header {
   padding: 20px 24px;
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-inset);
   margin-bottom: 24px;
@@ -630,6 +678,8 @@ a { color: inherit; text-decoration: none; }
 
 .detail-section {
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: none;
   border-radius: var(--radius-md);
   padding: 20px 24px;
@@ -656,6 +706,8 @@ a { color: inherit; text-decoration: none; }
 
 .content-placeholder {
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-sm);
   padding: 32px;
   text-align: center;
@@ -664,7 +716,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: var(--shadow-inset-sm);
 }
 
-/* ── 홈 히어로 (Neumorphism — 양각 카드) ── */
+/* ── 홈 히어로 (Glassmorphism — 반투명 유리 카드) ── */
 .home-hero {
   position: relative;
   overflow: hidden;
@@ -673,6 +725,8 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius-xl);
   border: none;
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--hero-card-shadow);
   text-align: center;
 }
@@ -853,6 +907,8 @@ a { color: inherit; text-decoration: none; }
   border: none;
   border-radius: var(--radius-lg);
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-extruded);
   overflow: hidden;
   min-height: 480px;
@@ -867,6 +923,8 @@ a { color: inherit; text-decoration: none; }
   padding: 20px 10px;
   border-right: 1px solid var(--border-light);
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   position: sticky;
   top: calc(var(--topbar-height) + 1px);
   align-self: flex-start;
@@ -887,6 +945,8 @@ a { color: inherit; text-decoration: none; }
 .rail-item:hover { box-shadow: var(--shadow-extruded-sm); }
 .rail-item.active {
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-inset-sm);
 }
 /* 이모지 아이콘 대신, 대분류명 앞 두 글자를 표제 서체(Plus Jakarta Sans)로
@@ -958,6 +1018,8 @@ a { color: inherit; text-decoration: none; }
 .rs-item.active {
   font-weight: 600;
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--subject-text, var(--text-primary));
   border-left-color: var(--subject-accent, var(--text-secondary));
 }
@@ -1026,6 +1088,8 @@ a { color: inherit; text-decoration: none; }
 /* ── 퀴즈 ── */
 .quiz-card {
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: none;
   border-radius: var(--radius-md);
   padding: 20px 24px;
@@ -1045,12 +1109,14 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius-sm);
   border: none;
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-extruded-sm);
   font-size: 13px;
   cursor: pointer;
   transition: box-shadow .2s ease-out, background .12s, transform .2s ease-out;
 }
-.quiz-option:hover { box-shadow: var(--shadow-extruded-hover); background: var(--subject-bg, var(--bg-surface)); transform: translateY(-1px); }
+.quiz-option:hover { box-shadow: var(--shadow-extruded-hover); background: var(--subject-bg, var(--bg-surface)); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); transform: translateY(-1px); }
 .quiz-option.correct { background: #EBF5EA; box-shadow: var(--shadow-inset-sm); color: #1E5A3C; }
 .quiz-option.wrong   { background: #FDECEA; box-shadow: var(--shadow-inset-sm); color: #6E2010; }
 
@@ -1077,6 +1143,8 @@ a { color: inherit; text-decoration: none; }
 /* ── 개요 박스 ── */
 .cs-intro-box {
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-inset-sm);
   padding: 14px 18px;
@@ -1109,6 +1177,8 @@ a { color: inherit; text-decoration: none; }
   align-items: flex-start;
   padding: 10px 14px;
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-inset-sm);
   font-family: var(--font-body, var(--font-main));
@@ -1121,6 +1191,8 @@ a { color: inherit; text-decoration: none; }
 .cs-essay-group {
   padding: 10px 14px;
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-inset-sm);
   line-height: 1.8;
@@ -1149,6 +1221,8 @@ a { color: inherit; text-decoration: none; }
 /* ── 체크 포인트 카드 ── */
 .cs-check-card {
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-inset-sm);
   padding: 10px 14px;
@@ -1176,6 +1250,8 @@ a { color: inherit; text-decoration: none; }
 /* ── 기출 포인트 아이템 ── */
 .cs-exam-item {
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-inset-sm);
   padding: 10px 14px;
@@ -1194,12 +1270,16 @@ a { color: inherit; text-decoration: none; }
   border-radius: 4px;
   margin-right: 6px;
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--subject-accent, var(--text-secondary));
 }
 
 /* ── 기출 연도 현황 박스 ── */
 .cs-history-box {
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-inset-sm);
   padding: 13px 16px;
@@ -1218,6 +1298,8 @@ a { color: inherit; text-decoration: none; }
 /* ── 비교 섹션 카드 ── */
 .cs-compare-card {
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-inset-sm);
   padding: 12px 14px;
@@ -1261,6 +1343,8 @@ a { color: inherit; text-decoration: none; }
   font-size: 11px;
   font-weight: 700;
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--subject-accent, var(--text-secondary));
   border-bottom: 2px solid var(--subject-mid, var(--border-mid));
 }
@@ -1270,7 +1354,7 @@ a { color: inherit; text-decoration: none; }
   vertical-align: top;
   line-height: 1.65;
 }
-.cs-table tr:hover td { background: rgba(163,177,198,0.14); }
+.cs-table tr:hover td { background: rgba(108,99,255,0.08); }
 .cs-table td.cs-td-key {
   font-weight: 600;
   color: var(--text-primary);
@@ -1284,6 +1368,8 @@ a { color: inherit; text-decoration: none; }
 /* ── 퀴즈 카드 ── */
 .cs-quiz-card {
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: none;
   border-radius: var(--radius-md);
   padding: 16px;
@@ -1316,6 +1402,8 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius-sm);
   border: none;
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-extruded-sm);
   color: var(--text-primary);
   cursor: pointer;
@@ -1356,10 +1444,14 @@ a { color: inherit; text-decoration: none; }
 }
 .cs-quiz-btn.state-selected {
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-inset-sm);
 }
 .cs-quiz-btn.state-revealed {
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-inset-sm);
   color: var(--subject-accent);
   font-weight: 700;
@@ -1368,6 +1460,8 @@ a { color: inherit; text-decoration: none; }
 .cs-quiz-explain {
   margin-top: 10px;
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-inset-sm);
   padding: 10px 14px;
@@ -1384,6 +1478,8 @@ a { color: inherit; text-decoration: none; }
   padding: 9px 14px;
   border-radius: var(--radius-sm);
   background: var(--subject-bg, var(--bg-surface));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-inset-sm);
   border: 1.5px solid var(--subject-accent);
   font-size: 12px;
@@ -1406,6 +1502,8 @@ a { color: inherit; text-decoration: none; }
   border-radius: 20px;
   border: none;
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: var(--shadow-extruded-sm);
   font-size: 13px;
   cursor: pointer;
@@ -1419,6 +1517,8 @@ a { color: inherit; text-decoration: none; }
 /* ── 시사점 카드 ── */
 .cs-insight-card {
   background: var(--bg-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-inset-sm);
   padding: 12px 14px;
@@ -1454,6 +1554,8 @@ a { color: inherit; text-decoration: none; }
   top: var(--topbar-height, 56px);
   z-index: 50;
   background: var(--bg-page);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
 }
 
 /* ── Scroll Progress Bar ── */
@@ -1474,6 +1576,8 @@ a { color: inherit; text-decoration: none; }
 /* ── Mode Toggle ── */
 .mode-toggle-sticky {
   background: var(--bg-page);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   padding: 10px 0;
   display: flex;
   justify-content: center;
@@ -1482,6 +1586,8 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex;
   gap: 4px;
   background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-radius: 20px;
   padding: 4px;
   border: none;
@@ -1525,7 +1631,7 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 6px 6px 16px rgba(163,177,198,0.5), -3px -3px 10px rgba(255,255,255,0.35);
+  box-shadow: 0 10px 28px rgba(35,42,64,0.22), inset 0 1px 0 rgba(255,255,255,0.3);
   opacity: 0;
   pointer-events: none;
   transition: opacity .2s, transform .15s;
@@ -1665,6 +1771,8 @@ a { color: inherit; text-decoration: none; }
   width: 12px; height: 12px;
   border-radius: 50%;
   background: var(--bg-page);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border: 2.5px solid var(--subject-bg, var(--border-mid));
   z-index: 1;
 }
