@@ -7,9 +7,9 @@
   const C = window.SITE_CONFIG || {
     summary: { intro:'개요', essay:'논술 답안 구조', check:'체크 포인트' },
   };
-  const CSS_ACCENT = '#b06bff';
+  const CSS_ACCENT = '#6058C0';
 
-  /* 컴퓨터구조 과목은 CSS 변수를 override — subject-accent가 바이올렛 */
+  /* 컴퓨터구조 과목은 CSS 변수를 override — subject-accent가 인디고 */
   if (!document.getElementById('boole-content-style')) {
     const s = document.createElement('style');
     s.id = 'boole-content-style';
@@ -17,11 +17,11 @@
       .bc-gate-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
       .bc-gate-card { background:var(--bg-surface); border-radius:var(--radius-md); padding:12px 14px; }
       .bc-gate-name { font-size:13px; font-weight:700; color:${CSS_ACCENT}; margin-bottom:4px; }
-      .bc-gate-expr { font-family:'JetBrains Mono','Nanum Gothic Coding',monospace; font-size:12px; color:var(--text-secondary); margin-bottom:6px; }
+      .bc-gate-expr { font-family:var(--font-mono); font-size:12px; color:var(--text-secondary); margin-bottom:6px; }
       .bc-gate-desc { font-size:11px; color:var(--text-secondary); line-height:1.5; }
-      .bc-law-row { display:flex; gap:8px; align-items:flex-start; padding:5px 10px; background:var(--bg-surface); border-radius:var(--radius-sm); font-size:12px; margin-bottom:3px; }
+      .bc-law-row { display:flex; gap:8px; align-items:flex-start; padding:5px 10px; background:var(--bg-surface); border-radius:6px; font-size:12px; margin-bottom:3px; }
       .bc-law-num { color:${CSS_ACCENT}; font-weight:700; min-width:20px; flex-shrink:0; }
-      .bc-law-expr { font-family:'JetBrains Mono','Nanum Gothic Coding',monospace; flex:1; color:var(--text-primary); }
+      .bc-law-expr { font-family:var(--font-mono); flex:1; color:var(--text-primary); }
       .bc-law-name { font-size:10px; color:var(--text-tertiary); min-width:60px; text-align:right; flex-shrink:0; }
       @media(max-width:560px) { .bc-gate-grid { grid-template-columns:1fr 1fr; } }
     `;
@@ -114,14 +114,14 @@
           ["(x · y)' = x' + y'", 'AND의 부정 = 각각 부정 후 OR'],
         ].map(([expr, desc]) => `
           <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg-surface);border-radius:var(--radius-sm);">
-            <code style="font-family:'JetBrains Mono','Nanum Gothic Coding',monospace;font-size:13px;font-weight:700;color:${CSS_ACCENT};white-space:nowrap;">${expr}</code>
+            <code style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:${CSS_ACCENT};white-space:nowrap;">${expr}</code>
             <span style="font-size:12px;color:var(--text-secondary);">${desc}</span>
           </div>`).join('')}
       </div>
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:var(--text-secondary,#5be03f);"><span class="num">06</span> ${C.summary.essay || '논술 답안 구조'}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">06</span> ${C.summary.essay || '논술 답안 구조'}</div>
       ${CS.renderEssayGroups([
         { label:'논리게이트 서술 순서', items:['게이트명 → 부울 식 → 진리표 → 특징·활용'] },
         { label:'카르노맵 풀이 순서', items:['진리표 작성 → 카르노맵 배치 → 2의 거듭제곱으로 그룹화 → SOP 식 도출'] },
@@ -130,7 +130,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:var(--text-secondary,#5be03f);"><span class="num">07</span> ${C.summary.check || '체크 포인트'}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">07</span> ${C.summary.check || '체크 포인트'}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:`XOR vs XNOR — XOR은 입력이 <strong>다를 때</strong> 1, XNOR는 입력이 <strong>같을 때</strong> 1. 시험에서 혼동하기 쉬운 포인트.` },
         { type:'danger',  text:`카르노맵 그룹 크기: 3개, 5개는 불가. 반드시 1, 2, 4, 8(2의 거듭제곱)이어야 함.` },

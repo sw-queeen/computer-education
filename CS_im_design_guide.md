@@ -3,14 +3,16 @@
 정보컴퓨터 임용시험 학습 사이트 CS.im의  
 새 개념 페이지를 만들 때 따르는 규칙 문서.
 
-> **⚠ 2026 디자인 시스템 전환 — Terminal CLI**
-> 사이트 전체가 따뜻한 파스텔 "Editorial" 테마에서 다크 전용 **Terminal CLI** 테마로 전환됨(`css/variables.css` 전면 재작성). 아래 §11(디자인 토큰)·§15(6색 파스텔 팔레트)는 옛 라이트 테마 값을 그대로 남겨둔 **역사적 기록**이며, 실제 라이브 토큰 값은 `css/variables.css`가 유일한 소스입니다. 핵심 변경 사항:
-> - 배경은 다크 전용(`#0a0a0a`), `@media (prefers-color-scheme: dark)` 라이트/다크 분기 제거
-> - 폰트: `--font-main/--font-heading/--font-body`가 모두 `--font-mono`(JetBrains Mono + Nanum Gothic Coding)로 통일 — "Monospace Supremacy"
-> - `--radius-*` 전부 `0px` (둥근 모서리 없음), `box-shadow` 전면 제거
-> - 6색 파스텔 팔레트(`--c-pink/coral/yellow/mint/blue/lilac-*`)는 변수 이름은 그대로 두고 값만 포스포(phosphor) 그린/앰버/옐로우/시안/블루/바이올렛 계열로 재매핑 — `js/data.js`의 SUBJECTS 색상 참조 코드는 수정 불필요
+> **⚠ 2026 디자인 시스템 전환 — Serif (Editorial)**
+> 사이트 전체가 다크 전용 **Terminal CLI** 테마(2026.08 한때 적용)를 거쳐, 현재는 **Serif** 테마로 전환됨(`css/variables.css` 전면 재작성). 아래 §11(디자인 토큰)·§15(6색 파스텔 팔레트)는 최초 라이트 테마 당시 기록이며 세부 수치는 다를 수 있으나, **"라이트 배경 + 6색 파스텔 과목 팔레트"라는 구조 자체는 Serif에서 그대로 복원**되었습니다. 실제 라이브 토큰 값은 항상 `css/variables.css`가 유일한 소스입니다. 핵심 사항:
+> - 배경은 라이트 전용(아이보리 `#FAFAF8`), 다크모드 없음
+> - 폰트: 표제(`--font-heading`)는 `Playfair Display` + 한글 폴백 `Noto Serif KR`(명조), 본문(`--font-body`)은 `Source Sans 3` + `Pretendard`, 라벨(`--font-mono`)은 `IBM Plex Mono` + `Nanum Gothic Coding` — Playfair Display·IBM Plex Mono 모두 한글 글리프가 없어 한글 텍스트는 자동으로 폰트 스택의 두 번째 폰트로 폴백됨(의도된 동작)
+> - **사이트 공통 액센트(버튼·링크·포커스링·"Section Label" 룰라인)는 골드가 아니라 블랙**(`--primary`/`--accent: #0A0A0A`) — Serif 스펙 원문은 번드 골드(`#B8860B`)를 액센트로 제안하지만, 이 사이트는 블랙 단일 액센트로 확정
+> - `--radius-*`는 6~16px(버튼 6px·카드 8~12px), `box-shadow`는 은은하게 복원(`--shadow-sm/md/lg`)
+> - 6색 파스텔 팔레트(`--c-pink/coral/yellow/mint/blue/lilac-*`)는 §15 스프레드시트 원본 HEX 값 그대로 사용 — 과목 구분은 이 팔레트가 전담하고, 사이트 전역 블랙 액센트와는 별개 레이어임. 추가로 `--c-chrome-silver-*`(뮤트 표면) · `--c-ink-black-*`(블랙 액센트 원재료) 2종 중립 토큰 존재
 > - 탭 구조·콘텐츠 작성 규칙(§2~§10, §17~§19)은 변경 없음. 새 개념을 추가할 때 색상 값을 하드코딩하지 말고 항상 `var(--...)` 토큰을 참조할 것 (§13 참고).
 > - `test-design.html`은 이번 전환 범위에서 제외(원래도 본 사이트와 무관한 실험 페이지, §16 참고).
+> - 카드 hover는 `translateY` 리프트 없이 그림자/보더 강조만 사용, 버튼 hover만 미세한 리프트(-1~2px) 허용 — Serif 스펙의 "카드는 절제, 버튼만 촉각 피드백" 원칙.
 
 ---
 

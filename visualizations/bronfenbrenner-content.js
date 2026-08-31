@@ -9,11 +9,11 @@
   };
 
   const LAYERS = [
-    { name:'미시체계', color:'#00e5c7', bg:'#002a24', def:'아동의 발달에 직접적으로 영향을 미치는 환경', examples:'가족, 학교, 또래, 놀이터, 유치원, 교회', key:'직접 경험하는 가장 가까운 환경' },
-    { name:'중간체계', color:'#33aaff', bg:'#001a2a', def:'미시체계들 간의 상호관계', examples:'가정↔학교 관계, 가정↔또래 관계, 부모-교사 협력', key:'두 개 이상 미시체계의 연결 고리' },
-    { name:'외체계',   color:'#ffb000', bg:'#2a1a00', def:'아동이 직접 참여하지는 않지만 간접적으로 영향을 미치는 사회적 환경', examples:'부모 직장, 이웃, 교육위원회, 사회복지기관, 대중매체', key:'간접적 영향 · 아동 비참여' },
-    { name:'거시체계', color:'#b06bff', bg:'#1a002a', def:'외체계를 둘러싼 문화적 환경', examples:'문화, 관습, 법, 이념, 사회규범', key:'사회 전체의 신념·가치 체계' },
-    { name:'시간체계', color:'#ff2e9e', bg:'#2a0d1f', def:'개인의 전 생애에 걸친 변화와 사회·역사적 환경의 변화 (=연대체계)', examples:'부모이혼, 가정폭력, 학교폭력, 남녀평등문제, 역사적 사건', key:'시간적 차원 · 생애 변화' },
+    { name:'미시체계', color:'#3A8858', bg:'#E6F2EC', def:'아동의 발달에 직접적으로 영향을 미치는 환경', examples:'가족, 학교, 또래, 놀이터, 유치원, 교회', key:'직접 경험하는 가장 가까운 환경' },
+    { name:'중간체계', color:'#2888C8', bg:'#E4F2FA', def:'미시체계들 간의 상호관계', examples:'가정↔학교 관계, 가정↔또래 관계, 부모-교사 협력', key:'두 개 이상 미시체계의 연결 고리' },
+    { name:'외체계',   color:'#C87840', bg:'#FBF0E6', def:'아동이 직접 참여하지는 않지만 간접적으로 영향을 미치는 사회적 환경', examples:'부모 직장, 이웃, 교육위원회, 사회복지기관, 대중매체', key:'간접적 영향 · 아동 비참여' },
+    { name:'거시체계', color:'#8050B8', bg:'#EEE8F5', def:'외체계를 둘러싼 문화적 환경', examples:'문화, 관습, 법, 이념, 사회규범', key:'사회 전체의 신념·가치 체계' },
+    { name:'시간체계', color:'#6B6560', bg:'#F0EDE8', def:'개인의 전 생애에 걸친 변화와 사회·역사적 환경의 변화 (=연대체계)', examples:'부모이혼, 가정폭력, 학교폭력, 남녀평등문제, 역사적 사건', key:'시간적 차원 · 생애 변화' },
   ];
 
   /* ── 1. 핵심정리 ── */
@@ -52,7 +52,7 @@
           <div style="border-radius:var(--radius-md);padding:14px 16px;background:${l.bg};">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
               <span style="font-size:14px;font-weight:800;color:${l.color};">${l.name}</span>
-              <span style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:0;background:var(--bg-white,#0d0f0d);color:${l.color};">${l.key}</span>
+              <span style="margin-left:auto;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:white;color:${l.color};">${l.key}</span>
             </div>
             <div style="font-size:12px;color:var(--text-primary);line-height:1.75;margin-bottom:6px;">${l.def}</div>
             <div style="font-size:11px;color:var(--text-secondary);">예: ${l.examples}</div>
@@ -86,7 +86,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:#ff2e9e;"><span class="num">06</span> ${C.summary.essay}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">06</span> ${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'기본 관점 2가지',    items:['유전과 환경의 상호작용', '아동은 능동적 존재'] },
         { label:'5가지 환경 체계',    items:['미 → 중 → 외 → 거 → 시 순서로 열거', '체계명 — 정의 — 구체적 예시(2개 이상) 세트로 서술'] },
@@ -96,7 +96,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:#ff2e9e;"><span class="num">07</span> ${C.summary.check}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">07</span> ${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'외체계 vs 거시체계 — 외체계는 아동이 직접 참여하지 않는 사회적 환경(부모 직장 등). 거시체계는 더 넓은 문화·법·관습 수준. 외체계 ⊂ 거시체계 구조로 외체계가 안쪽임을 주의.' },
         { type:'danger',  text:'시간체계는 고리 밖 별도 차원. 공간적 층위가 아닌 시간적 차원이며, 다른 네 체계와 달리 \'연대체계\'라고도 불린다.' },

@@ -8,14 +8,13 @@
   <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
-<div class="crt-overlay" aria-hidden="true"></div>
 <div class="layout">
 
   <header class="topbar">
-    <div class="topbar-logo" onclick="navigate({subject:null,chapter:null,concept:null})" style="cursor:pointer;">CS.im<span class="cursor-blink">_</span></div>
-    <div class="topbar-search prompt-style">
-      <span class="search-icon">&gt;</span>
-      <input type="text" id="globalSearch" placeholder="grep concept...">
+    <div class="topbar-logo" onclick="navigate({subject:null,chapter:null,concept:null})" style="cursor:pointer;">CS.im</div>
+    <div class="topbar-search">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="globalSearch" placeholder="개념 검색...">
     </div>
     <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="메뉴">☰</button>
   </header>
@@ -170,15 +169,15 @@ function renderHome() {
       <div class="hero-glow hero-glow-b" aria-hidden="true"></div>
       <div class="hero-glow hero-glow-c" aria-hidden="true"></div>
       <div class="hero-content">
-        <div class="hero-eyebrow"><span class="hero-eyebrow-dot">●</span>${C.siteName} · 정보컴퓨터 임용시험 준비 시스템</div>
-        <h1 class="hero-big">&gt; COMPUTER<br><span class="hero-dim">EDUCATION</span><span class="cursor-blink">_</span></h1>
+        <div class="hero-eyebrow">${C.siteName} · 정보컴퓨터 임용시험</div>
+        <h1 class="hero-big">Computer<br><span class="hero-dim">Education</span></h1>
         <p class="hero-desc">${C.heroDesc}</p>
         <div class="hero-stats">
           <div class="hero-stat"><div class="hero-stat-num">${total}</div><div class="hero-stat-label">개념 카드</div></div>
           <div class="hero-stat"><div class="hero-stat-num">${highCount}</div><div class="hero-stat-label">${C.freq.high}</div></div>
           <div class="hero-stat"><div class="hero-stat-num">${vizCount}</div><div class="hero-stat-label">${C.badges.viz}</div></div>
         </div>
-        <button class="test-link-btn" onclick="location.href='test-design.html'"><span class="test-link-btn-icon">$</span>디자인 실험 — 문맥교환 (Bento / Editorial)</button>
+        <button class="test-link-btn" onclick="location.href='test-design.html'"><span class="test-link-btn-icon">→</span>디자인 실험 — 문맥교환 (Bento / Editorial)</button>
       </div>
     </div>
     <div class="area-columns">`;

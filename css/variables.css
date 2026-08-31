@@ -1,75 +1,87 @@
 /* ════════════════════════════════════════════════════════════
-   CS.im — TERMINAL CLI 디자인 시스템
-   Monospace Supremacy. Dark mode only. Zero radius. Zero shadow.
+   CS.im — SERIF 디자인 시스템
+   Typographic elegance through classical restraint.
+   Ivory · Playfair Display · Ink-black accent (no gold).
    ════════════════════════════════════════════════════════════ */
 
-/* JetBrains Mono — 라틴 문자·숫자·기호 전용 (가장 터미널다운 글리프) */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
-/* Nanum Gothic Coding — 한글 모노스페이스 폴백 (JetBrains Mono는 한글 글리프가 없음) */
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700;800&display=swap');
+/* Playfair Display — 라틴 디스플레이 세리프 (표제) */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+/* Noto Serif KR — 한글 명조 폴백 (Playfair Display는 한글 글리프가 없음) */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700;900&display=swap');
+/* Source Sans 3 — 라틴 본문·UI */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+/* IBM Plex Mono — 라벨·스몰캡스 */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
-  /* ── 타이포그래피 — 전체 monospace 통일 ── */
-  --font-mono:    'JetBrains Mono', 'Nanum Gothic Coding', 'D2Coding', 'Consolas', monospace;
-  --font-main:    var(--font-mono);
-  --font-heading: var(--font-mono);
-  --font-body:    var(--font-mono);
+  /* ── 타이포그래피 ── */
+  --font-display: 'Playfair Display', 'Noto Serif KR', Georgia, serif;
+  --font-sans:    'Source Sans 3', 'Pretendard', 'Apple SD Gothic Neo', system-ui, sans-serif;
+  --font-mono:    'IBM Plex Mono', 'Nanum Gothic Coding', 'D2Coding', monospace;
+  --font-heading: var(--font-display);
+  --font-main:    var(--font-sans);
+  --font-body:    var(--font-sans);
 
   /* ══════════════════════════════════════════════
-     포스포 팔레트 (Phosphor Monitor) — 다크 전용
+     따뜻한 모노크롬 팔레트 — 단일 잉크 블랙 액센트
+     (골드 대신 블랙: 메인 화면 강조는 전부 블랙 계열)
      ══════════════════════════════════════════════ */
-  --bg-page:    #0a0a0a;   /* 딥 블랙 (스캔라인을 위해 완전한 OLED 블랙은 피함) */
-  --bg-white:   #0d0f0d;   /* 패널/카드 배경 — bg-page보다 미세하게 밝음 */
-  --bg-surface: #131813;   /* hover / 인셋 배경 */
+  --bg-page:    #FAFAF8;  /* ivory */
+  --bg-white:   #FFFFFF;  /* card */
+  --bg-surface: #F5F3F0;  /* muted */
 
-  --text-primary:   #33ff00;  /* 브라이트 네온 그린 — 헤딩/강조 */
-  --text-secondary: #5be03f;  /* 미디엄 그린 — 본문 */
-  --text-tertiary:  #34a02c;  /* 딤 그린 — 캡션/보조정보 (AA 대비 확보) */
+  --text-primary:   #1A1A1A;  /* foreground — rich black */
+  --text-secondary: #6B6B6B;  /* muted-foreground — warm gray */
+  --text-tertiary:  #9B968D;  /* 한층 옅은 caption 톤 (AA 대비 확보) */
 
-  --primary:  #33ff00;  /* 프라이머리 그린 */
-  --secondary:#ffb000;  /* 앰버 — 경고/보조 강조 */
-  --muted:    #1f521f;  /* 딤 그린 — 테두리/비활성 (텍스트로는 사용 금지: 대비 부족) */
-  --accent:   #33ff00;  /* 커서/활성 상태 = primary와 동일 */
-  --error:    #ff3333;  /* 브라이트 레드 */
+  /* 액센트 = 잉크 블랙 (골드 폐지) */
+  --primary:            #0A0A0A;  /* 잉크 블랙 — 버튼·링크·포커스링 */
+  --secondary:          #3A3A40;  /* 크롬 실버 텍스트 톤 — hover/보조 강조 */
+  --accent:             #0A0A0A;
+  --accent-secondary:   #3A3A40;
+  --accent-foreground:  #FFFFFF;
+  --muted:              #E8E8EC;  /* 크롬 실버 배경 — 뮤트 표면 */
+  --error:              #B3261E;
 
-  --border-light: #1f521f;
-  --border-mid:   #2f7a2a;
+  --border-light: #E8E4DF;
+  --border-mid:   #D6D0C8;
 
-  /* ── 반경 — 절대 0 ── */
-  --radius-sm: 0px;
-  --radius-md: 0px;
-  --radius-lg: 0px;
-  --radius-xl: 0px;
+  /* ── 반경 — 6~16px (rounded-md/lg 기준) ── */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
 
   --sidebar-width: 232px;
   --topbar-height: 56px;
 
-  /* ── 포스포 글로우 (phosphor persistence) ── */
-  --text-glow: 0 0 6px rgba(51,255,0,.45);
-  --text-glow-strong: 0 0 10px rgba(51,255,0,.6), 0 0 2px rgba(51,255,0,.9);
+  /* ── 섀도우 ── */
+  --shadow-sm: 0 1px 2px rgba(26,26,26,0.04);
+  --shadow-md: 0 4px 12px rgba(26,26,26,0.06);
+  --shadow-lg: 0 8px 24px rgba(26,26,26,0.08);
 
-  /* ── 히어로 글로우 — 컬러 블롭 → 단색 포스포 헤일로 ── */
+  /* ── 히어로 앰비언트 글로우 — 단일 톤, 아주 옅게 (2%) ── */
   --hero-glow-1: var(--primary);
   --hero-glow-2: var(--primary);
-  --hero-glow-3: var(--secondary);
-  --hero-glow-opacity: .07;
-  --hero-card-shadow: none;
-  --hero-card-shadow-hover: none;
-
-  /* ── CRT 스캔라인 오버레이 ── */
-  --scanline-opacity: .06;
+  --hero-glow-3: var(--primary);
+  --hero-glow-opacity: .02;
+  --hero-card-shadow: 0 1px 2px rgba(26,26,26,0.04), 0 20px 48px -24px rgba(26,26,26,0.12);
+  --hero-card-shadow-hover: 0 1px 2px rgba(26,26,26,0.05), 0 24px 56px -20px rgba(26,26,26,0.16);
 
   /* ══════════════════════════════════════════════
-     6색 팔레트 → 터미널 포스포 6색으로 재매핑
-     bg: 패널 배경(딥 틴트) / text: 본문·타이틀(밝게) / mid: 도트·경계·배지(중간)
-     전부 어두운 배경 위에서 AA(4.5:1) 이상 대비 확보
+     6색 팔레트 — 과목 구분용 (메인 액센트와는 별개)
+     지정된 스프레드시트 값 그대로 사용 (라이트 배경에 최적화된 원본 파스텔)
      ══════════════════════════════════════════════ */
-  --c-pink-bg:    #2a0d1f; --c-pink-text:   #ff6fc0; --c-pink-mid:   #ff2e9e;   /* 마젠타 포스포 */
-  --c-coral-bg:   #2a1a00; --c-coral-text:  #ffc94d; --c-coral-mid:  #ffb000;   /* 앰버 포스포 */
-  --c-yellow-bg:  #2a2600; --c-yellow-text: #f5ec4d; --c-yellow-mid: #e8d400;   /* 옐로우 포스포 */
-  --c-mint-bg:    #002a24; --c-mint-text:   #4dffe3; --c-mint-mid:   #00e5c7;   /* 시안 포스포 */
-  --c-blue-bg:    #001a2a; --c-blue-text:   #6cc4ff; --c-blue-mid:   #33aaff;   /* 블루 포스포 */
-  --c-lilac-bg:   #1a002a; --c-lilac-text:  #c99bff; --c-lilac-mid:  #b06bff;   /* 바이올렛 포스포 */
+  --c-pink-bg:    #FFC9E3; --c-pink-text:   #7A1F4D; --c-pink-mid:   #993D6B;
+  --c-coral-bg:   #FFD5B8; --c-coral-text:  #803300; --c-coral-mid:  #803300;
+  --c-yellow-bg:  #FFF3B8; --c-yellow-text: #5C4D00; --c-yellow-mid: #806A00;
+  --c-mint-bg:    #B8FFE0; --c-mint-text:   #0A4D33; --c-mint-mid:   #1F7A52;
+  --c-blue-bg:    #AEE2FF; --c-blue-text:   #0A3C5C; --c-blue-mid:   #1E5A80;
+  --c-lilac-bg:   #E1C5FF; --c-lilac-text:  #3D1F6B; --c-lilac-mid:  #5C3D8C;
+
+  /* 스프레드시트의 추가 중립 톤 2종 — 블랙 액센트 계열의 재료로 사용 */
+  --c-chrome-silver-bg:   #E8E8EC; --c-chrome-silver-text: #3A3A40; --c-chrome-silver-mid: #5C5C66;
+  --c-ink-black-bg:       #0A0A0A; --c-ink-black-text:     #FFFFFF; --c-ink-black-mid:     #999999;
 
   /* ── 교육학 ── */
   --c-edu-curriculum-bg: var(--c-pink-bg);   --c-edu-curriculum-mid: var(--c-pink-mid);   --c-edu-curriculum-accent: var(--c-pink-mid);   --c-edu-curriculum-text: var(--c-pink-text);

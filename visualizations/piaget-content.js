@@ -9,8 +9,8 @@
   };
 
   /* ── 색상 (variables.css 토큰 참조) ── */
-  const ACCENT = 'var(--c-edu-psych-accent, #00e5c7)';
-  const CSS_ACCENT = '#00e5c7';
+  const ACCENT = 'var(--c-edu-psych-accent, #4EA87A)';
+  const CSS_ACCENT = '#4EA87A';
 
   /* ── 개념별 최소 CSS (테이블 모바일 전환만) ── */
   if (!document.getElementById('piaget-content-style')) {
@@ -133,14 +133,14 @@
             <div style="color:var(--text-primary);line-height:1.6;">${pt}</div>
           </div>`).join('')}
       </div>
-      <div style="font-size:11px;font-weight:700;color:var(--secondary,#ffb000);letter-spacing:.04em;margin-bottom:8px;">차이점</div>
+      <div style="font-size:11px;font-weight:700;color:#C05808;letter-spacing:.04em;margin-bottom:8px;">차이점</div>
       <div class="cs-table-wrap pc-table-show">
         <table class="cs-table">
           <thead>
             <tr>
               <th>구분</th>
               <th>피아제</th>
-              <th style="color:var(--secondary,#ffb000);">비고츠키</th>
+              <th style="color:#C05808;">비고츠키</th>
             </tr>
           </thead>
           <tbody>
@@ -158,11 +158,11 @@
           <div style="background:var(--bg-surface);border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;">
             <div style="font-weight:700;color:var(--text-primary);margin-bottom:4px;">${r[0]}</div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;">
-              <span style="background:var(--subject-bg);color:${CSS_ACCENT};padding:2px 8px;border-radius:0;font-size:11px;font-weight:600;">피아제</span>
+              <span style="background:var(--subject-bg);color:${CSS_ACCENT};padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">피아제</span>
               <span style="color:var(--text-secondary);">${r[1]}</span>
             </div>
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;">
-              <span style="background:#2a1a00;color:var(--secondary,#ffb000);padding:2px 8px;border-radius:0;font-size:11px;font-weight:600;">비고츠키</span>
+              <span style="background:#FFF0E8;color:#C05808;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:600;">비고츠키</span>
               <span style="color:var(--text-secondary);">${r[2]}</span>
             </div>
           </div>`).join('')}
@@ -170,7 +170,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:var(--text-tertiary,#34a02c);"><span class="num">06</span> ${C.summary.essay}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">06</span> ${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'학습과정 2가지',   items:['인지적 구성주의', '동화·조절을 통한 평형화'] },
         { label:'교사역할 3가지',   items:['발견학습 제공', '인지적 불균형 유발', '인지발달 수준 고려'] },
@@ -180,7 +180,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:var(--text-tertiary,#34a02c);"><span class="num">07</span> ${C.summary.check}</div>
+      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">07</span> ${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'피아제의 불평형 = 사회적 상호작용으로 해소" → X. 개인 내적 과정(동화·조절)으로 해소됨. 사회적 상호작용은 비고츠키.' },
         { type:'danger',  text:'"반성적 추상화 = 메타인지" → X. 반성적 추상화는 형식적조작기의 추상사고 능력.' },
