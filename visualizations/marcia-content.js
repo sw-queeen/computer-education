@@ -40,39 +40,39 @@
       <div class="ed-h2"><span class="num">03</span> 4가지 정체감 지위</div>
       <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;">
         ${[
-          { bg:'#FBF0E6', color:'#C87840', title:'정체감 유실(폐쇄)', desc:'정체성 위기를 경험하지 않았지만 정체성이 확립된 것처럼 행동하는 단계', key:'남의 가치관을 그대로 따름' },
+          { bg:'#2a1a00', color:'#ffb000', title:'정체감 유실(폐쇄)', desc:'정체성 위기를 경험하지 않았지만 정체성이 확립된 것처럼 행동하는 단계', key:'남의 가치관을 그대로 따름' },
           null, // 레이블: 전념 ○
-          { bg:'#E6F2EC', color:'#3A8858', title:'정체감 성취(확립)', desc:'스스로 탐색하고 전념하여 목표를 성취해 정체성을 확립한 단계', key:'삶의 목표를 능동적으로 선택함' },
+          { bg:'#002a24', color:'#00e5c7', title:'정체감 성취(확립)', desc:'스스로 탐색하고 전념하여 목표를 성취해 정체성을 확립한 단계', key:'삶의 목표를 능동적으로 선택함' },
         ].map(c => c ? `
           <div style="border-radius:var(--radius-md);background:${c.bg};padding:14px 16px;">
             <div style="font-size:14px;font-weight:800;color:${c.color};margin-bottom:6px;">${c.title}</div>
             <div style="font-size:12px;color:var(--text-primary);line-height:1.7;margin-bottom:4px;">${c.desc}</div>
             <div style="font-size:11px;font-weight:700;color:${c.color};">› ${c.key}</div>
-          </div>` : `<div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary);padding:4px 10px;border-radius:20px;background:var(--bg-surface);white-space:nowrap;">전념 ○</div>`).join('')}
+          </div>` : `<div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary);padding:4px 10px;border-radius:0;background:var(--bg-surface);white-space:nowrap;">전념 ○</div>`).join('')}
 
-        <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary);padding:4px 10px;border-radius:20px;background:var(--bg-surface);white-space:nowrap;">위기 ✕</div>
-        <div style="display:flex;align-items:center;justify-content:center;"><div style="width:6px;height:6px;border-radius:50%;background:var(--border-mid);"></div></div>
-        <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary);padding:4px 10px;border-radius:20px;background:var(--bg-surface);white-space:nowrap;">위기 ○</div>
+        <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary);padding:4px 10px;border-radius:0;background:var(--bg-surface);white-space:nowrap;">위기 ✕</div>
+        <div style="display:flex;align-items:center;justify-content:center;"><div style="width:6px;height:6px;border-radius:0;background:var(--border-mid);"></div></div>
+        <div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary);padding:4px 10px;border-radius:0;background:var(--bg-surface);white-space:nowrap;">위기 ○</div>
 
         ${[
-          { bg:'#F5F0F8', color:'#7848A8', title:'정체감 혼미', desc:'정체성을 찾으려고 노력을 하지 않는 단계', key:'가치 있는 활동에 전념하지 않음' },
+          { bg:'#1a002a', color:'#b06bff', title:'정체감 혼미', desc:'정체성을 찾으려고 노력을 하지 않는 단계', key:'가치 있는 활동에 전념하지 않음' },
           null,
-          { bg:'#E6EAF5', color:'#3A5AA0', title:'정체감 유예', desc:'정체성 위기를 경험하고 정체성 확립을 위해 적극적으로 탐색하는 단계', key:'적극적으로 정체성을 탐색함' },
+          { bg:'#001a2a', color:'#33aaff', title:'정체감 유예', desc:'정체성 위기를 경험하고 정체성 확립을 위해 적극적으로 탐색하는 단계', key:'적극적으로 정체성을 탐색함' },
         ].map(c => c ? `
           <div style="border-radius:var(--radius-md);background:${c.bg};padding:14px 16px;">
             <div style="font-size:14px;font-weight:800;color:${c.color};margin-bottom:6px;">${c.title}</div>
             <div style="font-size:12px;color:var(--text-primary);line-height:1.7;margin-bottom:4px;">${c.desc}</div>
             <div style="font-size:11px;font-weight:700;color:${c.color};">› ${c.key}</div>
-          </div>` : `<div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary);padding:4px 10px;border-radius:20px;background:var(--bg-surface);white-space:nowrap;">전념 ✕</div>`).join('')}
+          </div>` : `<div style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text-secondary);padding:4px 10px;border-radius:0;background:var(--bg-surface);white-space:nowrap;">전념 ✕</div>`).join('')}
       </div>
     </div>
 
     <div class="ed-section">
       <div class="ed-h2"><span class="num">04</span> 교육적 시사점 (자아정체감 높이는 방법)</div>
       ${[
-        ['#C87840', '교사 측면',     '교사의 솔선수범',           '청소년기 가장 중요한 관계는 교사. 교사의 언행이 모델링에 영향을 주므로 잘못된 모델링을 하지 않도록 신경써야 한다.'],
-        ['#3A5AA0', '학생 측면',     '올바른 또래집단 문화 형성', '12~18세의 중요한 관계는 또래. 배려·관심(신뢰감), 선택의 기회(자율성), 다양한 시도(주도성), 도움과 격려(근면성)에 신경쓴다.'],
-        ['#3A8858', '교육방법 측면', '실제적·맥락적 교육 제공',   '학생들이 직접 자신의 인생에 직면해보는 과정이 필요. 지식교육보다 직업체험·적성검사 같은 창의적 체험활동을 제공한다.'],
+        ['#ffb000', '교사 측면',     '교사의 솔선수범',           '청소년기 가장 중요한 관계는 교사. 교사의 언행이 모델링에 영향을 주므로 잘못된 모델링을 하지 않도록 신경써야 한다.'],
+        ['#33aaff', '학생 측면',     '올바른 또래집단 문화 형성', '12~18세의 중요한 관계는 또래. 배려·관심(신뢰감), 선택의 기회(자율성), 다양한 시도(주도성), 도움과 격려(근면성)에 신경쓴다.'],
+        ['#00e5c7', '교육방법 측면', '실제적·맥락적 교육 제공',   '학생들이 직접 자신의 인생에 직면해보는 과정이 필요. 지식교육보다 직업체험·적성검사 같은 창의적 체험활동을 제공한다.'],
       ].map(([color, area, point, detail]) => `
         <div class="cs-insight-card">
           <div class="cs-insight-area" style="color:${color};">${area}</div>
@@ -95,7 +95,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">06</span> ${C.summary.essay}</div>
+      <div class="ed-h2" style="--subject-accent:var(--text-tertiary,#34a02c);"><span class="num">06</span> ${C.summary.essay}</div>
       ${CS.renderEssayGroups([
         { label:'두 가지 기준 제시', items:['위기(crisis) — 정체성 탐색 여부', '전념(commitment) — 특정 가치·역할에 대한 헌신 여부'] },
         { label:'해당 지위 서술', items:['지위명 — 위기·전념 여부 명시 (예: 위기 ○ / 전념 ✕)', '정의 — "정체감 유예란 ~ 단계이다."', '특징 키워드 — "적극적으로 정체성을 탐색함"'] },
@@ -104,7 +104,7 @@
     </div>
 
     <div class="ed-section">
-      <div class="ed-h2" style="--subject-accent:#6B6560;"><span class="num">07</span> ${C.summary.check}</div>
+      <div class="ed-h2" style="--subject-accent:var(--text-tertiary,#34a02c);"><span class="num">07</span> ${C.summary.check}</div>
       ${CS.renderCheckCards([
         { type:'danger',  text:'정체감 유실 vs 유예 — 둘 다 위기나 전념 중 하나가 ✕이지만, 어떤 것이 ✕인지 정반대' },
         { type:'danger',  text:'정체감 성취 ≠ 외부에서 목표를 부여받은 것 — 스스로 탐색 후 능동적으로 선택해야 성취' },

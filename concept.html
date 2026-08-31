@@ -6,22 +6,17 @@
   <title>CS.im — 정보컴퓨터 임용</title>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/components.css">
-  <style>
-    /* 개념 상세 페이지 — test-design.html과 동일한 따뜻한 배경 */
-    :root {
-      --bg-page: #FDFBF8;
-    }
-  </style>
 </head>
 <body>
+<div class="crt-overlay" aria-hidden="true"></div>
 <div class="layout">
 
   <header class="topbar">
-    <div class="topbar-logo" onclick="location.href='index.html'" style="cursor:pointer;">CS.im</div>
+    <div class="topbar-logo" onclick="location.href='index.html'" style="cursor:pointer;">CS.im<span class="cursor-blink">_</span></div>
     <div class="topbar-breadcrumb" id="breadcrumb"></div>
-    <div class="topbar-search">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="conceptSearch" placeholder="개념 검색...">
+    <div class="topbar-search prompt-style">
+      <span class="search-icon">&gt;</span>
+      <input type="text" id="conceptSearch" placeholder="grep concept...">
     </div>
     <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="메뉴">☰</button>
   </header>
@@ -426,7 +421,7 @@ renderConcept();
 
   const dropdown = document.createElement('div');
   dropdown.id = 'searchDropdown';
-  dropdown.style.cssText = 'position:absolute;top:calc(100% + 6px);right:0;left:0;background:var(--bg-white);border:1px solid var(--border-light);border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:500;max-height:320px;overflow-y:auto;display:none;';
+  dropdown.style.cssText = 'position:absolute;top:calc(100% + 6px);right:0;left:0;background:var(--bg-white);border:1px solid var(--border-light);border-radius:0;box-shadow:none;z-index:500;max-height:320px;overflow-y:auto;display:none;';
   input.parentElement.style.position = 'relative';
   input.parentElement.appendChild(dropdown);
 

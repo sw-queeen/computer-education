@@ -1,81 +1,75 @@
-/* 전남교육유나 폰트 */
-@font-face {
-    font-family: 'JeonnamEducationYuna';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-1@1.0/JNE-Yuna-TTF-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-display: swap;
-}
-/* Pretendard 폰트 */
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
-    font-weight: 500;
-    font-display: swap;
-}
-/* NostalgicGellyRoll 폰트 */
-@font-face {
-  font-family: 'NostalgicGellyRoll';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-1@1.0/Griun_Gellyroll-Rg.woff2') format('woff2');
-  font-weight: normal;
-  font-display: swap;
-}
-/* NostalgicMyoeunHeullim 폰트 */
-@font-face {
-    font-family: 'NostalgicMyoeunHeullim';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-1@1.0/Griun_MyoeunHeullim-Rg.woff2') format('woff2');
-    font-weight: normal;
-    font-display: swap;
-}
-/* BelovedMyoeunttobak 폰트 */
-@font-face {
-    font-family: 'BelovedMyoeunttobak';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-1@1.0/Griun_Myoeunddobak-Rg.woff2') format('woff2');
-    font-weight: normal;
-    font-display: swap;
-}
+/* ════════════════════════════════════════════════════════════
+   CS.im — TERMINAL CLI 디자인 시스템
+   Monospace Supremacy. Dark mode only. Zero radius. Zero shadow.
+   ════════════════════════════════════════════════════════════ */
+
+/* JetBrains Mono — 라틴 문자·숫자·기호 전용 (가장 터미널다운 글리프) */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+/* Nanum Gothic Coding — 한글 모노스페이스 폴백 (JetBrains Mono는 한글 글리프가 없음) */
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700;800&display=swap');
+
 :root {
-  --font-main:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-  --font-heading: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-  --font-body:    'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-  --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
-    
-  --bg-page:    #E8E8EC;
-  --bg-white:   #F6F6F8;
-  --bg-surface: #DCDCE2;
+  /* ── 타이포그래피 — 전체 monospace 통일 ── */
+  --font-mono:    'JetBrains Mono', 'Nanum Gothic Coding', 'D2Coding', 'Consolas', monospace;
+  --font-main:    var(--font-mono);
+  --font-heading: var(--font-mono);
+  --font-body:    var(--font-mono);
 
-  --text-primary:   #2C2825;
-  --text-secondary: #6B6560;
-  --text-tertiary:  #A09890;
+  /* ══════════════════════════════════════════════
+     포스포 팔레트 (Phosphor Monitor) — 다크 전용
+     ══════════════════════════════════════════════ */
+  --bg-page:    #0a0a0a;   /* 딥 블랙 (스캔라인을 위해 완전한 OLED 블랙은 피함) */
+  --bg-white:   #0d0f0d;   /* 패널/카드 배경 — bg-page보다 미세하게 밝음 */
+  --bg-surface: #131813;   /* hover / 인셋 배경 */
 
-  --border-light: rgba(0,0,0,0.08);
-  --border-mid:   rgba(0,0,0,0.14);
+  --text-primary:   #33ff00;  /* 브라이트 네온 그린 — 헤딩/강조 */
+  --text-secondary: #5be03f;  /* 미디엄 그린 — 본문 */
+  --text-tertiary:  #34a02c;  /* 딤 그린 — 캡션/보조정보 (AA 대비 확보) */
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  --primary:  #33ff00;  /* 프라이머리 그린 */
+  --secondary:#ffb000;  /* 앰버 — 경고/보조 강조 */
+  --muted:    #1f521f;  /* 딤 그린 — 테두리/비활성 (텍스트로는 사용 금지: 대비 부족) */
+  --accent:   #33ff00;  /* 커서/활성 상태 = primary와 동일 */
+  --error:    #ff3333;  /* 브라이트 레드 */
+
+  --border-light: #1f521f;
+  --border-mid:   #2f7a2a;
+
+  /* ── 반경 — 절대 0 ── */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
 
   --sidebar-width: 232px;
   --topbar-height: 56px;
 
-  /* ── 히어로 글로우 (랜딩 배경 블롭) ── */
-  --hero-glow-1: var(--c-coral-bg);
-  --hero-glow-2: var(--c-lilac-bg);
-  --hero-glow-3: var(--c-mint-bg);
-  --hero-glow-opacity: .65;
-  --hero-card-shadow: 0 1px 2px rgba(44,40,37,0.04), 0 20px 48px -24px rgba(44,40,37,0.22);
-  --hero-card-shadow-hover: 0 1px 2px rgba(44,40,37,0.05), 0 24px 56px -20px rgba(44,40,37,0.26);
+  /* ── 포스포 글로우 (phosphor persistence) ── */
+  --text-glow: 0 0 6px rgba(51,255,0,.45);
+  --text-glow-strong: 0 0 10px rgba(51,255,0,.6), 0 0 2px rgba(51,255,0,.9);
+
+  /* ── 히어로 글로우 — 컬러 블롭 → 단색 포스포 헤일로 ── */
+  --hero-glow-1: var(--primary);
+  --hero-glow-2: var(--primary);
+  --hero-glow-3: var(--secondary);
+  --hero-glow-opacity: .07;
+  --hero-card-shadow: none;
+  --hero-card-shadow-hover: none;
+
+  /* ── CRT 스캔라인 오버레이 ── */
+  --scanline-opacity: .06;
 
   /* ══════════════════════════════════════════════
-     6색 팔레트 — 모든 과목이 이 6가지 색 중 하나를 공유
-     bg: 배경 / text: 텍스트 / mid: 서브텍스트(accent로도 사용)
+     6색 팔레트 → 터미널 포스포 6색으로 재매핑
+     bg: 패널 배경(딥 틴트) / text: 본문·타이틀(밝게) / mid: 도트·경계·배지(중간)
+     전부 어두운 배경 위에서 AA(4.5:1) 이상 대비 확보
      ══════════════════════════════════════════════ */
-  --c-pink-bg:    #FFC9E3; --c-pink-text:   #7A1F4D; --c-pink-mid:   #993D6B;
-  --c-coral-bg:   #FFD5B8; --c-coral-text:  #803300; --c-coral-mid:  #803300;
-  --c-yellow-bg:  #FFF3B8; --c-yellow-text: #5C4D00; --c-yellow-mid: #806A00;
-  --c-mint-bg:    #B8FFE0; --c-mint-text:   #0A4D33; --c-mint-mid:   #1F7A52;
-  --c-blue-bg:    #AEE2FF; --c-blue-text:   #0A3C5C; --c-blue-mid:   #1E5A80;
-  --c-lilac-bg:   #E1C5FF; --c-lilac-text:  #3D1F6B; --c-lilac-mid:  #5C3D8C;
+  --c-pink-bg:    #2a0d1f; --c-pink-text:   #ff6fc0; --c-pink-mid:   #ff2e9e;   /* 마젠타 포스포 */
+  --c-coral-bg:   #2a1a00; --c-coral-text:  #ffc94d; --c-coral-mid:  #ffb000;   /* 앰버 포스포 */
+  --c-yellow-bg:  #2a2600; --c-yellow-text: #f5ec4d; --c-yellow-mid: #e8d400;   /* 옐로우 포스포 */
+  --c-mint-bg:    #002a24; --c-mint-text:   #4dffe3; --c-mint-mid:   #00e5c7;   /* 시안 포스포 */
+  --c-blue-bg:    #001a2a; --c-blue-text:   #6cc4ff; --c-blue-mid:   #33aaff;   /* 블루 포스포 */
+  --c-lilac-bg:   #1a002a; --c-lilac-text:  #c99bff; --c-lilac-mid:  #b06bff;   /* 바이올렛 포스포 */
 
   /* ── 교육학 ── */
   --c-edu-curriculum-bg: var(--c-pink-bg);   --c-edu-curriculum-mid: var(--c-pink-mid);   --c-edu-curriculum-accent: var(--c-pink-mid);   --c-edu-curriculum-text: var(--c-pink-text);
@@ -110,63 +104,4 @@
 
   --c-cs-arch-bg:      var(--c-lilac-bg);  --c-cs-arch-mid:      var(--c-lilac-mid);  --c-cs-arch-accent:      var(--c-lilac-mid);  --c-cs-arch-text:      var(--c-lilac-text);
   --c-cs-compiler-bg:  var(--c-lilac-bg);  --c-cs-compiler-mid:  var(--c-lilac-mid);  --c-cs-compiler-accent:  var(--c-lilac-mid);  --c-cs-compiler-text:  var(--c-lilac-text);
-}
-
-/* ── 다크모드 — bg를 확연히 밝게 (기존 배경과 대비 확보) ── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-page:    #1C1A18;
-    --bg-white:   #252320;
-    --bg-surface: #2E2B28;
-
-    --text-primary:   #EDE9E4;
-    --text-secondary: #A89E94;
-    --text-tertiary:  #5A5450;
-
-    --border-light: rgba(255,255,255,0.07);
-    --border-mid:   rgba(255,255,255,0.13);
-
-    --hero-glow-1: #F0B070;
-    --hero-glow-2: #B888F0;
-    --hero-glow-3: #58D8A0;
-    --hero-glow-opacity: .22;
-    --hero-card-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 20px 48px -24px rgba(0,0,0,0.55);
-    --hero-card-shadow-hover: 0 1px 2px rgba(0,0,0,0.32), 0 24px 56px -20px rgba(0,0,0,0.6);
-
-    /* bg: 배경(#1C)보다 충분히 밝게 → #3C~#48 수준
-       mid: 더 밝은 채도있는 색                        */
-    /* 다크모드용 6색 팔레트 — bg는 어둡게, mid/accent는 밝게 */
-    --c-pink-bg:    #4A303C; --c-pink-text:   #F8E0EE; --c-pink-mid:   #F0A0C8;
-    --c-coral-bg:   #4A3420; --c-coral-text:  #F8E4D0; --c-coral-mid:  #F0B070;
-    --c-yellow-bg:  #423C18; --c-yellow-text: #F6EEA0; --c-yellow-mid: #E8CC50;
-    --c-mint-bg:    #1E3C2E; --c-mint-text:   #C8F4DC; --c-mint-mid:   #58D8A0;
-    --c-blue-bg:    #1C3448; --c-blue-text:   #C8E4F8; --c-blue-mid:   #68B8F0;
-    --c-lilac-bg:   #342050; --c-lilac-text:  #E4D4FC; --c-lilac-mid:  #B888F0;
-
-    --c-edu-curriculum-bg: var(--c-pink-bg);   --c-edu-curriculum-mid: var(--c-pink-mid);   --c-edu-curriculum-accent: var(--c-pink-mid);   --c-edu-curriculum-text: var(--c-pink-text);
-    --c-edu-teach-bg:      var(--c-coral-bg);  --c-edu-teach-mid:      var(--c-coral-mid);  --c-edu-teach-accent:      var(--c-coral-mid);  --c-edu-teach-text:      var(--c-coral-text);
-    --c-edu-eval-bg:       var(--c-yellow-bg); --c-edu-eval-mid:       var(--c-yellow-mid); --c-edu-eval-accent:       var(--c-yellow-mid); --c-edu-eval-text:       var(--c-yellow-text);
-    --c-edu-psych-bg:      var(--c-mint-bg);   --c-edu-psych-mid:      var(--c-mint-mid);   --c-edu-psych-accent:      var(--c-mint-mid);   --c-edu-psych-text:      var(--c-mint-text);
-    --c-edu-admin-bg:      var(--c-blue-bg);   --c-edu-admin-mid:      var(--c-blue-mid);   --c-edu-admin-accent:      var(--c-blue-mid);   --c-edu-admin-text:      var(--c-blue-text);
-    --c-edu-counsel-bg:    var(--c-lilac-bg);  --c-edu-counsel-mid:    var(--c-lilac-mid);  --c-edu-counsel-accent:    var(--c-lilac-mid);  --c-edu-counsel-text:    var(--c-lilac-text);
-
-    --c-info-curriculum-bg: var(--c-pink-bg);   --c-info-curriculum-mid: var(--c-pink-mid);   --c-info-curriculum-accent: var(--c-pink-mid);   --c-info-curriculum-text: var(--c-pink-text);
-    --c-info-teach-bg:      var(--c-coral-bg);  --c-info-teach-mid:      var(--c-coral-mid);  --c-info-teach-accent:      var(--c-coral-mid);  --c-info-teach-text:      var(--c-coral-text);
-    --c-info-eval-bg:       var(--c-yellow-bg); --c-info-eval-mid:       var(--c-yellow-mid); --c-info-eval-accent:       var(--c-yellow-mid); --c-info-eval-text:       var(--c-yellow-text);
-    --c-info-ct-bg:         var(--c-mint-bg);   --c-info-ct-mid:         var(--c-mint-mid);   --c-info-ct-accent:         var(--c-mint-mid);   --c-info-ct-text:         var(--c-mint-text);
-    --c-info-swai-bg:       var(--c-blue-bg);   --c-info-swai-mid:       var(--c-blue-mid);   --c-info-swai-accent:       var(--c-blue-mid);   --c-info-swai-text:       var(--c-blue-text);
-
-    --c-cs-ai-bg:        var(--c-pink-bg);   --c-cs-ai-mid:        var(--c-pink-mid);   --c-cs-ai-accent:        var(--c-pink-mid);   --c-cs-ai-text:        var(--c-pink-text);
-    --c-cs-discrete-bg:  var(--c-pink-bg);   --c-cs-discrete-mid:  var(--c-pink-mid);   --c-cs-discrete-accent:  var(--c-pink-mid);   --c-cs-discrete-text:  var(--c-pink-text);
-    --c-cs-os-bg:        var(--c-coral-bg);  --c-cs-os-mid:        var(--c-coral-mid);  --c-cs-os-accent:        var(--c-coral-mid);  --c-cs-os-text:        var(--c-coral-text);
-    --c-cs-pl-bg:        var(--c-coral-bg);  --c-cs-pl-mid:        var(--c-coral-mid);  --c-cs-pl-accent:        var(--c-coral-mid);  --c-cs-pl-text:        var(--c-coral-text);
-    --c-cs-ds-bg:        var(--c-yellow-bg); --c-cs-ds-mid:        var(--c-yellow-mid); --c-cs-ds-accent:        var(--c-yellow-mid); --c-cs-ds-text:        var(--c-yellow-text);
-    --c-cs-algo-bg:      var(--c-yellow-bg); --c-cs-algo-mid:      var(--c-yellow-mid); --c-cs-algo-accent:      var(--c-yellow-mid); --c-cs-algo-text:      var(--c-yellow-text);
-    --c-cs-db-bg:        var(--c-mint-bg);   --c-cs-db-mid:        var(--c-mint-mid);   --c-cs-db-accent:        var(--c-mint-mid);   --c-cs-db-text:        var(--c-mint-text);
-    --c-cs-se-bg:        var(--c-mint-bg);   --c-cs-se-mid:        var(--c-mint-mid);   --c-cs-se-accent:        var(--c-mint-mid);   --c-cs-se-text:        var(--c-mint-text);
-    --c-cs-net-bg:       var(--c-blue-bg);   --c-cs-net-mid:       var(--c-blue-mid);   --c-cs-net-accent:       var(--c-blue-mid);   --c-cs-net-text:       var(--c-blue-text);
-    --c-cs-sec-bg:       var(--c-blue-bg);   --c-cs-sec-mid:       var(--c-blue-mid);   --c-cs-sec-accent:       var(--c-blue-mid);   --c-cs-sec-text:       var(--c-blue-text);
-    --c-cs-arch-bg:      var(--c-lilac-bg);  --c-cs-arch-mid:      var(--c-lilac-mid);  --c-cs-arch-accent:      var(--c-lilac-mid);  --c-cs-arch-text:      var(--c-lilac-text);
-    --c-cs-compiler-bg:  var(--c-lilac-bg);  --c-cs-compiler-mid:  var(--c-lilac-mid);  --c-cs-compiler-accent:  var(--c-lilac-mid);  --c-cs-compiler-text:  var(--c-lilac-text);
-  }
 }

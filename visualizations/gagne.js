@@ -4,32 +4,32 @@
  */
 (function () {
 
-  const ACCENT = '#D4874A';
-  const BG     = '#FBF0E6';
-  const MID    = '#F0C89A';
-  const FONT   = "var(--font-body,var(--font-main),'Pretendard','Apple SD Gothic Neo',sans-serif)";
+  const ACCENT = '#ffb000';
+  const BG     = '#2a1a00';
+  const MID    = 'var(--border-mid)';
+  const FONT   = "var(--font-body,var(--font-main))";
 
   if (!document.getElementById('gagne-viz-style')) {
     const s = document.createElement('style');
     s.id = 'gagne-viz-style';
     s.textContent = `
-      #gagne-wrap { font-family:${FONT}; max-width:100%; color:var(--text-primary,#2C2825); }
+      #gagne-wrap { font-family:${FONT}; max-width:100%; color:var(--text-primary,#33ff00); }
       #gagne-wrap * { box-sizing:border-box; }
       #gagne-wrap .gv-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
       #gagne-wrap .gv-tab {
-        padding:6px 16px; border-radius:20px; font-size:12px; font-weight:600;
+        padding:6px 16px; border-radius:0; font-size:12px; font-weight:600;
         cursor:pointer; border:1.5px solid ${MID}; color:${ACCENT};
-        background:var(--bg-white,#fff); transition:all .15s; font-family:${FONT};
+        background:var(--bg-white,#0d0f0d); transition:all .15s; font-family:${FONT};
       }
-      #gagne-wrap .gv-tab.on { background:${BG}; color:#7A4018; border-color:${ACCENT}; }
+      #gagne-wrap .gv-tab.on { background:${BG}; color:var(--text-primary); border-color:${ACCENT}; }
       #gagne-wrap .gv-flow { display:flex; flex-direction:column; gap:4px; }
       #gagne-wrap .gv-step {
-        display:flex; align-items:stretch; border-radius:12px; overflow:hidden;
+        display:flex; align-items:stretch; border-radius:0; overflow:hidden;
         border:1.5px solid transparent; cursor:pointer; transition:all .15s;
-        background:var(--bg-white,#fff);
+        background:var(--bg-white,#0d0f0d);
       }
       #gagne-wrap .gv-step:hover { border-color:${MID}; }
-      #gagne-wrap .gv-step.on { border-color:${ACCENT}; box-shadow:0 2px 12px rgba(212,135,74,0.18); }
+      #gagne-wrap .gv-step.on { border-color:${ACCENT}; box-shadow:none; }
       #gagne-wrap .gv-step-num {
         width:36px; flex-shrink:0; display:flex; flex-direction:column;
         align-items:center; justify-content:center; font-size:13px;
@@ -39,35 +39,35 @@
       /* 내적과정 배지 */
       #gagne-wrap .gv-inner-badge {
         display:inline-block; font-size:9px; font-weight:600; letter-spacing:.03em;
-        padding:1px 6px; border-radius:4px; margin-bottom:3px;
-        background:var(--bg-surface,#F0EDE8); color:var(--text-tertiary,#A09890);
-        border:1px solid var(--border-light,rgba(0,0,0,.08));
+        padding:1px 6px; border-radius:0; margin-bottom:3px;
+        background:var(--bg-surface,#131813); color:var(--text-tertiary,#34a02c);
+        border:1px solid var(--border-light,#1f521f);
       }
       #gagne-wrap .gv-step-inner-text { font-size:12px; font-weight:600; margin-bottom:2px; }
       #gagne-wrap .gv-step-outer { font-size:13px; font-weight:700; }
       #gagne-wrap .gv-step-desc {
-        font-size:12px; color:var(--text-secondary,#6B6560);
+        font-size:12px; color:var(--text-secondary,#5be03f);
         margin-top:4px; display:none; line-height:1.65;
       }
       #gagne-wrap .gv-step-example {
         margin-top:5px; font-size:11px;
-        color:var(--text-tertiary,#A09890); display:none; padding-left:2px;
+        color:var(--text-tertiary,#34a02c); display:none; padding-left:2px;
       }
       #gagne-wrap .gv-step.on .gv-step-desc { display:block; }
       #gagne-wrap .gv-step.on .gv-step-example { display:block; }
       #gagne-wrap .gv-arrow {
-        text-align:center; font-size:14px; color:var(--text-tertiary,#C0BBB0);
+        text-align:center; font-size:14px; color:var(--text-tertiary,#34a02c);
         line-height:1; padding:2px 0;
       }
       /* 수업목표 카드 */
       #gagne-wrap .gv-goal-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; }
       #gagne-wrap .gv-goal-card {
-        background:var(--bg-surface,#F0EDE8); border-radius:12px; padding:14px 16px;
+        background:var(--bg-surface,#131813); border-radius:0; padding:14px 16px;
         border-left:3px solid;
       }
       #gagne-wrap .gv-goal-name { font-size:13px; font-weight:700; margin-bottom:4px; }
-      #gagne-wrap .gv-goal-desc { font-size:11px; color:var(--text-secondary,#6B6560); line-height:1.6; }
-      #gagne-wrap .gv-goal-method { font-size:10px; font-weight:700; color:var(--text-tertiary,#A09890); letter-spacing:.04em; margin-top:8px; }
+      #gagne-wrap .gv-goal-desc { font-size:11px; color:var(--text-secondary,#5be03f); line-height:1.6; }
+      #gagne-wrap .gv-goal-method { font-size:10px; font-weight:700; color:var(--text-tertiary,#34a02c); letter-spacing:.04em; margin-top:8px; }
       #gagne-wrap .gv-goal-analysis { margin-top:4px; font-size:11px; font-weight:600; }
       @media(max-width:480px) {
         #gagne-wrap .gv-goal-grid { grid-template-columns:1fr; }
@@ -80,23 +80,23 @@
   /* ── 데이터 ── */
   // inner: (내적 과정) 제거한 순수 내적과정 이름
   const STEPS = [
-    { num:1, inner:'주의집중', outer:'주의집중 획득', desc:'수업이 이루어지기 위해 학습자의 주의력을 획득해야 한다.', example:'예: 질문을 던지거나 흥미로운 사례를 제시한다.', bg:'#FBF0E6', color:'#C87840' },
-    { num:2, inner:'기대', outer:'학습목표 제시', desc:'수업 후 얻게 되는 수업결과를 명확히 알려줌으로써 수업 기대감과 동기를 향상시킨다.', example:'예: "여러분들은 수업 후 이 이유를 알게 될 것입니다."', bg:'#FBF4E0', color:'#B89020' },
-    { num:3, inner:'장기기억 → 단기기억 인출', outer:'선수학습 회상', desc:'새로운 지식은 선행학습을 기반으로 이루어지므로, 새로운 학습 전에 이전 학습내용을 확인해야 한다.', example:'예: 이전 수업에서 배운 내용을 떠올리도록 유도한다.', bg:'#EEF8E0', color:'#609020' },
-    { num:4, inner:'선택적 지각', outer:'자극자료 제시', desc:'학습자에게 학습할 내용을 제시하는 단계. 새로운 정보에 독특한 특징을 부각하면 기억하기 쉽다. 학습자의 선택적 지각을 촉진한다.', example:'예: 예시·사례·영상자료 제시, 밑줄 긋기, 시범 — 삼각형 내각의 합을 가르칠 때 180°에 빨간 밑줄', bg:'#FAE8E4', color:'#B84830' },
-    { num:5, inner:'의미의 부호화', outer:'학습안내 제공', desc:'학습한 내용들을 종합하고 서로의 상관관계를 제시하여 장기기억을 돕는다. 부호화·정교화 전략, 스캐폴딩(비계) 활용.', example:'예: 도표, 규칙, 순서도 등 스캐폴딩 제공', bg:'#EAE8F8', color:'#5848B0' },
-    { num:6, inner:'반응', outer:'수행 유도', desc:'학습한 내용을 유사한 실제 문제 상황에 적용해보는 단계.', example:'예: 연습문제, 숙제, 실험, 정리 활동', bg:'#E6EAF5', color:'#3A5080' },
-    { num:7, inner:'강화', outer:'피드백 제공', desc:'학습자 수행이 성공적이면 칭찬으로 즉시 강화. 그렇지 않다면 재학습 기회를 제공 후 긍정적인 피드백과 조언을 한다.', example:'예: 정답이면 즉각 칭찬, 오답이면 교정 피드백 제공', bg:'#E0F8F0', color:'#208858' },
-    { num:8, inner:'인출과 강화 (재생을 위한 암시)', outer:'형성평가 (수행평가)', desc:'학습자가 수업목표를 달성했는지 성취수준을 평가하는 단계. 단순암기 평가가 아닌 수행평가로 이해 여부를 점검한다.', example:'예: 퀴즈, 실기 과제, 프로젝트 등으로 이해 점검', bg:'#E4F2FA', color:'#1878A8' },
-    { num:9, inner:'일반화', outer:'파지와 전이 증진', desc:'목표 도달 평가로 끝나는 것이 아니라, 연습 기회를 계속 제공하여 파지와 전이를 증진시킨다. 파지: 장기기억에 저장 / 전이: 다른 문제 상황에 적용하여 일반화', example:'예: 다양한 형태의 문제를 추가 제시, 복습 기회 제공', bg:'#EEE8F5', color:'#6840A8' },
+    { num:1, inner:'주의집중', outer:'주의집중 획득', desc:'수업이 이루어지기 위해 학습자의 주의력을 획득해야 한다.', example:'예: 질문을 던지거나 흥미로운 사례를 제시한다.', bg:'#2a1a00', color:'#ffb000' },
+    { num:2, inner:'기대', outer:'학습목표 제시', desc:'수업 후 얻게 되는 수업결과를 명확히 알려줌으로써 수업 기대감과 동기를 향상시킨다.', example:'예: "여러분들은 수업 후 이 이유를 알게 될 것입니다."', bg:'#2a1a00', color:'#ffb000' },
+    { num:3, inner:'장기기억 → 단기기억 인출', outer:'선수학습 회상', desc:'새로운 지식은 선행학습을 기반으로 이루어지므로, 새로운 학습 전에 이전 학습내용을 확인해야 한다.', example:'예: 이전 수업에서 배운 내용을 떠올리도록 유도한다.', bg:'#2a1a00', color:'#ffb000' },
+    { num:4, inner:'선택적 지각', outer:'자극자료 제시', desc:'학습자에게 학습할 내용을 제시하는 단계. 새로운 정보에 독특한 특징을 부각하면 기억하기 쉽다. 학습자의 선택적 지각을 촉진한다.', example:'예: 예시·사례·영상자료 제시, 밑줄 긋기, 시범 — 삼각형 내각의 합을 가르칠 때 180°에 빨간 밑줄', bg:'#2a1a00', color:'#ffb000' },
+    { num:5, inner:'의미의 부호화', outer:'학습안내 제공', desc:'학습한 내용들을 종합하고 서로의 상관관계를 제시하여 장기기억을 돕는다. 부호화·정교화 전략, 스캐폴딩(비계) 활용.', example:'예: 도표, 규칙, 순서도 등 스캐폴딩 제공', bg:'#2a1a00', color:'#ffb000' },
+    { num:6, inner:'반응', outer:'수행 유도', desc:'학습한 내용을 유사한 실제 문제 상황에 적용해보는 단계.', example:'예: 연습문제, 숙제, 실험, 정리 활동', bg:'#2a1a00', color:'#ffb000' },
+    { num:7, inner:'강화', outer:'피드백 제공', desc:'학습자 수행이 성공적이면 칭찬으로 즉시 강화. 그렇지 않다면 재학습 기회를 제공 후 긍정적인 피드백과 조언을 한다.', example:'예: 정답이면 즉각 칭찬, 오답이면 교정 피드백 제공', bg:'#2a1a00', color:'#ffb000' },
+    { num:8, inner:'인출과 강화 (재생을 위한 암시)', outer:'형성평가 (수행평가)', desc:'학습자가 수업목표를 달성했는지 성취수준을 평가하는 단계. 단순암기 평가가 아닌 수행평가로 이해 여부를 점검한다.', example:'예: 퀴즈, 실기 과제, 프로젝트 등으로 이해 점검', bg:'#2a1a00', color:'#ffb000' },
+    { num:9, inner:'일반화', outer:'파지와 전이 증진', desc:'목표 도달 평가로 끝나는 것이 아니라, 연습 기회를 계속 제공하여 파지와 전이를 증진시킨다. 파지: 장기기억에 저장 / 전이: 다른 문제 상황에 적용하여 일반화', example:'예: 다양한 형태의 문제를 추가 제시, 복습 기회 제공', bg:'#2a1a00', color:'#ffb000' },
   ];
 
   const GOALS = [
-    { name:'언어정보', desc:'명제적(선언적) 지식. 사실·개념·원리 등을 기억해 언어로 표현하는 능력.', method:'과제분석: 군집분석', analysis:'학습과제를 범주(군집)별로 묶는 기법', effective:'선행조직자 제시, 청킹', example:'정의 외우기, 역사 기억하기, 공식 진술', border:'#D4874A', color:'#7A4018' },
-    { name:'지적기능', desc:'방법적(절차적) 지식. 언어·숫자·부호 등 상징적 기호를 사용하여 진술하는 능력.', method:'과제분석: 위계분석', analysis:'상위기능과 하위기능으로 분석하는 기법', effective:'위계학습, 예제사례 제시', example:'교집합·합집합 구분, 수식 계산', border:'#3A5AA0', color:'#1A2E60' },
-    { name:'인지전략', desc:'학습자가 기억하고 사고하며 과제에 맞는 학습전략을 찾아내 활용하는 능력.', method:'과제분석: 위계·절차 분석', analysis:'다양한 상황에서의 문제해결 경험으로 개발', effective:'연습, 설명, 토의', example:'암기법, 메타인지 전략', border:'#2A9E94', color:'#0E4E48' },
-    { name:'태도', desc:'특정 사건·사물·사람에 대해 나타나는 개인적 성향.', method:'과제분석: 통합분석', analysis:'군집·위계·절차 분석을 혼합하는 방법', effective:'관찰학습, 동일시, 교사시범', example:'솔선수범, 양보', border:'#8050B8', color:'#3E1E6A' },
-    { name:'운동기능', desc:'신체 근육을 활용하여 특정한 동작을 수행하는 능력.', method:'과제분석: 절차분석', analysis:'먼저 수행해야 할 과제의 순서를 분석하는 기법', effective:'반복 연습, 시범', example:'수영하기, 축구하기, 글씨 쓰기', border:'#D05840', color:'#6E2010' },
+    { name:'언어정보', desc:'명제적(선언적) 지식. 사실·개념·원리 등을 기억해 언어로 표현하는 능력.', method:'과제분석: 군집분석', analysis:'학습과제를 범주(군집)별로 묶는 기법', effective:'선행조직자 제시, 청킹', example:'정의 외우기, 역사 기억하기, 공식 진술', border:'#e8d400', color:'var(--text-primary)' },
+    { name:'지적기능', desc:'방법적(절차적) 지식. 언어·숫자·부호 등 상징적 기호를 사용하여 진술하는 능력.', method:'과제분석: 위계분석', analysis:'상위기능과 하위기능으로 분석하는 기법', effective:'위계학습, 예제사례 제시', example:'교집합·합집합 구분, 수식 계산', border:'#33aaff', color:'var(--text-primary)' },
+    { name:'인지전략', desc:'학습자가 기억하고 사고하며 과제에 맞는 학습전략을 찾아내 활용하는 능력.', method:'과제분석: 위계·절차 분석', analysis:'다양한 상황에서의 문제해결 경험으로 개발', effective:'연습, 설명, 토의', example:'암기법, 메타인지 전략', border:'#00e5c7', color:'var(--text-primary)' },
+    { name:'태도', desc:'특정 사건·사물·사람에 대해 나타나는 개인적 성향.', method:'과제분석: 통합분석', analysis:'군집·위계·절차 분석을 혼합하는 방법', effective:'관찰학습, 동일시, 교사시범', example:'솔선수범, 양보', border:'#b06bff', color:'var(--text-primary)' },
+    { name:'운동기능', desc:'신체 근육을 활용하여 특정한 동작을 수행하는 능력.', method:'과제분석: 절차분석', analysis:'먼저 수행해야 할 과제의 순서를 분석하는 기법', effective:'반복 연습, 시범', example:'수영하기, 축구하기, 글씨 쓰기', border:'#ff2e9e', color:'var(--text-primary)' },
   ];
 
   let activeStep = null;
@@ -128,8 +128,8 @@
           </div>
           <div class="gv-step-body">
             <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-              <span class="gv-step-inner-text" style="color:var(--text-tertiary,#A09890);font-size:11px;">${step.inner}</span>
-              <span style="color:var(--text-tertiary,#C0BBB0);font-size:10px;">›</span>
+              <span class="gv-step-inner-text" style="color:var(--text-tertiary,#34a02c);font-size:11px;">${step.inner}</span>
+              <span style="color:var(--text-tertiary,#34a02c);font-size:10px;">›</span>
               <span class="gv-step-outer" style="margin:0;">${step.outer}</span>
             </div>
             <div class="gv-step-desc">${step.desc}</div>
@@ -140,14 +140,14 @@
     }).join('');
 
     return `<div class="gv-flow">${items}</div>
-      <div style="text-align:center;padding:12px 0 4px;font-size:11px;color:var(--text-tertiary,#A09890);">단계를 클릭하면 상세 설명이 펼쳐집니다</div>`;
+      <div style="text-align:center;padding:12px 0 4px;font-size:11px;color:var(--text-tertiary,#34a02c);">단계를 클릭하면 상세 설명이 펼쳐집니다</div>`;
   }
 
   let activeGoal = null;
 
   function renderGoal() {
     return `
-      <div style="font-size:12px;color:var(--text-secondary,#6B6560);margin-bottom:14px;line-height:1.7;font-family:${FONT};">
+      <div style="font-size:12px;color:var(--text-secondary,#5be03f);margin-bottom:14px;line-height:1.7;font-family:${FONT};">
         가네는 학습결과(수업목표)를 5가지로 구분하고, 목표 유형마다 다른 교수방법을 처방해야 한다고 주장했다.
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;">
@@ -155,28 +155,28 @@
           const isOn = activeGoal === i;
           return `
           <div onclick="gagneGoal(${i})"
-            style="border-radius:12px;border:1.5px solid ${isOn?g.border:'var(--border-light,rgba(0,0,0,.08))'};
-              background:${isOn?g.border+'18':'var(--bg-white,#fff)'};cursor:pointer;overflow:hidden;transition:all .15s;">
+            style="border-radius:0;border:1.5px solid ${isOn?g.border:'var(--border-light,#1f521f)'};
+              background:${isOn?g.border+'18':'var(--bg-white,#0d0f0d)'};cursor:pointer;overflow:hidden;transition:all .15s;">
             <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;">
-              <div style="width:32px;height:32px;border-radius:50%;background:${g.border};color:white;
+              <div style="width:32px;height:32px;border-radius:0;background:${g.border};color:#000;
                 font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i+1}</div>
               <div style="flex:1;">
                 <div style="font-size:14px;font-weight:700;color:${g.color};font-family:${FONT};">${g.name}</div>
-                <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-top:1px;font-family:${FONT};">${g.desc}</div>
+                <div style="font-size:11px;color:var(--text-secondary,#5be03f);margin-top:1px;font-family:${FONT};">${g.desc}</div>
               </div>
               <div style="font-size:10px;font-weight:700;color:${g.border};background:${g.border}22;
-                padding:3px 10px;border-radius:20px;white-space:nowrap;flex-shrink:0;font-family:${FONT};">${g.method.replace('과제분석: ','')}</div>
-              <span style="font-size:14px;color:var(--text-tertiary,#A09890);flex-shrink:0;">${isOn?'▲':'▽'}</span>
+                padding:3px 10px;border-radius:0;white-space:nowrap;flex-shrink:0;font-family:${FONT};">${g.method.replace('과제분석: ','')}</div>
+              <span style="font-size:14px;color:var(--text-tertiary,#34a02c);flex-shrink:0;">${isOn?'▲':'▽'}</span>
             </div>
             ${isOn ? `
             <div style="padding:0 16px 14px 60px;font-family:${FONT};">
               <div style="width:100%;height:1px;background:${g.border}30;margin-bottom:10px;"></div>
-              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:4px;font-weight:700;letter-spacing:.04em;">과제분석 방법</div>
-              <div style="font-size:12px;color:var(--text-primary,#2C2825);margin-bottom:10px;">${g.analysis}</div>
-              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:4px;font-weight:700;letter-spacing:.04em;">효과적 학습방법</div>
-              <div style="font-size:12px;color:var(--text-primary,#2C2825);margin-bottom:10px;">${g.effective}</div>
-              <div style="font-size:11px;color:var(--text-secondary,#6B6560);margin-bottom:4px;font-weight:700;letter-spacing:.04em;">예시</div>
-              <div style="font-size:12px;color:var(--text-primary,#2C2825);">${g.example}</div>
+              <div style="font-size:11px;color:var(--text-secondary,#5be03f);margin-bottom:4px;font-weight:700;letter-spacing:.04em;">과제분석 방법</div>
+              <div style="font-size:12px;color:var(--text-primary,#33ff00);margin-bottom:10px;">${g.analysis}</div>
+              <div style="font-size:11px;color:var(--text-secondary,#5be03f);margin-bottom:4px;font-weight:700;letter-spacing:.04em;">효과적 학습방법</div>
+              <div style="font-size:12px;color:var(--text-primary,#33ff00);margin-bottom:10px;">${g.effective}</div>
+              <div style="font-size:11px;color:var(--text-secondary,#5be03f);margin-bottom:4px;font-weight:700;letter-spacing:.04em;">예시</div>
+              <div style="font-size:12px;color:var(--text-primary,#33ff00);">${g.example}</div>
             </div>` : ''}
           </div>`;
         }).join('')}

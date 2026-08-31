@@ -4,10 +4,10 @@
  */
 (function () {
 
-  const CSS_ACCENT = '#D05840';
-  const CSS_BG     = '#FAE8E4';
-  const CSS_MID    = '#ECA898';
-  const CSS_TEXT   = '#6E2010';
+  const CSS_ACCENT = 'var(--subject-accent, #ffb000)';
+  const CSS_BG     = 'var(--subject-bg, #2a1a00)';
+  const CSS_MID    = 'var(--subject-mid, #ffb000)';
+  const CSS_TEXT   = 'var(--subject-text, #ffc94d)';
 
   if (!document.getElementById('ctx-viz-style')) {
     const s = document.createElement('style');
@@ -19,33 +19,33 @@
       /* 탭 — components.css .filter-btn 패턴 통일 */
       #ctx-wrap .cv-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:20px; }
       #ctx-wrap .cv-tab {
-        padding:6px 16px; border-radius:20px; font-size:12px; font-weight:600;
+        padding:6px 16px; border-radius:0; font-size:12px; font-weight:600;
         cursor:pointer; border:1px solid var(--border-light); color:var(--text-secondary);
         background:var(--bg-white); transition:all .15s;
         font-family:var(--font-body,var(--font-main));
       }
       #ctx-wrap .cv-tab:hover { border-color:var(--border-mid); color:var(--text-primary); }
-      #ctx-wrap .cv-tab.on { background:${CSS_ACCENT}; color:white; border-color:transparent; font-weight:600; }
+      #ctx-wrap .cv-tab.on { background:${CSS_ACCENT}; color:#000; border-color:transparent; font-weight:600; }
 
       /* 단계 아코디언 */
       #ctx-wrap .cv-step {
-        border-radius:var(--radius-md,10px); border:1.5px solid transparent;
+        border-radius:0; border:1.5px solid transparent;
         background:var(--bg-white); cursor:pointer; transition:all .15s;
         overflow:hidden; margin-bottom:4px;
       }
       #ctx-wrap .cv-step:hover { border-color:${CSS_MID}; }
-      #ctx-wrap .cv-step.on { border-color:${CSS_ACCENT}; box-shadow:0 2px 12px rgba(208,88,64,.15); }
+      #ctx-wrap .cv-step.on { border-color:${CSS_ACCENT}; }
       #ctx-wrap .cv-step-head { display:flex; align-items:center; gap:10px; padding:11px 14px; }
       #ctx-wrap .cv-step-num {
-        width:28px; height:28px; border-radius:50%;
+        width:28px; height:28px; border-radius:0;
         display:flex; align-items:center; justify-content:center;
         font-size:12px; font-weight:800; flex-shrink:0;
         background:${CSS_BG}; color:${CSS_ACCENT};
       }
-      #ctx-wrap .cv-step.on .cv-step-num { background:${CSS_ACCENT}; color:white; }
+      #ctx-wrap .cv-step.on .cv-step-num { background:${CSS_ACCENT}; color:#000; }
       #ctx-wrap .cv-step-title { font-size:13px; font-weight:700; flex:1; }
       #ctx-wrap .cv-step-badge {
-        font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px;
+        font-size:10px; font-weight:700; padding:2px 8px; border-radius:0;
         background:${CSS_BG}; color:${CSS_ACCENT};
       }
       #ctx-wrap .cv-step-body {
@@ -54,7 +54,7 @@
       }
       #ctx-wrap .cv-step.on .cv-step-body { display:block; }
       #ctx-wrap .cv-step-detail {
-        background:${CSS_BG}; border-radius:var(--radius-sm,6px);
+        background:${CSS_BG}; border-radius:0;
         padding:10px 14px; font-size:12px; line-height:1.8;
         color:var(--text-primary); margin-top:8px;
       }
@@ -67,18 +67,18 @@
       }
       #ctx-wrap .cv-track { flex:1; display:flex; align-items:center; gap:3px; min-height:44px; }
       #ctx-wrap .cv-seg {
-        height:32px; border-radius:var(--radius-sm,6px); display:flex; align-items:center;
+        height:32px; border-radius:0; display:flex; align-items:center;
         justify-content:center; font-size:11px; font-weight:700;
         white-space:nowrap; overflow:hidden; padding:0 8px;
         font-family:var(--font-body,var(--font-main));
       }
-      #ctx-wrap .cv-seg-run  { background:${CSS_ACCENT}; color:white; }
+      #ctx-wrap .cv-seg-run  { background:${CSS_ACCENT}; color:#000; }
       #ctx-wrap .cv-seg-wait { background:var(--bg-surface); color:var(--text-tertiary); }
-      #ctx-wrap .cv-seg-ctx  { background:${CSS_MID}; color:${CSS_TEXT}; }
+      #ctx-wrap .cv-seg-ctx  { background:${CSS_MID}; color:#000; }
 
       /* PCB 그리드 */
       #ctx-wrap .cv-pcb-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-      #ctx-wrap .cv-pcb-card { background:var(--bg-surface); border-radius:var(--radius-md,10px); padding:12px 14px; }
+      #ctx-wrap .cv-pcb-card { background:var(--bg-surface); border-radius:0; padding:12px 14px; }
       #ctx-wrap .cv-pcb-title { font-size:11px; font-weight:700; letter-spacing:.04em; color:var(--text-tertiary); margin-bottom:6px; }
       #ctx-wrap .cv-pcb-item { display:flex; align-items:baseline; gap:6px; font-size:12px; margin-bottom:3px; }
       #ctx-wrap .cv-pcb-key { font-weight:700; color:${CSS_ACCENT}; min-width:80px; font-size:11px; flex-shrink:0; }
@@ -193,11 +193,11 @@
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;align-items:center;">
         ${[['cv-seg-run','CPU 실행'],['cv-seg-ctx','문맥교환 (오버헤드)'],['cv-seg-wait','Ready / Wait']].map(([cls,lb])=>`
           <div style="display:flex;align-items:center;gap:5px;font-size:11px;">
-            <div class="cv-seg ${cls}" style="width:16px;height:16px;border-radius:4px;flex:none;padding:0;"></div>
+            <div class="cv-seg ${cls}" style="width:16px;height:16px;border-radius:0;flex:none;padding:0;"></div>
             <span style="color:var(--text-secondary);">${lb}</span>
           </div>`).join('')}
       </div>
-      <div style="margin-top:14px;background:${CSS_BG};border-radius:var(--radius-md,10px);padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
+      <div style="margin-top:14px;background:${CSS_BG};border-radius:0;padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
         <strong style="color:${CSS_ACCENT};">핵심 포인트</strong><br>
         P1이 <strong>저장</strong>되고 P2가 <strong>복원</strong>되는 사이 구간 전체가 순수 오버헤드.
         하드웨어가 레지스터 저장을 지원하면(예: 인텔 TSS) 오버헤드를 줄일 수 있다.
@@ -221,7 +221,7 @@
               </div>`).join('')}
           </div>`).join('')}
       </div>
-      <div style="margin-top:12px;background:${CSS_BG};border-radius:var(--radius-md,10px);padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
+      <div style="margin-top:12px;background:${CSS_BG};border-radius:0;padding:12px 16px;font-size:12px;line-height:1.8;color:var(--text-primary);">
         <strong style="color:${CSS_ACCENT};">저장/복원 핵심 항목:</strong>
         프로그램 카운터(PC), 범용 레지스터, 스택 포인터(SP) — 이 세 가지가 반드시 처리되어야 한다.
         메모리 맵(페이지 테이블)도 함께 전환되어야 주소 공간이 정확히 전환된다.
