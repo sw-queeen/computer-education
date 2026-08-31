@@ -12,9 +12,13 @@
 
   <header class="topbar">
     <div class="topbar-logo" onclick="navigate({subject:null,chapter:null,concept:null})" style="cursor:pointer;">CS.im</div>
-    <div class="topbar-search">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="globalSearch" placeholder="개념 검색...">
+    <div class="topbar-search" id="searchWrap">
+      <span class="search-icon" id="searchIcon">
+        <span class="search-icon-glyph search-icon-default">🔍</span>
+        <span class="search-icon-glyph search-icon-typing">➤</span>
+      </span>
+      <input type="text" id="globalSearch" placeholder="개념 검색..." autocomplete="off" role="combobox" aria-expanded="false" aria-controls="searchDropdown">
+      <div class="search-dropdown" id="searchDropdown"></div>
     </div>
     <button class="topbar-menu-btn" onclick="toggleSidebar()" aria-label="메뉴">☰</button>
   </header>
@@ -350,29 +354,120 @@ function applyFilter(filter) {
   });
 }
 
-/* ── 검색 ──────────────────────────────────────────── */
-document.getElementById('globalSearch').addEventListener('input', function() {
-  const q = this.value.trim().toLowerCase();
-  if (!q) { render(); return; }
-  const results = CONCEPTS.filter(c =>
-    c.name.toLowerCase().includes(q) || c.keywords.toLowerCase().includes(q) || c.subject.toLowerCase().includes(q)
-  );
-  let html = `<div class="page-header">
-    <div class="page-title">"${this.value}" 검색 결과</div>
-    <div class="page-meta"><span class="count">${results.length}개</span></div>
-  </div><div class="card-grid">`;
-  results.forEach(concept => {
-    const s = SUBJECTS[concept.subject];
-    if (!s) return;
-    html += `<div class="concept-card" style="border-left-color:${s.color.mid};"
-      onclick="navigate({subject:'${concept.subject}',chapter:'${encodeURIComponent(concept.chapter)}',concept:'${encodeURIComponent(concept.name)}'}); this.closest('#main').querySelector('#globalSearch') && (document.getElementById('globalSearch').value='');">
-      <div style="font-size:10px;color:${s.color.accent};margin-bottom:4px;font-weight:600;">${concept.subject} › ${concept.chapter}</div>
-      <div class="concept-card-name">${concept.name}</div>
-      <div class="concept-card-keywords">${concept.keywords}</div></div>`;
+/* ── 검색 (포커스 시 펼쳐지는 드롭다운) ──────────────────
+   ActionSearchBar 패턴: 포커스 → 목록 펼침(스태거 페이드업),
+   입력 디바운스 필터링, 아이콘 🔍→➤ 모핑, 클릭 시 이동,
+   블러 200ms 지연 후 닫힘. 디자인은 DESIGN_SYSTEM.md 뉴모피즘
+   토큰(box-shadow 이중 그림자·보더리스·rounded)을 그대로 사용. */
+(function () {
+  const wrap     = document.getElementById('searchWrap');
+  const input    = document.getElementById('globalSearch');
+  const dropdown = document.getElementById('searchDropdown');
+  const MAX_RESULTS = 8;
+
+  let query = '';
+  let isFocused = false;
+  let debounceTimer = null;
+  let blurTimer = null;
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, ch => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[ch]));
+  }
+
+  function filterConcepts(q) {
+    const norm = q.trim().toLowerCase();
+    if (!norm) return CONCEPTS.slice(0, MAX_RESULTS);
+    return CONCEPTS.filter(c =>
+      c.name.toLowerCase().includes(norm) ||
+      c.keywords.toLowerCase().includes(norm) ||
+      c.subject.toLowerCase().includes(norm)
+    ).slice(0, MAX_RESULTS);
+  }
+
+  function renderDropdown() {
+    if (!isFocused) { dropdown.classList.remove('open'); input.setAttribute('aria-expanded', 'false'); return; }
+
+    const results = filterConcepts(query);
+    if (!results.length) {
+      dropdown.innerHTML = `<div class="search-dropdown-empty">"${escapeHtml(query)}"에 대한 결과가 없어요</div>`;
+    } else {
+      const items = results.map((c, i) => {
+        const s = SUBJECTS[c.subject];
+        const dotColor = s ? s.color.mid : 'var(--border-mid)';
+        return `<li class="search-result-item" style="animation-delay:${(i * 0.05).toFixed(2)}s"
+            data-subject="${encodeURIComponent(c.subject)}"
+            data-chapter="${encodeURIComponent(c.chapter)}"
+            data-concept="${encodeURIComponent(c.name)}">
+          <span class="search-result-left">
+            <span class="search-result-dot" style="background:${dotColor}"></span>
+            <span class="search-result-name">${escapeHtml(c.name)}</span>
+            <span class="search-result-desc">${escapeHtml(c.chapter)}</span>
+          </span>
+          <span class="search-result-right">
+            <span class="search-result-freq">${escapeHtml(c.freq)}</span>
+            <span class="search-result-subject">${escapeHtml(c.subject)}</span>
+          </span>
+        </li>`;
+      }).join('');
+      dropdown.innerHTML = `<ul class="search-dropdown-list">${items}</ul>
+        <div class="search-dropdown-footer">
+          <span>클릭해서 이동</span><span>Esc 닫기</span>
+        </div>`;
+    }
+    dropdown.classList.add('open');
+    input.setAttribute('aria-expanded', 'true');
+  }
+
+  function goToResult(item) {
+    clearTimeout(blurTimer);
+    isFocused = false;
+    dropdown.classList.remove('open');
+    input.setAttribute('aria-expanded', 'false');
+    input.value = '';
+    query = '';
+    wrap.classList.remove('is-typing');
+    navigate({
+      subject: decodeURIComponent(item.dataset.subject),
+      chapter: decodeURIComponent(item.dataset.chapter),
+      concept: decodeURIComponent(item.dataset.concept),
+    });
+  }
+
+  input.addEventListener('input', function () {
+    query = this.value;
+    wrap.classList.toggle('is-typing', query.length > 0);
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(renderDropdown, 200);
   });
-  html += `</div>`;
-  document.getElementById('main').innerHTML = html;
-});
+
+  input.addEventListener('focus', function () {
+    isFocused = true;
+    renderDropdown();
+  });
+
+  input.addEventListener('blur', function () {
+    clearTimeout(blurTimer);
+    blurTimer = setTimeout(function () {
+      isFocused = false;
+      dropdown.classList.remove('open');
+      input.setAttribute('aria-expanded', 'false');
+    }, 200); // 클릭 이벤트가 먼저 등록되도록 지연
+  });
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      isFocused = false;
+      dropdown.classList.remove('open');
+      input.setAttribute('aria-expanded', 'false');
+      this.blur();
+    }
+  });
+
+  dropdown.addEventListener('click', function (e) {
+    const item = e.target.closest('.search-result-item');
+    if (item) goToResult(item);
+  });
+})();
 
 /* ── 라우터 ────────────────────────────────────────── */
 function render() {

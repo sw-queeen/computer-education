@@ -160,11 +160,146 @@ a { color: inherit; text-decoration: none; }
   position: absolute;
   left: 12px;
   top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-tertiary);
-  font-size: 14px;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
   pointer-events: none;
 }
+/* 검색 아이콘 모핑: 입력이 생기면 🔍 → ➤ 로 크로스페이드 */
+.search-icon-glyph {
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: 13px;
+  line-height: 1;
+  color: var(--text-tertiary);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .2s ease-out, transform .2s ease-out;
+}
+.search-icon-typing { opacity: 0; transform: translateY(45%); }
+#searchWrap.is-typing .search-icon-default { opacity: 0; transform: translateY(-45%); }
+#searchWrap.is-typing .search-icon-typing  { opacity: 1; transform: translateY(0); }
+
+/* ── 검색 드롭다운 — 포커스 시 펼쳐지는 액션 목록 ──
+   뉴모피즘 규칙 준수: bg-white(=페이지와 동일 색) + 이중 그림자로만 형태 표현,
+   보더 없음, rounded-md(16px), 등장은 높이 확장 + 페이드 + 아이템 스태거. */
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--bg-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-extruded);
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: max-height .35s ease-out, opacity .25s ease-out, transform .25s ease-out;
+  z-index: 410;
+}
+.search-dropdown.open {
+  max-height: 420px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.search-dropdown-list {
+  list-style: none;
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 6px;
+}
+.search-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: box-shadow .15s ease-out;
+  animation: search-item-in .3s ease-out both;
+}
+.search-result-item:hover {
+  box-shadow: var(--shadow-inset-sm);
+}
+.search-result-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.search-result-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--subject-mid, var(--border-mid));
+}
+.search-result-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-result-desc {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.search-result-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.search-result-freq,
+.search-result-subject {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-align: right;
+  white-space: nowrap;
+}
+.search-dropdown-empty {
+  padding: 20px 14px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+.search-dropdown-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  font-size: 10.5px;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--border-light);
+}
+@keyframes search-item-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .search-dropdown, .search-icon-glyph { transition: none; }
+  .search-result-item { animation: none; }
+}
+/* 데스크톱: 입력창(최대 320px)보다 넓게 펼쳐 항목 텍스트가 덜 잘리게 함 */
+@media (min-width: 640px) {
+  .search-dropdown {
+    left: auto;
+    right: 0;
+    width: max(100%, 340px);
+    max-width: calc(100vw - 40px);
+  }
+}
+
 .topbar-breadcrumb {
   font-size: 12px;
   color: var(--text-tertiary);
