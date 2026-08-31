@@ -34,20 +34,17 @@ a { color: inherit; text-decoration: none; }
   border-bottom: 1px solid var(--border-light);
 }
 
-/* 탑바 아래 콘텐츠 행 */
+/* 탑바 아래 콘텐츠 행 — 사이드바는 더 이상 레이아웃을 나눠 갖지 않고
+   화면 크기와 무관하게 오른쪽에서 열리는 오버레이 드로어로 동작한다. */
 .body-row {
-  display: flex;
-  flex: 1;
   margin-top: var(--topbar-height);
   min-height: calc(100vh - var(--topbar-height));
 }
 
-/* 메인 — 왼쪽 */
+/* 메인 — 항상 전체 너비 */
 .main {
-  flex: 1;
   min-width: 0;
   padding: 28px 32px 60px;
-  order: 0;
 }
 .main > * {
   max-width: 960px;
@@ -57,35 +54,33 @@ a { color: inherit; text-decoration: none; }
   box-sizing: border-box;
 }
 
-/* 사이드바 — 오른쪽 */
+/* 사이드바 — 오른쪽에서 슬라이드되는 오버레이 드로어 (모든 화면 크기 공통) */
 .sidebar {
+  position: fixed;
+  top: var(--topbar-height);
+  right: 0;
+  height: calc(100vh - var(--topbar-height));
   width: var(--sidebar-width);
-  flex-shrink: 0;
-  order: 1;
+  z-index: 300;
   background: var(--bg-white);
   border-left: 1px solid var(--border-light);
+  box-shadow: -8px 0 32px rgba(20,18,14,0.10);
   overflow-y: auto;
-  padding: 16px 0 40px;
-  position: sticky;
-  top: var(--topbar-height);
-  height: calc(100vh - var(--topbar-height));
-  transition: width .22s cubic-bezier(.4,0,.2,1), opacity .2s, padding .22s;
+  overflow-x: hidden;
+  padding: 14px 0 40px;
+  transform: translateX(100%);
+  transition: transform .24s cubic-bezier(.4,0,.2,1);
+}
+.sidebar.open {
+  transform: translateX(0);
 }
 
-/* 데스크탑 접힌 상태 */
-.sidebar.collapsed {
-  width: 0;
-  padding: 0;
-  overflow: hidden;
-  border-left: none;
-  opacity: 0;
-}
-
-/* 오버레이 딤 (모바일) */
+/* 오버레이 딤 */
 .sidebar-overlay {
   display: none;
   position: fixed; inset: 0;
-  background: rgba(0,0,0,0.35);
+  top: var(--topbar-height);
+  background: rgba(20,18,14,0.32);
   z-index: 299;
 }
 .sidebar-overlay.visible { display: block; }
@@ -102,50 +97,28 @@ a { color: inherit; text-decoration: none; }
 
 @media (max-width: 768px) {
   .sidebar {
-    position: fixed;
     top: 0;
-    right: 0;
     height: 100vh;
-    width: min(80vw, 300px) !important;
-    z-index: 300;
-    transform: translateX(100%);
-    transition: none;
-    visibility: hidden; /* paint flash 완전 제거 */
-    padding-top: calc(var(--topbar-height) + 8px) !important;
-    overflow-y: scroll !important;
-    overflow-x: hidden !important;
-    border-left: 1px solid var(--border-light) !important;
-    border-right: none !important;
-  }
-  .sidebar.sidebar-ready {
-    visibility: visible;
-    transition: transform .25s cubic-bezier(.4,0,.2,1);
-  }
-  .sidebar.mobile-open {
-    transform: translateX(0);
-    box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+    width: min(84vw, 320px);
+    padding-top: calc(var(--topbar-height) + 8px);
   }
 
   .main { padding: 20px 16px 48px; }
   .main > * { max-width: 100%; }
-  .card-grid { grid-template-columns: 1fr 1fr; }
-  .subject-grid { grid-template-columns: 1fr 1fr; }
-  .detail-header { padding: 16px 18px; }
-  .detail-title { font-size: 20px; }
   .detail-section { padding: 16px; }
   .detail-tabs { overflow-x: auto; }
   .detail-tab { padding: 10px 12px; white-space: nowrap; }
-  .acc-concept-grid { grid-template-columns: 1fr 1fr; }
-  .area-columns { grid-template-columns: 1fr; gap: 28px; }
 }
 
 @media (max-width: 480px) {
   .main { padding: 16px 12px 40px; }
-  .card-grid { grid-template-columns: 1fr; }
-  .subject-grid { grid-template-columns: 1fr; }
   .detail-section { padding: 14px 12px; }
-  .acc-concept-grid { grid-template-columns: 1fr; }
 }
+/* NOTE: 아래쪽에 .card-grid/.subject-grid/.area-columns/.detail-header/
+   .detail-title/.acc-concept-grid 등의 그리드 컬럼 수를 좁히는 모바일
+   오버라이드는 파일 맨 끝(반응형 블록)에 있음 — 해당 클래스들의 기본
+   규칙이 이 지점보다 아래에서 다시 선언되어 있어, 여기서 지정하면
+   소스 순서상 기본 규칙에 의해 덮어써져 무시되기 때문. */
 
 .topbar-logo {
   font-size: 15px;
@@ -233,39 +206,92 @@ a { color: inherit; text-decoration: none; }
 }
 .topbar-menu-btn:hover { background: var(--bg-surface); color: var(--text-primary); }
 
-/* ── 사이드바 내부 아이템 스타일 ── */
-.sidebar-section {
-  margin-bottom: 4px;
+/* ── 사이드바 내부: 영역별 드롭다운(아코디언) + 과목 그리드 ──
+   교육학/교과교육학/전공 사이의 위계는 없으므로, 세로로 길게 나열하는
+   대신 영역 헤더를 눌러 펼치는 드롭다운 + 2열 그리드로 배치해
+   한 화면 안에서 훑어볼 수 있게 한다. */
+.sb-area {
+  border-bottom: 1px solid var(--border-light);
 }
-.sidebar-section-title {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  color: var(--text-tertiary);
-  padding: 10px 20px 4px;
-  text-transform: uppercase;
+.sb-area-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 13px 20px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-main);
+  text-align: left;
+  transition: background .12s;
 }
-.sidebar-item {
+.sb-area-head:hover { background: var(--bg-surface); }
+.sb-area-head-left {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 20px;
+  min-width: 0;
+}
+.sb-area-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--text-primary);
+  text-transform: uppercase;
+}
+.sb-area-count {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+}
+.sb-area-chevron {
   font-size: 13px;
+  color: var(--text-tertiary);
+  transition: transform .2s;
+  flex-shrink: 0;
+}
+.sb-area.open .sb-area-chevron { transform: rotate(90deg); }
+.sb-area-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .25s ease;
+}
+.sb-area.open .sb-area-body {
+  max-height: 1200px;
+}
+.sb-subject-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 2px 16px 16px;
+}
+.sb-subject-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  font-size: 12.5px;
+  line-height: 1.3;
   color: var(--text-secondary);
   cursor: pointer;
-  border-radius: 0;
-  transition: background .12s, color .12s;
-  border-left: 3px solid transparent;
-}
-.sidebar-item:hover {
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
   background: var(--bg-surface);
+  word-break: keep-all;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.sb-subject-chip:hover {
+  background: var(--bg-white);
+  border-color: var(--border-mid);
   color: var(--text-primary);
 }
-.sidebar-item.active {
+.sb-subject-chip.active {
   font-weight: 600;
   background: var(--subject-bg, var(--bg-surface));
   color: var(--subject-text, var(--text-primary));
-  border-left-color: var(--subject-accent, var(--text-secondary));
+  border-color: var(--subject-accent, var(--border-mid));
 }
 .sidebar-dot {
   width: 8px;
@@ -273,22 +299,6 @@ a { color: inherit; text-decoration: none; }
   border-radius: 50%;
   flex-shrink: 0;
   background: var(--subject-mid, var(--border-mid));
-}
-
-/* ── 메인 콘텐츠 ── */
-.main {
-  padding: 28px 32px 60px;
-  overflow-y: auto;
-  min-width: 0;
-}
-
-/* 메인 내부 콘텐츠 래퍼 — 최대 너비 + 중앙 정렬 */
-.main > * {
-  max-width: 960px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 /* ── 페이지 헤더 ── */
@@ -1739,4 +1749,22 @@ a { color: inherit; text-decoration: none; }
     margin-bottom: 2px;
     border-bottom: 1px solid var(--border-light);
   }
+}
+
+/* ── 그리드 컬럼 반응형 (파일 끝에 위치 — 위쪽의 기본 .card-grid /
+   .subject-grid / .area-columns / .detail-* / .acc-concept-grid 규칙보다
+   반드시 뒤에 와야 소스 순서상 우선 적용된다) ── */
+@media (max-width: 768px) {
+  .card-grid { grid-template-columns: 1fr 1fr; }
+  .subject-grid { grid-template-columns: 1fr 1fr; }
+  .detail-header { padding: 16px 18px; }
+  .detail-title { font-size: 20px; }
+  .acc-concept-grid { grid-template-columns: 1fr 1fr; }
+  .area-columns { grid-template-columns: 1fr; gap: 28px; }
+}
+
+@media (max-width: 480px) {
+  .card-grid { grid-template-columns: 1fr; }
+  .subject-grid { grid-template-columns: 1fr; }
+  .acc-concept-grid { grid-template-columns: 1fr; }
 }

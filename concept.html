@@ -57,83 +57,82 @@ const CONTENT_MAP = {
   '문맥교환 (Context Switch)':   'visualizations/context-switch-content.js',
 };
 
-/* ── 사이드바 토글 ─────────────────────────────────── */
-function isMobile() { return window.innerWidth <= 768; }
-
-function toggleSidebar() {
-  if (isMobile()) {
-    const isOpen = document.getElementById('sidebar').classList.contains('mobile-open');
-    isOpen ? closeSidebar() : openSidebar();
-  } else {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('collapsed');
-    const menuBtn = document.querySelector('.topbar-menu-btn');
-    if (menuBtn) menuBtn.textContent = sidebar.classList.contains('collapsed') ? '☰' : '✕';
-    try { localStorage.setItem('sidebar-collapsed', sidebar.classList.contains('collapsed') ? '1' : '0'); } catch(e) {}
-  }
-}
-
+/* ── 사이드바 토글 ─────────────────────────────────────
+   화면 크기와 무관하게 오른쪽에서 열리는 오버레이 드로어 하나로 통일.
+   기본값은 항상 닫힘 — "매번 떠 있지 않도록" 필요할 때만 연다. ── */
 function openSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  if (!sidebar.classList.contains('sidebar-ready')) {
-    sidebar.classList.add('sidebar-ready');
-  }
-  sidebar.classList.add('mobile-open');
+  document.getElementById('sidebar').classList.add('open');
   document.getElementById('sidebarOverlay').classList.add('visible');
   document.body.style.overflow = 'hidden';
   const menuBtn = document.querySelector('.topbar-menu-btn');
-  if (menuBtn) menuBtn.textContent = '✕';
+  if (menuBtn) { menuBtn.textContent = '✕'; menuBtn.setAttribute('aria-label', '메뉴 닫기'); }
 }
 
 function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebarOverlay').classList.remove('visible');
   document.body.style.overflow = '';
   const menuBtn = document.querySelector('.topbar-menu-btn');
-  if (menuBtn) menuBtn.textContent = '☰';
+  if (menuBtn) { menuBtn.textContent = '☰'; menuBtn.setAttribute('aria-label', '메뉴 열기'); }
 }
 
-window.addEventListener('resize', () => {
-  if (!isMobile()) {
-    document.getElementById('sidebar').classList.remove('mobile-open');
-    document.getElementById('sidebarOverlay').classList.remove('visible');
-    document.body.style.overflow = '';
-    const menuBtn = document.querySelector('.topbar-menu-btn');
-    if (menuBtn) menuBtn.textContent = '☰';
-    try {
-      const sidebar = document.getElementById('sidebar');
-      const saved = localStorage.getItem('sidebar-collapsed');
-      if (saved === '1') sidebar.classList.add('collapsed');
-      else sidebar.classList.remove('collapsed');
-    } catch(e) {}
-  }
+function toggleSidebar() {
+  const isOpen = document.getElementById('sidebar').classList.contains('open');
+  isOpen ? closeSidebar() : openSidebar();
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeSidebar();
 });
 
-try {
-  if (!isMobile() && localStorage.getItem('sidebar-collapsed') === '1') {
-    document.getElementById('sidebar').classList.add('collapsed');
-  }
-} catch(e) {}
+/* ── 사이드바 렌더 (영역별 드롭다운 + 과목 그리드) ────
+   영역 순서는 반드시 SITE_CONFIG.areas 순서(교육학 → 교과교육학 → 전공)를
+   따라야 index.html의 사이드바/홈 화면과 순서가 일치한다. ── */
+let sidebarOpenArea = null;
 
-/* ── 사이드바 렌더 ─────────────────────────────────── */
+function toggleSidebarArea(areaKey) {
+  sidebarOpenArea = sidebarOpenArea === areaKey ? null : areaKey;
+  renderSidebar();
+}
+
 function renderSidebar() {
   const areas = {};
   Object.entries(SUBJECTS).forEach(([name, meta]) => {
     if (!areas[meta.area]) areas[meta.area] = [];
     areas[meta.area].push(name);
   });
+
+  if (sidebarOpenArea === null && subjectName && SUBJECTS[subjectName]) {
+    sidebarOpenArea = SUBJECTS[subjectName].areaKey;
+  }
+
   let html = '';
-  Object.entries(areas).forEach(([area, subjects]) => {
-    html += `<div class="sidebar-section"><div class="sidebar-section-title">${area}</div>`;
-    subjects.forEach(name => {
-      const s = SUBJECTS[name];
-      const active = subjectName === name ? 'active' : '';
-      const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
-      html += `<div class="sidebar-item ${active}" style="${style}"
-        onclick="location.href='index.html?subject=${encodeURIComponent(name)}'">
-        <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}</div>`;
-    });
-    html += `</div>`;
+  Object.entries(SITE_CONFIG.areas).forEach(([areaKey, areaLabel]) => {
+    const subjects = areas[areaLabel];
+    if (!subjects) return;
+    const isOpen = sidebarOpenArea === areaKey;
+    html += `
+      <div class="sb-area ${isOpen ? 'open' : ''}">
+        <button class="sb-area-head" onclick="toggleSidebarArea('${areaKey}')">
+          <span class="sb-area-head-left">
+            <span class="sb-area-title">${areaLabel}</span>
+            <span class="sb-area-count">${subjects.length}</span>
+          </span>
+          <span class="sb-area-chevron">›</span>
+        </button>
+        <div class="sb-area-body">
+          <div class="sb-subject-grid">
+            ${subjects.map(name => {
+              const s = SUBJECTS[name];
+              const active = subjectName === name ? 'active' : '';
+              const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
+              return `<div class="sb-subject-chip ${active}" style="${style}"
+                onclick="location.href='index.html?subject=${encodeURIComponent(name)}'">
+                <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}</div>`;
+            }).join('')}
+          </div>
+        </div>
+      </div>`;
   });
   document.getElementById('sidebar').innerHTML = html;
 }
