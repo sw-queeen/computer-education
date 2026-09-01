@@ -131,7 +131,7 @@ function renderSidebar() {
               const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
               return `<div class="sb-subject-chip ${active}" style="${style}"
                 onclick="goHomeAndOpen('${name}'); closeSidebar();">
-                <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}</div>`;
+                <span class="sidebar-dot" style="background:${s.color.soft}"></span>${name}</div>`;
             }).join('')}
           </div>
         </div>
@@ -230,7 +230,7 @@ function renderRoadmap() {
     const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
     return `
       <button class="rs-item ${active}" style="${style}" onclick="selectSubject('${name}')">
-        <span class="rs-dot" style="background:${s.color.mid}"></span>
+        <span class="rs-dot" style="background:${s.color.soft}"></span>
         <span class="rs-name">${name}</span>
         <span class="rs-count">${count}</span>
       </button>`;
@@ -396,7 +396,7 @@ function applyFilter(filter) {
     } else {
       const items = results.map((c, i) => {
         const s = SUBJECTS[c.subject];
-        const dotColor = s ? s.color.mid : 'var(--border-mid)';
+        const dotColor = s ? s.color.soft : 'var(--border-mid)';
         return `<li class="search-result-item" style="animation-delay:${(i * 0.05).toFixed(2)}s"
             data-subject="${encodeURIComponent(c.subject)}"
             data-chapter="${encodeURIComponent(c.chapter)}"
