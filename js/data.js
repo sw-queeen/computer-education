@@ -2,97 +2,97 @@ const SUBJECTS = {
   // ── 교육학 ──
   "교육과정론": {
     area: "교육학", areaKey: "edu",
-    color: { bg:"var(--c-edu-curriculum-bg)", mid:"var(--c-edu-curriculum-mid)", accent:"var(--c-edu-curriculum-accent)", text:"var(--c-edu-curriculum-text)" }
+    color: { bg:"var(--c-edu-curriculum-bg)", mid:"var(--c-edu-curriculum-mid)", accent:"var(--c-edu-curriculum-accent)", text:"var(--c-edu-curriculum-text)", soft:"var(--c-edu-curriculum-soft)" }
   },
   "교육심리학": {
     area: "교육학", areaKey: "edu",
-    color: { bg:"var(--c-edu-psych-bg)", mid:"var(--c-edu-psych-mid)", accent:"var(--c-edu-psych-accent)", text:"var(--c-edu-psych-text)" }
+    color: { bg:"var(--c-edu-psych-bg)", mid:"var(--c-edu-psych-mid)", accent:"var(--c-edu-psych-accent)", text:"var(--c-edu-psych-text)", soft:"var(--c-edu-psych-soft)" }
   },
   "교수학습이론": {
     area: "교육학", areaKey: "edu",
-    color: { bg:"var(--c-edu-teach-bg)", mid:"var(--c-edu-teach-mid)", accent:"var(--c-edu-teach-accent)", text:"var(--c-edu-teach-text)" }
+    color: { bg:"var(--c-edu-teach-bg)", mid:"var(--c-edu-teach-mid)", accent:"var(--c-edu-teach-accent)", text:"var(--c-edu-teach-text)", soft:"var(--c-edu-teach-soft)" }
   },
   "교육평가론": {
     area: "교육학", areaKey: "edu",
-    color: { bg:"var(--c-edu-eval-bg)", mid:"var(--c-edu-eval-mid)", accent:"var(--c-edu-eval-accent)", text:"var(--c-edu-eval-text)" }
+    color: { bg:"var(--c-edu-eval-bg)", mid:"var(--c-edu-eval-mid)", accent:"var(--c-edu-eval-accent)", text:"var(--c-edu-eval-text)", soft:"var(--c-edu-eval-soft)" }
   },
   "교육행정": {
     area: "교육학", areaKey: "edu",
-    color: { bg:"var(--c-edu-admin-bg)", mid:"var(--c-edu-admin-mid)", accent:"var(--c-edu-admin-accent)", text:"var(--c-edu-admin-text)" }
+    color: { bg:"var(--c-edu-admin-bg)", mid:"var(--c-edu-admin-mid)", accent:"var(--c-edu-admin-accent)", text:"var(--c-edu-admin-text)", soft:"var(--c-edu-admin-soft)" }
   },
   "생활지도·상담": {
     area: "교육학", areaKey: "edu",
-    color: { bg:"var(--c-edu-counsel-bg)", mid:"var(--c-edu-counsel-mid)", accent:"var(--c-edu-counsel-accent)", text:"var(--c-edu-counsel-text)" }
+    color: { bg:"var(--c-edu-counsel-bg)", mid:"var(--c-edu-counsel-mid)", accent:"var(--c-edu-counsel-accent)", text:"var(--c-edu-counsel-text)", soft:"var(--c-edu-counsel-soft)" }
   },
   // ── 컴퓨터공학 ──
   "자료구조": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-ds-bg)", mid:"var(--c-cs-ds-mid)", accent:"var(--c-cs-ds-accent)", text:"var(--c-cs-ds-text)" }
+    color: { bg:"var(--c-cs-ds-bg)", mid:"var(--c-cs-ds-mid)", accent:"var(--c-cs-ds-accent)", text:"var(--c-cs-ds-text)", soft:"var(--c-cs-ds-soft)" }
   },
   "알고리즘": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-algo-bg)", mid:"var(--c-cs-algo-mid)", accent:"var(--c-cs-algo-accent)", text:"var(--c-cs-algo-text)" }
+    color: { bg:"var(--c-cs-algo-bg)", mid:"var(--c-cs-algo-mid)", accent:"var(--c-cs-algo-accent)", text:"var(--c-cs-algo-text)", soft:"var(--c-cs-algo-soft)" }
   },
   "운영체제": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-os-bg)", mid:"var(--c-cs-os-mid)", accent:"var(--c-cs-os-accent)", text:"var(--c-cs-os-text)" }
+    color: { bg:"var(--c-cs-os-bg)", mid:"var(--c-cs-os-mid)", accent:"var(--c-cs-os-accent)", text:"var(--c-cs-os-text)", soft:"var(--c-cs-os-soft)" }
   },
   "컴퓨터 구조": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-arch-bg)", mid:"var(--c-cs-arch-mid)", accent:"var(--c-cs-arch-accent)", text:"var(--c-cs-arch-text)" }
+    color: { bg:"var(--c-cs-arch-bg)", mid:"var(--c-cs-arch-mid)", accent:"var(--c-cs-arch-accent)", text:"var(--c-cs-arch-text)", soft:"var(--c-cs-arch-soft)" }
   },
   "데이터베이스": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-db-bg)", mid:"var(--c-cs-db-mid)", accent:"var(--c-cs-db-accent)", text:"var(--c-cs-db-text)" }
+    color: { bg:"var(--c-cs-db-bg)", mid:"var(--c-cs-db-mid)", accent:"var(--c-cs-db-accent)", text:"var(--c-cs-db-text)", soft:"var(--c-cs-db-soft)" }
   },
   "네트워크": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-net-bg)", mid:"var(--c-cs-net-mid)", accent:"var(--c-cs-net-accent)", text:"var(--c-cs-net-text)" }
+    color: { bg:"var(--c-cs-net-bg)", mid:"var(--c-cs-net-mid)", accent:"var(--c-cs-net-accent)", text:"var(--c-cs-net-text)", soft:"var(--c-cs-net-soft)" }
   },
   "프로그래밍 언어론": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-pl-bg)", mid:"var(--c-cs-pl-mid)", accent:"var(--c-cs-pl-accent)", text:"var(--c-cs-pl-text)" }
+    color: { bg:"var(--c-cs-pl-bg)", mid:"var(--c-cs-pl-mid)", accent:"var(--c-cs-pl-accent)", text:"var(--c-cs-pl-text)", soft:"var(--c-cs-pl-soft)" }
   },
   "소프트웨어공학": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-se-bg)", mid:"var(--c-cs-se-mid)", accent:"var(--c-cs-se-accent)", text:"var(--c-cs-se-text)" }
+    color: { bg:"var(--c-cs-se-bg)", mid:"var(--c-cs-se-mid)", accent:"var(--c-cs-se-accent)", text:"var(--c-cs-se-text)", soft:"var(--c-cs-se-soft)" }
   },
   "이산수학": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-discrete-bg)", mid:"var(--c-cs-discrete-mid)", accent:"var(--c-cs-discrete-accent)", text:"var(--c-cs-discrete-text)" }
+    color: { bg:"var(--c-cs-discrete-bg)", mid:"var(--c-cs-discrete-mid)", accent:"var(--c-cs-discrete-accent)", text:"var(--c-cs-discrete-text)", soft:"var(--c-cs-discrete-soft)" }
   },
   "컴파일러": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-compiler-bg)", mid:"var(--c-cs-compiler-mid)", accent:"var(--c-cs-compiler-accent)", text:"var(--c-cs-compiler-text)" }
+    color: { bg:"var(--c-cs-compiler-bg)", mid:"var(--c-cs-compiler-mid)", accent:"var(--c-cs-compiler-accent)", text:"var(--c-cs-compiler-text)", soft:"var(--c-cs-compiler-soft)" }
   },
   "인공지능": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-ai-bg)", mid:"var(--c-cs-ai-mid)", accent:"var(--c-cs-ai-accent)", text:"var(--c-cs-ai-text)" }
+    color: { bg:"var(--c-cs-ai-bg)", mid:"var(--c-cs-ai-mid)", accent:"var(--c-cs-ai-accent)", text:"var(--c-cs-ai-text)", soft:"var(--c-cs-ai-soft)" }
   },
   "정보보안": {
     area: "컴퓨터공학", areaKey: "cs",
-    color: { bg:"var(--c-cs-sec-bg)", mid:"var(--c-cs-sec-mid)", accent:"var(--c-cs-sec-accent)", text:"var(--c-cs-sec-text)" }
+    color: { bg:"var(--c-cs-sec-bg)", mid:"var(--c-cs-sec-mid)", accent:"var(--c-cs-sec-accent)", text:"var(--c-cs-sec-text)", soft:"var(--c-cs-sec-soft)" }
   },
   // ── 전공 정보교육 ──
   "컴퓨팅 사고력(CT)": {
     area: "교과교육학", areaKey: "info",
-    color: { bg:"var(--c-info-ct-bg)", mid:"var(--c-info-ct-mid)", accent:"var(--c-info-ct-accent)", text:"var(--c-info-ct-text)" }
+    color: { bg:"var(--c-info-ct-bg)", mid:"var(--c-info-ct-mid)", accent:"var(--c-info-ct-accent)", text:"var(--c-info-ct-text)", soft:"var(--c-info-ct-soft)" }
   },
   "정보과 교육과정": {
     area: "교과교육학", areaKey: "info",
-    color: { bg:"var(--c-info-curriculum-bg)", mid:"var(--c-info-curriculum-mid)", accent:"var(--c-info-curriculum-accent)", text:"var(--c-info-curriculum-text)" }
+    color: { bg:"var(--c-info-curriculum-bg)", mid:"var(--c-info-curriculum-mid)", accent:"var(--c-info-curriculum-accent)", text:"var(--c-info-curriculum-text)", soft:"var(--c-info-curriculum-soft)" }
   },
   "교수학습 방법": {
     area: "교과교육학", areaKey: "info",
-    color: { bg:"var(--c-info-teach-bg)", mid:"var(--c-info-teach-mid)", accent:"var(--c-info-teach-accent)", text:"var(--c-info-teach-text)" }
+    color: { bg:"var(--c-info-teach-bg)", mid:"var(--c-info-teach-mid)", accent:"var(--c-info-teach-accent)", text:"var(--c-info-teach-text)", soft:"var(--c-info-teach-soft)" }
   },
   "SW·AI 교육론": {
     area: "교과교육학", areaKey: "info",
-    color: { bg:"var(--c-info-swai-bg)", mid:"var(--c-info-swai-mid)", accent:"var(--c-info-swai-accent)", text:"var(--c-info-swai-text)" }
+    color: { bg:"var(--c-info-swai-bg)", mid:"var(--c-info-swai-mid)", accent:"var(--c-info-swai-accent)", text:"var(--c-info-swai-text)", soft:"var(--c-info-swai-soft)" }
   },
   "평가론": {
     area: "교과교육학", areaKey: "info",
-    color: { bg:"var(--c-info-eval-bg)", mid:"var(--c-info-eval-mid)", accent:"var(--c-info-eval-accent)", text:"var(--c-info-eval-text)" }
+    color: { bg:"var(--c-info-eval-bg)", mid:"var(--c-info-eval-mid)", accent:"var(--c-info-eval-accent)", text:"var(--c-info-eval-text)", soft:"var(--c-info-eval-soft)" }
   }
 };
 

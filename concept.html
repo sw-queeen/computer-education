@@ -129,7 +129,7 @@ function renderSidebar() {
               const style = `--subject-bg:${s.color.bg};--subject-mid:${s.color.mid};--subject-accent:${s.color.accent};--subject-text:${s.color.text}`;
               return `<div class="sb-subject-chip ${active}" style="${style}"
                 onclick="location.href='index.html?subject=${encodeURIComponent(name)}'">
-                <span class="sidebar-dot" style="background:${s.color.mid}"></span>${name}</div>`;
+                <span class="sidebar-dot" style="background:${s.color.soft}"></span>${name}</div>`;
             }).join('')}
           </div>
         </div>
