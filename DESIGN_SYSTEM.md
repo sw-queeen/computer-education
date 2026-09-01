@@ -109,18 +109,20 @@ Applied only once, on `body`, with `background-attachment: fixed` so scrolling n
 
 ### Subject Point Colors (glass-tinted layer)
 
-CS.im's 6-color pastel palette (`--c-pink/coral/yellow/mint/blue/lilac-*`) keeps its role as the subject/chapter differentiation layer, with one change in this transition: **`-bg` tokens are now translucent** (`rgba(r,g,b,0.55)` of the original HEX), so a subject-colored intro box or table header still looks like frosted glass instead of a flat sticker. `-mid`/`-accent`/`-text` are **unchanged, fully opaque HEX** — they carry text, icons, and border-left accents and must stay crisp.
+CS.im's 6-color palette (`--c-pink/coral/yellow/mint/blue/lilac-*`) keeps its role as the subject/chapter differentiation layer, with one change in this transition: **`-bg` tokens are now translucent** (`rgba(r,g,b,0.55)` of the original HEX), so a subject-colored intro box or table header still looks like frosted glass instead of a flat sticker. `-mid`/`-accent`/`-text` are **unchanged, fully opaque HEX** — they carry text, icons, and border-left accents and must stay crisp.
+
+**Tone revision**: the original saturated pastel set (baby pink/peach coral/baby yellow/mint/baby blue/lilac) was replaced with a calmer dusty/muted set (dusty rose/terracotta/muted sand/sage green/dusty blue/muted lilac), per the source spreadsheet. Slot names (`pink/coral/yellow/mint/blue/lilac`) and the `-bg`/`-text`/`-mid` roles are unchanged — only the underlying hues shifted.
 
 ```
---c-pink-bg:   rgba(255,201,227,0.55)   (was #FFC9E3 solid)
---c-coral-bg:  rgba(255,213,184,0.55)   (was #FFD5B8 solid)
---c-yellow-bg: rgba(255,243,184,0.55)   (was #FFF3B8 solid)
---c-mint-bg:   rgba(184,255,224,0.55)   (was #B8FFE0 solid)
---c-blue-bg:   rgba(174,226,255,0.55)   (was #AEE2FF solid)
---c-lilac-bg:  rgba(225,197,255,0.55)   (was #E1C5FF solid)
+--c-pink-bg:   rgba(234,207,207,0.55)   dusty rose   (bg #EACFCF, text #6B2F2F, mid #8F4A4A)
+--c-coral-bg:  rgba(234,211,191,0.55)   terracotta   (bg #EAD3BF, text #6B3D1F, mid #8F5A34)
+--c-yellow-bg: rgba(234,225,202,0.55)   muted sand   (bg #EAE1CA, text #5C4E2A, mid #7A6A3D)
+--c-mint-bg:   rgba(207,220,210,0.55)   sage green   (bg #CFDCD2, text #2E4A38, mid #44694F)
+--c-blue-bg:   rgba(207,219,228,0.55)   dusty blue   (bg #CFDBE4, text #24435A, mid #3D5F73)
+--c-lilac-bg:  rgba(219,210,226,0.55)   muted lilac  (bg #DBD2E2, text #3F2E4A, mid #5A4468)
 ```
 
-The derived `--c-edu-*`/`--c-info-*`/`--c-cs-*` mappings are untouched in structure — only the `-bg` half of each mapping now resolves to a glass tone.
+The derived `--c-edu-*`/`--c-info-*`/`--c-cs-*` mappings are untouched in structure — only the `-bg` half of each mapping now resolves to a glass tone, and the hues above replace the previous pastel set.
 
 ### Typography
 

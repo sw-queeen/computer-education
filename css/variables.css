@@ -148,13 +148,18 @@
      6색 팔레트 — 과목 구분용. -bg만 반투명 유리톤(rgba, α=0.55)으로
      변환했다. -mid/-text는 텍스트·아이콘 가독성을 위해 스프레드시트
      원본 HEX 값 그대로(불투명) 유지 — "배경만 유리, 글자는 또렷하게".
+     톤 개정: 채도 높은 파스텔(베이비 핑크/피치 코랄/베이비 옐로우/민트/
+     베이비 블루/라일락) → 더 차분한 더스티·뮤트 톤(더스티 로즈/테라코타/
+     뮤트 샌드/세이지 그린/더스티 블루/뮤트 라일락)으로 교체. 슬롯 이름
+     (pink/coral/yellow/mint/blue/lilac)과 --c-edu-*/--c-info-*/--c-cs-*
+     매핑 구조는 그대로 유지 — 색만 바뀌었다.
      ══════════════════════════════════════════════ */
-  --c-pink-bg:    rgba(255,201,227,0.55); --c-pink-text:   #7A1F4D; --c-pink-mid:   #993D6B;
-  --c-coral-bg:   rgba(255,213,184,0.55); --c-coral-text:  #803300; --c-coral-mid:  #803300;
-  --c-yellow-bg:  rgba(255,243,184,0.55); --c-yellow-text: #5C4D00; --c-yellow-mid: #806A00;
-  --c-mint-bg:    rgba(184,255,224,0.55); --c-mint-text:   #0A4D33; --c-mint-mid:   #1F7A52;
-  --c-blue-bg:    rgba(174,226,255,0.55); --c-blue-text:   #0A3C5C; --c-blue-mid:   #1E5A80;
-  --c-lilac-bg:   rgba(225,197,255,0.55); --c-lilac-text:  #3D1F6B; --c-lilac-mid:  #5C3D8C;
+  --c-pink-bg:    rgba(234,207,207,0.55); --c-pink-text:   #6B2F2F; --c-pink-mid:   #8F4A4A;  /* 더스티 로즈 */
+  --c-coral-bg:   rgba(234,211,191,0.55); --c-coral-text:  #6B3D1F; --c-coral-mid:  #8F5A34;  /* 테라코타 */
+  --c-yellow-bg:  rgba(234,225,202,0.55); --c-yellow-text: #5C4E2A; --c-yellow-mid: #7A6A3D;  /* 뮤트 샌드 */
+  --c-mint-bg:    rgba(207,220,210,0.55); --c-mint-text:   #2E4A38; --c-mint-mid:   #44694F;  /* 세이지 그린 */
+  --c-blue-bg:    rgba(207,219,228,0.55); --c-blue-text:   #24435A; --c-blue-mid:   #3D5F73;  /* 더스티 블루 */
+  --c-lilac-bg:   rgba(219,210,226,0.55); --c-lilac-text:  #3F2E4A; --c-lilac-mid:  #5A4468;  /* 뮤트 라일락 */
 
   /* 스프레드시트의 추가 중립 톤 2종 — 과거 액센트 원재료(참고용, 미사용 가능) */
   --c-chrome-silver-bg:   #E8E8EC; --c-chrome-silver-text: #3A3A40; --c-chrome-silver-mid: #5C5C66;
