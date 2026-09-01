@@ -1792,37 +1792,43 @@ a { color: inherit; text-decoration: none; }
   border-radius: 0 2px 2px 0;
 }
 
-/* ── Mode Toggle — 가운데 떠 있는 캡슐 대신, 가장자리까지 반반
-   채우는 탭 바(GitHub PR 탭 계열의 보편적 패턴)로 바꿔서 진짜
-   "2단 상단바"처럼 화면 폭을 그대로 쓰게 한다. ── */
+/* ── Mode Toggle — 가장자리까지 채운 바 위에, 원래 크기의 알약형
+   세그먼트 버튼을 가운데 얹는다. 바(.mode-toggle-sticky)는 좌우로
+   꽉 채우고, 실제 버튼(.mode-toggle)만 기존 크기 그대로 중앙에 떠 있는
+   형태 — 탭이 화면 끝까지 늘어나는 건 되돌린다. ── */
 .mode-toggle-sticky {
-  padding: 0;
+  padding: 10px 0;
   display: flex;
+  justify-content: center;
 }
 .mode-toggle {
-  display: flex;
-  width: 100%;
+  display: inline-flex;
+  gap: 4px;
+  background: var(--bg-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: 20px;
+  padding: 4px;
+  border: none;
+  box-shadow: var(--shadow-extruded-sm);
 }
 .mode-toggle-btn {
-  flex: 1;
   font-size: 13px;
   font-weight: 700;
-  padding: 14px 0;
+  padding: 8px 22px;
+  border-radius: 16px;
   cursor: pointer;
   border: none;
-  border-bottom: 2px solid transparent;
   background: none;
-  color: var(--text-tertiary);
+  color: var(--text-secondary);
   font-family: var(--font-body, var(--font-main));
-  transition: color .15s ease-out, border-color .15s ease-out, background-color .15s ease-out;
+  transition: all .15s;
   text-transform: uppercase;
-  letter-spacing: .04em;
 }
-.mode-toggle-btn:first-child { border-right: 1px solid var(--border-light); }
-.mode-toggle-btn:hover { color: var(--text-secondary); background: var(--bg-surface); }
 .mode-toggle-btn.active {
-  color: var(--subject-accent, var(--text-primary));
-  border-bottom-color: var(--subject-accent, var(--text-primary));
+  background: var(--subject-accent, var(--text-secondary));
+  box-shadow: var(--shadow-inset-sm);
+  color: #fff;
 }
 .mode-panel { display: none; }
 .mode-panel.active { display: block; }
