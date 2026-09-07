@@ -1812,6 +1812,7 @@ a { color: inherit; text-decoration: none; }
   justify-content: center;
 }
 .mode-toggle {
+  position: relative;
   display: inline-flex;
   gap: 4px;
   background: var(--bg-white);
@@ -1823,6 +1824,8 @@ a { color: inherit; text-decoration: none; }
   box-shadow: var(--shadow-extruded-sm);
 }
 .mode-toggle-btn {
+  position: relative;
+  z-index: 1;
   font-size: 13px;
   font-weight: 700;
   padding: 8px 22px;
@@ -1832,16 +1835,68 @@ a { color: inherit; text-decoration: none; }
   background: none;
   color: var(--text-secondary);
   font-family: var(--font-body, var(--font-main));
-  transition: all .15s;
+  transition: color .4s ease-out;
   text-transform: uppercase;
 }
-.mode-toggle-btn.active {
-  background: var(--subject-accent, var(--text-secondary));
-  box-shadow: var(--shadow-inset-sm);
-  color: #fff;
-}
+.mode-toggle-btn.active { color: #fff; }
 .mode-panel { display: none; }
 .mode-panel.active { display: block; }
+
+/* ── Liquid Toggle — Concept/Note 활성 표시를 순간적인 배경색 스왑
+   대신 두 개의 방울이 가운데 이음매에서 만나 갈라지는 액체 모션으로
+   대체한다. CSS filter: blur()+contrast()만으로는 RGB 채널 전체가
+   같이 눌려서 진한 포인트 컬러가 거의 검은색으로 뭉개진다 — 그래서
+   원본 소스처럼 SVG feGaussianBlur + feColorMatrix(알파 채널만
+   증폭) + feComposite 체인을 그대로 써서, 색은 그대로 두고 알파
+   경계만 뭉치게(gooey) 만든다. 디자인(캡슐 모양, 색상, 타이포)은
+   그대로 두고 "활성 상태가 이동하는 방식"만 바꿨다. */
+.mode-toggle-liquid {
+  position: absolute;
+  inset: 4px;
+  z-index: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  filter: url(#modeToggleGoo);
+}
+.mode-toggle-blob {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  border-radius: 16px;
+  background: var(--subject-accent, var(--text-secondary));
+  transition: transform .5s cubic-bezier(.65,0,.35,1);
+}
+.mode-toggle-blob-a { left: 0; transform: translateX(0) scale(1); }
+.mode-toggle-blob-b { left: 50%; transform: translateX(-50%) scale(.15); }
+.mode-toggle[data-active="note"] .mode-toggle-blob-a { transform: translateX(50%) scale(.15); }
+.mode-toggle[data-active="note"] .mode-toggle-blob-b { transform: translateX(0) scale(1); }
+/* 방울 하나가 두 자리 사이를 오가며 지나갈 때 잠깐 맺히는 물방울 —
+   전환마다 JS가 .dripping을 껐다 켜서 매번 새로 재생한다 */
+.mode-toggle-drop {
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: var(--subject-accent, var(--text-secondary));
+  opacity: 0;
+  transform: translateY(0) scale(0);
+}
+.mode-toggle-drop.dripping {
+  animation: modeToggleDrip .55s ease-out;
+}
+@keyframes modeToggleDrip {
+  0%   { transform: translateY(-4px) scale(0);   opacity: 0; }
+  30%  { transform: translateY(1px)  scale(1);   opacity: 1; }
+  100% { transform: translateY(9px)  scale(0);   opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mode-toggle-blob { transition: none; }
+  .mode-toggle-drop.dripping { animation: none; }
+}
 
 /* ── Scroll-to-top Button ── */
 .scroll-top-btn {
