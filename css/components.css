@@ -1865,11 +1865,18 @@ a { color: inherit; text-decoration: none; }
   width: 50%;
   border-radius: 16px;
   background: var(--subject-accent, var(--text-secondary));
-  transition: transform .5s cubic-bezier(.65,0,.35,1);
+  /* 지속시간을 550ms로 뒀을 때 프레임 단위로 직접 캡처해 보니, 눈에
+     보이는 움직임은 실제로 처음 100~150ms 안에 다 끝나고(방울이
+     "이 정도면 꽉 찼다"고 보이는 크기에 금방 도달) 나머지 400ms는
+     아무 것도 안 보이는 채로 시간만 흘렀다 — 그 무의미한 여운 때문에
+     "가다 마는" 것처럼 느껴졌다. 선언한 지속시간을 실제 체감 동작
+     길이에 맞춰 짧게 줄이고, 숨는 쪽은 scale(0)까지 완전히 사라지게
+     해서 남는 시간에도 자연스럽게 뭔가 계속 움직이는 것처럼 보이게 함 */
+  transition: transform .32s ease-in-out;
 }
 .mode-toggle-blob-a { left: 0; transform: translateX(0) scale(1); }
-.mode-toggle-blob-b { left: 50%; transform: translateX(-50%) scale(.15); }
-.mode-toggle[data-active="note"] .mode-toggle-blob-a { transform: translateX(50%) scale(.15); }
+.mode-toggle-blob-b { left: 50%; transform: translateX(-50%) scale(0); }
+.mode-toggle[data-active="note"] .mode-toggle-blob-a { transform: translateX(50%) scale(0); }
 .mode-toggle[data-active="note"] .mode-toggle-blob-b { transform: translateX(0) scale(1); }
 /* 방울 하나가 두 자리 사이를 오가며 지나갈 때 잠깐 맺히는 물방울 —
    전환마다 JS가 .dripping을 껐다 켜서 매번 새로 재생한다 */
@@ -1886,7 +1893,7 @@ a { color: inherit; text-decoration: none; }
   transform: translateY(0) scale(0);
 }
 .mode-toggle-drop.dripping {
-  animation: modeToggleDrip .55s ease-out;
+  animation: modeToggleDrip .32s ease-out;
 }
 @keyframes modeToggleDrip {
   0%   { transform: translateY(-4px) scale(0);   opacity: 0; }
@@ -1967,6 +1974,7 @@ a { color: inherit; text-decoration: none; }
   box-shadow: var(--shadow-extruded-sm);
 }
 .explore-tab-buttons {
+  position: relative;
   display: flex;
   gap: 4px;
   padding: 4px;
@@ -1976,6 +1984,8 @@ a { color: inherit; text-decoration: none; }
   box-shadow: var(--shadow-inset-sm);
 }
 .explore-tab-btn {
+  position: relative;
+  z-index: 1;
   flex: 1;
   padding: 10px 14px;
   background: none;
@@ -1986,20 +1996,43 @@ a { color: inherit; text-decoration: none; }
   font-weight: 700;
   color: var(--text-secondary);
   font-family: var(--font-body, var(--font-main));
-  transition: box-shadow .2s ease-out, color .12s;
+  transition: color .3s ease-out;
   text-align: center;
-  position: relative;
 }
 .explore-tab-btn:hover { color: var(--text-primary); }
-.explore-tab-btn.active {
-  background: var(--bg-white);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: var(--shadow-extruded-sm);
-  color: var(--subject-accent, var(--text-primary));
-}
+.explore-tab-btn.active { color: var(--subject-accent, var(--text-primary)); }
 .explore-tab-content { display: none; }
 .explore-tab-content.active { display: block; }
+
+/* ── 키워드 그래프 / 인터랙티브 시각화 탭도 Concept·Note 토글과 같은
+   액체 방울 모션을 쓴다. 원래 활성 탭은 흰 유리 pill(--bg-white +
+   blur)이 얹히는 디자인이었으므로, 여기서는 방울도 포인트 컬러
+   대신 흰 유리색으로 흐르게 해 raised-glass 느낌을 그대로 유지한다.
+   .mode-toggle-liquid와 같은 gooey 필터(#modeToggleGoo)를 재사용. */
+.explore-tab-liquid {
+  position: absolute;
+  inset: 4px;
+  z-index: 0;
+  border-radius: 16px;
+  pointer-events: none;
+  filter: url(#modeToggleGoo);
+}
+.explore-tab-blob {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  border-radius: 16px;
+  background: var(--bg-white);
+  transition: transform .32s ease-in-out;
+}
+.explore-tab-blob-a { left: 0; transform: translateX(0) scale(1); }
+.explore-tab-blob-b { left: 50%; transform: translateX(-50%) scale(0); }
+.explore-tab-buttons[data-active="viz"] .explore-tab-blob-a { transform: translateX(50%) scale(0); }
+.explore-tab-buttons[data-active="viz"] .explore-tab-blob-b { transform: translateX(0) scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .explore-tab-blob { transition: none; }
+}
 
 /* ── Keyword Graph ── */
 .keyword-graph-wrap svg { width: 100%; height: auto; display: block; }

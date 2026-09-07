@@ -12,7 +12,13 @@
      알파 채널만 증폭(feColorMatrix 마지막 행)해서 색은 그대로 두고
      경계만 방울처럼 뭉치게 한다. -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <filter id="modeToggleGoo">
+  <!-- filter region 기본값(objectBoundingBox 기준 -10%~120%)은 이 토글처럼
+       가로로 넓고 세로로 얇은 박스(약 200×31px)에서는 위아래로 3px 정도밖에
+       여유가 없다. stdDeviation=6짜리 블러는 그 3배(~18px)까지 번지는데
+       여백이 모자라 하드 엣지로 잘려서, 방울 가장자리에 색이 이상하게
+       남는 것처럼 보이고 물방울 애니메이션도 중간에 잘려 보였다 —
+       영역을 넉넉하게 키워서 블러가 잘리지 않게 한다. -->
+  <filter id="modeToggleGoo" x="-40%" y="-200%" width="180%" height="500%">
     <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
     <feColorMatrix in="blur" mode="matrix"
       values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10"
@@ -185,7 +191,7 @@ function setConceptMode(mode) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ── Explore 탭 전환 ─────────────────────────────── */
+/* ── Explore 탭 전환 (액체 방울 모션) ──────────────── */
 function switchExploreTab(tab) {
   document.querySelectorAll('.explore-tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.explore-tab-content').forEach(c => c.classList.remove('active'));
@@ -193,6 +199,9 @@ function switchExploreTab(tab) {
   if (btn) btn.classList.add('active');
   const content = document.getElementById(`content-${tab}`);
   if (content) content.classList.add('active');
+
+  const buttons = document.getElementById('exploreTabButtons');
+  if (buttons) buttons.setAttribute('data-active', tab);
 
   /* viz 탭 lazy-load */
   if (tab === 'viz' && !window._vizLoaded) {
@@ -378,7 +387,12 @@ function renderConcept() {
 
       <!-- ── Explore: 키워드 그래프 / 인터랙티브 시각화 ── -->
       <div class="explore-tabs">
-        <div class="explore-tab-buttons">
+        <div class="explore-tab-buttons" ${hasViz ? 'id="exploreTabButtons" data-active="kw"' : ''}>
+          ${hasViz ? `
+          <span class="explore-tab-liquid" aria-hidden="true">
+            <span class="explore-tab-blob explore-tab-blob-a"></span>
+            <span class="explore-tab-blob explore-tab-blob-b"></span>
+          </span>` : ''}
           <button class="explore-tab-btn active" data-tab="kw" onclick="switchExploreTab('kw')">키워드 그래프</button>
           ${hasViz ? `<button class="explore-tab-btn" data-tab="viz" onclick="switchExploreTab('viz')">인터랙티브 시각화</button>` : ''}
         </div>
