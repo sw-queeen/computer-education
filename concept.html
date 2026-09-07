@@ -8,6 +8,18 @@
   <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
+<!-- Concept/Note 액체 토글용 gooey 필터 — 페이지에 한 번만 있으면 됨.
+     알파 채널만 증폭(feColorMatrix 마지막 행)해서 색은 그대로 두고
+     경계만 방울처럼 뭉치게 한다. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <filter id="modeToggleGoo">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+    <feColorMatrix in="blur" mode="matrix"
+      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -10"
+      result="goo" />
+    <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+  </filter>
+</svg>
 <div class="layout">
 
   <header class="topbar">
@@ -149,12 +161,27 @@ function renderBreadcrumb() {
   if (conceptName) document.title = `${conceptName} — CS.im`;
 }
 
-/* ── Concept / Note 모드 토글 ──────────────────────── */
+/* ── Concept / Note 모드 토글 (액체 방울 모션) ──────
+   두 방울(.mode-toggle-blob-a/b)의 위치를 즉시 스왑하는 대신
+   data-active만 바꾸면 CSS transition이 500ms에 걸쳐 서로 이음매에서
+   만났다 갈라지도록 흐른다. 물방울(.mode-toggle-drop)은 매번 새로
+   재생해야 하므로 클래스를 껐다가(리플로우로 강제) 다시 켠다. ── */
 function setConceptMode(mode) {
   document.getElementById('mode-concept').classList.toggle('active', mode === 'concept');
   document.getElementById('mode-note').classList.toggle('active', mode === 'note');
   document.getElementById('btn-concept').classList.toggle('active', mode === 'concept');
   document.getElementById('btn-note').classList.toggle('active', mode === 'note');
+
+  const toggle = document.getElementById('modeToggle');
+  if (toggle) toggle.setAttribute('data-active', mode);
+
+  const drop = document.getElementById('modeToggleDrop');
+  if (drop) {
+    drop.classList.remove('dripping');
+    void drop.offsetWidth; // 강제 리플로우 — 애니메이션 재시작
+    drop.classList.add('dripping');
+  }
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -331,7 +358,12 @@ function renderConcept() {
         <div class="scroll-progress-bar" id="scrollProgressBar"></div>
       </div>
       <div class="mode-toggle-sticky">
-        <div class="mode-toggle">
+        <div class="mode-toggle" id="modeToggle" data-active="concept">
+          <span class="mode-toggle-liquid" aria-hidden="true">
+            <span class="mode-toggle-blob mode-toggle-blob-a"></span>
+            <span class="mode-toggle-blob mode-toggle-blob-b"></span>
+            <span class="mode-toggle-drop" id="modeToggleDrop"></span>
+          </span>
           <button class="mode-toggle-btn active" id="btn-concept" onclick="setConceptMode('concept')">Concept</button>
           <button class="mode-toggle-btn" id="btn-note" onclick="setConceptMode('note')">Note</button>
         </div>

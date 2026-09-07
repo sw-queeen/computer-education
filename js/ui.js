@@ -206,10 +206,13 @@ window.CS = window.CS || {};
      각 컴포넌트가 개별로 JS를 작성할 필요 없이, 아래 셀렉터에
      해당하는 요소를 클릭하면 components.css의 csWobble
      키프레임이 재생된다. prefers-reduced-motion에서는 아예 붙이지 않는다. */
+  /* .mode-toggle-btn은 제외 — Concept/Note는 이제 액체 방울이 흐르는
+     자체 모션(components.css의 .mode-toggle-liquid)을 쓰므로, 여기
+     젤리 바운스까지 겹치면 두 모션이 서로 충돌해 보인다. */
   var WOBBLE_SELECTOR = [
     '.filter-btn', '.cs-quiz-btn', '.quiz-option', '.concept-card',
     '.sb-subject-chip', '.sb-area-head', '.rail-item', '.rs-item',
-    '.mode-toggle-btn', '.cs-quiz-reset', '.scroll-top-btn',
+    '.cs-quiz-reset', '.scroll-top-btn',
     '.topbar-menu-btn', '.explore-tab-btn', '.detail-tab',
     '.ed-quiz-ox-btn', '.ed-quiz-mc-btn', '.ed-quiz-fill-btn',
     '.ed-reset', '.test-link-btn',
